@@ -1,0 +1,5 @@
+#!/bin/bash
+
+initctl stop vehicles-acquire-online
+initctl start vehicles-acquire-online
+exit 0

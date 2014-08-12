@@ -1,0 +1,8 @@
+# monit/vehicles-acquire-online
+#
+check process vehicles-acquire-online
+  matching vehicles-acquire-online
+  start program = "/sbin/start vehicles-acquire-online"
+  stop program = "/sbin/stop vehicles-acquire-online"
+  if failed host 127.0.0.1 port 9000 then restart
+
