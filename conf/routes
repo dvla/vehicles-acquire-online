@@ -14,8 +14,8 @@ GET     /assets/*file                               controllers.Assets.at(path="
 # Home page
 GET     /                                           @controllers.Application.index
 
-#page 1 - Before You Start (GET request not POST on submission because we are not posting any data)
+#page 1 - Before You Start
 GET     /buy-from-the-trade/before-you-start        @controllers.BeforeYouStart.present
 
 #page 2 - setup-trade-details
-GET     /sell-to-the-trade/setup-trade-details      @controllers.SetUpTradeDetails.present
+GET     /buy-from-the-trade/setup-trade-details      @controllers.SetUpTradeDetails.present
