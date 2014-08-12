@@ -1,0 +1,21 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# IoC
+# For those controllers whose dependencie are being injected, we use the @controllers syntax here so that
+# the router knows we are referring to a class (not an object). In turn it will call on the
+# GlobalSettings.getControllerInstance method to resolve the actual controller instance. This method hooks into
+# Guice to provide the actual instance complete with its injected dependencies
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                               controllers.Assets.at(path="/public", file)
+
+# Home page
+GET     /                                           @controllers.Application.index
+
+#page 1 - Before You Start (GET request not POST on submission because we are not posting any data)
+GET     /buy-from-the-trade/before-you-start        @controllers.BeforeYouStart.present
+
+#page 2 - setup-trade-details
+GET     /sell-to-the-trade/setup-trade-details      @controllers.SetUpTradeDetails.present

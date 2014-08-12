@@ -1,0 +1,105 @@
+#main
+main.banner = Buy a vehicle from the motor trade
+main.banner.help = Help
+main.banner.feedback = Feedback
+main.banner.feedback.link = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Sell%20to%20the%20Trade%20feedback
+
+global.cookiemessage = GOV.UK uses cookies to make the site simpler.
+global.cookiefindoutmore = Find out more about cookies
+
+global.browserprompt = For a safer, faster, better experience online you should upgrade your browser.
+global.browserfindoutmore = Find out more about browsers
+global.browserclosetitle = Dismiss this message
+global.browserclosemessage = Close
+
+global.buttonnavback = Back
+global.buttonnavcancel = Cancel
+global.buttonnavupdate = Update
+global.buttonnavprint = Print
+
+footer.builtbyintro = Built by
+footer.builtby = Driver & Vehicle Licensing Agency
+
+#prototype
+prototype.banner = This service is under development -
+prototype.link =  find out more
+prototype.link.source = https://www.gov.uk/help/beta
+
+#widget messages
+errorsummary.title = Please correct the details below
+errorsummary.p1 = Please fix the following:
+widget.optional = (optional)
+
+#customer validation messages
+error.restricted.validNumberOnly = This field only accepts numbers
+error.restricted.validVrnOnly = Must be as shown on the latest V5C
+error.restricted.validPostcode = Must be between 5 and 8 characters and in a valid format, eg. PR2 8AE or PR28AE
+
+datePlaceholder.day=Day
+datePlaceholder.month=Month
+datePlaceholder.year=Year
+datePlaceholder.January=January
+datePlaceholder.February=February
+datePlaceholder.March=March
+datePlaceholder.April=April
+datePlaceholder.May=May
+datePlaceholder.June=June
+datePlaceholder.July=July
+datePlaceholder.August=August
+datePlaceholder.September=September
+datePlaceholder.October=October
+datePlaceholder.November=November
+datePlaceholder.December=December
+
+select_default = Please select
+error.invalid = Invalid value
+
+##
+# ACQUIRE VEHICLE
+##
+
+# progress messages
+acquire_progress_1 = Step 1 of 6
+acquire_progress_2 = Step 2 of 6
+acquire_progress_3 = Step 3 of 6
+acquire_progress_4 = Step 4 of 6
+acquire_progress_5 = Step 5 of 6
+acquire_progress_6 = Step 6 of 6
+
+# help
+#disposal.help.title = Help
+#disposal.help.p1 = This service is in Private Beta phase
+#disposal.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
+#disposal.help.p2.2 = send an email
+#disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
+#disposal.help.exit_button = Exit
+#disposal.help.back_button = Back
+
+# 404 onHandlerNotFound
+onHandlerNotFound.title=This page cannot be found
+onHandlerNotFound.header=This page cannot be found
+onHandlerNotFound.body=We are unable to find the page you have requested, this event has been logged for investigation.
+onHandlerNotFound.noJavascript=If you wish to try again select the back button on your browser, if not select "Exit" to leave the service.
+onHandlerNotFound.start.button=Start
+
+error.title=An unrecoverable error has occurred
+error.button=Start again
+
+language.cy.button = Cymraeg
+language.en.button = YAGNI
+
+mandatory = Fields not labelled (optional) are mandatory
+
+#page 1 - Before You Start
+acquire_beforeyoustart.title = Buy a vehicle from the motor trade
+acquire_beforeyoustart.p1 = Before you start:
+acquire_beforeyoustart.listitem1 = You will need the document reference number from the latest vehicle registration certificate (V5C).
+
+acquire_beforeyoustart.listitem2 = If you need to change any vehicle details on the V5C e.g. tax class, you should not use this service. You will need to complete the V5C and tax the vehicle at the Post Office.
+
+acquire_beforeyoustart.listitem3.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
+acquire_beforeyoustart.listitem3.link = Apply to retain a vehicle registration number (V317)
+acquire_beforeyoustart.listitem3.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
+
+acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
+acquire_beforeyoustart.button = Start now

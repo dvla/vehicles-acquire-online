@@ -1,0 +1,32 @@
+@()(implicit lang: Lang,
+        token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
+        config: utils.helpers.Config)
+
+@import controllers.routes.SetUpTradeDetails
+@import views.acquire.BeforeYouStart.NextId
+@import uk.gov.dvla.vehicles.presentation.common
+@import common.views.html.widgets.base.csrfTokenHiddenField
+
+@main(
+progress = Some(Messages("acquire_progress_1")),
+title = Messages("acquire_beforeyoustart.title")
+) {
+<p>@Messages("acquire_beforeyoustart.p1")</p>
+<ol class="list-standard">
+    <li>@Messages("acquire_beforeyoustart.listitem1") </li>
+    <li>@Messages("acquire_beforeyoustart.listitem2") </li>
+    <li>@Messages("acquire_beforeyoustart.listitem3.1")
+        <a href="https://www.gov.uk/government/publications/application-to-transfer-or-retain-a-vehicle-registration-number" target="_blank">
+            @Messages("acquire_beforeyoustart.listitem3.link")
+        </a>
+        @Messages("acquire_beforeyoustart.listitem3.2")
+    </li>
+    <li>@Messages("acquire_beforeyoustart.listitem4")</li>
+</ol>
+
+<div class="form-steps">
+    @csrfTokenHiddenField()
+    @* Note the reverse routing syntax for the hyperlink *@
+    <a class="button" id="@NextId" href="@SetUpTradeDetails.present()">@Messages("acquire_beforeyoustart.button")</a>
+</div>
+}
