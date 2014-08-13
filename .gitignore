@@ -49,6 +49,7 @@ vagrant_ansible_inventory_default
 workdir/
 /conf/vehicles-acquire-online.conf 
 conf/generated.keystore
+conf/vehicles-acquire-online.conf
 
 .*.swp
 tags
