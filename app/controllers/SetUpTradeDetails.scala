@@ -9,7 +9,7 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
                                           config: Config) extends Controller {
 
   def present = Action { implicit request =>
-    Ok("Success")
+    Ok(views.html.acquire.setup_trade_details())
   }
 
 }

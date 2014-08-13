@@ -5,7 +5,8 @@ import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.TestHarness
-import pages.acquire.BeforeYouStartPage
+import pages.acquire.{SetupTradeDetailsPage, BeforeYouStartPage}
+import pages.acquire.BeforeYouStartPage.startNow
 
 final class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -27,7 +28,7 @@ final class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
       page.source.contains(progressStep(1)) should equal(false)
     }
   }
-/*
+
   "startNow button" should {
     "go to next page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
@@ -37,5 +38,4 @@ final class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(SetupTradeDetailsPage.title)
     }
   }
-*/
 }

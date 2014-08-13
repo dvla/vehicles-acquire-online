@@ -103,3 +103,6 @@ acquire_beforeyoustart.listitem3.2 =, you will need to send the completed applic
 
 acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
 acquire_beforeyoustart.button = Start now
+
+#page2 - Setup trade details
+acquire_setuptradedetails.title = Provide trader details
