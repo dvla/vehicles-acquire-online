@@ -46,12 +46,9 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.9" withSources() withJavadoc(),
   "org.apache.httpcomponents" % "httpclient" % "4.3.4" withSources() withJavadoc())
 
-val jsModulesToOptimise = Seq("custom.js")
-val jsConfig = "custom.js"
+RjsKeys.mainModule := "custom"
 
-//requireJs := jsModulesToOptimise
-
-//requireJsShim := jsConfig
+pipelineStages := Seq(rjs, digest, gzip)
 
 CucumberPlugin.cucumberSettings ++
   Seq (
