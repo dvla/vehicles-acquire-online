@@ -1,8 +1,7 @@
 import de.johoop.jacoco4sbt.JacocoPlugin._
-import net.litola.SassPlugin
 import org.scalastyle.sbt.ScalastylePlugin
 import templemore.sbt.cucumber.CucumberPlugin
-import play.Project.playScalaSettings
+import net.litola.SassPlugin
 
 val nexus = "http://rep002-01.skyscape.preview-dvla.co.uk:8081/nexus/content/repositories"
 
@@ -25,7 +24,7 @@ scalaVersion := "2.10.3"
 
 scalacOptions := Seq("-deprecation", "-unchecked", "-feature", "-Xlint", "-language:reflectiveCalls", "-Xmax-classfile-name", "128")
 
-playScalaSettings
+lazy val root = (project in file(".")).enablePlugins(PlayScala, SassPlugin, SbtWeb)
 
 libraryDependencies ++= Seq(
   cache,
@@ -34,26 +33,25 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "15.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "org.seleniumhq.selenium" % "selenium-java" % "2.42.2" % "test" withSources() withJavadoc(),
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),
-  "info.cukes" % "cucumber-scala_2.10" % "1.1.7" % "test" withSources() withJavadoc(),
+  "info.cukes" %% "cucumber-scala" % "1.1.7" % "test" withSources() withJavadoc(),
   "info.cukes" % "cucumber-java" % "1.1.7" % "test" withSources() withJavadoc(),
   "info.cukes" % "cucumber-picocontainer" % "1.1.7" % "test" withSources() withJavadoc(),
-  "org.specs2" %% "specs2" % "2.3.10" % "test" withSources() withJavadoc(),
+  "org.specs2" %% "specs2" % "2.4" % "test" withSources() withJavadoc(),
   "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
   "com.github.tomakehurst" % "wiremock" % "1.46" % "test" withSources() withJavadoc() exclude("log4j", "log4j"),
   "org.slf4j" % "log4j-over-slf4j" % "1.7.7" % "test" withSources() withJavadoc(),
-  "org.scalatest" % "scalatest_2.10" % "2.2.0" % "test" withSources() withJavadoc(),
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test" withSources() withJavadoc(),
   "com.google.inject" % "guice" % "4.0-beta4" withSources() withJavadoc(),
   "com.tzavellas" % "sse-guice" % "0.7.1" withSources() withJavadoc(), // Scala DSL for Guice
   "commons-codec" % "commons-codec" % "1.9" withSources() withJavadoc(),
   "org.apache.httpcomponents" % "httpclient" % "4.3.4" withSources() withJavadoc())
 
 val jsModulesToOptimise = Seq("custom.js")
-
 val jsConfig = "custom.js"
 
-requireJs := jsModulesToOptimise
+//requireJs := jsModulesToOptimise
 
-requireJsShim := jsConfig
+//requireJsShim := jsConfig
 
 CucumberPlugin.cucumberSettings ++
   Seq (
@@ -93,8 +91,6 @@ parallelExecution in jacoco.Config := false
 sources in doc in Compile := List()
 
 ScalastylePlugin.Settings
-
-SassPlugin.sassSettings
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
 
