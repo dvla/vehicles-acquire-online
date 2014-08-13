@@ -16,7 +16,6 @@ project/plugins/project/
 # Scala-IDE specific
 *.scala_dependencies
 
-
 logs
 project/project
 project/target
@@ -31,10 +30,7 @@ dist
 cache/
 .sbt.ivy.lock
 
-
-
 /RUNNING_PID
-
 
 *.css/
 *.img/
@@ -48,12 +44,10 @@ cache/
 /bin
 test.sc
 *.worksheet
-/conf/vehiclesOnline.conf
-/conf/vehiclesOnline.confworkdir/
 vagrant_ansible_inventory_default
 .vagrant
 workdir/
-/conf/vehiclesOnline.conf
+/conf/vehicles-acquire-online.conf 
 conf/generated.keystore
 
 .*.swp
