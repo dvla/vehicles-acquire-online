@@ -21,7 +21,7 @@ class TestModule() extends ScalaModule with MockitoSugar {
     bind[CookieFlags].to[NoCookieFlags].asEagerSingleton()
     bind[ClientSideSessionFactory].to[ClearTextClientSideSessionFactory].asEagerSingleton()
 
-    bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.common.AccessLogger"))
+    bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
   }
 
 }

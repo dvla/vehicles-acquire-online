@@ -34,7 +34,7 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
           ).distinctErrors
         BadRequest(views.html.acquire.setup_trade_details(formWithReplacedErrors))
       },
-      validForm => Redirect(routes.BeforeYouStart.present()).withCookie(validForm)
+      validForm => Ok(views.html.acquire.success())
     )
   }
 }
