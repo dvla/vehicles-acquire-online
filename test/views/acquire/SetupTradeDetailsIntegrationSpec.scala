@@ -17,6 +17,18 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
 
       page.title should equal(SetupTradeDetailsPage.title)
     }
+
+    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
+      go to SetupTradeDetailsPage
+
+      page.source.contains(progressStep(2)) should equal(true)
+    }
+
+    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
+      go to SetupTradeDetailsPage
+
+      page.source.contains(progressStep(2)) should equal(false)
+    }
   }
 
   "lookup button" should {
@@ -61,6 +73,4 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
       Accessibility.ariaInvalidPresent(SetupTradeDetailsViewModel.Form.TraderPostcodeId) should equal(true)
     }
   }
-
-
 }
