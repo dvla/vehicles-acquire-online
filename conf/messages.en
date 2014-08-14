@@ -103,3 +103,16 @@ acquire_beforeyoustart.listitem3.2 =, you will need to send the completed applic
 
 acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
 acquire_beforeyoustart.button = Start now
+
+#page2 - Setup Trade Details
+#page 2 - set-up trade details
+acquire_setuptradedetails.title = Provide trader details
+acquire_setuptradedetails.name = Sell a vehicle into the motor trade
+acquire_setuptradedetails.p1 = Set-up trade details
+acquire_setuptradedetails.tradernamelabel = Trader name
+acquire_setuptradedetails.traderpostcodelabel = Postcode
+acquire_setuptradedetails.traderpostcodelabel.validation = Must be between 5 and 8 characters and in a valid format, eg. PR2 8AE or PR28AE
+acquire_setuptradedetails.traderpostcode.hint = e.g. PR2 8AE or PR28AE
+acquire_setuptradedetails.button = Find address
+traderName = Trader name
+traderPostcode = Postcode

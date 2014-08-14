@@ -19,5 +19,6 @@ GET     /buy-from-the-trade/before-you-start        @controllers.BeforeYouStart.
 
 #page 2 - setup-trade-details
 GET     /buy-from-the-trade/setup-trade-details     @controllers.SetUpTradeDetails.present
+POST    /buy-from-the-trade/setup-trade-details     @controllers.SetUpTradeDetails.submit
 
 GET     /healthcheck                                @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
