@@ -15,10 +15,10 @@ GET     /assets/*file                               controllers.Assets.at(path="
 GET     /                                           @controllers.Application.index
 
 #page 1 - Before You Start
-GET     /buy-from-the-trade/before-you-start        @controllers.BeforeYouStart.present
+GET     /vrm-acquire/before-you-start               @controllers.BeforeYouStart.present
 
 #page 2 - setup-trade-details
-GET     /buy-from-the-trade/setup-trade-details     @controllers.SetUpTradeDetails.present
-POST    /buy-from-the-trade/setup-trade-details     @controllers.SetUpTradeDetails.submit
+GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.present
+POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
 
 GET     /healthcheck                                @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
