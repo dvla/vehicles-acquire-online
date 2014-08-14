@@ -21,6 +21,7 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
     Ok(views.html.acquire.setup_trade_details(form.fill()))
   }
 
+
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
