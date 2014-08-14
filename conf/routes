@@ -3,7 +3,7 @@
 # ~~~~
 
 # IoC
-# For those controllers whose dependencie are being injected, we use the @controllers syntax here so that
+# For those controllers whose dependencies are being injected, we use the @controllers syntax here so that
 # the router knows we are referring to a class (not an object). In turn it will call on the
 # GlobalSettings.getControllerInstance method to resolve the actual controller instance. This method hooks into
 # Guice to provide the actual instance complete with its injected dependencies
@@ -21,4 +21,5 @@ GET     /vrm-acquire/before-you-start               @controllers.BeforeYouStart.
 GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.present
 POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
 
+GET     /vrm-acquire                                @controllers.BeforeYouStart.present
 GET     /healthcheck                                @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
