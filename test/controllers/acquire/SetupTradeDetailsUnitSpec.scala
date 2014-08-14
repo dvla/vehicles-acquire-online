@@ -6,6 +6,10 @@ import play.api.test.{WithApplication, FakeRequest}
 import play.api.test.Helpers._
 import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
+import controllers.acquire.Common._
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import utils.helpers.Config
+import org.mockito.Mockito._
 
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {
@@ -32,6 +36,22 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       content should not include TraderBusinessNameValid
       content should not include PostcodeValid
     }
+
+    "display prototype message when config set to true" in new WithApplication {
+      contentAsString(present) should include(PrototypeHtml)
+    }
+
+    "not display prototype message when config set to false" in new WithApplication {
+      val request = FakeRequest()
+      implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
+      implicit val config: Config = mock[Config]
+      when(config.isPrototypeBannerVisible).thenReturn(false) // Stub this config value.
+      val setUpTradeDetailsPrototypeNotVisible = new SetUpTradeDetails()
+
+      val result = setUpTradeDetailsPrototypeNotVisible.present(request)
+      contentAsString(result) should not include PrototypeHtml
+    }
+
   }
 
   private val setUpTradeDetails = {
