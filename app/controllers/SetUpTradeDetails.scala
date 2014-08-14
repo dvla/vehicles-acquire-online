@@ -34,7 +34,7 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
           ).distinctErrors
         BadRequest(views.html.acquire.setup_trade_details(formWithReplacedErrors))
       },
-      validForm => Ok(views.html.acquire.success())
+      validForm => Ok(views.html.acquire.success()) //ToDo replace with redirect to next controller when implemented
     )
   }
 }
