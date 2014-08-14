@@ -9,17 +9,17 @@
 # Guice to provide the actual instance complete with its injected dependencies
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                               controllers.Assets.at(path="/public", file)
+GET     /vrm-acquire/assets/*file                   controllers.Assets.at(path="/public", file)
 
 # Home page
 GET     /                                           @controllers.Application.index
 
 #page 1 - Before You Start
 GET     /vrm-acquire/before-you-start               @controllers.BeforeYouStart.present
+GET     /vrm-acquire                                @controllers.BeforeYouStart.present
 
 #page 2 - setup-trade-details
 GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.present
 POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
 
-GET     /vrm-acquire                                @controllers.BeforeYouStart.present
-GET     /healthcheck                                @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
