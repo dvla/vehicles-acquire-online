@@ -16,6 +16,19 @@ import common.clientsidesession.EncryptedClientSideSessionFactory
 import common.clientsidesession.Sha1HashGenerator
 import uk.gov.dvla.vehicles.presentation.common.filters.AccessLoggingFilter.AccessLoggerName
 
+import common.filters.AccessLoggingFilter.AccessLoggerName
+import common.services.DateService
+import common.webserviceclients.addresslookup.gds.{AddressLookupServiceImpl, WebServiceImpl}
+import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
+import common.webserviceclients.vehiclelookup.VehicleLookupService
+import common.webserviceclients.vehiclelookup.VehicleLookupServiceImpl
+import common.webserviceclients.vehiclelookup.VehicleLookupWebService
+import common.webserviceclients.vehiclelookup.VehicleLookupWebServiceImpl
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.dispose.{DisposeWebServiceImpl, DisposeWebService, DisposeServiceImpl, DisposeService}
+
 /**
  * Provides real implementations of traits
  * Note the use of sse-guice, which is a library that makes the Guice internal DSL more scala friendly
@@ -39,4 +52,8 @@ object DevModule extends ScalaModule {
 
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.common.AccessLogger"))
   }
+
+
+
+
 }
