@@ -2,6 +2,8 @@ import de.johoop.jacoco4sbt.JacocoPlugin._
 import net.litola.SassPlugin
 import org.scalastyle.sbt.ScalastylePlugin
 import templemore.sbt.cucumber.CucumberPlugin
+import Sandbox.runMicroServicesTask
+import Sandbox.sandboxTask
 import play.Project.playScalaSettings
 
 val nexus = "http://rep002-01.skyscape.preview-dvla.co.uk:8081/nexus/content/repositories"
@@ -106,3 +108,7 @@ val projectResolvers = Seq(
 )
 
 resolvers ++= projectResolvers
+
+runMicroServicesTask
+
+sandboxTask

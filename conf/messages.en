@@ -82,8 +82,10 @@ onHandlerNotFound.body=We are unable to find the page you have requested, this e
 onHandlerNotFound.noJavascript=If you wish to try again select the back button on your browser, if not select "Exit" to leave the service.
 onHandlerNotFound.start.button=Start
 
+#errors
 error.title=An unrecoverable error has occurred
 error.button=Start again
+error.validTraderBusinessName = Must be between 2 and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -94,13 +96,10 @@ mandatory = Fields not labelled (optional) are mandatory
 acquire_beforeyoustart.title = Buy a vehicle from the motor trade
 acquire_beforeyoustart.p1 = Before you start:
 acquire_beforeyoustart.listitem1 = You will need the document reference number from the latest vehicle registration certificate (V5C).
-
 acquire_beforeyoustart.listitem2 = If you need to change any vehicle details on the V5C e.g. tax class, you should not use this service. You will need to complete the V5C and tax the vehicle at the Post Office.
-
 acquire_beforeyoustart.listitem3.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
 acquire_beforeyoustart.listitem3.link = Apply to retain a vehicle registration number (V317)
 acquire_beforeyoustart.listitem3.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-
 acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
 acquire_beforeyoustart.button = Start now
 
