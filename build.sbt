@@ -4,6 +4,11 @@ import org.scalastyle.sbt.ScalastylePlugin
 import templemore.sbt.cucumber.CucumberPlugin
 import Sandbox.runMicroServicesTask
 import Sandbox.sandboxTask
+import Sandbox.runAsyncTask
+import Sandbox.testGatlingTask
+import Sandbox.sandboxAsyncTask
+import Sandbox.gatlingTask
+import Sandbox.gatlingTests
 import play.Project.playScalaSettings
 
 val nexus = "http://rep002-01.skyscape.preview-dvla.co.uk:8081/nexus/content/repositories"
@@ -112,3 +117,13 @@ resolvers ++= projectResolvers
 runMicroServicesTask
 
 sandboxTask
+
+runAsyncTask
+
+testGatlingTask
+
+sandboxAsyncTask
+
+gatlingTask
+
+lazy val p7 = gatlingTests
