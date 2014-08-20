@@ -3,19 +3,30 @@ package controllers.acquire
 import helpers.UnitSpec
 import controllers.SetUpTradeDetails
 import viewmodels.SetupTradeDetailsViewModel.Form._
-import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid,PostcodeValid}
+import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid,PostcodeValid, TraderEmailValid}
 
 class SetupTradeDetailsFormSpec extends UnitSpec {
 
   "form" should {
-    "accept if form is valid with all fields filled in" in {
+    "accept if form is completed with all fields correctly" in {
+      val model = formWithValidDefaults(traderBusinessName = TraderBusinessNameValid, traderPostcode = PostcodeValid, traderEmail = TraderEmailValid).get
+      model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
+      model.traderPostcode should equal(PostcodeValid)
+      model.traderEmail should equal(Some(TraderEmailValid))
+    }
+
+    "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(traderBusinessName = TraderBusinessNameValid, traderPostcode = PostcodeValid).get
       model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
       model.traderPostcode should equal(PostcodeValid)
     }
+
+    "reject if form has no fields completed" in {
+      formWithValidDefaults(traderBusinessName = "" , traderPostcode = "").errors should have length 6
+    }
   }
 
-  "TraderBusinessName" should {
+  "traderBusinessName" should {
     "reject if trader business name is blank" in {
       // IMPORTANT: The messages being returned by the form validation are overridden by the Controller
       val errors = formWithValidDefaults(traderBusinessName = "").errors
@@ -72,14 +83,26 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     }
   }
 
+  "trader email" should {
+    "reject if incorrect format is used" in {
+      formWithValidDefaults(traderEmail = "EmailWithNoAtSymbol").errors should have length 1
+    }
+
+    "reject if trader email name is greater than max length" in {
+      val longInvalidEmail = "a@" + "a" * 554
+      formWithValidDefaults(traderEmail = longInvalidEmail).errors should have length 2
+    }
+  }
+
   private def formWithValidDefaults(traderBusinessName: String = TraderBusinessNameValid,
-                                    traderPostcode: String = PostcodeValid) = {
+                                    traderPostcode: String = PostcodeValid, traderEmail: String = "") = {
 
     injector.getInstance(classOf[SetUpTradeDetails])
       .form.bind(
         Map(
           TraderNameId -> traderBusinessName,
-          TraderPostcodeId -> traderPostcode
+          TraderPostcodeId -> traderPostcode,
+          TraderEmailId -> traderEmail
         )
       )
   }

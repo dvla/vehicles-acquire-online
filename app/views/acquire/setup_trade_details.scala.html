@@ -6,7 +6,7 @@ config: utils.helpers.Config)
 @import views.acquire.SetupTradeDetails.SubmitId
 @import views.html.acquire.main
 @import views.html.helper.form
-@import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderNameMaxLength}
+@import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderNameMaxLength, TraderEmailId, TraderEmailMaxLength}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.Postcode
 @import common.views.helpers.BaseTemplate.fieldConstructor
@@ -32,6 +32,11 @@ currentForm = Some(traderLookupForm)
     Map('_label -> Messages("acquire_setuptradedetails.traderpostcodelabel"),
     '_showConstraints -> false,
     'maxLength -> Postcode.MaxLength))
+
+    @valtechInputText(traderLookupForm(TraderEmailId), hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")), args =
+    Map('_label -> Messages("Trader Email"),
+    '_showConstraints -> false,
+    'maxLength -> TraderEmailMaxLength))
 
     <div class="form-steps">
         <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_setuptradedetails.button")</button>
