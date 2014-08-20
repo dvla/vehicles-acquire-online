@@ -33,7 +33,7 @@ currentForm = Some(traderLookupForm)
     '_showConstraints -> false,
     'maxLength -> Postcode.MaxLength))
 
-    @valtechInputText(traderLookupForm(TraderEmailId), hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")), args =
+    @valtechInputText(traderLookupForm(TraderEmailId), args =
     Map('_label -> Messages("Trader Email"),
     '_showConstraints -> false,
     'maxLength -> TraderEmailMaxLength))

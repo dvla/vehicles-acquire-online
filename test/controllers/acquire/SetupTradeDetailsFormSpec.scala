@@ -88,9 +88,9 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
       formWithValidDefaults(traderEmail = "EmailWithNoAtSymbol").errors should have length 1
     }
 
-    "reject if trader email name is greater than max length" in {
-      val longInvalidEmail = "a@" + "a" * 554
-      formWithValidDefaults(traderEmail = longInvalidEmail).errors should have length 2
+    "reject if greater than max length" in {
+      val longInvalidEmail = "a@" + ("a" * 550) + ".com"
+      formWithValidDefaults(traderEmail = longInvalidEmail).errors should have length 1
     }
   }
 
