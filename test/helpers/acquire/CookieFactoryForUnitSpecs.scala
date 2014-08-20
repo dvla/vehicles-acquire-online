@@ -39,10 +39,10 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def setupTradeDetails(traderPostcode: String = PostcodeValid): Cookie = {
+  def setupTradeDetails(traderPostcode: String = PostcodeValid, traderEmail: Option[String] = None): Cookie = {
     val key = SetupTradeDetailsCacheKey
     val value = SetupTradeDetailsViewModel(traderBusinessName = TraderBusinessNameValid,
-      traderPostcode = traderPostcode)
+      traderPostcode = traderPostcode, traderEmail = traderEmail)
     createCookie(key, value)
   }
 

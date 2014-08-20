@@ -85,7 +85,8 @@ onHandlerNotFound.start.button=Start
 #errors
 error.title=An unrecoverable error has occurred
 error.button=Start again
-error.validTraderBusinessName = Must be between 2 and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
+error.validTraderBusinessName = Must be between two and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
+error.email = Enter a valid email address up to 255 characters
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -112,6 +113,8 @@ acquire_setuptradedetails.p1 = Set-up trade details
 acquire_setuptradedetails.tradernamelabel = Trader name
 acquire_setuptradedetails.traderpostcodelabel = Postcode
 acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
+acquire_setuptradedetails.traderemail.hint = e.g. example@example.co.uk
 acquire_setuptradedetails.button = Find address
 traderName = Trader name
 traderPostcode = Postcode
+traderEmail = Trader email
