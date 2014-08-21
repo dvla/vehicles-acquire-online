@@ -20,14 +20,19 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
 
   def traderPostcode(implicit driver: WebDriver): TextField = textField(id(TraderPostcodeId))
 
+  def traderEmail(implicit driver: WebDriver): TextField = textField(id(TraderEmailId))
+
   def lookup(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
+
   def happyPath(traderBusinessName: String = TraderBusinessNameValid,
-                traderBusinessPostcode: String = PostcodeValid)
+                traderBusinessPostcode: String = PostcodeValid,
+                traderBusinessEmail: String = TraderEmailValid)
                (implicit driver: WebDriver) = {
     go to SetupTradeDetailsPage
     traderName enter traderBusinessName
     traderPostcode enter traderBusinessPostcode
+    traderEmail enter traderBusinessEmail
     click on lookup
   }
 }

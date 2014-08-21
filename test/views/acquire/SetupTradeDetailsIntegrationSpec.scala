@@ -53,6 +53,12 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
       ErrorPanel.numberOfErrors should equal(2)
     }
 
+    "display one summary validation error message when an incorrectly email is entered" taggedAs UiTag in new WebBrowser {
+      happyPath(traderBusinessEmail = "email_with_no_at_symbol")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+
     "add aria required attribute to trader name field when required field not input" taggedAs UiTag in new WebBrowser {
       happyPath(traderBusinessName = "")
       Accessibility.ariaRequiredPresent(SetupTradeDetailsViewModel.Form.TraderNameId) should equal(true)

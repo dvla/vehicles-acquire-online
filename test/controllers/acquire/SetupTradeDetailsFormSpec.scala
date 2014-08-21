@@ -85,7 +85,7 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
 
   "trader email" should {
     "reject if incorrect format is used" in {
-      formWithValidDefaults(traderEmail = "EmailWithNoAtSymbol").errors should have length 1
+      formWithValidDefaults(traderEmail = "email_with_no_at_symbol").errors should have length 1
     }
 
     "reject if greater than max length" in {
