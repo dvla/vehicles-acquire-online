@@ -35,7 +35,7 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
     "go to the next page when correct data is entered" taggedAs UiTag in new WebBrowser {
       happyPath()
 
-      page.title should equal("Success")
+      page.title should equal("Select trader address")
     }
 
     "display one summary validation error message when no postcode is entered" taggedAs UiTag in new WebBrowser {

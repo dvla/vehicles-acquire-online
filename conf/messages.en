@@ -87,6 +87,7 @@ error.title=An unrecoverable error has occurred
 error.button=Start again
 error.validTraderBusinessName = Must be between two and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
 error.email = Enter a valid email address up to 255 characters
+error.dropDownInvalid = Please select a value from the drop down list.
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -119,7 +120,25 @@ traderName = Trader name
 traderPostcode = Postcode
 traderEmail = Trader email address
 
-#page 3 - vehicle Lookup
+#page 3 - Business Choose Your Address
+acquire_businessChooseYourAddress_title = Select trader address
+acquire_businessChooseYourAddress_legend = Set up trade details
+acquire_businessChooseYourAddress_businessName_label = Trader name
+acquire_businessChooseYourAddress_businessName = {0}
+acquire_businessChooseYourAddress_businessEmail_label = Trader email address
+acquire_businessChooseYourAddress_businessEmail = {0}
+acquire_businessChooseYourAddress_postcode_label = Postcode
+acquire_businessChooseYourAddress_businessAddress_label = Trader address
+acquire_businessChooseYourAddress_addressSelect = Choose your address
+acquire_businessChooseYourAddress_addressSelect_label = Choose your address
+acquire_businessChooseYourAddress.backbutton = Back
+acquire_businessChooseYourAddress.submitbutton = Next
+acquire_businessChooseYourAddress.manualAddressEntry = My address is not in the list
+acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
+acquire_businessChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
+acquire_businessChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+
+#page 4 - vehicle Lookup
 acquire_vehiclelookup.title = Enter vehicle details
 acquire_vehiclelookup.name = Sell a vehicle into the motor trade
 acquire_vehiclelookup.p1 = Vehicle being sold

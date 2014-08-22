@@ -41,6 +41,9 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.dispose.{Dispo
  */
 object DevModule extends ScalaModule {
   def configure() {
+    bind[AddressLookupService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl].asEagerSingleton()
+    bind[AddressLookupWebService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl].asEagerSingleton()
+
     bind[CookieFlags].to[CookieFlagsFromConfig].asEagerSingleton()
 
     if (getProperty("encryptCookies", default = true)) {

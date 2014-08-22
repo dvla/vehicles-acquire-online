@@ -8,13 +8,13 @@ import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel, DayMonthYear}
-import viewmodels.HelpCacheKey
+import viewmodels.{BusinessChooseYourAddressViewModel, HelpCacheKey, SeenCookieMessageCacheKey, SetupTradeDetailsViewModel}
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
+import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import viewmodels.{SeenCookieMessageCacheKey, SetupTradeDetailsViewModel}
-
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -46,11 +46,11 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-//  def businessChooseYourAddress(): Cookie = {
-//    val key = BusinessChooseYourAddressCacheKey
-//    val value = BusinessChooseYourAddressViewModel(uprnSelected = traderUprnValid.toString)
-//    createCookie(key, value)
-//  }
+  def businessChooseYourAddress(): Cookie = {
+    val key = BusinessChooseYourAddressCacheKey
+    val value = BusinessChooseYourAddressViewModel(uprnSelected = traderUprnValid.toString)
+    createCookie(key, value)
+  }
 //
 //  def enterAddressManually(): Cookie = {
 //    val key = EnterAddressManuallyCacheKey
