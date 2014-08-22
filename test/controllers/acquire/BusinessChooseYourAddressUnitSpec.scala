@@ -32,6 +32,7 @@ import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import pages.acquire.SetupTradeDetailsPage
 import scala.Some
 import helpers.acquire.CookieFactoryForUnitSpecs
+import pages.common.UprnNotFoundPage
 
 final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   "present" should {
@@ -115,15 +116,14 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-//    "redirect to UprnNotFound page when submit with but uprn not found by the webservice" in new WithApplication {
-// ToDo uncomment when UprnNotFound is implemented
-//      val request = buildCorrectlyPopulatedRequest().
-//        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
-//      val result = businessChooseYourAddressWithUprnNotFound.submit(request)
-//      whenReady(result) { r =>
-//        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
-//      }
-//    }
+    "redirect to UprnNotFound page when submit with but uprn not found by the webservice" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressWithUprnNotFound.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
+      }
+    }
 
     "write cookie when uprn found" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
