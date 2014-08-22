@@ -105,8 +105,7 @@ acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immedi
 acquire_beforeyoustart.button = Start now
 
 
-#page2 - Setup Trade Details
-#page 2 - set-up trade details
+#page2 - Setup trade details
 acquire_setuptradedetails.title = Provide trader details
 acquire_setuptradedetails.name = Sell a vehicle into the motor trade
 acquire_setuptradedetails.p1 = Set-up trade details
@@ -119,3 +118,25 @@ acquire_setuptradedetails.button = Find address
 traderName = Trader name
 traderPostcode = Postcode
 traderEmail = Trader email address
+
+#page 3 - vehicle Lookup
+acquire_vehiclelookup.title = Enter vehicle details
+acquire_vehiclelookup.name = Sell a vehicle into the motor trade
+acquire_vehiclelookup.p1 = Vehicle being sold
+acquire_vehiclelookup.p2 = Vehicle will be sold to
+acquire_vehiclelookup.warning.p1 = Do not dispose of a vehicle with a personal registration unless the current keeper understands that the registration will be disposed of along with the vehicle.
+acquire_vehiclelookup.warning.p2 = Retain or transfer personal registrations before disposing to the trade.
+acquire_vehiclelookup.img.h2 = Help finding your V5C document reference number?
+acquire_vehiclelookup.img.alt = V5C document reference number
+acquire_vehiclelookup.refnumlabel = Latest V5C document reference number
+acquire_vehiclelookup.vrninputlabel = Vehicle registration number
+acquire_vehiclelookup.backbutton = Back
+acquire_vehiclelookup.button = Next
+acquire_vehiclelookup.button2 = Edit
+acquire_vehiclelookup.exitbutton = Finish
+acquire_vehiclelookup.tradernamelabel = Trader name
+acquire_vehiclelookup.traderaddresslabel = Trader address
+
+vehicleRegistrationNumber = Vehicle registration number
+documentReferenceNumber = Document reference number
+error.validDocumentReferenceNumber = Document reference number must be an 11-digit number

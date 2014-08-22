@@ -50,6 +50,9 @@ object DevModule extends ScalaModule {
     } else
       bind[ClientSideSessionFactory].to[ClearTextClientSideSessionFactory].asEagerSingleton()
 
+    bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
+    bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
+
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
   }
 

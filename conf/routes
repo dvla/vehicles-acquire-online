@@ -23,3 +23,9 @@ GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetai
 POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
 
 GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+
+#page n - Enter vehicle details
+GET     /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.present
+POST    /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.submit
+GET     /vrm-acquire/vehicle-lookup/exit            @controllers.VehicleLookup.exit
+GET     /vrm-acquire/vehicle-lookup-back            @controllers.VehicleLookup.back
