@@ -80,8 +80,8 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   }
 
   "submit" should {
+//    ToDo uncomment when VehcileLookup is implemented
 //    "redirect to VehicleLookup page after a valid submit" in new WithApplication { /
-// /ToDo uncomment when VehcileLookup is implemented
 //      val request = buildCorrectlyPopulatedRequest().
 //        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
 //      val result = businessChooseYourAddressWithUprnFound.submit(request)

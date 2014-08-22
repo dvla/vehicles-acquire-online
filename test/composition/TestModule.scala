@@ -35,5 +35,4 @@ class TestModule() extends ScalaModule with MockitoSugar {
     )
     bind[AddressLookupWebService].toInstance(fakeWebServiceImpl)
   }
-
 }
