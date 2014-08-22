@@ -2,8 +2,8 @@ package controllers
 
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichSimpleResult
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{CookieImplicits, ClientSideSessionFactory}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichResult
 import utils.helpers.Config
 import viewmodels.AllCacheKeys
 
@@ -17,7 +17,6 @@ final class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: Client
   }
 
   def submit = Action { implicit request =>
-//    Redirect(routes.SetUpTradeDetails.present())
-    Ok("submit")
+    Redirect(routes.SetUpTradeDetails.present())
   }
 }

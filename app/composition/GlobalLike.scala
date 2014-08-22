@@ -1,6 +1,9 @@
 package composition
 
-import play.api.{Application, GlobalSettings, Logger}
+import java.io.File
+import java.util.UUID
+import com.typesafe.config.ConfigFactory
+import play.api.{Application, Configuration, GlobalSettings, Logger, Mode}
 
 /**
  * Application configuration is in a hierarchy of files:
@@ -22,6 +25,18 @@ trait GlobalLike extends WithFilters with GlobalSettings with Composition {
    * that we can override to resolve a given controller. This resolution is required by the Play router.
    */
   override def getControllerInstance[A](controllerClass: Class[A]): A = injector.getInstance(controllerClass)
+
+  override def onLoadConfig(configuration: Configuration,
+                            path: File,
+                            classloader: ClassLoader,
+                            mode: Mode.Mode): Configuration = {
+    val dynamicConfig = Configuration.from(Map("session.cookieName" -> UUID.randomUUID().toString.substring(0, 16)))
+    val applicationConf = System.getProperty("config.file", s"application.${mode.toString.toLowerCase}.conf")
+    val environmentOverridingConfiguration = configuration ++
+      Configuration(ConfigFactory.load(applicationConf)) ++
+      dynamicConfig
+    super.onLoadConfig(environmentOverridingConfiguration, path, classloader, mode)
+  }
 
   override def onStart(app: Application) {
     Logger.info("vehicles-acquire Started") // used for operations, do not remove

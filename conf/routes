@@ -3,19 +3,29 @@
 # ~~~~
 
 # IoC
-# For those controllers whose dependencie are being injected, we use the @controllers syntax here so that
+# For those controllers whose dependencies are being injected, we use the @controllers syntax here so that
 # the router knows we are referring to a class (not an object). In turn it will call on the
 # GlobalSettings.getControllerInstance method to resolve the actual controller instance. This method hooks into
 # Guice to provide the actual instance complete with its injected dependencies
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                               controllers.Assets.at(path="/public", file)
+GET     /vrm-acquire/assets/*file                   controllers.Assets.at(path="/public", file)
 
 # Home page
 GET     /                                           @controllers.Application.index
 
 #page 1 - Before You Start
-GET     /buy-from-the-trade/before-you-start        @controllers.BeforeYouStart.present
+GET     /vrm-acquire/before-you-start               @controllers.BeforeYouStart.present
+GET     /vrm-acquire                                @controllers.BeforeYouStart.present
 
-#page 2 - setup-trade-details
-GET     /buy-from-the-trade/setup-trade-details      @controllers.SetUpTradeDetails.present
+#page 2 - Setup Trade Details
+GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.present
+POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
+
+#page 3 - Business Choose Your Address
+GET     /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.present
+POST    /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.submit
+GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
+
+GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present

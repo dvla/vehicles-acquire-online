@@ -14,7 +14,8 @@ import common.clientsidesession.CookieFlagsFromConfig
 import common.clientsidesession.CookieNameHashGenerator
 import common.clientsidesession.EncryptedClientSideSessionFactory
 import common.clientsidesession.Sha1HashGenerator
-import uk.gov.dvla.vehicles.presentation.common.filters.AccessLoggingFilter.AccessLoggerName
+import common.filters.AccessLoggingFilter.AccessLoggerName
+import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
 
 /**
  * Provides real implementations of traits
@@ -28,6 +29,9 @@ import uk.gov.dvla.vehicles.presentation.common.filters.AccessLoggingFilter.Acce
  */
 object DevModule extends ScalaModule {
   def configure() {
+    bind[AddressLookupService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl].asEagerSingleton()
+    bind[AddressLookupWebService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl].asEagerSingleton()
+
     bind[CookieFlags].to[CookieFlagsFromConfig].asEagerSingleton()
 
     if (getProperty("encryptCookies", default = true)) {
@@ -37,6 +41,10 @@ object DevModule extends ScalaModule {
     } else
       bind[ClientSideSessionFactory].to[ClearTextClientSideSessionFactory].asEagerSingleton()
 
-    bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.common.AccessLogger"))
+    bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
   }
+
+
+
+
 }

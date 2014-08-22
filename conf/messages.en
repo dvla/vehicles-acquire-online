@@ -33,7 +33,7 @@ widget.optional = (optional)
 #customer validation messages
 error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
-error.restricted.validPostcode = Must be between 5 and 8 characters and in a valid format, eg. PR2 8AE or PR28AE
+error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -82,8 +82,12 @@ onHandlerNotFound.body=We are unable to find the page you have requested, this e
 onHandlerNotFound.noJavascript=If you wish to try again select the back button on your browser, if not select "Exit" to leave the service.
 onHandlerNotFound.start.button=Start
 
+#errors
 error.title=An unrecoverable error has occurred
 error.button=Start again
+error.validTraderBusinessName = Must be between two and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
+error.email = Enter a valid email address up to 255 characters
+error.dropDownInvalid = Please select a value from the drop down list.
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -94,12 +98,47 @@ mandatory = Fields not labelled (optional) are mandatory
 acquire_beforeyoustart.title = Buy a vehicle from the motor trade
 acquire_beforeyoustart.p1 = Before you start:
 acquire_beforeyoustart.listitem1 = You will need the document reference number from the latest vehicle registration certificate (V5C).
-
 acquire_beforeyoustart.listitem2 = If you need to change any vehicle details on the V5C e.g. tax class, you should not use this service. You will need to complete the V5C and tax the vehicle at the Post Office.
-
 acquire_beforeyoustart.listitem3.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
 acquire_beforeyoustart.listitem3.link = Apply to retain a vehicle registration number (V317)
 acquire_beforeyoustart.listitem3.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-
 acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
 acquire_beforeyoustart.button = Start now
+
+
+#page 2 - Setup Trade Details
+acquire_setuptradedetails.title = Provide trader details
+acquire_setuptradedetails.name = Sell a vehicle into the motor trade
+acquire_setuptradedetails.p1 = Set-up trade details
+acquire_setuptradedetails.tradernamelabel = Trader name
+acquire_setuptradedetails.traderpostcodelabel = Postcode
+acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
+acquire_setuptradedetails.traderemaillabel = Trader email address
+acquire_setuptradedetails.traderemail.hint = e.g. example@example.co.uk
+acquire_setuptradedetails.button = Find address
+traderName = Trader name
+traderPostcode = Postcode
+traderEmail = Trader email address
+
+#page 3 - Business Choose Your Address
+acquire_businessChooseYourAddress_title = Select trader address
+acquire_businessChooseYourAddress_legend = Set up trade details
+acquire_businessChooseYourAddress_businessName_label = Trader name
+acquire_businessChooseYourAddress_businessName = {0}
+acquire_businessChooseYourAddress_businessEmail_label = Trader email address
+acquire_businessChooseYourAddress_businessEmail = {0}
+acquire_businessChooseYourAddress_postcode_label = Postcode
+acquire_businessChooseYourAddress_businessAddress_label = Trader address
+acquire_businessChooseYourAddress_addressSelect = Choose your address
+acquire_businessChooseYourAddress_addressSelect_label = Choose your address
+acquire_businessChooseYourAddress.backbutton = Back
+acquire_businessChooseYourAddress.submitbutton = Next
+acquire_businessChooseYourAddress.manualAddressEntry = My address is not in the list
+acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
+acquire_businessChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
+acquire_businessChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+
+acquire_uprnnotfound.title = Error confirming post code
+acquire_uprnnotfound.p1 = An error has occurred validating your postcode. Please re-enter or enter your details manually
+acquire_uprnnotfound.manualaddressbutton = Set-up trade details
+acquire_uprnnotfound.setuptradedetailsbutton = Manually enter address
