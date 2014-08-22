@@ -18,8 +18,13 @@ GET     /                                           @controllers.Application.ind
 GET     /vrm-acquire/before-you-start               @controllers.BeforeYouStart.present
 GET     /vrm-acquire                                @controllers.BeforeYouStart.present
 
-#page 2 - setup-trade-details
+#page 2 - Setup Trade Details
 GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.present
 POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
 
+#page 3 - Business Choose Your Address
+GET     /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.present
+POST    /vrm-acquire/business-choose-your-address  @controllers.BusinessChooseYourAddress.submit
+
 GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present

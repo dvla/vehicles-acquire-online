@@ -4,7 +4,7 @@ import helpers.UnitSpec
 import play.api.test.{WithApplication, FakeRequest}
 import play.api.test.Helpers._
 import controllers.BeforeYouStart
-import controllers.acquire.Common._
+import controllers.acquire.Common.PrototypeHtml
 import pages.acquire.SetupTradeDetailsPage
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config

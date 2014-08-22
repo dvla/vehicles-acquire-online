@@ -35,4 +35,11 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
     traderEmail enter traderBusinessEmail
     click on lookup
   }
+
+  def submitPostcodeWithoutAddresses(implicit driver: WebDriver) = {
+    go to SetupTradeDetailsPage
+    traderName enter TraderBusinessNameValid
+    traderPostcode enter PostcodeWithoutAddresses
+    click on lookup
+  }
 }

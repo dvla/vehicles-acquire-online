@@ -21,7 +21,6 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
     Ok(views.html.acquire.setup_trade_details(form.fill()))
   }
 
-
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
@@ -30,7 +29,7 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
           replaceError(TraderPostcodeId, FormError(key = TraderPostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)).distinctErrors
         BadRequest(views.html.acquire.setup_trade_details(formWithReplacedErrors))
       },
-      validForm => Ok(views.html.acquire.success()) //ToDo replace with redirect to next controller when implemented
+      validForm => Redirect(routes.BusinessChooseYourAddress.present()).withCookie(validForm)
     )
   }
 }

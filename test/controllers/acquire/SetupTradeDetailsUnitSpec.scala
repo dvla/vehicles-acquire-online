@@ -1,16 +1,25 @@
 package controllers.acquire
 
-import helpers.UnitSpec
-import controllers.SetUpTradeDetails
-import play.api.test.{WithApplication, FakeRequest}
-import play.api.test.Helpers._
-import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
+import play.api.test.WithApplication
+import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
 import controllers.acquire.Common._
+import pages.acquire.BusinessChooseYourAddressPage
+import helpers.acquire.CookieFactoryForUnitSpecs
+import controllers.SetUpTradeDetails
+import helpers.JsonUtils.deserializeJsonToModel
+import helpers.common.CookieHelper
+import helpers.UnitSpec
+import CookieHelper.fetchCookiesFromHeaders
+import org.mockito.Mockito.when
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import org.mockito.Mockito._
-import viewmodels.SetupTradeDetailsViewModel.Form._
+import viewmodels.SetupTradeDetailsViewModel
+import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderNameMaxLength, TraderPostcodeId, TraderEmailId}
+
+import scala.Some
+
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {
 
@@ -55,24 +64,25 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
   }
 
     "submit" should {
-//      "redirect to next page when the form is completed successfully" in new WithApplication { // ToDo uncomment when next controller is implemented
-//        val request = buildCorrectlyPopulatedRequest()
-//        val result = setUpTradeDetails.submit(request)
-//        whenReady(result) {
-//          r =>
-//            r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
-//            val cookies = fetchCookiesFromHeaders(r)
-//            val cookieName = "setupTraderDetails"
-//            cookies.find(_.name == cookieName) match {
-//              case Some(cookie) =>
-//                val json = cookie.value
-//                val model = deserializeJsonToModel[SetupTradeDetailsViewModel](json)
-//                model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
-//                model.traderPostcode should equal(PostcodeValid.toUpperCase)
-//              case None => fail(s"$cookieName cookie not found")
-//            }
-//        }
-//      }
+      "redirect to next page when the form is completed successfully" in new WithApplication {
+        val request = buildCorrectlyPopulatedRequest()
+        val result = setUpTradeDetails.submit(request)
+        whenReady(result) {
+          r =>
+            println(r)
+            r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
+            val cookies = fetchCookiesFromHeaders(r)
+            val cookieName = "setupTraderDetails"
+            cookies.find(_.name == cookieName) match {
+              case Some(cookie) =>
+                val json = cookie.value
+                val model = deserializeJsonToModel[SetupTradeDetailsViewModel](json)
+                model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
+                model.traderPostcode should equal(PostcodeValid.toUpperCase)
+              case None => fail(s"$cookieName cookie not found")
+            }
+        }
+      }
 
       "return a bad request if no details are entered" in new WithApplication {
         val request = buildCorrectlyPopulatedRequest(dealerName = "", dealerPostcode = "")
@@ -100,10 +110,12 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
     }
 
   private def buildCorrectlyPopulatedRequest(dealerName: String = TraderBusinessNameValid,
-                                             dealerPostcode: String = PostcodeValid) = {
+                                             dealerPostcode: String = PostcodeValid,
+                                             dealerEmail: String = TraderEmailValid) = {
     FakeRequest().withFormUrlEncodedBody(
       TraderNameId -> dealerName,
-      TraderPostcodeId -> dealerPostcode)
+      TraderPostcodeId -> dealerPostcode,
+      TraderEmailId -> dealerEmail)
   }
 
   private val setUpTradeDetails = {
