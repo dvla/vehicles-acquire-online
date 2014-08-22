@@ -21,7 +21,7 @@ publishTo <<= version { v: String =>
 
 name := "vehicles-acquire-online"
 
-version := "1.0-SNAPSHOT"
+version := "1.0"
 
 organization := "dvla"
 
@@ -36,7 +36,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala, SassPlugin, SbtW
 libraryDependencies ++= Seq(
   cache,
   filters,
-  "dvla" %% "vehicles-presentation-common" % "2.0-SNAPSHOT" withSources() withJavadoc(),
+  "dvla" %% "vehicles-presentation-common" % "2.0" withSources() withJavadoc(),
   "com.google.guava" % "guava" % "15.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "org.seleniumhq.selenium" % "selenium-java" % "2.42.2" % "test" withSources() withJavadoc(),
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),
