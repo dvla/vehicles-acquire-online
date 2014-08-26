@@ -30,6 +30,8 @@ object Sandbox extends Plugin {
   final val VersionGatlingApp = "2.0.0-M4-NAP"
 
   final val HttpsPort = 19443
+  final val OsAddressLookupPort = 19801
+  final val LegacyServicesStubsPort = 19086
 
   val secretProperty = "DECRYPT_PASSWORD"
   val secretProperty2 = "GIT_SECRET_PASSPHRASE"
@@ -54,8 +56,8 @@ object Sandbox extends Plugin {
     ScopeFilter(inProjects(LocalProject(name)), inConfigurations(Runtime))
   )
 
-//  lazy val (osAddressLookup, scopeOsAddressLookup) =
-//    sandProject("os-address-lookup","dvla" %% "os-address-lookup" % VersionOsAddressLookup)
+  lazy val (osAddressLookup, scopeOsAddressLookup) =
+    sandProject("os-address-lookup","dvla" %% "os-address-lookup" % VersionOsAddressLookup)
 //  lazy val (vehiclesLookup, scopeVehiclesLookup) =
 //    sandProject("vehicles-lookup", "dvla" %% "vehicles-lookup" % VersionVehiclesLookup)
 //  lazy val (vehicleAndKeeperLookup, scopeVehicleAndKeeperLookup) =
@@ -64,13 +66,14 @@ object Sandbox extends Plugin {
 //    sandProject("vrm-retention-eligibility", "dvla" %% "vrm-retention-eligibility" % VersionVrmRetentionEligibility)
 //  lazy val (vrmRetentionRetain, scopeVrmRetentionRetain) =
 //    sandProject("vrm-retention-retain", "dvla" %% "vrm-retention-retain" % VersionVrmRetentionRetain)
-//  lazy val (legacyStubs, scopeLegacyStubs) = sandProject(
-//    name = "legacy-stubs",
-//    "dvla-legacy-stub-services" % "legacy-stub-services-service" % VersionLegacyStubs,
-//    "org.eclipse.jetty" % "jetty-server" % VersionJetty,
-//    "org.eclipse.jetty" % "jetty-servlet" % VersionJetty,
-//    "org.springframework" % "spring-web" % VersionSpringWeb
-//  )
+  lazy val (legacyStubs, scopeLegacyStubs) = sandProject(
+    name = "legacy-stubs",
+    "dvla-legacy-stub-services" % "legacy-stub-services-service" % VersionLegacyStubs,
+    "org.eclipse.jetty" % "jetty-server" % VersionJetty,
+    "org.eclipse.jetty" % "jetty-servlet" % VersionJetty,
+    "org.springframework" % "spring-web" % VersionSpringWeb
+  )
+
   lazy val (gatlingTests, scopeGatlingTests) = sandProject (
     name = "gatling",
     Seq("Central Maven" at "http://central.maven.org/maven2"),
@@ -79,6 +82,7 @@ object Sandbox extends Plugin {
   )
 
 //  lazy val sandboxedProjects = Seq(osAddressLookup, vehiclesLookup, vehicleAndKeeperLookup, legacyStubs)
+  lazy val sandboxedProjects = Seq(osAddressLookup, legacyStubs)
 
   lazy val vehiclesOnline = ScopeFilter(inProjects(ThisProject), inConfigurations(Runtime))
 
@@ -90,10 +94,30 @@ object Sandbox extends Plugin {
     val secretRepoFolder = new File(targetFolder, "secretRepo")
     updateSecretVehiclesOnline(secretRepoFolder)
 
+    runProject(
+      fullClasspath.all(scopeOsAddressLookup).value.flatten,
+      Some(ConfigDetails(
+        secretRepoFolder,
+        "ms/dev/os-address-lookup.conf.enc",
+        Some(ConfigOutput(
+          new File(classDirectory.all(scopeOsAddressLookup).value.head, s"${osAddressLookup.id}.conf"),
+          setServicePort(OsAddressLookupPort)
+        ))
+      ))
+    )
+
+    runProject(
+      fullClasspath.all(scopeLegacyStubs).value.flatten,
+      None,
+      runJavaMain("service.LegacyServicesRunner", Array(LegacyServicesStubsPort.toString))
+    )
   }
 
   lazy val sandbox = taskKey[Unit]("Runs the whole sandbox for manual testing including microservices, webapp and legacy stubs'")
   lazy val sandboxTask = sandbox <<= (runMicroServices, (run in Runtime).toTask("")) { (body, stop) =>
+    System.setProperty("ordnancesurvey.baseUrl", s"http://localhost:$OsAddressLookupPort")
+//    System.setProperty("vehicleLookup.baseUrl", s"http://localhost:$VehicleLookupPort")
+//    System.setProperty("disposeVehicle.baseUrl", s"http://localhost:$VehicleDisposePort")
     body.flatMap(t => stop)
   }
 

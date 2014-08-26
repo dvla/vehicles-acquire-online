@@ -1,5 +1,7 @@
 package composition
 
+import composition.DevModule._
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebServiceImpl, VehicleLookupWebService}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import com.google.inject.name.Names
 import com.tzavellas.sse.guice.ScalaModule
@@ -34,5 +36,8 @@ class TestModule() extends ScalaModule with MockitoSugar {
       responseOfUprnWebService = FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
     )
     bind[AddressLookupWebService].toInstance(fakeWebServiceImpl)
+
+    bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
+    bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
   }
 }

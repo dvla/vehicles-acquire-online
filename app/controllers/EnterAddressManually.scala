@@ -5,7 +5,7 @@ import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller, Request}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichCookies}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
 import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -51,17 +51,9 @@ final class EnterAddressManually @Inject()()
             )
 
             // Redirect to the next screen in the workflow
-//            Redirect(routes.VehicleLookup.present()).
-//              withCookie(validForm).
-//              withCookie(traderDetailsModel)
-              val traderBusinessName = setupTradeDetails.traderBusinessName
-              val traderPostcode = setupTradeDetails.traderPostcode
-              val traderEmail = setupTradeDetails.traderEmail
-              val msg = s"Data entered so far:\ntraderBusinessName = $traderBusinessName" +
-                s"\ntraderPostcode = $traderPostcode\ntraderEmail = $traderEmail" +
-                s"\naddress = $validForm"
-              Ok(msg)
-
+            Redirect(routes.VehicleLookup.present()).
+              withCookie(validForm).
+              withCookie(traderDetailsModel)
           case None =>
             Logger.debug("Failed to find dealer name in cache on submit, redirecting")
             Redirect(routes.SetUpTradeDetails.present())

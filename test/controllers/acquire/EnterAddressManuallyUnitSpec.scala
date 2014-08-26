@@ -7,7 +7,7 @@ import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.{UnitSpec, WithApplication}
 import org.mockito.Mockito.when
-import pages.acquire.{SetupTradeDetailsPage}
+import pages.acquire.SetupTradeDetailsPage
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
@@ -19,7 +19,6 @@ import utils.helpers.Config
 import views.acquire.EnterAddressManually.PostcodeId
 import viewmodels.EnterAddressManuallyViewModel.Form.AddressAndPostcodeId
 import TraderDetailsModel.TraderDetailsCacheKey
-import viewmodels.EnterAddressManuallyViewModel
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid}
 
 import scala.concurrent.Future

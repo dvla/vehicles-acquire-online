@@ -25,12 +25,17 @@ POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetai
 #page 3 - Business Choose Your Address
 GET     /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.present
 POST    /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.submit
-GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
 
-#page 4 [optional] - enter address manually
+#page 3 [optional] - enter address manually
 GET     /vrm-acquire/enter-address-manually         @controllers.EnterAddressManually.present
 POST    /vrm-acquire/enter-address-manually         @controllers.EnterAddressManually.submit
 
+#page 4 - Enter vehicle details
+GET     /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.present
+POST    /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.submit
+GET     /vrm-acquire/vehicle-lookup-back            @controllers.VehicleLookup.back
 
-GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
+
 GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present
+GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
