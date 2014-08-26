@@ -5,11 +5,11 @@ import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
 import helpers.disposal_of_vehicle.ValidVRMFormat.allValidVrmFormats
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.{BruteForcePreventionConfig, BruteForcePreventionWebService, BruteForcePreventionServiceImpl, BruteForcePreventionService}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleLookupWebService, VehicleLookupServiceImpl, VehicleDetailsResponseDto, VehicleDetailsRequestDto}
-import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId}
-import org.mockito.Matchers.{any}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.webserviceclients.vehiclelookup.{VehicleLookupWebService, VehicleLookupServiceImpl, VehicleDetailsResponseDto, VehicleDetailsRequestDto}
+import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
+import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import play.api.libs.json.{JsValue, Json}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -20,6 +20,7 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberVal
 import webserviceclients.fakes.FakeVehicleLookupWebService.vehicleDetailsResponseSuccess
 import webserviceclients.fakes.{FakeResponse}
 import utils.helpers.Config
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
 final class VehicleLookupFormSpec extends UnitSpec {
 
@@ -119,11 +120,14 @@ final class VehicleLookupFormSpec extends UnitSpec {
 
   private def formWithValidDefaults(referenceNumber: String = ReferenceNumberValid,
                                     registrationNumber: String = RegistrationNumberValid,
-                                    consent: String = ConsentValid) = {
+                                    vehicleSoldTo: String = VehicleSoldTo_Private,
+                                    consent: String = ConsentValid
+                                    ) = {
     vehicleLookupResponseGenerator(vehicleDetailsResponseSuccess).form.bind(
       Map(
         DocumentReferenceNumberId -> referenceNumber,
-        VehicleRegistrationNumberId -> registrationNumber
+        VehicleRegistrationNumberId -> registrationNumber,
+        VehicleSoldToId -> vehicleSoldTo
       )
     )
   }
