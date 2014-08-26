@@ -7,7 +7,6 @@ import helpers.webbrowser.TestHarness
 import pages.common.{Accessibility, ErrorPanel}
 import pages.acquire.SetupTradeDetailsPage._
 import pages.acquire.SetupTradeDetailsPage
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import viewmodels.SetupTradeDetailsViewModel
 
 final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {

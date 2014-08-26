@@ -5,17 +5,12 @@ import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-//import viewmodels.EnterAddressManuallyViewModel
-//import EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 import helpers.webbrowser.TestHarness
 import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire._
 import pages.acquire.BusinessChooseYourAddressPage.{back, happyPath, manualAddress, sadPath}
-//import pages.acquire.EnterAddressManuallyPage
-//import pages.acquire.SetupTradeDetailsPage
-//import pages.acquire.VehicleLookupPage
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 
@@ -81,7 +76,7 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
 
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
-    //  ToDo uncomment below tests when manualAddress is implemented
+    //  ToDo uncomment below tests when EnterAddressManually is implemented
     //    "manualAddress button that is displayed when addresses have been found" should {
     //      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
     //        go to BeforeYouStartPage

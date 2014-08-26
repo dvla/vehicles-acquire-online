@@ -40,5 +40,4 @@ class TestModule() extends ScalaModule with MockitoSugar {
     bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
     bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
   }
-
 }

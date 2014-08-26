@@ -26,6 +26,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import utils.helpers.Config
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import helpers.acquire.CookieFactoryForUnitSpecs
+import pages.common.UprnNotFoundPage
 
 final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   "present" should {
@@ -82,6 +83,16 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
           r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
+//    ToDo uncomment when VehcileLookup is implemented
+//    "redirect to VehicleLookup page after a valid submit" in new WithApplication { /
+//      val request = buildCorrectlyPopulatedRequest().
+//        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+//      val result = businessChooseYourAddressWithUprnFound.submit(request)
+//      whenReady(result) {
+//        r =>
+//          r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
+//      }
+//    }
 
     "return a bad request if not address selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(traderUprn = "").
@@ -108,15 +119,14 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-//    "redirect to UprnNotFound page when submit with but uprn not found by the webservice" in new WithApplication {
-// ToDo uncomment when UprnNotFound is implemented
-//      val request = buildCorrectlyPopulatedRequest().
-//        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
-//      val result = businessChooseYourAddressWithUprnNotFound.submit(request)
-//      whenReady(result) { r =>
-//        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
-//      }
-//    }
+    "redirect to UprnNotFound page when submit with but uprn not found by the webservice" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressWithUprnNotFound.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
+      }
+    }
 
     "write cookie when uprn found" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().

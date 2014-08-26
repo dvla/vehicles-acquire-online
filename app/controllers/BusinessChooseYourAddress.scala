@@ -90,7 +90,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
           //discardingCookie(EnterAddressManuallyCacheKey).
           withCookie(model).
           withCookie(traderDetailsModel)
-      case None => Ok("UPRN Error")
+      case None => Redirect(routes.UprnNotFound.present())
     }
   }
 }
