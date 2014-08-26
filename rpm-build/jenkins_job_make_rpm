@@ -35,8 +35,8 @@ mkdir -p workdir/etc/monit.d
 # copy objects to workdir directory
 (
   cd workdir/$RPM_PREFIX/
-  unzip $WORKSPACE/target/universal/vehicles-acquire-online-1.0-SNAPSHOT.zip
-  mv vehicles-acquire-online-1.0-SNAPSHOT vehicles-acquire-online
+  unzip $WORKSPACE/target/universal/vehicles-acquire-online-1.1-SNAPSHOT.zip
+  mv vehicles-acquire-online-1.1-SNAPSHOT vehicles-acquire-online
   cd -
 )
 
