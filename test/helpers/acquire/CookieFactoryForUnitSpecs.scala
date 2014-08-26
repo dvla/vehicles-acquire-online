@@ -1,20 +1,22 @@
 package helpers.acquire
 
 import composition.TestComposition
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.{TraderDetailsModel, AddressModel}
+import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
+import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import viewmodels._
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
-import TraderDetailsModel.TraderDetailsCacheKey
+import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
 import webserviceclients.fakes.FakeVehicleLookupWebService._
 import webserviceclients.fakes.FakeAddressLookupService._
-
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -51,22 +53,22 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     val value = BusinessChooseYourAddressViewModel(uprnSelected = traderUprnValid.toString)
     createCookie(key, value)
   }
-//
-//  def enterAddressManually(): Cookie = {
-//    val key = EnterAddressManuallyCacheKey
-//    val value = EnterAddressManuallyViewModel(
-//      addressAndPostcodeModel = AddressAndPostcodeViewModel(
-//        addressLinesModel = AddressLinesViewModel(
-//          buildingNameOrNumber = BuildingNameOrNumberValid,
-//            line2 = Some(Line2Valid),
-//            line3 = Some(Line3Valid),
-//            postTown = PostTownValid
-//        )
-//      )
-//    )
-//    createCookie(key, value)
-//  }
-//
+
+  def enterAddressManually(): Cookie = {
+    val key = EnterAddressManuallyCacheKey
+    val value = EnterAddressManuallyViewModel(
+      addressAndPostcodeModel = AddressAndPostcodeViewModel(
+        addressLinesModel = AddressLinesViewModel(
+          buildingNameOrNumber = BuildingNameOrNumberValid,
+            line2 = Some(Line2Valid),
+            line3 = Some(Line3Valid),
+            postTown = PostTownValid
+        )
+      )
+    )
+    createCookie(key, value)
+  }
+
   def traderDetailsModel(uprn: Option[Long] = None,
                          buildingNameOrNumber: String = BuildingNameOrNumberValid,
                          line2: String = Line2Valid,
