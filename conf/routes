@@ -27,5 +27,10 @@ GET     /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseY
 POST    /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.submit
 GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
 
+#page 4 [optional] - enter address manually
+GET     /vrm-acquire/enter-address-manually         @controllers.EnterAddressManually.present
+POST    /vrm-acquire/enter-address-manually         @controllers.EnterAddressManually.submit
+
+
 GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
 GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present

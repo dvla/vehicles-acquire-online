@@ -8,13 +8,17 @@ import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel, DayMonthYear}
-import viewmodels.{BusinessChooseYourAddressViewModel, HelpCacheKey, SeenCookieMessageCacheKey, SetupTradeDetailsViewModel}
+import viewmodels.{BusinessChooseYourAddressViewModel, EnterAddressManuallyViewModel, HelpCacheKey, SeenCookieMessageCacheKey, SetupTradeDetailsViewModel}
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
+//import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid}
+import webserviceclients.fakes.FakeAddressLookupService.{PostTownValid, PostcodeValid, TraderBusinessNameValid}
+
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -51,21 +55,21 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     val value = BusinessChooseYourAddressViewModel(uprnSelected = traderUprnValid.toString)
     createCookie(key, value)
   }
-//
-//  def enterAddressManually(): Cookie = {
-//    val key = EnterAddressManuallyCacheKey
-//    val value = EnterAddressManuallyViewModel(
-//      addressAndPostcodeModel = AddressAndPostcodeViewModel(
-//        addressLinesModel = AddressLinesViewModel(
-//          buildingNameOrNumber = BuildingNameOrNumberValid,
-//            line2 = Some(Line2Valid),
-//            line3 = Some(Line3Valid),
-//            postTown = PostTownValid
-//        )
-//      )
-//    )
-//    createCookie(key, value)
-//  }
+
+  def enterAddressManually(): Cookie = {
+    val key = EnterAddressManuallyCacheKey
+    val value = EnterAddressManuallyViewModel(
+      addressAndPostcodeModel = AddressAndPostcodeViewModel(
+        addressLinesModel = AddressLinesViewModel(
+          buildingNameOrNumber = BuildingNameOrNumberValid,
+            line2 = Some(Line2Valid),
+            line3 = Some(Line3Valid),
+            postTown = PostTownValid
+        )
+      )
+    )
+    createCookie(key, value)
+  }
 //
 //  def traderDetailsModel(uprn: Option[Long] = None,
 //                         buildingNameOrNumber: String = BuildingNameOrNumberValid,
