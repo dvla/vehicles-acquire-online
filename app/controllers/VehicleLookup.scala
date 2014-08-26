@@ -1,21 +1,16 @@
 package controllers
 
 import com.google.inject.Inject
-import play.api.Logger
 import play.api.data.{Form, FormError}
-import play.api.mvc.{Action, AnyContent, Controller, Request, Result}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats
+import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import viewmodels.SetupTradeDetailsViewModel.Form._
 
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm}
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel, BruteForcePreventionModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleLookupService, VehicleDetailsResponseDto, VehicleDetailsRequestDto, VehicleDetailsDto}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleLookupService}
 import utils.helpers.Config
-import viewmodels._ //DisposeFormViewModel.{DisposeOccurredCacheKey, PreventGoingToDisposePageCacheKey, SurveyRequestTriggerDateCacheKey}
-import viewmodels.{VehicleLookupViewModel, AllCacheKeys, VehicleLookupFormViewModel}
-import viewmodels.VehicleLookupFormViewModel.VehicleLookupResponseCodeCacheKey
+import viewmodels.{VehicleLookupViewModel, VehicleLookupFormViewModel}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -69,12 +64,11 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
                   traderDetails.traderName,
                   traderDetails.traderAddress.address
               )))
-            case None => Redirect(routes.NotImplemented.present()) //ToDo replace with redirect to next controller when implemented
+            case None => BadRequest("Broken") //ToDo replace with redirect to next controller when implemented
           }
         },
       validForm => {
-        Future(Redirect(routes.NotImplemented.present()))
-        //Future(Ok(views.html.acquire.not_implemented)) //ToDo replace with redirect to next controller when implemented
+        Future(Ok("Ok")) //ToDo replace with redirect to next controller when implemented
       }
     )
   }
@@ -83,7 +77,7 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
     request.cookies.getModel[TraderDetailsModel] match {
       case Some(dealerDetails) =>
         if (dealerDetails.traderAddress.uprn.isDefined) Redirect(routes.BusinessChooseYourAddress.present())
-        else Redirect(routes.NotImplemented.present()) // TODO : Redirect to enter address manually
+        else Ok("Ok") // ToDo : Redirect to enter address manually
       case None => Redirect(routes.SetUpTradeDetails.present())
     }
   }
