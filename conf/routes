@@ -24,12 +24,11 @@ POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetai
 
 #page 3 - Business Choose Your Address
 GET     /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.present
-POST    /vrm-acquire/business-choose-your-address  @controllers.BusinessChooseYourAddress.submit
+POST    /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.submit
 
 #page 4 - Enter vehicle details
 GET     /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.present
 POST    /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.submit
-GET     /vrm-acquire/vehicle-lookup/exit            @controllers.VehicleLookup.exit
 GET     /vrm-acquire/vehicle-lookup-back            @controllers.VehicleLookup.back
 
 GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present

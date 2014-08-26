@@ -1,20 +1,20 @@
 package helpers.acquire
 
 import composition.TestComposition
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel, AddressModel, BruteForcePreventionModel}
-import BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
-import org.joda.time.DateTime
+import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
-import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel, DayMonthYear}
-import viewmodels.{BusinessChooseYourAddressViewModel, HelpCacheKey, SeenCookieMessageCacheKey, SetupTradeDetailsViewModel}
+import viewmodels._
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
-import VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
+import webserviceclients.fakes.FakeVehicleLookupWebService._
+import webserviceclients.fakes.FakeAddressLookupService._
+
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -67,22 +67,22 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 //    createCookie(key, value)
 //  }
 //
-//  def traderDetailsModel(uprn: Option[Long] = None,
-//                         buildingNameOrNumber: String = BuildingNameOrNumberValid,
-//                         line2: String = Line2Valid,
-//                         line3: String = Line3Valid,
-//                         postTown: String = PostTownValid,
-//                         traderPostcode: String = PostcodeValid): Cookie = {
-//    val key = TraderDetailsCacheKey
-//    val value = TraderDetailsModel(
-//      traderName = TraderBusinessNameValid,
-//      traderAddress = AddressModel(
-//        uprn = uprn,
-//        address = Seq(buildingNameOrNumber, line2, line3, postTown, traderPostcode)
-//      )
-//    )
-//    createCookie(key, value)
-//  }
+  def traderDetailsModel(uprn: Option[Long] = None,
+                         buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                         line2: String = Line2Valid,
+                         line3: String = Line3Valid,
+                         postTown: String = PostTownValid,
+                         traderPostcode: String = PostcodeValid): Cookie = {
+    val key = TraderDetailsCacheKey
+    val value = TraderDetailsModel(
+      traderName = TraderBusinessNameValid,
+      traderAddress = AddressModel(
+        uprn = uprn,
+        address = Seq(buildingNameOrNumber, line2, line3, postTown, traderPostcode)
+      )
+    )
+    createCookie(key, value)
+  }
 //
 //  def traderDetailsModelBuildingNameOrNumber(uprn: Option[Long] = None,
 //                                             buildingNameOrNumber: String = BuildingNameOrNumberValid,
@@ -141,15 +141,15 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 //    createCookie(key, value)
 //  }
 //
-//  def vehicleLookupFormModel(referenceNumber: String = ReferenceNumberValid,
-//                             registrationNumber: String = RegistrationNumberValid): Cookie = {
-//    val key = VehicleLookupFormModelCacheKey
-//    val value = VehicleLookupFormViewModel(
-//      referenceNumber = referenceNumber,
-//      registrationNumber = registrationNumber
-//    )
-//    createCookie(key, value)
-//  }
+  def vehicleLookupFormModel(referenceNumber: String = ReferenceNumberValid,
+                             registrationNumber: String = RegistrationNumberValid): Cookie = {
+    val key = VehicleLookupFormModelCacheKey
+    val value = VehicleLookupFormViewModel(
+      referenceNumber = referenceNumber,
+      registrationNumber = registrationNumber
+    )
+    createCookie(key, value)
+  }
 //
 //  def vehicleDetailsModel(registrationNumber: String = RegistrationNumberValid,
 //                          vehicleMake: String = FakeVehicleLookupWebService.VehicleMakeValid,
@@ -181,9 +181,9 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 //    createCookie(key, value)
 //  }
 //
-//  def trackingIdModel(value: String = TrackingIdValue): Cookie = {
-//    createCookie(ClientSideSessionFactory.TrackingIdCookieName, value)
-//  }
+  def trackingIdModel(value: String = TrackingIdValue): Cookie = {
+    createCookie(ClientSideSessionFactory.TrackingIdCookieName, value)
+  }
 //
 //  def disposeFormRegistrationNumber(registrationNumber: String = RegistrationNumberValid): Cookie =
 //    createCookie(DisposeFormRegistrationNumberCacheKey, registrationNumber)

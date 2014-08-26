@@ -86,7 +86,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     lookedUpAddress.map {
       case Some(addressViewModel) =>
         val traderDetailsModel = TraderDetailsModel(traderName = traderName, traderAddress = addressViewModel)
-        Redirect(routes.NotImplemented.present()). //ToDo replace redirect when next VehicleLookup is implemented
+        Redirect(routes.VehicleLookup.present()). //ToDo replace redirect when next VehicleLookup is implemented
           //discardingCookie(EnterAddressManuallyCacheKey).
           withCookie(model).
           withCookie(traderDetailsModel)
