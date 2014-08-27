@@ -20,7 +20,10 @@ RPM_TARGETDIR="$WORKSPACE/target/" #grab the jenkins WORKSPACE working dir
 MONIT_FILES_DIR="rpm-build/monit/"
 UPSTART_FILES_DIR="rpm-build/upstart/"
 DEPENDS="monit"
-VERSION=`sbt version | tail -1 | awk {'print $2'}`
+
+# Get the version of the binary from sbt and strip color information so we are just left with a version
+VERSION=`sbt version | tail -1 | awk {'print $2'} | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"`
+echo Version = $VERSION
 ZIP_FILENAME=vehicles-acquire-online-${VERSION}.zip
 
 echo "*********************************"
@@ -37,7 +40,6 @@ mkdir -p workdir/etc/init
 mkdir -p workdir/etc/monit.d
 
 # copy objects to workdir directory
-
 cd workdir/$RPM_PREFIX/
 unzip $WORKSPACE/target/universal/$ZIP_FILENAME
 mv vehicles-acquire-online-$VERSION vehicles-acquire-online
