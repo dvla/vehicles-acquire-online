@@ -6,8 +6,9 @@
 
 set -o errexit
 
-test -z $WORKSPACE && export WORKSPACE=$PWD
-echo "Workspace = $WORKSPACE"
+test -z $WORKSPACE && echo "WORKSPACE is not set so defaulting it to current directory" && export WORKSPACE=$PWD
+echo "WORKSPACE = $WORKSPACE"
+
 RPM_VERSION="$(date +'%Y%m%d%H%M%S')"
 RPM_NAME="vehicles-acquire-online"
 RPM_OWNER="jenkins@dvla"
@@ -23,7 +24,7 @@ DEPENDS="monit"
 
 # Get the version of the binary from sbt and strip color information so we are just left with a version
 VERSION=`sbt version | tail -1 | awk {'print $2'} | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"`
-echo Version = $VERSION
+echo VERSION = $VERSION
 ZIP_FILENAME=vehicles-acquire-online-${VERSION}.zip
 
 echo "*********************************"
