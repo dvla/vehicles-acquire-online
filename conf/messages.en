@@ -105,7 +105,6 @@ acquire_beforeyoustart.listitem3.2 =, you will need to send the completed applic
 acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
 acquire_beforeyoustart.button = Start now
 
-
 #page2 - Setup trade details
 acquire_setuptradedetails.title = Provide trader details
 acquire_setuptradedetails.name = Sell a vehicle into the motor trade
@@ -155,6 +154,10 @@ acquire_vehiclelookup.button2 = Edit
 acquire_vehiclelookup.exitbutton = Finish
 acquire_vehiclelookup.tradernamelabel = Trader name
 acquire_vehiclelookup.traderaddresslabel = Trader address
+
+acquire_vehiclelookup.vehiclesoldto.label = Is the vehicle being sold to a private individual or a business?
+acquire_vehiclelookup.vehiclesoldto.private = Private individual
+acquire_vehiclelookup.vehiclesoldto.business = Business
 
 vehicleRegistrationNumber = Vehicle registration number
 documentReferenceNumber = Document reference number

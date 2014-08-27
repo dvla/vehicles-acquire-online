@@ -12,11 +12,10 @@ import pages.acquire.BeforeYouStartPage
 import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
-import pages.acquire.VehicleLookupPage.{happyPath, back, exit}
+import pages.acquire.VehicleLookupPage.{happyPath, back}
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import viewmodels.AllCacheKeys
-import webserviceclients.fakes.FakeAddressLookupService.{addressWithUprn, addressWithoutUprn}
+import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 
 final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
@@ -76,7 +75,8 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
       happyPath()
 
-      page.title should equal("Not implemented")
+      // ToDo : Add a page title assertion when the next page is implemented
+      // page.title should equal("Not implemented")
     }
 
     "display one validation error message when no referenceNumber is entered" taggedAs UiTag in new WebBrowser {
@@ -144,20 +144,20 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
   }
 
   // TODO: Reinstate this test and resolve the back behaviour issue
-//  "back" should {
-//    "display previous page when back link is clicked with uprn present" taggedAs UiTag in new WebBrowser {
-//      go to BeforeYouStartPage
-//      CookieFactoryForUISpecs.
-//        setupTradeDetails().
-//        dealerDetails().
-//        businessChooseYourAddress(addressWithUprn.uprn.get)
-//      go to VehicleLookupPage
-//
-//      click on back
-//
-//      page.title should equal(BusinessChooseYourAddressPage.title)
-//    }
-//  }
+  "back" should {
+    "display previous page when back link is clicked with uprn present" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      CookieFactoryForUISpecs.
+        setupTradeDetails().
+        dealerDetails(addressWithUprn)
+
+      go to VehicleLookupPage
+
+      click on back
+
+      page.title should equal(BusinessChooseYourAddressPage.title)
+    }
+  }
 
   private def cacheSetup()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs.

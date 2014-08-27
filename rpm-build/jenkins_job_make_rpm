@@ -4,7 +4,8 @@
 #
 #
 
-echo "workspace $WORKSPACE"
+test -z $WORKSPACE && export WORKSPACE=$PWD
+echo "Workspace = $WORKSPACE"
 RPM_VERSION="$(date +'%Y%m%d%H%M%S')"
 RPM_NAME="vehicles-acquire-online"
 RPM_OWNER="jenkins@dvla"
@@ -17,7 +18,6 @@ RPM_TARGETDIR="$WORKSPACE/target/" #grab the jenkins WORKSPACE working dir
 MONIT_FILES_DIR="rpm-build/monit/"
 UPSTART_FILES_DIR="rpm-build/upstart/"
 DEPENDS="monit"
-test -z WORKSPACE || export WORKSPACE=$PWD
 
 echo *********************************
 echo
@@ -33,12 +33,12 @@ mkdir -p workdir/etc/init
 mkdir -p workdir/etc/monit.d
 
 # copy objects to workdir directory
-(
-  cd workdir/$RPM_PREFIX/
-  unzip $WORKSPACE/target/universal/vehicles-acquire-online-1.0-SNAPSHOT.zip
-  mv vehicles-acquire-online-1.0-SNAPSHOT vehicles-acquire-online
-  cd -
-)
+
+cd workdir/$RPM_PREFIX/
+test -f $WORKSPACE/target/universal/vehicles-acquire-online-1.11-SNAPSHOT.zip || echo "ERROR: zip file not found!!" && exit 1
+unzip $WORKSPACE/target/universal/vehicles-acquire-online-1.1-SNAPSHOT.zip
+mv vehicles-acquire-online-1.1-SNAPSHOT vehicles-acquire-online
+cd -
 
 # add a git log file
 git log > workdir/$RPM_PREFIX/$RPM_NAME/git-log.txt
@@ -65,4 +65,3 @@ fpm -n $RPM_NAME \
   -d $DEPENDS \
   -C workdir \
   -s dir .
-

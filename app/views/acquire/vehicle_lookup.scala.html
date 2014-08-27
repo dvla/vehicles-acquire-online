@@ -4,15 +4,16 @@
   config: utils.helpers.Config
 )
 
-@import views.acquire.VehicleLookup.{BackId, ExitId, SubmitId}
+@import views.acquire.VehicleLookup.{BackId, ExitId, SubmitId, VehicleSoldTo_Private, VehicleSoldTo_Business}
 @import views.html.acquire.main
 @import views.html.helper.form
-@import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId}
+@import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.{DocumentReferenceNumber, VehicleRegistrationNumber}
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.listRadioGroup
 
 @main(
     progress = Some(Messages("acquire_progress_4")),
@@ -47,6 +48,17 @@
                                 (if(config.isHtml5ValidationEnabled) Map('pattern -> DocumentReferenceNumber.Pattern) else Nil)
                         )
 
+                        @listRadioGroup(field = viewModel.form(VehicleSoldToId),
+                            args = Map(
+                                'items -> Seq(
+                                    VehicleSoldTo_Private -> Messages("acquire_vehiclelookup.vehiclesoldto.private"),
+                                    VehicleSoldTo_Business -> Messages("acquire_vehiclelookup.vehiclesoldto.business")
+                                ),
+                                'value -> VehicleSoldTo_Private, // One radio button is checked when user arrives on the page.
+                                '_label -> Messages("acquire_vehiclelookup.vehiclesoldto.label")
+                            )
+                        )
+
                         <div class="img-wrap img-wrap-mobile">
                             <h2>@Messages("acquire_vehiclelookup.img.h2")</h2>
                             <img src="@routes.Assets.at("images/document-reference-number.png")" alt="@Messages("acquire_vehiclelookup.img.alt")" />
@@ -57,7 +69,7 @@
                             <a id="@BackId" href="@controllers.routes.VehicleLookup.back()" class="button-secondary">@Messages("acquire_vehiclelookup.backbutton")</a>
 
 
-                        </div   >
+                        </div>
                     }
                 </div>
             </div>
