@@ -20,14 +20,14 @@ RPM_TARGETDIR="$WORKSPACE/target/" #grab the jenkins WORKSPACE working dir
 MONIT_FILES_DIR="rpm-build/monit/"
 UPSTART_FILES_DIR="rpm-build/upstart/"
 DEPENDS="monit"
-VERSION=sbt version | tail -1 | awk {'print $2'}
+VERSION=`sbt version | tail -1 | awk {'print $2'}`
 ZIP_FILENAME=vehicles-acquire-online-${VERSION}.zip
 
-echo *********************************
-echo
-echo Creating RPM for $FILENAME
-echo
-echo *********************************
+echo "*********************************"
+echo "*"
+echo "* Creating RPM for $ZIP_FILENAME"
+echo "*"
+echo "*********************************"
 
 # this is really ugly, refactor all of this
 # create workdir directories
@@ -52,7 +52,7 @@ cp -r $UPSTART_FILES_DIR/* workdir/etc/init
 
 # package the thine
 test -e $RPM_TARGETDIR || mkdir $RPM_TARGETDIR
-exit 0
+
 fpm -n $RPM_NAME \
   --before-remove="rpm-build/pkg-scripts/stop" \
   --after-install="rpm-build/pkg-scripts/restart" \
