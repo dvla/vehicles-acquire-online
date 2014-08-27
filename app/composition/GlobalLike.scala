@@ -3,7 +3,14 @@ package composition
 import java.io.File
 import java.util.UUID
 import com.typesafe.config.ConfigFactory
-import play.api.{Application, Configuration, GlobalSettings, Logger, Mode}
+import play.api.Play.current
+import play.api.i18n.Lang
+import play.api.mvc.Results.NotFound
+import play.api.mvc.{RequestHeader, Result}
+import play.api.{Application, Configuration, GlobalSettings, Logger, Mode, Play}
+import utils.helpers.Config
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
  * Application configuration is in a hierarchy of files:
@@ -46,4 +53,22 @@ trait GlobalLike extends WithFilters with GlobalSettings with Composition {
     super.onStop(app)
     Logger.info("vehicles-acquire Stopped") // used for operations, do not remove
   }
+
+  // 404 - page not found error http://alvinalexander.com/scala/handling-scala-play-framework-2-404-500-errors
+  override def onHandlerNotFound(request: RequestHeader): Future[Result] = {
+    Future.successful {
+      val playLangCookie = request.cookies.get(Play.langCookieName)
+      val value: String = playLangCookie match {
+        case Some(cookie) => cookie.value
+        case None => "en"
+      }
+      implicit val lang: Lang = Lang(value)
+      implicit val config = injector.getInstance(classOf[Config])
+      Logger.warn(s"Broken link returning http code 404. uri: ${request.uri}")
+      NotFound(views.html.errors.onHandlerNotFound(request))
+    }
+  }
+
+  override def onError(request: RequestHeader, ex: Throwable): Future[Result] =
+    errorStrategy(request, ex)
 }
