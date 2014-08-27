@@ -38,4 +38,8 @@ GET     /vrm-acquire/vehicle-lookup-back            @controllers.VehicleLookup.b
 GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
 
 GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present
+
+GET     /vrm-acquire/error/:exceptionDigest         @controllers.Error.present(exceptionDigest)
+POST    /vrm-acquire/error/:exceptionDigest         @controllers.Error.submit(exceptionDigest)
+
 GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
