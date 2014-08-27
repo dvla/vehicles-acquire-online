@@ -4,6 +4,8 @@
 #
 #
 
+set -o errexit
+
 test -z $WORKSPACE && export WORKSPACE=$PWD
 echo "Workspace = $WORKSPACE"
 RPM_VERSION="$(date +'%Y%m%d%H%M%S')"
@@ -18,10 +20,12 @@ RPM_TARGETDIR="$WORKSPACE/target/" #grab the jenkins WORKSPACE working dir
 MONIT_FILES_DIR="rpm-build/monit/"
 UPSTART_FILES_DIR="rpm-build/upstart/"
 DEPENDS="monit"
+VERSION=sbt version | tail -1 | awk {'print $2'}
+ZIP_FILENAME=vehicles-acquire-online-${VERSION}.zip
 
 echo *********************************
 echo
-echo Creating RPM
+echo Creating RPM for $FILENAME
 echo
 echo *********************************
 
@@ -35,9 +39,8 @@ mkdir -p workdir/etc/monit.d
 # copy objects to workdir directory
 
 cd workdir/$RPM_PREFIX/
-test -f $WORKSPACE/target/universal/vehicles-acquire-online-1.11-SNAPSHOT.zip || echo "ERROR: zip file not found!!" && exit 1
-unzip $WORKSPACE/target/universal/vehicles-acquire-online-1.1-SNAPSHOT.zip
-mv vehicles-acquire-online-1.1-SNAPSHOT vehicles-acquire-online
+unzip $WORKSPACE/target/universal/$ZIP_FILENAME
+mv vehicles-acquire-online-$VERSION vehicles-acquire-online
 cd -
 
 # add a git log file
@@ -49,6 +52,7 @@ cp -r $UPSTART_FILES_DIR/* workdir/etc/init
 
 # package the thine
 test -e $RPM_TARGETDIR || mkdir $RPM_TARGETDIR
+exit 0
 fpm -n $RPM_NAME \
   --before-remove="rpm-build/pkg-scripts/stop" \
   --after-install="rpm-build/pkg-scripts/restart" \
