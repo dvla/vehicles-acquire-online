@@ -16,6 +16,7 @@ import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import viewmodels._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -65,13 +66,13 @@ object CookieFactoryForUISpecs {
 //    this
 //  }
 
-//  def dealerDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
-//    val key = TraderDetailsCacheKey
-//    val value = TraderDetailsModel(traderName = TraderBusinessNameValid, traderAddress = address)
-//    addCookie(key, value)
-//    this
-//  }
-//
+  def dealerDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
+    val key = TraderDetailsCacheKey
+    val value = TraderDetailsModel(traderName = TraderBusinessNameValid, traderAddress = address)
+    addCookie(key, value)
+    this
+  }
+
 //  def bruteForcePreventionViewModel(permitted: Boolean = true,
 //                                    attempts: Int = 0,
 //                                    maxAttempts: Int = MaxAttempts,

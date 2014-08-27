@@ -11,26 +11,20 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForU
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import CookieHelper.fetchCookiesFromHeaders
-import helpers.acquire.CookieFactoryForUnitSpecs
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
-import play.api.test.{WithApplication, FakeRequest}
+import play.api.test.{WithApplication}
 import viewmodels.BusinessChooseYourAddressViewModel.Form.AddressSelectId
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
-import pages.acquire.SetupTradeDetailsPage
-import pages.acquire.{SetupTradeDetailsPage}
+import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import utils.helpers.Config
-import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
-import pages.acquire.SetupTradeDetailsPage
-import scala.Some
 import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.common.UprnNotFoundPage
 
@@ -80,16 +74,15 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-//    ToDo uncomment when VehcileLookup is implemented
-//    "redirect to VehicleLookup page after a valid submit" in new WithApplication { /
-//      val request = buildCorrectlyPopulatedRequest().
-//        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
-//      val result = businessChooseYourAddressWithUprnFound.submit(request)
-//      whenReady(result) {
-//        r =>
-//          r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
-//      }
-//    }
+    "redirect to VehicleLookup page after a valid submit" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressWithUprnFound.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
+      }
+    }
 
     "return a bad request if not address selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(traderUprn = "").

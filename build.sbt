@@ -21,7 +21,7 @@ publishTo <<= version { v: String =>
 
 name := "vehicles-acquire-online"
 
-version := "1.0-SNAPSHOT"
+version := "1.1-SNAPSHOT"
 
 organization := "dvla"
 
@@ -36,14 +36,13 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala, SassPlugin, SbtW
 libraryDependencies ++= Seq(
   cache,
   filters,
-  "dvla" %% "vehicles-presentation-common" % "2.0-SNAPSHOT" withSources() withJavadoc(),
+  "dvla" %% "vehicles-presentation-common" % "2.1-SNAPSHOT" withSources() withJavadoc(),
   "com.google.guava" % "guava" % "15.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "org.seleniumhq.selenium" % "selenium-java" % "2.42.2" % "test" withSources() withJavadoc(),
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),
   "info.cukes" %% "cucumber-scala" % "1.1.7" % "test" withSources() withJavadoc(),
   "info.cukes" % "cucumber-java" % "1.1.7" % "test" withSources() withJavadoc(),
   "info.cukes" % "cucumber-picocontainer" % "1.1.7" % "test" withSources() withJavadoc(),
-  "org.specs2" %% "specs2" % "2.4" % "test" withSources() withJavadoc(),
   "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
   "com.github.tomakehurst" % "wiremock" % "1.46" % "test" withSources() withJavadoc() exclude("log4j", "log4j"),
   "org.slf4j" % "log4j-over-slf4j" % "1.7.7" % "test" withSources() withJavadoc(),
@@ -121,4 +120,6 @@ sandboxAsyncTask
 
 gatlingTask
 
+lazy val p1 = osAddressLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val p4 = legacyStubs.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p7 = gatlingTests.disablePlugins(PlayScala, SassPlugin, SbtWeb)
