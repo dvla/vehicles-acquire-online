@@ -42,4 +42,4 @@ GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.
 GET     /vrm-acquire/error/:exceptionDigest         @controllers.Error.present(exceptionDigest)
 POST    /vrm-acquire/error/:exceptionDigest         @controllers.Error.submit(exceptionDigest)
 
-GET     /vrm-acquire/healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /healthcheck                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
