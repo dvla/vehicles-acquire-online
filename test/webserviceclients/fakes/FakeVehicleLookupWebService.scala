@@ -26,6 +26,7 @@ final class FakeVehicleLookupWebService extends VehicleLookupWebService {
 }
 
 object FakeVehicleLookupWebService {
+  final val SoldToIndividual = ""
   final val RegistrationNumberValid = "AB12AWR"
   final val RegistrationNumberWithSpaceValid = "AB12 AWR"
   final val ReferenceNumberValid = "12345678910"
@@ -37,7 +38,8 @@ object FakeVehicleLookupWebService {
 
   private val vehicleDetails = VehicleDetailsDto(registrationNumber = RegistrationNumberValid,
     vehicleMake = VehicleMakeValid,
-    vehicleModel = VehicleModelValid)
+    vehicleModel = VehicleModelValid,
+    true)
 
   val vehicleDetailsResponseSuccess: (Int, Option[VehicleDetailsResponseDto]) = {
     (OK, Some(VehicleDetailsResponseDto(responseCode = None, vehicleDetailsDto = Some(vehicleDetails))))

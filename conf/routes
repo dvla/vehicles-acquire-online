@@ -35,6 +35,14 @@ GET     /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.p
 POST    /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.submit
 GET     /vrm-acquire/vehicle-lookup-back            @controllers.VehicleLookup.back
 
+GET     /vrm-acquire/keeper-still-on-record         @controllers.KeeperStillOnRecord.present
+
+# Individual keeper details
+GET     /vrm-acquire/individual-keeper-details      @controllers.IndividualKeeperDetails.present
+
+# Business keeper details
+GET     /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.present
+
 GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
 
 GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present

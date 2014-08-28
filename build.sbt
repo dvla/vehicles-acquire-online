@@ -8,6 +8,7 @@ import Sandbox.testGatlingTask
 import Sandbox.sandboxAsyncTask
 import Sandbox.gatlingTask
 import Sandbox.gatlingTests
+import Sandbox.vehiclesLookup
 import net.litola.SassPlugin
 
 val nexus = "http://rep002-01.skyscape.preview-dvla.co.uk:8081/nexus/content/repositories"
@@ -121,5 +122,6 @@ sandboxAsyncTask
 gatlingTask
 
 lazy val p1 = osAddressLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val p2 = vehiclesLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p4 = legacyStubs.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p7 = gatlingTests.disablePlugins(PlayScala, SassPlugin, SbtWeb)

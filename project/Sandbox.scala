@@ -31,6 +31,7 @@ object Sandbox extends Plugin {
 
   final val HttpsPort = 19443
   final val OsAddressLookupPort = 19801
+  final val VehicleLookupPort = 19802
   final val LegacyServicesStubsPort = 19086
 
   val secretProperty = "DECRYPT_PASSWORD"
@@ -58,8 +59,8 @@ object Sandbox extends Plugin {
 
   lazy val (osAddressLookup, scopeOsAddressLookup) =
     sandProject("os-address-lookup","dvla" %% "os-address-lookup" % VersionOsAddressLookup)
-//  lazy val (vehiclesLookup, scopeVehiclesLookup) =
-//    sandProject("vehicles-lookup", "dvla" %% "vehicles-lookup" % VersionVehiclesLookup)
+  lazy val (vehiclesLookup, scopeVehiclesLookup) =
+    sandProject("vehicles-lookup", "dvla" %% "vehicles-lookup" % VersionVehiclesLookup)
 //  lazy val (vehicleAndKeeperLookup, scopeVehicleAndKeeperLookup) =
 //    sandProject("vehicle-and-keeper-lookup", "dvla" %% "vehicle-and-keeper-lookup" % VersionVehicleAndKeeperLookup)
 //  lazy val (vrmRetentionEligibility, scopeVrmRetentionEligibility) =
@@ -82,7 +83,7 @@ object Sandbox extends Plugin {
   )
 
 //  lazy val sandboxedProjects = Seq(osAddressLookup, vehiclesLookup, vehicleAndKeeperLookup, legacyStubs)
-  lazy val sandboxedProjects = Seq(osAddressLookup, legacyStubs)
+  lazy val sandboxedProjects = Seq(osAddressLookup, vehiclesLookup, legacyStubs)
 
   lazy val vehiclesOnline = ScopeFilter(inProjects(ThisProject), inConfigurations(Runtime))
 
@@ -105,7 +106,17 @@ object Sandbox extends Plugin {
         ))
       ))
     )
-
+    runProject(
+      fullClasspath.all(scopeVehiclesLookup).value.flatten,
+      Some(ConfigDetails(
+        secretRepoFolder,
+        "ms/dev/vehicles-lookup.conf.enc",
+        Some(ConfigOutput(
+          new File(classDirectory.all(scopeVehiclesLookup).value.head, s"${vehiclesLookup.id}.conf"),
+          setServicePortAndLegacyServicesPort(VehicleLookupPort, "getVehicleDetails.baseurl", LegacyServicesStubsPort)
+        ))
+      ))
+    )
     runProject(
       fullClasspath.all(scopeLegacyStubs).value.flatten,
       None,
@@ -116,7 +127,7 @@ object Sandbox extends Plugin {
   lazy val sandbox = taskKey[Unit]("Runs the whole sandbox for manual testing including microservices, webapp and legacy stubs'")
   lazy val sandboxTask = sandbox <<= (runMicroServices, (run in Runtime).toTask("")) { (body, stop) =>
     System.setProperty("ordnancesurvey.baseUrl", s"http://localhost:$OsAddressLookupPort")
-//    System.setProperty("vehicleLookup.baseUrl", s"http://localhost:$VehicleLookupPort")
+    System.setProperty("vehicleLookup.baseUrl", s"http://localhost:$VehicleLookupPort")
 //    System.setProperty("disposeVehicle.baseUrl", s"http://localhost:$VehicleDisposePort")
     body.flatMap(t => stop)
   }
