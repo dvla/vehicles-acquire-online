@@ -10,7 +10,7 @@ final class DeleteMe @Inject()()(implicit clientSideSessionFactory: ClientSideSe
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
-    val data = VehicleDetailsModel(registrationNumber = "BD54 XKF", vehicleMake = "Peugeot", vehicleModel = "307")
+    val data = VehicleDetailsModel(registrationNumber = "BD54 XKF", vehicleMake = "Peugeot", vehicleModel = "307", disposeFlag = false)
     Ok(views.html.acquire.keeper_still_on_record(data))
   }
 
