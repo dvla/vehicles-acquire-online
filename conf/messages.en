@@ -204,3 +204,7 @@ acquire_keeperstillonrecord.text2 = You can notify us of the vehicle's sale to t
 acquire_keeperstillonrecord.text3 = Before you do this, ensure you have the consent of the keeper we currently have on record.
 acquire_keeperstillonrecord.button1 = Buy another vehicle
 acquire_keeperstillonrecord.button2 = Finish
+acquire_keeperstillonrecord.vehicledetails = Vehicle details
+acquire_keeperstillonrecord.vehiclereg = Registration
+acquire_keeperstillonrecord.vehiclemake = Make
+acquire_keeperstillonrecord.vehiclemodel = Model
