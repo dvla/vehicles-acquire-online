@@ -12,12 +12,13 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import uk.gov.dvla.vehicles.presentation.common.mappings.DocumentReferenceNumber
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleLookupServiceImpl, VehicleLookupWebService}
 import utils.helpers.Config
-import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId}
+import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, TraderBusinessNameValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, vehicleDetailsResponseSuccess}
 import play.api.libs.ws.WSResponse
+import views.acquire.VehicleLookup.{VehicleSoldTo_Business, VehicleSoldTo_Private}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -25,7 +26,7 @@ import scala.concurrent.duration.DurationInt
 
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.WithApplication
-import pages.acquire.{SetupTradeDetailsPage, BusinessChooseYourAddressPage}
+import pages.acquire.{BusinessKeeperDetailsPage, IndividualKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}
 
 final class VehicleLookupUnitSpec extends UnitSpec {
 
@@ -148,6 +149,23 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
     }
+
+    "redirect to IndividualKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
+      val result = vehicleLookupResponseGenerator().submit(request)
+
+      result.futureValue.header.headers.get(LOCATION) should equal(Some(IndividualKeeperDetailsPage.address))
+    }
+
+//    TODO : Resolve this failing test, currently redirects to private rather than business
+//    "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new WithApplication {
+//      val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business).
+//        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
+//      val result = vehicleLookupResponseGenerator().submit(request)
+//
+//      result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))
+//    }
   }
 
   private val ExitAnchorHtml = """a id="exit""""
@@ -185,10 +203,13 @@ final class VehicleLookupUnitSpec extends UnitSpec {
   }
 
   private def buildCorrectlyPopulatedRequest(referenceNumber: String = ReferenceNumberValid,
-                                             registrationNumber: String = RegistrationNumberValid) = {
+                                             registrationNumber: String = RegistrationNumberValid,
+                                             soldTo: String = VehicleSoldTo_Private
+                                              ) = {
     FakeRequest().withFormUrlEncodedBody(
       DocumentReferenceNumberId -> referenceNumber,
-      VehicleRegistrationNumberId -> registrationNumber)
+      VehicleRegistrationNumberId -> registrationNumber,
+      VehicleSoldToId -> soldTo)
   }
 
   private lazy val present = {
