@@ -217,7 +217,7 @@ acquire_individualkeeperdetails.vehiclemake = Make
 acquire_individualkeeperdetails.vehiclemodel = Model
 
 #business keeper details
-acquire_businesskeeperdetails.title = Enter keeper details
+acquire_businesskeeperdetails.title = Enter business keeper details
 acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
 acquire_businesskeeperdetails.vehiclemake = Make
