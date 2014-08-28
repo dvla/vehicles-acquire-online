@@ -28,15 +28,16 @@ currentForm = Some(traderLookupForm)
     'autofocus -> true,
     'maxLength -> TraderNameMaxLength))
 
-    @valtechInputText(traderLookupForm(TraderPostcodeId), hintText = Some(Messages("acquire_setuptradedetails.traderpostcode.hint")), args =
-    Map('_label -> Messages("acquire_setuptradedetails.traderpostcodelabel"),
-    '_showConstraints -> false,
-    'maxLength -> Postcode.MaxLength))
 
     @valtechInputText(traderLookupForm(TraderEmailId), args =
     Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
     '_showConstraints -> false,
     'maxLength -> TraderEmailMaxLength))
+
+    @valtechInputText(traderLookupForm(TraderPostcodeId), hintText = Some(Messages("acquire_setuptradedetails.traderpostcode.hint")), args =
+    Map('_label -> Messages("acquire_setuptradedetails.traderpostcodelabel"),
+    '_showConstraints -> false,
+    'maxLength -> Postcode.MaxLength))
 
     <div class="form-steps">
         <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_setuptradedetails.button")</button>
