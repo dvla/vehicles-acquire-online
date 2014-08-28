@@ -26,6 +26,7 @@ final class FakeVehicleLookupWebService extends VehicleLookupWebService {
 }
 
 object FakeVehicleLookupWebService {
+  final val SoldToIndividual = ""
   final val RegistrationNumberValid = "AB12AWR"
   final val RegistrationNumberWithSpaceValid = "AB12 AWR"
   final val ReferenceNumberValid = "12345678910"

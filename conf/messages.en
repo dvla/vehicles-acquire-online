@@ -208,3 +208,17 @@ acquire_keeperstillonrecord.vehicledetails = Vehicle details
 acquire_keeperstillonrecord.vehiclereg = Registration
 acquire_keeperstillonrecord.vehiclemake = Make
 acquire_keeperstillonrecord.vehiclemodel = Model
+
+#individual keeper details
+acquire_individualkeeperdetails.title = Enter keeper details
+acquire_individualkeeperdetails.vehicledetails = Vehicle details
+acquire_individualkeeperdetails.vehiclereg = Registration
+acquire_individualkeeperdetails.vehiclemake = Make
+acquire_individualkeeperdetails.vehiclemodel = Model
+
+#business keeper details
+acquire_businesskeeperdetails.title = Enter keeper details
+acquire_businesskeeperdetails.vehicledetails = Vehicle details
+acquire_businesskeeperdetails.vehiclereg = Registration
+acquire_businesskeeperdetails.vehiclemake = Make
+acquire_businesskeeperdetails.vehiclemodel = Model

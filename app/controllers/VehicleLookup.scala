@@ -14,6 +14,7 @@ import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, Vehicle
 import utils.helpers.Config
 import viewmodels.VehicleLookupFormViewModel._
 import viewmodels.{VehicleLookupFormViewModel, VehicleLookupViewModel}
+import views.acquire.VehicleLookup.{VehicleSoldTo_Business, VehicleSoldTo_Private}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -91,15 +92,22 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
   private def lookupVehicleResult(model: VehicleLookupFormViewModel)
                                  (implicit request: Request[_]): Future[Result] = {
 
-    def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto) = {
+    def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String) = {
       VehicleDetailsModel.fromDto(vehicleDetailsDto).disposeFlag match {
-        case true =>
-        // TODO : redirect to the success page
-          Redirect(routes.NotImplemented.present()).
-            withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
+        case true => vehicleDisposedResult(vehicleDetailsDto, soldTo)
         case false =>
-            // TODO : redirect to the new error page
           Redirect(routes.KeeperStillOnRecord.present()).
+            withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
+      }
+    }
+
+    def vehicleDisposedResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String) = {
+      soldTo match {
+        case VehicleSoldTo_Private =>
+          Redirect(routes.IndividualKeeperDetails.present()).
+            withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
+        case _ =>
+          Redirect(routes.BusinessKeeperDetails.present()).
             withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
       }
     }
@@ -128,25 +136,27 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
       Redirect(routes.NotImplemented.present())
     }
 
-    def createResultFromVehicleLookupResponse(vehicleDetailsResponse: VehicleDetailsResponseDto)
+    def createResultFromVehicleLookupResponse(vehicleDetailsResponse: VehicleDetailsResponseDto,
+                                               soldTo: String)
                                              (implicit request: Request[_]) =
       vehicleDetailsResponse.responseCode match {
         case Some(responseCode) => vehicleNotFoundResult(responseCode) // There is only a response code when there is a problem.
         case None =>
           // Happy path when there is no response code therefore no problem.
           vehicleDetailsResponse.vehicleDetailsDto match {
-            case Some(dto) => vehicleFoundResult(dto)
+            case Some(dto) => vehicleFoundResult(dto, soldTo)
             case None => microServiceErrorResult(message = "No vehicleDetailsDto found")
           }
       }
 
     def vehicleLookupSuccessResponse(responseStatusVehicleLookupMS: Int,
+                                     soldTo: String,
                                      vehicleDetailsResponse: Option[VehicleDetailsResponseDto])
                                     (implicit request: Request[_]) =
       responseStatusVehicleLookupMS match {
         case OK =>
           vehicleDetailsResponse match {
-            case Some(response) => createResultFromVehicleLookupResponse(response)
+            case Some(response) => createResultFromVehicleLookupResponse(response, soldTo)
             case _ => microServiceErrorResult("No vehicleDetailsResponse found") // TODO write test to achieve code coverage.
           }
         case _ => microServiceErrorResult(s"VehicleLookup web service call http status not OK, it was: " +
@@ -163,8 +173,10 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
       case (responseStatusVehicleLookupMS: Int, vehicleDetailsResponse: Option[VehicleDetailsResponseDto]) =>
         vehicleLookupSuccessResponse(
           responseStatusVehicleLookupMS = responseStatusVehicleLookupMS,
+          soldTo = model.vehicleSoldTo,
           vehicleDetailsResponse = vehicleDetailsResponse).
           withCookie(model)
+
     }.recover {
       case e: Throwable => microServiceThrowableResult(message = s"VehicleLookup Web service call failed.", e)
     }
