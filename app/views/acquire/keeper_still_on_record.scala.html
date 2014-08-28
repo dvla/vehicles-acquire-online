@@ -1,0 +1,28 @@
+@()(implicit lang: Lang,
+token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
+config: utils.helpers.Config)
+
+@import controllers.routes.BeforeYouStart
+@import controllers.routes.VehicleLookup
+@import views.acquire.KeeperStillOnRecord.{BuyAnotherVehicleId, FinishId}
+@import uk.gov.dvla.vehicles.presentation.common
+@import common.views.html.widgets.base.csrfTokenHiddenField
+
+@main(
+    title = Messages("acquire_keeperstillonrecord.title")
+) {
+    <p>@Messages("acquire_keeperstillonrecord.text1")</p>
+    <p>@Messages("acquire_keeperstillonrecord.text2")</p>
+    <p>@Messages("acquire_keeperstillonrecord.text3")</p>
+
+    <div class="form-steps">
+        @csrfTokenHiddenField()
+        @{ /* Note the reverse routing syntax for the hyperlink */ }
+        <a class="button" id="@BuyAnotherVehicleId" href="@controllers.routes.VehicleLookup.present()">
+            @Messages("acquire_keeperstillonrecord.button1")
+        </a>
+        <a class="button-secondary" id="@FinishId" href="@controllers.routes.BeforeYouStart.present()">
+            @Messages("acquire_keeperstillonrecord.button2")
+        </a>
+    </div>
+}
