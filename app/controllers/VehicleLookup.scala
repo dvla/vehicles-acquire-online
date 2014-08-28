@@ -3,13 +3,14 @@ package controllers
 import com.google.inject.Inject
 import play.api.Logger
 import play.api.data.{Form, FormError}
-import play.api.mvc._
-import uk.gov.dvla.vehicles.presentation.common.LogFormats
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleDetailsDto, VehicleLookupService}
+import play.api.mvc.{Action, Controller, Request, Result}
+import uk.gov.dvla.vehicles.presentation.common
+import common.LogFormats
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.model.{VehicleDetailsModel, TraderDetailsModel}
+import common.views.helpers.FormExtensions.formBinding
+import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleDetailsDto, VehicleLookupService}
 import utils.helpers.Config
 import viewmodels.VehicleLookupFormViewModel._
 import viewmodels.{VehicleLookupFormViewModel, VehicleLookupViewModel}
@@ -98,7 +99,7 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
             withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
         case false =>
             // TODO : redirect to the new error page
-          Redirect(routes.NotImplemented.present()).
+          Redirect(routes.KeeperStillOnRecord.present()).
             withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
       }
     }
