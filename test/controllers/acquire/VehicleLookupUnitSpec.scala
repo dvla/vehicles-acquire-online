@@ -26,7 +26,7 @@ import scala.concurrent.duration.DurationInt
 
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.WithApplication
-import pages.acquire.{BusinessKeeperDetailsPage, IndividualKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}
+import pages.acquire.{BusinessKeeperDetailsPage, PrivateKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}
 
 final class VehicleLookupUnitSpec extends UnitSpec {
 
@@ -150,12 +150,12 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       result.futureValue.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
     }
 
-    "redirect to IndividualKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
+    "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
 
-      result.futureValue.header.headers.get(LOCATION) should equal(Some(IndividualKeeperDetailsPage.address))
+      result.futureValue.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
     }
 
 //    TODO : Resolve this failing test, currently redirects to private rather than business

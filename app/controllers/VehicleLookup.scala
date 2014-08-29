@@ -104,7 +104,7 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
     def vehicleDisposedResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String) = {
       soldTo match {
         case VehicleSoldTo_Private =>
-          Redirect(routes.IndividualKeeperDetails.present()).
+          Redirect(routes.PrivateKeeperDetails.present()).
             withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
         case _ =>
           Redirect(routes.BusinessKeeperDetails.present()).
