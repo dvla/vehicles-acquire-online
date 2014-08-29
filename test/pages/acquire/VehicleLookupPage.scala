@@ -1,11 +1,10 @@
 package pages.acquire
 
-import helpers.webbrowser._
+import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory, TelField, TextField}
 import views.acquire.VehicleLookup
-import VehicleLookup.{BackId, SubmitId}
+import VehicleLookup.{BackId, ExitId, SubmitId}
 import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId}
 import org.openqa.selenium.WebDriver
-import views.acquire.VehicleLookup._
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
 
 object VehicleLookupPage extends Page with WebBrowserDSL {

@@ -1,9 +1,9 @@
 package pages.acquire
 
-import helpers.webbrowser._
+import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory, TextField}
 import org.openqa.selenium.WebDriver
-import viewmodels.SetupTradeDetailsViewModel.Form._
-import views.acquire.SetupTradeDetails._
+import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import views.acquire.SetupTradeDetails.SubmitId
 
 object SetupTradeDetailsPage extends Page with WebBrowserDSL {
   final val TraderBusinessNameValid = "example trader name"
