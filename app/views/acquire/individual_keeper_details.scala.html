@@ -15,6 +15,9 @@ config: utils.helpers.Config)
         <div class="first-col">
             <div class="form-steps">
                 @csrfTokenHiddenField()
+                <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
+                    @Messages("acquire_individualkeeperdetails.backbutton")
+                </a>
             </div>
         </div>
 

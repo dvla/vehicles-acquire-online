@@ -215,6 +215,7 @@ acquire_individualkeeperdetails.vehicledetails = Vehicle details
 acquire_individualkeeperdetails.vehiclereg = Registration
 acquire_individualkeeperdetails.vehiclemake = Make
 acquire_individualkeeperdetails.vehiclemodel = Model
+acquire_individualkeeperdetails.backbutton = Back
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
@@ -222,3 +223,4 @@ acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
 acquire_businesskeeperdetails.vehiclemake = Make
 acquire_businesskeeperdetails.vehiclemodel = Model
+acquire_businesskeeperdetails.backbutton = Back

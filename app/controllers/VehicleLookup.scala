@@ -14,7 +14,7 @@ import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, Vehicle
 import utils.helpers.Config
 import viewmodels.VehicleLookupFormViewModel._
 import viewmodels.{VehicleLookupFormViewModel, VehicleLookupViewModel}
-import views.acquire.VehicleLookup.{VehicleSoldTo_Business, VehicleSoldTo_Private}
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
