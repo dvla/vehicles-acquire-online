@@ -4,4 +4,4 @@
     border-bottom: 10px solid phase-colour($phase);
 }
 
-@include summary-detail-list;
+@include summary-detail-list($title-min-width:160px);
