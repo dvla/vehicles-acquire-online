@@ -14,6 +14,7 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleLookupPage.{happyPath, back}
 import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire.KeeperStillOnRecordPage
 import pages.acquire.BusinessKeeperDetailsPage
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
@@ -71,7 +72,16 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "next button" should {
-    "go to the next page when private keeper data is entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when vehicle keeper is still on record" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      val vehicleWithKeeperStillOnRecordRefNumber = "99999999993"
+      happyPath(referenceNumber = vehicleWithKeeperStillOnRecordRefNumber)
+
+      page.title should equal(KeeperStillOnRecordPage.title)
+    }
+
+    "go to the appropriate next page when private keeper data is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
 
@@ -80,7 +90,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
-    "go to the next page when business keeper data is entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when business keeper data is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
 
