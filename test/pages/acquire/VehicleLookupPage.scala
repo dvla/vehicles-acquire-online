@@ -1,11 +1,12 @@
 package pages.acquire
 
-import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory, TelField, TextField}
+import helpers.webbrowser.{Element, Page, RadioButton, WebBrowserDSL, WebDriverFactory, TelField, TextField}
 import views.acquire.VehicleLookup
-import VehicleLookup.{BackId, ExitId, SubmitId}
-import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId}
+import VehicleLookup.{BackId, SubmitId}
+import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import org.openqa.selenium.WebDriver
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
+import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
 
 object VehicleLookupPage extends Page with WebBrowserDSL {
   final val address = s"/$basePath/vehicle-lookup"
@@ -16,17 +17,25 @@ object VehicleLookupPage extends Page with WebBrowserDSL {
 
   def documentReferenceNumber(implicit driver: WebDriver): TelField = telField(id(DocumentReferenceNumberId))
 
+  def vehicleSoldToPrivateIndividual(implicit driver: WebDriver): RadioButton = radioButton(id(s"${VehicleSoldToId}_$VehicleSoldTo_Private"))
+
+  def vehicleSoldToBusiness(implicit driver: WebDriver): RadioButton = radioButton(id(s"${VehicleSoldToId}_$VehicleSoldTo_Business"))
+
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
-  def exit(implicit driver: WebDriver): Element = find(id(ExitId)).get
+  def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
-  def findVehicleDetails(implicit driver: WebDriver): Element = find(id(SubmitId)).get
-
-  def happyPath(referenceNumber: String = ReferenceNumberValid, registrationNumber: String = RegistrationNumberValid)
+  def happyPath(referenceNumber: String = ReferenceNumberValid,
+                registrationNumber: String = RegistrationNumberValid,
+                isVehicleSoldToPrivateIndividual: Boolean = true)
                (implicit driver: WebDriver) = {
     go to VehicleLookupPage
     documentReferenceNumber enter referenceNumber
     VehicleLookupPage.vehicleRegistrationNumber enter registrationNumber
-    click on findVehicleDetails
+
+    if (isVehicleSoldToPrivateIndividual) click on vehicleSoldToPrivateIndividual
+    else click on vehicleSoldToBusiness
+
+    click on next
   }
 }

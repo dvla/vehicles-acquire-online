@@ -4,7 +4,7 @@
   config: utils.helpers.Config
 )
 
-@import views.acquire.VehicleLookup.{BackId, ExitId, SubmitId, VehicleSoldTo_Private, VehicleSoldTo_Business}
+@import views.acquire.VehicleLookup.{BackId, SubmitId, VehicleSoldTo_Private, VehicleSoldTo_Business}
 @import views.html.acquire.main
 @import views.html.helper.form
 @import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
@@ -54,7 +54,7 @@
                                     VehicleSoldTo_Private -> Messages("acquire_vehiclelookup.vehiclesoldto.private"),
                                     VehicleSoldTo_Business -> Messages("acquire_vehiclelookup.vehiclesoldto.business")
                                 ),
-                                'value -> VehicleSoldTo_Private, // One radio button is checked when user arrives on the page.
+                                'value -> VehicleSoldTo_Private, // Default radio button to select when user first arrives on the page.
                                 '_label -> Messages("acquire_vehiclelookup.vehiclesoldto.label")
                             )
                         )
@@ -67,8 +67,6 @@
                         <div class="form-step">
                             <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_vehiclelookup.button")</button>
                             <a id="@BackId" href="@controllers.routes.VehicleLookup.back()" class="button-secondary">@Messages("acquire_vehiclelookup.backbutton")</a>
-
-
                         </div>
                     }
                 </div>
