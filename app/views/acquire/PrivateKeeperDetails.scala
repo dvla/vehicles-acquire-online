@@ -1,5 +1,5 @@
 package views.acquire
 
-object BusinessKeeperDetails {
+object PrivateKeeperDetails {
   final val BackId = "back"
 }

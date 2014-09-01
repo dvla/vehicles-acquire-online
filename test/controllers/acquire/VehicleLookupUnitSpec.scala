@@ -8,9 +8,10 @@ import org.mockito.Mockito.when
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, contentAsString, defaultAwaitTimeout}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.DocumentReferenceNumber
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleLookupServiceImpl, VehicleLookupWebService}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.mappings.DocumentReferenceNumber
+import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleLookupServiceImpl, VehicleLookupWebService}
 import utils.helpers.Config
 import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, TraderBusinessNameValid}
@@ -18,7 +19,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, vehicleDetailsResponseSuccess}
 import play.api.libs.ws.WSResponse
-import views.acquire.VehicleLookup.{VehicleSoldTo_Business, VehicleSoldTo_Private}
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -26,7 +27,7 @@ import scala.concurrent.duration.DurationInt
 
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.WithApplication
-import pages.acquire.{BusinessKeeperDetailsPage, IndividualKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}
+import pages.acquire.{PrivateKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}
 
 final class VehicleLookupUnitSpec extends UnitSpec {
 
@@ -150,12 +151,12 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       result.futureValue.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
     }
 
-    "redirect to IndividualKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
+    "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
 
-      result.futureValue.header.headers.get(LOCATION) should equal(Some(IndividualKeeperDetailsPage.address))
+      result.futureValue.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
     }
 
 //    TODO : Resolve this failing test, currently redirects to private rather than business

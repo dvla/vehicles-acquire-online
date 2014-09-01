@@ -8,13 +8,13 @@ import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 
-final class IndividualKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleDetailsModel] match {
       case Some(vehicleDetails) =>
-        Ok(views.html.acquire.individual_keeper_details(vehicleDetails))
+        Ok(views.html.acquire.private_keeper_details(vehicleDetails))
       case _ =>
         Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
