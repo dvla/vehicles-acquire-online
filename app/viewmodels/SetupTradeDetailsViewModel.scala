@@ -10,8 +10,9 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
 import FormExtensions._
 import play.api.data.validation.Constraints
+import mappings.Email.email
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 
-// TODO the names of the params repeat names from the model so refactor
 final case class SetupTradeDetailsViewModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])
 
 object SetupTradeDetailsViewModel {
@@ -23,9 +24,10 @@ object SetupTradeDetailsViewModel {
     final val TraderNameId = "traderName"
     final val TraderPostcodeId = "traderPostcode"
     final val TraderEmailId = "traderEmail"
-    final val TraderNameMaxLength = 58
     final val TraderNameMinLength = 2
-    final val TraderEmailMaxLength = 255
+    final val TraderNameMaxLength = 58
+    final val TraderEmailMinLength = 3
+    final val TraderEmailMaxLength = 254
 
     private final val TraderNameMapping: Mapping[String] =
       nonEmptyTextWithTransform(_.toUpperCase.trim)(TraderNameMinLength, TraderNameMaxLength)
@@ -37,7 +39,7 @@ object SetupTradeDetailsViewModel {
     final val Mapping = mapping(
       TraderNameId -> TraderNameMapping,
       TraderPostcodeId -> postcode,
-      TraderEmailId -> optional(EmailMapping)
+      TraderEmailId -> optional(email)
     )(SetupTradeDetailsViewModel.apply)(SetupTradeDetailsViewModel.unapply)
   }
 }
