@@ -4,6 +4,7 @@ import helpers.UnitSpec
 import controllers.SetUpTradeDetails
 import viewmodels.SetupTradeDetailsViewModel.Form._
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid,PostcodeValid, TraderEmailValid}
+import mappings.Email.{EmailUsernameMaxLength, EmailDomainMaxLength}
 
 class SetupTradeDetailsFormSpec extends UnitSpec {
 
@@ -99,6 +100,16 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     "reject if greater than max length" in {
       val longInvalidEmail = "a@" + ("a" * 549) + ".com"
       formWithValidDefaults(traderEmail = longInvalidEmail).errors should have length 1
+    }
+
+    "reject if email username is greater than max length" in {
+      val invalidEmailUsername = ("a" * (EmailUsernameMaxLength + 1)) + "@a"
+      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
+    }
+
+    "reject if email domain is greater than max length" in {
+      val invalidEmailDomain = ("a@" + "a" * (EmailDomainMaxLength + 1))
+      formWithValidDefaults(traderEmail = invalidEmailDomain).errors should have length 1
     }
 
     "accept the format test@io" in {

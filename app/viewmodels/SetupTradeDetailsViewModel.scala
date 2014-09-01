@@ -13,7 +13,6 @@ import play.api.data.validation.Constraints
 import mappings.Email.email
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 
-// TODO the names of the params repeat names from the model so refactor
 final case class SetupTradeDetailsViewModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])
 
 object SetupTradeDetailsViewModel {

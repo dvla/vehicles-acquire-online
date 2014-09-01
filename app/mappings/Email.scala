@@ -18,10 +18,10 @@ object Email {
 
   def emailAddress: Constraint[String] = Constraint[String]("constraint.email") {
     e =>
-      // if (e == null) Invalid(ValidationError("error.email")) email address is optional for acquire US898
-      if (e.trim.isEmpty) Invalid(ValidationError("error.email"))
-      else if (e.contains("\"")) Invalid(ValidationError("error.email"))
-      else if (e.length < TraderEmailMinLength || e.length > TraderEmailMaxLength) Invalid(ValidationError("error.email"))
+      if (e.contains("\"")) Invalid(ValidationError("error.email"))
+      else if (!(TraderEmailMinLength to TraderEmailMaxLength contains e.length)) Invalid(ValidationError("error.email"))
+      else if (!e.contains("@")) Invalid(ValidationError("error.email"))
+      else if (e.split("@")(0).length > EmailUsernameMaxLength || e.split("@")(1).length > EmailDomainMaxLength) Invalid(ValidationError("error.email"))
       else if (ptr.matcher(e).matches()) Valid
       else Invalid(ValidationError("error.email"))
   }
