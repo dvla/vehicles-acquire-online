@@ -12,16 +12,8 @@ config: utils.helpers.Config)
     title = Messages("acquire_individualkeeperdetails.title")
 ) {
     <div class="two-col clearfix">
-        <div class="first-col">
-            <div class="form-steps">
-                @csrfTokenHiddenField()
-                <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
-                    @Messages("acquire_individualkeeperdetails.backbutton")
-                </a>
-            </div>
-        </div>
 
-        <div class="second-col">
+        <div class="first-col">
             <h2>@Messages("acquire_individualkeeperdetails.vehicledetails")</h2>
             <dl class="summary-detail-list">
                 <dt>@Messages("acquire_individualkeeperdetails.vehiclereg")</dt>
@@ -31,6 +23,17 @@ config: utils.helpers.Config)
                 <dt>@Messages("acquire_individualkeeperdetails.vehiclemodel")</dt>
                 <dd>@data.vehicleModel</dd>
             </dl>
+        </div>
+        <div class="second-col">
+            <br/>
+            <br/>
+            <br/>
+            <div class="form-steps">
+                @csrfTokenHiddenField()
+                <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
+                    @Messages("acquire_individualkeeperdetails.backbutton")
+                </a>
+            </div>
         </div>
     </div>
 }
