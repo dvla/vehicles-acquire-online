@@ -21,7 +21,7 @@ object Email {
       if (e.contains("\"")) Invalid(ValidationError("error.email"))
       else if (!(TraderEmailMinLength to TraderEmailMaxLength contains e.length)) Invalid(ValidationError("error.email"))
       else if (!e.contains("@")) Invalid(ValidationError("error.email"))
-      else if (e.split("@")(0).length > EmailUsernameMaxLength || e.split("@")(1).length > EmailDomainMaxLength) Invalid(ValidationError("error.email"))
+      else if (e.split("@")(0).length > EmailUsernameMaxLength) Invalid(ValidationError("error.email"))
       else if (ptr.matcher(e).matches()) Valid
       else Invalid(ValidationError("error.email"))
   }

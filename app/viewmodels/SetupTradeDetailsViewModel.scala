@@ -27,7 +27,7 @@ object SetupTradeDetailsViewModel {
     final val TraderNameMinLength = 2
     final val TraderNameMaxLength = 58
     final val TraderEmailMinLength = 3
-    final val TraderEmailMaxLength = 255
+    final val TraderEmailMaxLength = 254
 
     private final val TraderNameMapping: Mapping[String] =
       nonEmptyTextWithTransform(_.toUpperCase.trim)(TraderNameMinLength, TraderNameMaxLength)
@@ -39,7 +39,7 @@ object SetupTradeDetailsViewModel {
     final val Mapping = mapping(
       TraderNameId -> TraderNameMapping,
       TraderPostcodeId -> postcode,
-      TraderEmailId -> optional(email.verifying(Constraints.nonEmpty))
+      TraderEmailId -> optional(email)
     )(SetupTradeDetailsViewModel.apply)(SetupTradeDetailsViewModel.unapply)
   }
 }
