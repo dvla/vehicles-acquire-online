@@ -1,18 +1,18 @@
 package composition
 
-import composition.DevModule._
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebServiceImpl, VehicleLookupWebService}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import com.google.inject.name.Names
 import com.tzavellas.sse.guice.ScalaModule
 import org.scalatest.mock.MockitoSugar
 import play.api.{LoggerLike, Logger}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieFlags
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.NoCookieFlags
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClearTextClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.filters.AccessLoggingFilter.AccessLoggerName
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.{AddressLookupWebService, AddressLookupService}
+import webserviceclients.fakes.{FakeVehicleLookupWebService, FakeAddressLookupWebServiceImpl}
+import uk.gov.dvla.vehicles.presentation.common
+import common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebService}
+import common.clientsidesession.CookieFlags
+import common.clientsidesession.NoCookieFlags
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.ClearTextClientSideSessionFactory
+import common.filters.AccessLoggingFilter.AccessLoggerName
+import common.webserviceclients.addresslookup.{AddressLookupWebService, AddressLookupService}
 
 class TestModule() extends ScalaModule with MockitoSugar {
   /**
@@ -21,6 +21,9 @@ class TestModule() extends ScalaModule with MockitoSugar {
   def configure() {
     Logger.debug("Guice is loading TestModule")
     ordnanceSurveyAddressLookup()
+    bind[VehicleLookupWebService].to[FakeVehicleLookupWebService].asEagerSingleton()
+    bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
+
 //    bind[DateService].to[FakeDateServiceImpl].asEagerSingleton()
     bind[CookieFlags].to[NoCookieFlags].asEagerSingleton()
     bind[ClientSideSessionFactory].to[ClearTextClientSideSessionFactory].asEagerSingleton()
@@ -36,8 +39,5 @@ class TestModule() extends ScalaModule with MockitoSugar {
       responseOfUprnWebService = FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
     )
     bind[AddressLookupWebService].toInstance(fakeWebServiceImpl)
-
-    bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
-    bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
   }
 }

@@ -13,6 +13,9 @@ import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleLookupPage.{happyPath, back}
+import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire.KeeperStillOnRecordPage
+import pages.acquire.BusinessKeeperDetailsPage
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
@@ -69,14 +72,31 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "next button" should {
-    "go to the next page when correct data is entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when vehicle keeper is still on record" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      val vehicleWithKeeperStillOnRecordRefNumber = "99999999993"
+      happyPath(referenceNumber = vehicleWithKeeperStillOnRecordRefNumber)
+
+      page.title should equal(KeeperStillOnRecordPage.title)
+    }
+
+    "go to the appropriate next page when private keeper data is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
 
       happyPath()
 
-      // ToDo : Add a page title assertion when the next page is implemented
-      // page.title should equal("Not implemented")
+      page.title should equal(PrivateKeeperDetailsPage.title)
+    }
+
+    "go to the appropriate next page when business keeper data is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      happyPath(isVehicleSoldToPrivateIndividual = false)
+
+      page.title should equal(BusinessKeeperDetailsPage.title)
     }
 
     "display one validation error message when no referenceNumber is entered" taggedAs UiTag in new WebBrowser {
@@ -143,7 +163,6 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
     }
   }
 
-  // TODO: Reinstate this test and resolve the back behaviour issue
   "back" should {
     "display previous page when back link is clicked with uprn present" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage

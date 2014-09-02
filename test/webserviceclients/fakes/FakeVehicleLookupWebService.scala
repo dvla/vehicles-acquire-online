@@ -15,6 +15,7 @@ final class FakeVehicleLookupWebService extends VehicleLookupWebService {
       request.referenceNumber match {
         case "99999999991" => vehicleDetailsResponseVRMNotFound
         case "99999999992" => vehicleDetailsResponseDocRefNumberNotLatest
+        case "99999999993" => vehicleDetailsKeeperStillOnRecordResponseSuccess
         case "99999999999" => vehicleDetailsResponseNotFoundResponseCode
         case _ => vehicleDetailsResponseSuccess
       }
@@ -36,13 +37,17 @@ object FakeVehicleLookupWebService {
   final val KeeperUprnValid = 10123456789L
   final val ConsentValid = "true"
 
-  private val vehicleDetails = VehicleDetailsDto(registrationNumber = RegistrationNumberValid,
+  private def vehicleDetails(disposeFlag: Boolean = true) = VehicleDetailsDto(registrationNumber = RegistrationNumberValid,
     vehicleMake = VehicleMakeValid,
     vehicleModel = VehicleModelValid,
-    true)
+    disposeFlag = disposeFlag)
 
   val vehicleDetailsResponseSuccess: (Int, Option[VehicleDetailsResponseDto]) = {
-    (OK, Some(VehicleDetailsResponseDto(responseCode = None, vehicleDetailsDto = Some(vehicleDetails))))
+    (OK, Some(VehicleDetailsResponseDto(responseCode = None, vehicleDetailsDto = Some(vehicleDetails()))))
+  }
+
+  val vehicleDetailsKeeperStillOnRecordResponseSuccess: (Int, Option[VehicleDetailsResponseDto]) = {
+    (OK, Some(VehicleDetailsResponseDto(responseCode = None, vehicleDetailsDto = Some(vehicleDetails(disposeFlag = false)))))
   }
 
   val vehicleDetailsResponseVRMNotFound: (Int, Option[VehicleDetailsResponseDto]) = {

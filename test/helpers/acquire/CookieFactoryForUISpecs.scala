@@ -11,12 +11,14 @@ import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel, DayMonthYear}
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
+import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import viewmodels._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -88,17 +90,19 @@ object CookieFactoryForUISpecs {
 //    addCookie(key, value)
 //    this
 //  }
-//
-//  def vehicleLookupFormModel(referenceNumber: String = ReferenceNumberValid,
-//                             registrationNumber: String = RegistrationNumberValid)
+
+//  def vehicleLookupFormModel(referenceNumber: String = "1" * 11,
+//                             registrationNumber: String = "A1",
+//                             vehicleSoldTo: String = VehicleSoldTo_Private)
 //                            (implicit webDriver: WebDriver) = {
 //    val key = VehicleLookupFormModelCacheKey
 //    val value = VehicleLookupFormViewModel(referenceNumber = referenceNumber,
-//      registrationNumber = registrationNumber)
+//      registrationNumber = registrationNumber,
+//      vehicleSoldTo = vehicleSoldTo)
 //    addCookie(key, value)
 //    this
 //  }
-//
+
 //  def vehicleDetailsModel(registrationNumber: String = RegistrationNumberValid,
 //                          vehicleMake: String = FakeVehicleLookupWebService.VehicleMakeValid,
 //                          vehicleModel: String = VehicleModelValid,
