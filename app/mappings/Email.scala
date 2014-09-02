@@ -89,7 +89,7 @@ object Email {
   }
 
   def emailStyleValid (email: String): Boolean =
-    if (email.split("@")(0).length > EmailUsernameMaxLength) false
+    if (email.split("@")(0).length > EmailUsernameMaxLength || (email.split("@")(0) contains "\".")) false
     else if (!domainStyleValid(email.split("@")(1))) false
     else true
 
@@ -101,9 +101,10 @@ object Email {
   //domainLengthValid is tail recursive as it may be made up of multiple parts
   def domainLengthValid(emailDomain: Seq[String]): Boolean =
     if (emailDomain.head.isEmpty) true
-    else if (emailDomain.head.length > EmailDomainSectionMaxLength) false
-    else if (emailDomain.head contains "/") false
-    else if (emailDomain.head.takeRight(1) == InvalidDomainChars || emailDomain.head.take(1) == InvalidDomainChars) false
+    else if (emailDomain.head.length > EmailDomainSectionMaxLength
+            || (emailDomain.head contains "/")
+            || emailDomain.head.take(1) == InvalidDomainChars
+            || emailDomain.head.takeRight(1) == InvalidDomainChars) false
     else if (emailDomain.tail.isEmpty) true
     else domainLengthValid(emailDomain.tail)
 }

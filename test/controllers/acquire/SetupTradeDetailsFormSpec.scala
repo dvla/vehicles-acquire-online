@@ -135,6 +135,16 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
       formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
     }
 
+    "reject if email is in format \"test\".test@iana.org" in {
+      val invalidEmailUsername = "\"test\".test@iana.org"
+      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
+    }
+
+    "reject if email is in format \"test\".\"test”@iana.org" in {
+      val invalidEmailUsername = "\"test\".\"test”@iana.org"
+      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
+    }
+
     "reject if second section of email domain name is greater than max length" in {
       val invalidEmailUsername = "a@a." + ("a" * EmailDomainSectionMaxLength + 1) + ".co.uk"
       formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
