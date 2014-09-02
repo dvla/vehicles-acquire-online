@@ -3,10 +3,9 @@ package viewmodels
 import constraints.TraderBusinessName
 import uk.gov.dvla.vehicles.presentation.common.mappings.Postcode
 import Postcode.postcode
-import play.api.data.Forms._
+import play.api.data.Forms.{mapping, optional}
 import play.api.data.Mapping
 import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
 import FormExtensions._
 import play.api.data.validation.Constraints

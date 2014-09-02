@@ -10,7 +10,7 @@ import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire._
-import pages.acquire.BusinessChooseYourAddressPage.{back, happyPath, manualAddress, sadPath}
+import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath}
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 

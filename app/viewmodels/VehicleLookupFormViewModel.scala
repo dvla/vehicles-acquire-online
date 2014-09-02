@@ -1,6 +1,6 @@
 package viewmodels
 
-import play.api.data.Forms._
+import play.api.data.Forms.{mapping, nonEmptyText}
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.{VehicleRegistrationNumber, DocumentReferenceNumber}

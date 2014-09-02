@@ -11,10 +11,11 @@ import pages.acquire.SetupTradeDetailsPage
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.model.TraderDetailsModel
+import common.views.helpers.FormExtensions
+import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config
 import views.acquire.EnterAddressManually.PostcodeId
 import viewmodels.EnterAddressManuallyViewModel.Form.AddressAndPostcodeId

@@ -11,5 +11,4 @@ final class NotImplemented @Inject()()(implicit clientSideSessionFactory: Client
   def present = Action { implicit request =>
     Ok(views.html.acquire.not_implemented())
   }
-
 }

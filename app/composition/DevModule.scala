@@ -16,7 +16,7 @@ import common.clientsidesession.EncryptedClientSideSessionFactory
 import common.clientsidesession.Sha1HashGenerator
 import common.filters.AccessLoggingFilter.AccessLoggerName
 import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebServiceImpl, VehicleLookupWebService}
+import common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebServiceImpl, VehicleLookupWebService}
 
 /**
  * Provides real implementations of traits
@@ -47,8 +47,4 @@ object DevModule extends ScalaModule {
 
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
   }
-
-
-
-
 }

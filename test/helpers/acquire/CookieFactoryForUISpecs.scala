@@ -1,24 +1,18 @@
 package helpers.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel, AddressModel, BruteForcePreventionModel}
-import BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
-import org.joda.time.DateTime
+import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
 import org.openqa.selenium.{Cookie, WebDriver}
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{CyId, EnId}
-import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel, DayMonthYear}
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
-import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
-import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import viewmodels._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -57,17 +51,6 @@ object CookieFactoryForUISpecs {
     this
   }
 
-//  def enterAddressManually()(implicit webDriver: WebDriver) = {
-//    val key = EnterAddressManuallyCacheKey
-//    val value = EnterAddressManuallyViewModel(addressAndPostcodeModel = AddressAndPostcodeViewModel(
-//      addressLinesModel = AddressLinesViewModel(buildingNameOrNumber = BuildingNameOrNumberValid,
-//      line2 = Some(Line2Valid),
-//      line3 = Some(Line3Valid),
-//      postTown = PostTownValid)))
-//    addCookie(key, value)
-//    this
-//  }
-
   def dealerDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
     val key = TraderDetailsCacheKey
     val value = TraderDetailsModel(traderName = TraderBusinessNameValid, traderAddress = address)
@@ -75,108 +58,4 @@ object CookieFactoryForUISpecs {
     this
   }
 
-//  def bruteForcePreventionViewModel(permitted: Boolean = true,
-//                                    attempts: Int = 0,
-//                                    maxAttempts: Int = MaxAttempts,
-//                                    dateTimeISOChronology: String = org.joda.time.DateTime.now().toString)
-//                                   (implicit webDriver: WebDriver) = {
-//    val key = BruteForcePreventionViewModelCacheKey
-//    val value = BruteForcePreventionModel(
-//      permitted,
-//      attempts,
-//      maxAttempts,
-//      dateTimeISOChronology
-//    )
-//    addCookie(key, value)
-//    this
-//  }
-
-//  def vehicleLookupFormModel(referenceNumber: String = "1" * 11,
-//                             registrationNumber: String = "A1",
-//                             vehicleSoldTo: String = VehicleSoldTo_Private)
-//                            (implicit webDriver: WebDriver) = {
-//    val key = VehicleLookupFormModelCacheKey
-//    val value = VehicleLookupFormViewModel(referenceNumber = referenceNumber,
-//      registrationNumber = registrationNumber,
-//      vehicleSoldTo = vehicleSoldTo)
-//    addCookie(key, value)
-//    this
-//  }
-
-//  def vehicleDetailsModel(registrationNumber: String = RegistrationNumberValid,
-//                          vehicleMake: String = FakeVehicleLookupWebService.VehicleMakeValid,
-//                          vehicleModel: String = VehicleModelValid,
-//                          keeperName: String = KeeperNameValid)
-//                         (implicit webDriver: WebDriver) = {
-//    val key = VehicleLookupDetailsCacheKey
-//    val value = VehicleDetailsModel(registrationNumber = registrationNumber,
-//      vehicleMake = vehicleMake,
-//      vehicleModel = vehicleModel)
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure")
-//                               (implicit webDriver: WebDriver) = {
-//    val key = VehicleLookupResponseCodeCacheKey
-//    val value = responseCode
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def disposeFormModel()(implicit webDriver: WebDriver) = {
-//    val key = DisposeFormModelCacheKey
-//    val value = DisposeFormViewModel(mileage = None,
-//      dateOfDisposal = DayMonthYear.today,
-//      consent = FakeDisposeWebServiceImpl.ConsentValid,
-//      lossOfRegistrationConsent = FakeDisposeWebServiceImpl.ConsentValid)
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def disposeTransactionId(transactionId: String = TransactionIdValid)(implicit webDriver: WebDriver) = {
-//    val key = DisposeFormTransactionIdCacheKey
-//    val value = transactionId
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def disposeFormTimestamp()(implicit webDriver: WebDriver) = {
-//    val key = DisposeFormTimestampIdCacheKey
-//    val value = new DateTime(DateOfDisposalYearValid.toInt,
-//      DateOfDisposalMonthValid.toInt,
-//      DateOfDisposalDayValid.toInt,
-//      0,
-//      0
-//    ).toString()
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def vehicleRegistrationNumber()(implicit webDriver: WebDriver) = {
-//    val key = DisposeFormRegistrationNumberCacheKey
-//    val value = RegistrationNumberValid
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def preventGoingToDisposePage(url: String)(implicit webDriver: WebDriver) = {
-//    val key = PreventGoingToDisposePageCacheKey
-//    val value = url
-//    addCookie(key, value)
-//    this
-//  }
-//
-//  def disposeOccurred(implicit webDriver: WebDriver) = {
-//    val key = DisposeOccurredCacheKey
-//    addCookie(key, "")
-//    this
-//  }
-//
-//  def microServiceError(origin: String)(implicit webDriver: WebDriver) = {
-//    val key = MicroServiceErrorRefererCacheKey
-//    val value = origin
-//    addCookie(key, value)
-//    this
-//  }
 }

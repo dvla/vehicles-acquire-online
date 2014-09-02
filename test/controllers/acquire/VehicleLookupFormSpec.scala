@@ -1,6 +1,6 @@
-package controllers.disposal_of_vehicle
+package controllers.acquire
 
-import controllers.{VehicleLookup}
+import controllers.VehicleLookup
 import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
@@ -18,7 +18,7 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.ConsentValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.vehicleDetailsResponseSuccess
-import webserviceclients.fakes.{FakeResponse}
+import webserviceclients.fakes.FakeResponse
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
