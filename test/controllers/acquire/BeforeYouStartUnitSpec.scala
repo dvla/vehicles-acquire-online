@@ -1,15 +1,14 @@
 package controllers.acquire
 
-import helpers.UnitSpec
-import play.api.test.{WithApplication, FakeRequest}
-import play.api.test.Helpers._
 import controllers.BeforeYouStart
 import controllers.acquire.Common.PrototypeHtml
+import helpers.UnitSpec
+import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
+import play.api.test.{WithApplication, FakeRequest}
+import play.api.test.Helpers.{OK, LOCATION, contentAsString, defaultAwaitTimeout, status}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import org.mockito.Mockito._
-import scala.Some
 
 class BeforeYouStartUnitSpec extends UnitSpec {
 

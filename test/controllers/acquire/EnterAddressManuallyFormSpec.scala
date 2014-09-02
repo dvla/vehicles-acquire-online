@@ -132,4 +132,3 @@ final class EnterAddressManuallyFormSpec extends UnitSpec {
   val line3Hypthens = "address line - 3"
   val postTownHypthens = "address-line"
 }
-
