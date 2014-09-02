@@ -6,11 +6,12 @@ import play.api.data.Mapping
 import play.api.data.validation._
 import java.util.regex.Pattern
 import play.api.data.validation.ValidationError
-import viewmodels.SetupTradeDetailsViewModel.Form.{TraderEmailMaxLength, TraderEmailMinLength}
 
 object Email {
+  final val TraderEmailMinLength = 3
+  final val TraderEmailMaxLength = 254
   final val EmailUsernameMaxLength = 64
-  final val EmailDomainMaxLength = 63
+  final val EmailDomainSectionMaxLength = 63
 
   def email: Mapping[String] = of[String] verifying emailAddress
 
@@ -18,12 +19,28 @@ object Email {
 
   def emailAddress: Constraint[String] = Constraint[String]("constraint.email") {
     e =>
-      if (e.contains("\"")) Invalid(ValidationError("error.email"))
-      else if (!(TraderEmailMinLength to TraderEmailMaxLength contains e.length)) Invalid(ValidationError("error.email"))
-      else if (!e.contains("@")) Invalid(ValidationError("error.email"))
-      else if (e.split("@")(0).length > EmailUsernameMaxLength) Invalid(ValidationError("error.email"))
-      else if (ptr.matcher(e).matches()) Valid
+      if (!(TraderEmailMinLength to TraderEmailMaxLength contains e.length)) Invalid(ValidationError("error.email"))
+      else if (e.contains("\"")) Invalid(ValidationError("error.email"))
+      else if (ptr.matcher(e).matches()) {
+        if (emailStyleValid(e)) Valid else Invalid(ValidationError("error.email"))
+      }
       else Invalid(ValidationError("error.email"))
   }
 
+  def emailStyleValid (email: String): Boolean =
+    if (email.split("@")(0).length > EmailUsernameMaxLength) false
+    else if (!domainStyleValid(email.split("@")(1))) false
+    else true
+
+  def domainStyleValid(emailDomain: String): Boolean =
+    if (emailDomain.contains(".")) domainLengthValid(emailDomain.split("\\."))
+    else if (emailDomain.length > EmailDomainSectionMaxLength) false
+    else true
+
+  //domainLengthValid is tail recursive as it may be made up of multiple parts
+  def domainLengthValid(emailDomain: Seq[String]): Boolean =
+    if (emailDomain.head.isEmpty) true
+    else if (emailDomain.head.length > EmailDomainSectionMaxLength) false
+    else if (emailDomain.tail.isEmpty) true
+    else domainLengthValid(emailDomain.tail)
 }
