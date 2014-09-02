@@ -12,6 +12,7 @@ object Email {
   final val TraderEmailMaxLength = 254
   final val EmailUsernameMaxLength = 64
   final val EmailDomainSectionMaxLength = 63
+  final val InvalidDomainChars = "-"
 
   def email: Mapping[String] = of[String] verifying emailAddress
 
@@ -101,6 +102,8 @@ object Email {
   def domainLengthValid(emailDomain: Seq[String]): Boolean =
     if (emailDomain.head.isEmpty) true
     else if (emailDomain.head.length > EmailDomainSectionMaxLength) false
+    else if (emailDomain.head contains "/") false
+    else if (emailDomain.head.takeRight(1) == InvalidDomainChars || emailDomain.head.take(1) == InvalidDomainChars) false
     else if (emailDomain.tail.isEmpty) true
     else domainLengthValid(emailDomain.tail)
 }
