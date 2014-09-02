@@ -22,22 +22,26 @@ object Email {
       if (email.contains("\"")) Invalid(ValidationError("error.email"))
       else if (!(TraderEmailMinLength to TraderEmailMaxLength contains email.length)) Invalid(ValidationError("error.email"))
       else if (!email.contains("@")) Invalid(ValidationError("error.email"))
-      else if (email.split("@")(0).length > EmailUsernameMaxLength) Invalid(ValidationError("error.email"))
-      else if (!domainCheck(email.split("@")(1))) Invalid(ValidationError("error.email"))
-      else if (ptr.matcher(email).matches()) Valid
+      else if (ptr.matcher(email).matches()) {
+        if (emailFormat(email)) Valid
+        else Invalid(ValidationError("error.email"))
+      }
       else Invalid(ValidationError("error.email"))
   }
 
-  def domainCheck(email: String): Boolean = {
+  def emailFormat(email: String): Boolean =
+    if (email.split("@")(0).length > EmailUsernameMaxLength) false
+    else if (!domainCheck(email.split("@")(1))) false
+    else true
+
+  def domainCheck(email: String): Boolean =
     if (email.contains(".")) checkLength(email.split("\\."))
     else if (email.length > EmailDomainSectionMaxLength) false
     else true
-  }
 
-  def checkLength(email: Seq[String]): Boolean = {
+  def checkLength(email: Seq[String]): Boolean =
     if (email.head.isEmpty) true
     else if (email.head.length > EmailDomainSectionMaxLength) false
     else if (email.tail.isEmpty) true
     else checkLength(email.tail)
-  }
 }
