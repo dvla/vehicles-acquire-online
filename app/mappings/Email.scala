@@ -23,25 +23,24 @@ object Email {
       else if (!(TraderEmailMinLength to TraderEmailMaxLength contains email.length)) Invalid(ValidationError("error.email"))
       else if (!email.contains("@")) Invalid(ValidationError("error.email"))
       else if (ptr.matcher(email).matches()) {
-        if (emailFormat(email)) Valid
-        else Invalid(ValidationError("error.email"))
+        if (emailStyle(email)) Valid else Invalid(ValidationError("error.email"))
       }
       else Invalid(ValidationError("error.email"))
   }
 
-  def emailFormat(email: String): Boolean =
+  def emailStyle(email: String): Boolean =
     if (email.split("@")(0).length > EmailUsernameMaxLength) false
-    else if (!domainCheck(email.split("@")(1))) false
+    else if (!domainStyle(email.split("@")(1))) false
     else true
 
-  def domainCheck(email: String): Boolean =
-    if (email.contains(".")) checkLength(email.split("\\."))
-    else if (email.length > EmailDomainSectionMaxLength) false
+  def domainStyle(emailDomain: String): Boolean =
+    if (emailDomain.contains(".")) checkDomainLength(emailDomain.split("\\."))
+    else if (emailDomain.length > EmailDomainSectionMaxLength) false
     else true
 
-  def checkLength(email: Seq[String]): Boolean =
-    if (email.head.isEmpty) true
-    else if (email.head.length > EmailDomainSectionMaxLength) false
-    else if (email.tail.isEmpty) true
-    else checkLength(email.tail)
+  def checkDomainLength(emailDomain: Seq[String]): Boolean =
+    if (emailDomain.head.isEmpty) true
+    else if (emailDomain.head.length > EmailDomainSectionMaxLength) false
+    else if (emailDomain.tail.isEmpty) true
+    else checkDomainLength(emailDomain.tail)
 }
