@@ -96,8 +96,8 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
       formWithValidDefaults(traderEmail = "e@").errors should have length 1
     }
 
-    "reject if quotes are present" in {
-      formWithValidDefaults(traderEmail = "\"a\"@iana.org").errors should have length 1
+    "reject if quotes are present in the domain" in {
+      formWithValidDefaults(traderEmail = "a@a\"iana.org").errors should have length 1
     }
 
     "reject if greater than max length" in {
