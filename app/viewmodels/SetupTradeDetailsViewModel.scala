@@ -8,7 +8,7 @@ import play.api.data.Mapping
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
 import FormExtensions._
-import mappings.Email.email
+import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 
 final case class SetupTradeDetailsViewModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])

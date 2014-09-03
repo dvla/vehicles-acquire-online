@@ -4,7 +4,6 @@ import helpers.UnitSpec
 import controllers.SetUpTradeDetails
 import viewmodels.SetupTradeDetailsViewModel.Form._
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid,PostcodeValid, TraderEmailValid}
-import mappings.Email.{EmailUsernameMaxLength, EmailDomainSectionMaxLength}
 
 class SetupTradeDetailsFormSpec extends UnitSpec {
 
@@ -26,7 +25,7 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(traderBusinessName = "" , traderPostcode = "").errors should have length 6
+      formWithValidDefaults(traderBusinessName = "", traderPostcode = "").errors should have length 6
     }
   }
 
@@ -85,58 +84,6 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     "reject if trader postcode contains an incorrect format" in {
       formWithValidDefaults(traderPostcode = "SAR99").errors should have length 1
     }
-  }
-
-  "trader email" should {
-    "reject if incorrect format is used" in {
-      formWithValidDefaults(traderEmail = "email_with_no_at_symbol").errors should have length 1
-    }
-
-    "reject if less than min length" in {
-      formWithValidDefaults(traderEmail = "e@").errors should have length 1
-    }
-
-    "reject if quotes are present in the domain" in {
-      formWithValidDefaults(traderEmail = "a@a\"iana.org").errors should have length 1
-    }
-
-    "reject if greater than max length" in {
-      val longInvalidEmail = "a@" + ("a" * 249) + ".com"
-      formWithValidDefaults(traderEmail = longInvalidEmail).errors should have length 1
-    }
-
-    "reject if email username is greater than max length" in {
-      val invalidEmailUsername = ("a" * (EmailUsernameMaxLength + 1)) + "@a"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email domain name is greater than max length" in {
-      val invalidEmailUsername = "a@" + ("a" * EmailDomainSectionMaxLength + 1) + ".org"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email domain contains /" in {
-      val invalidEmailUsername = "a@ttttteee/ffdgdg.org"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if second section of email domain name is greater than max length" in {
-      val invalidEmailUsername = "a@a." + ("a" * EmailDomainSectionMaxLength + 1) + ".co.uk"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "accept an email address which is equal to max length" in {
-      val traderEmailValid = ("a" * EmailUsernameMaxLength) + "@" + ("b" * EmailDomainSectionMaxLength) + "." + ("c" * EmailDomainSectionMaxLength) + "." + ("d" * 61)
-      val model = formWithValidDefaults(traderEmail = traderEmailValid).get
-      model.traderEmail should equal(Some(traderEmailValid))
-    }
-
-    "accept the format test@io" in {
-      val traderEmailValid = "test@io"
-      val model = formWithValidDefaults(traderEmail = traderEmailValid).get
-      model.traderEmail should equal(Some(traderEmailValid))
-    }
-
   }
 
   private def formWithValidDefaults(traderBusinessName: String = TraderBusinessNameValid,
