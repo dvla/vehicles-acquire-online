@@ -115,33 +115,8 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
       formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
     }
 
-    "reject if email is in format .@." in {
-      val invalidEmailUsername = ".@."
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email is in format test@-iana.org" in {
-      val invalidEmailUsername = "test@-iana.org"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email is in format test@iana/icann.org" in {
-      val invalidEmailUsername = "test@iana/icann.org"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email is in format test@iana.org-" in {
-      val invalidEmailUsername = "test@iana.org-"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email is in format \"test\".test@iana.org" in {
-      val invalidEmailUsername = "\"test\".test@iana.org"
-      formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
-    }
-
-    "reject if email is in format \"test\".\"test”@iana.org" in {
-      val invalidEmailUsername = "\"test\".\"test”@iana.org"
+    "reject if email domain contains /" in {
+      val invalidEmailUsername = "a@ttttteee/ffdgdg.org"
       formWithValidDefaults(traderEmail = invalidEmailUsername).errors should have length 1
     }
 
@@ -162,29 +137,6 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
       model.traderEmail should equal(Some(traderEmailValid))
     }
 
-    "accept the format test@e.com" in {
-      val traderEmailValid = "test@e.com"
-      val model = formWithValidDefaults(traderEmail = traderEmailValid).get
-      model.traderEmail should equal(Some(traderEmailValid))
-    }
-
-    "accept the format test@iana.a" in {
-      val traderEmailValid = "test@iana.a"
-      val model = formWithValidDefaults(traderEmail = traderEmailValid).get
-      model.traderEmail should equal(Some(traderEmailValid))
-    }
-
-    "accept the format test@iana.123" in {
-      val traderEmailValid = "test@iana.123"
-      val model = formWithValidDefaults(traderEmail = traderEmailValid).get
-      model.traderEmail should equal(Some(traderEmailValid))
-    }
-
-    "accept the format test@iana.co-uk" in {
-      val traderEmailValid = "test@iana.co-uk"
-      val model = formWithValidDefaults(traderEmail = traderEmailValid).get
-      model.traderEmail should equal(Some(traderEmailValid))
-    }
   }
 
   private def formWithValidDefaults(traderBusinessName: String = TraderBusinessNameValid,
