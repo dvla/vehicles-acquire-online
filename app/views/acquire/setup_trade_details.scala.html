@@ -6,9 +6,10 @@ config: utils.helpers.Config)
 @import views.acquire.SetupTradeDetails.SubmitId
 @import views.html.acquire.main
 @import views.html.helper.form
-@import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderNameMaxLength, TraderEmailId, TraderEmailMaxLength}
+@import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderNameMaxLength, TraderEmailId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.Postcode
+@import common.mappings.Email.TraderEmailMaxLength
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.views.html.widgets.base.csrfTokenHiddenField

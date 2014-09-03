@@ -86,7 +86,7 @@ onHandlerNotFound.start.button=Start
 error.title=An unrecoverable error has occurred
 error.button=Start again
 error.validTraderBusinessName = Must be between two and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
-error.email = Enter a valid email address up to 255 characters
+error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
 
 language.cy.button = Cymraeg
@@ -198,7 +198,7 @@ error.address.postcode.invalid = Must be between five and eight characters and i
 error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
 
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
-acquire_keeperstillonrecord.title = A Keeper is on the record
+acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
 acquire_keeperstillonrecord.text2 = You can notify us of the vehicle''s sale to the motor trade.
 acquire_keeperstillonrecord.text3 = Before you do this, ensure you have the consent of the keeper we currently have on record.

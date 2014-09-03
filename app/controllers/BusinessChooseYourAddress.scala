@@ -16,7 +16,6 @@ import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.for
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import views.html.acquire.business_choose_your_address
-import scala.Some
 
 class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
