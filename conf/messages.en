@@ -34,6 +34,7 @@ widget.optional = (optional)
 error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
 error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
+error.validTitle = Must be a valid title
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -88,6 +89,7 @@ error.button=Start again
 error.validTraderBusinessName = Must be between two and 58 characters and only contain valid characters (a-z, A-Z, 0-9, +, -, ‘, &, @, () and ,)
 error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
+error.titleInvalid = Please select a title from the drop down list.
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -216,6 +218,13 @@ acquire_individualkeeperdetails.vehiclereg = Registration
 acquire_individualkeeperdetails.vehiclemake = Make
 acquire_individualkeeperdetails.vehiclemodel = Model
 acquire_individualkeeperdetails.backbutton = Back
+acquire_individualkeeperdetails.submitbutton = Submit
+acquire_individualkeeperdetails.titlelabel = Title
+acquire_individualkeeperdetails.p1 = Enter the details of the person buying this vehicle.
+acquire_individualkeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
+acquire_individualkeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
+privatekeeper_title = Title
+
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
