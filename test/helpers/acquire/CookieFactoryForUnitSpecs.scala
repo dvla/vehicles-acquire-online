@@ -4,9 +4,10 @@ import composition.TestComposition
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.{TraderDetailsModel, AddressModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel, AddressModel}
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import viewmodels._
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
@@ -95,6 +96,20 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       referenceNumber = referenceNumber,
       registrationNumber = registrationNumber,
       vehicleSoldTo = vehicleSoldTo
+    )
+    createCookie(key, value)
+  }
+
+  def vehicleDetailsModel(registrationNumber: String = RegistrationNumberValid,
+                          vehicleMake: String = "Audi",
+                          vehicleModel: String = "A6",
+                          disposeFlag: Boolean = false): Cookie = {
+    val key = VehicleLookupDetailsCacheKey
+    val value = VehicleDetailsModel(
+      registrationNumber = registrationNumber,
+      vehicleMake = vehicleMake,
+      vehicleModel = vehicleModel,
+      disposeFlag = disposeFlag
     )
     createCookie(key, value)
   }
