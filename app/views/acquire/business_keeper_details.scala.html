@@ -1,12 +1,18 @@
-@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel)(implicit lang: Lang,
-token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
-config: utils.helpers.Config)
+@(viewModel: viewmodels.BusinessKeeperDetailsViewModel
+)(implicit lang: Lang,
+  token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
+  config: utils.helpers.Config
+)
 
 @import controllers.routes.BeforeYouStart
 @import controllers.routes.VehicleLookup
-@import views.acquire.BusinessKeeperDetails._
+@import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.helpers.BaseTemplate.fieldConstructor
+@import common.views.html.widgets.base.valtechInputText
+@import views.html.helper.form
+@import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{BusinessNameId}
 
 @main(
     title = Messages("acquire_businesskeeperdetails.title")
@@ -16,11 +22,11 @@ config: utils.helpers.Config)
             <h2>@Messages("acquire_businesskeeperdetails.vehicledetails")</h2>
             <dl class="summary-detail-list">
                 <dt>@Messages("acquire_businesskeeperdetails.vehiclereg")</dt>
-                <dd>@data.registrationNumber</dd>
+                <dd>@viewModel.vehicleDetails.registrationNumber</dd>
                 <dt>@Messages("acquire_businesskeeperdetails.vehiclemake")</dt>
-                <dd>@data.vehicleMake</dd>
+                <dd>@viewModel.vehicleDetails.vehicleMake</dd>
                 <dt>@Messages("acquire_businesskeeperdetails.vehiclemodel")</dt>
-                <dd>@data.vehicleModel</dd>
+                <dd>@viewModel.vehicleDetails.vehicleModel</dd>
             </dl>
         </div>
 
@@ -29,10 +35,20 @@ config: utils.helpers.Config)
             <br/>
             <br/>
             <div class="form-steps">
-                @csrfTokenHiddenField()
-                <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
-                    @Messages("acquire_businesskeeperdetails.backbutton")
-                </a>
+                @form(action = controllers.routes.BusinessKeeperDetails.submit()) {
+                    @csrfTokenHiddenField()
+
+                    @valtechInputText(viewModel.form(BusinessNameId), args =
+                    Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
+                    'maxLength -> 56,
+                    '_showConstraints -> false,
+                    'autofocus -> true))
+
+                    <button id="@NextId" type="submit" name="action" class="button">@Messages("acquire_businesskeeperdetails.nextbutton")</button>
+                    <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
+                        @Messages("acquire_businesskeeperdetails.backbutton")
+                    </a>
+                }
             </div>
         </div>
     </div>
