@@ -19,6 +19,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
 import webserviceclients.fakes.FakeVehicleLookupWebService._
 import webserviceclients.fakes.FakeAddressLookupService._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
+import pages.acquire.PrivateKeeperDetailsPage.ModelValid
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -101,8 +102,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   }
 
   def vehicleDetailsModel(registrationNumber: String = RegistrationNumberValid,
-                          vehicleMake: String = "Audi",
-                          vehicleModel: String = "A6",
+                          vehicleMake: String = VehicleMakeValid,
+                          vehicleModel: String = ModelValid,
                           disposeFlag: Boolean = false): Cookie = {
     val key = VehicleLookupDetailsCacheKey
     val value = VehicleDetailsModel(
