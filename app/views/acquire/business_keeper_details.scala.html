@@ -11,6 +11,7 @@
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
+@import common.mappings.BusinessName
 @import views.html.helper.form
 @import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{BusinessNameId}
 
@@ -40,7 +41,7 @@
 
                     @valtechInputText(viewModel.form(BusinessNameId), args =
                     Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
-                    'maxLength -> 56,
+                    'maxLength -> BusinessName.MaxLength,
                     '_showConstraints -> false,
                     'autofocus -> true))
 

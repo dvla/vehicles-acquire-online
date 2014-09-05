@@ -1,15 +1,12 @@
 package viewmodels
 
-import constraints.TraderBusinessName
-import uk.gov.dvla.vehicles.presentation.common.mappings.Postcode
-import Postcode.postcode
 import play.api.data.Forms.{mapping, optional}
-import play.api.data.Mapping
 import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
-import FormExtensions._
-import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.CacheKey
+import common.mappings.BusinessName.businessNameMapping
+import common.mappings.Email.email
+import common.mappings.Postcode.postcode
 
 final case class SetupTradeDetailsViewModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])
 
@@ -22,15 +19,9 @@ object SetupTradeDetailsViewModel {
     final val TraderNameId = "traderName"
     final val TraderPostcodeId = "traderPostcode"
     final val TraderEmailId = "traderEmail"
-    final val TraderNameMinLength = 2
-    final val TraderNameMaxLength = 58
-
-    private final val TraderNameMapping: Mapping[String] =
-      nonEmptyTextWithTransform(_.toUpperCase.trim)(TraderNameMinLength, TraderNameMaxLength)
-        .verifying(TraderBusinessName.validTraderBusinessName)
 
     final val Mapping = mapping(
-      TraderNameId -> TraderNameMapping,
+      TraderNameId -> businessNameMapping,
       TraderPostcodeId -> postcode,
       TraderEmailId -> optional(email)
     )(SetupTradeDetailsViewModel.apply)(SetupTradeDetailsViewModel.unapply)
