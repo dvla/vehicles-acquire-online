@@ -13,7 +13,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import viewmodels.PrivateKeeperDetailsViewModel.Form.TitleId
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId}
 import pages.acquire.PrivateKeeperDetailsPage._
 import pages.acquire.SetupTradeDetailsPage
 import scala.Some
@@ -41,10 +41,30 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       val result = privateKeeperDetailsPrototypeNotVisible.present(request)
       contentAsString(result) should not include PrototypeHtml
     }
+
+    "display empty fields when cookie does not exist" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = privateKeeperDetails.present(request)
+      val content = contentAsString(result)
+      content should include(TitleValid)
+      content should not include "selected"
+    }
   }
 
     "submit" should {
-      "redirect to next page when the form is completed successfully" in new WithApplication {
+      "redirect to next page when mandatory fields are complete" in new WithApplication {
+        val request = buildCorrectlyPopulatedRequest(email = "")
+          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        val result = privateKeeperDetails.submit(request)
+        whenReady(result) {
+          r =>
+            r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+        }
+      }
+
+      "redirect to next page when all fields are complete" in new WithApplication {
         val request = buildCorrectlyPopulatedRequest()
           .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
         val result = privateKeeperDetails.submit(request)
@@ -82,9 +102,10 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       }
     }
 
-  private def buildCorrectlyPopulatedRequest(title: String = TitleValid) = {
+  private def buildCorrectlyPopulatedRequest(title: String = TitleValid, email: String = EmailValid) = {
     FakeRequest().withFormUrlEncodedBody(
-      TitleId -> title
+      TitleId -> title,
+      EmailId -> email
     )
   }
 

@@ -9,14 +9,13 @@ import helpers.webbrowser.{TestGlobal, TestHarness}
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
-import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.PrivateKeeperDetailsPage
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, TitleValid, back}
+import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, OptionValid, back, EmailValid, EmailInvalid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -64,11 +63,20 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
   }
 
   "next button" should {
-    "go to the appropriate next page when correct private keeper details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all private keeper details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
 
-      happyPath(title = TitleValid)
+      happyPath()
+
+      page.title should equal("Not implemented") //ToDo amend title once next page is implemented
+    }
+
+    "go to the appropriate next page when mandatory private keeper details are entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      happyPath(email = "")
 
       page.title should equal("Not implemented") //ToDo amend title once next page is implemented
     }
@@ -77,7 +85,16 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       cacheSetup()
 
-      sadPath
+      sadPath(email = EmailValid)
+
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      sadPath(title = OptionValid, email = EmailInvalid)
 
       ErrorPanel.numberOfErrors should equal(1)
     }

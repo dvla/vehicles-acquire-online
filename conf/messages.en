@@ -220,11 +220,12 @@ acquire_individualkeeperdetails.vehiclemodel = Model
 acquire_individualkeeperdetails.backbutton = Back
 acquire_individualkeeperdetails.submitbutton = Submit
 acquire_individualkeeperdetails.titlelabel = Title
+acquire_individualkeeperdetails.emaillabel = Email address
 acquire_individualkeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_individualkeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
 acquire_individualkeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
 privatekeeper_title = Title
-
+privatekeeper_email = Email
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details

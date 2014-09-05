@@ -11,6 +11,7 @@ import play.api.data.{FormError, Form}
 import viewmodels.PrivateKeeperDetailsViewModel
 import viewmodels.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import scala.Some
 
 final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -23,7 +24,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleDetailsModel] match {
       case Some(vehicleDetails) =>
-        Ok(views.html.acquire.private_keeper_details(vehicleDetails, form, titleOptions))
+        Ok(views.html.acquire.private_keeper_details(vehicleDetails, form.fill(), titleOptions))
       case _ =>
         Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
@@ -39,7 +40,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                 replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },
-            validForm => Redirect(routes.NotImplemented.present()))
+            validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm))
         case _ =>
           Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
           Redirect(routes.SetUpTradeDetails.present())

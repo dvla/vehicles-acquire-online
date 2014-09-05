@@ -67,7 +67,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
     "display empty fields when cookie does not exist" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
       content should not include ReferenceNumberValid
