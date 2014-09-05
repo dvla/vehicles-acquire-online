@@ -237,3 +237,6 @@ acquire_businesskeeperdetails.vehiclemodel = Model
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.businessname = Business name
 acquire_businesskeeperdetails.nextbutton = Next
+
+# Error messages for common components  
+error.validBusinessName = Must be between 2 and 56 characters and only contain valid characters (a-z, A-Z, 0-9, -, ‘, and ,)

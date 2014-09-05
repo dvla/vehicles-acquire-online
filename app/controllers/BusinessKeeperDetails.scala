@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import play.api.data.Form
+import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
 import utils.helpers.Config
@@ -10,6 +10,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import viewmodels.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormViewModel}
+import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 
 final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -36,20 +37,29 @@ final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory:
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-/*
-        val formWithReplacedErrors = invalidForm.replaceError(
-          TraderNameId,
-          FormError(key = TraderNameId, message = "error.validTraderBusinessName", args = Seq.empty)
-        ).replaceError(
-            TraderPostcodeId,
-            FormError(key = TraderPostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
-          ).distinctErrors
-*/
-//        BadRequest(views.html.disposal_of_vehicle.setup_trade_details(formWithReplacedErrors))
-        BadRequest("Bad request")
+        request.cookies.getModel[VehicleDetailsModel] match {
+          case Some(vehicleDetails) =>
+            val formWithReplacedErrors = invalidForm.replaceError(
+              BusinessKeeperDetailsFormViewModel.Form.BusinessNameId,
+              FormError(
+                key = BusinessKeeperDetailsFormViewModel.Form.BusinessNameId,
+                message = "error.validBusinessName",
+                args = Seq.empty
+              )
+            ).distinctErrors
+            BadRequest(views.html.acquire.business_keeper_details(
+              BusinessKeeperDetailsViewModel(
+                formWithReplacedErrors,
+                vehicleDetails
+              )
+            ))
+          case None =>
+            Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
+            Redirect(routes.SetUpTradeDetails.present())
+        }
       },
-//      validForm => Redirect(routes.BusinessChooseYourAddress.present()).withCookie(validForm)
-      validForm => Ok(s"Success - you entered $validForm").withCookie(validForm)
+      validForm =>
+        Ok(s"Success - you entered $validForm").withCookie(validForm)
     )
   }
 }
