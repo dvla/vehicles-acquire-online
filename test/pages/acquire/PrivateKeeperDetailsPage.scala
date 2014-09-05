@@ -12,8 +12,10 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final override val title: String = "Enter keeper details"
 
   final val TitleValid = "Mrs"
-  final val Option1 = "firstOption"
+  final val TitleInvalid = ""
+  final val OptionValid = "firstOption"
   final val EmailValid = "my@email.com"
+  final val EmailInvalid = "no_at_symbol.com"
   final val TitleInvalidError = "Please select a title from the drop down list."
   final val VehicleMakeValid = "Audi"
   final val ModelValid = "A6"
@@ -24,16 +26,22 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def titleDropDown(implicit driver: WebDriver): SingleSel = singleSel(id(TitleId))
 
-  def happyPath(title: String = TitleValid)(implicit driver: WebDriver) = {
+  def emailTextBox(implicit driver: WebDriver): TextField = textField(id(EmailId))
+
+  def happyPath(title: String = OptionValid, email: String = EmailValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
-    titleDropDown select Option1
+    titleDropDown select title
+    emailTextBox enter email
 
     click on next
   }
 
-  def sadPath (implicit driver: WebDriver) = {
+  def sadPath (title: String = TitleInvalid, email: String = EmailInvalid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
+
+    titleDropDown select title
+    emailTextBox enter email
 
     click on next
   }
