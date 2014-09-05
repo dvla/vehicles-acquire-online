@@ -1,6 +1,7 @@
-@(traderLookupForm: Form[viewmodels.SetupTradeDetailsViewModel])(implicit lang: Lang,
-token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
-config: utils.helpers.Config)
+@(traderLookupForm: Form[viewmodels.SetupTradeDetailsViewModel])
+(implicit lang: Lang,
+          token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
+          config: utils.helpers.Config)
 
 @import controllers.routes.SetUpTradeDetails;
 @import views.acquire.SetupTradeDetails.SubmitId
