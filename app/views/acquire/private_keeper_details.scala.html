@@ -1,39 +1,60 @@
-@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel)(implicit lang: Lang,
+@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel,
+privateKeeperDetailsForm: Form[viewmodels.PrivateKeeperDetailsViewModel],
+titleOptions: Seq[(String, String)])(implicit lang: Lang,
 token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
 config: utils.helpers.Config)
 
 @import controllers.routes.BeforeYouStart
 @import controllers.routes.VehicleLookup
-@import views.acquire.PrivateKeeperDetails.{BackId}
+@import controllers.routes.PrivateKeeperDetails
+@import views.html.helper.form
+@import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 @import uk.gov.dvla.vehicles.presentation.common
+@import common.views.html.widgets.base.valtechSelect
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.helpers.BaseTemplate.fieldConstructor
+@import common.views.html.widgets.base.valtechInputText
+@import viewmodels.PrivateKeeperDetailsViewModel.Form.TitleId
 
 @main(
-    title = Messages("acquire_individualkeeperdetails.title")
+progress = Some(Messages("acquire_progress_5")),
+title = Messages("acquire_individualkeeperdetails.title"),
+currentForm = Some(privateKeeperDetailsForm)
 ) {
-    <div class="two-col clearfix">
+@form(action = PrivateKeeperDetails.submit) {
+@csrfTokenHiddenField()
 
-        <div class="first-col">
-            <h2>@Messages("acquire_individualkeeperdetails.vehicledetails")</h2>
-            <dl class="summary-detail-list">
-                <dt>@Messages("acquire_individualkeeperdetails.vehiclereg")</dt>
-                <dd>@data.registrationNumber</dd>
-                <dt>@Messages("acquire_individualkeeperdetails.vehiclemake")</dt>
-                <dd>@data.vehicleMake</dd>
-                <dt>@Messages("acquire_individualkeeperdetails.vehiclemodel")</dt>
-                <dd>@data.vehicleModel</dd>
-            </dl>
+<div class="two-col clearfix">
+    <div class="second-col">
+        <p>@Messages("acquire_individualkeeperdetails.p1")</p>
+        <p>@Messages("acquire_individualkeeperdetails.p2")</p>
+        <p>@Messages("acquire_individualkeeperdetails.p3")</p>
+        <div class="uppercase-input">
+            @valtechSelect(privateKeeperDetailsForm(TitleId),
+            options = titleOptions.toSeq,
+             args = Map(
+             '_label -> Messages("acquire_individualkeeperdetails.titlelabel"),
+             'autofocus -> true))
         </div>
-        <div class="second-col">
-            <br/>
-            <br/>
-            <br/>
-            <div class="form-steps">
-                @csrfTokenHiddenField()
-                <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
-                    @Messages("acquire_individualkeeperdetails.backbutton")
-                </a>
-            </div>
+        <div class="form-steps">
+            <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_individualkeeperdetails.submitbutton")</button>
+            <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
+                @Messages("acquire_individualkeeperdetails.backbutton")
+            </a>
         </div>
     </div>
+
+    <div class="first-col">
+        <h2>@Messages("acquire_individualkeeperdetails.vehicledetails")</h2>
+        <dl class="summary-detail-list">
+            <dt>@Messages("acquire_individualkeeperdetails.vehiclereg")</dt>
+            <dd>@data.registrationNumber</dd>
+            <dt>@Messages("acquire_individualkeeperdetails.vehiclemake")</dt>
+            <dd>@data.vehicleMake</dd>
+            <dt>@Messages("acquire_individualkeeperdetails.vehiclemodel")</dt>
+            <dd>@data.vehicleModel</dd>
+        </dl>
+    </div>
+</div>
+}
 }

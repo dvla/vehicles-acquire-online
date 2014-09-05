@@ -1,6 +1,6 @@
 package helpers.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel, AddressModel}
 import org.openqa.selenium.{Cookie, WebDriver}
 import play.api.Play
 import play.api.Play.current
@@ -13,6 +13,10 @@ import viewmodels._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
+import webserviceclients.fakes.FakeVehicleLookupWebService._
+import pages.acquire.PrivateKeeperDetailsPage.ModelValid
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel._
+import scala.Some
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -58,4 +62,16 @@ object CookieFactoryForUISpecs {
     this
   }
 
+  def vehicleDetails(registrationNumber: String = RegistrationNumberValid,
+                     vehicleMake: String = VehicleMakeValid,
+                     vehicleModel: String = ModelValid,
+                     disposeFlag: Boolean = false)(implicit webDriver: WebDriver) = {
+    val key = VehicleLookupDetailsCacheKey
+    val value = VehicleDetailsModel(registrationNumber = registrationNumber,
+                                    vehicleMake,
+                                    vehicleModel,
+                                    disposeFlag)
+    addCookie(key, value)
+    this
+  }
 }

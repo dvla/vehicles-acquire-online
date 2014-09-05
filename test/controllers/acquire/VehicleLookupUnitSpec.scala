@@ -20,11 +20,9 @@ import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, vehicleDetailsResponseSuccess}
 import play.api.libs.ws.WSResponse
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.WithApplication
 import pages.acquire.{PrivateKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}

@@ -5,6 +5,7 @@ import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
+import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
 import viewmodels.BusinessKeeperDetailsFormViewModel.BusinessKeeperDetailsCacheKey
 
 package object viewmodels {
@@ -19,6 +20,7 @@ package object viewmodels {
     BruteForcePreventionViewModelCacheKey,
     VehicleLookupFormModelCacheKey,
     VehicleLookupDetailsCacheKey,
+    PrivateKeeperDetailsCacheKey,
     BusinessKeeperDetailsCacheKey
   )
 
