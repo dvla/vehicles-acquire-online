@@ -19,7 +19,8 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
 import webserviceclients.fakes.FakeVehicleLookupWebService._
 import webserviceclients.fakes.FakeAddressLookupService._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import pages.acquire.PrivateKeeperDetailsPage.ModelValid
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid}
+import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -111,6 +112,15 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       vehicleMake = vehicleMake,
       vehicleModel = vehicleModel,
       disposeFlag = disposeFlag
+    )
+    createCookie(key, value)
+  }
+
+  def privateKeeperDetailsModel(title: String = TitleValid, email: Option[String] = None): Cookie = {
+    val key = PrivateKeeperDetailsCacheKey
+    val value = PrivateKeeperDetailsViewModel(
+      title = title,
+      email = email
     )
     createCookie(key, value)
   }
