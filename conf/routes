@@ -43,6 +43,7 @@ POST    /vrm-acquire/private-keeper-details         @controllers.PrivateKeeperDe
 
 # Business keeper details
 GET     /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.present
+POST    /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.submit
 
 GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
 

@@ -6,6 +6,7 @@ import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCa
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
+import viewmodels.BusinessKeeperDetailsFormViewModel.BusinessKeeperDetailsCacheKey
 
 package object viewmodels {
   final val HelpCacheKey = "help"
@@ -19,7 +20,8 @@ package object viewmodels {
     BruteForcePreventionViewModelCacheKey,
     VehicleLookupFormModelCacheKey,
     VehicleLookupDetailsCacheKey,
-    PrivateKeeperDetailsCacheKey
+    PrivateKeeperDetailsCacheKey,
+    BusinessKeeperDetailsCacheKey
   )
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page
