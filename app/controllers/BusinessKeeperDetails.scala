@@ -43,8 +43,7 @@ final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory:
               BusinessKeeperDetailsFormViewModel.Form.BusinessNameId,
               FormError(
                 key = BusinessKeeperDetailsFormViewModel.Form.BusinessNameId,
-                message = "error.validBusinessName",
-                args = Seq.empty
+                message = "error.validBusinessName"
               )
             ).distinctErrors
             BadRequest(views.html.acquire.business_keeper_details(
