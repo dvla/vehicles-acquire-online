@@ -9,7 +9,7 @@ config: utils.helpers.Config)
 @import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderNameMaxLength, TraderEmailId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.Postcode
-@import common.mappings.Email.TraderEmailMaxLength
+@import common.mappings.Email.EmailMaxLength
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.views.html.widgets.base.csrfTokenHiddenField
@@ -32,7 +32,7 @@ currentForm = Some(traderLookupForm)
     @valtechInputText(traderLookupForm(TraderEmailId), args =
     Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
     '_showConstraints -> false,
-    'maxLength -> TraderEmailMaxLength))
+    'maxLength -> EmailMaxLength))
 
     @valtechInputText(traderLookupForm(TraderPostcodeId), hintText = Some(Messages("acquire_setuptradedetails.traderpostcode.hint")), args =
     Map('_label -> Messages("acquire_setuptradedetails.traderpostcodelabel"),
