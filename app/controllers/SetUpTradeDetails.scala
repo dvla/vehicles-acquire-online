@@ -25,11 +25,12 @@ final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: Cli
     form.bindFromRequest.fold(
       invalidForm => {
         val formWithReplacedErrors = invalidForm.
-          replaceError(TraderNameId, FormError(key = TraderNameId, message = "error.validTraderBusinessName", args = Seq.empty)).
+          replaceError(TraderNameId, FormError(key = TraderNameId, message = "error.validBusinessName", args = Seq.empty)).
           replaceError(TraderPostcodeId, FormError(key = TraderPostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)).distinctErrors
         BadRequest(views.html.acquire.setup_trade_details(formWithReplacedErrors))
       },
-      validForm => Redirect(routes.BusinessChooseYourAddress.present()).withCookie(validForm)
+      validForm =>
+        Redirect(routes.BusinessChooseYourAddress.present()).withCookie(validForm)
     )
   }
 }

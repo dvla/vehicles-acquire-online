@@ -4,6 +4,7 @@ import helpers.UnitSpec
 import controllers.SetUpTradeDetails
 import viewmodels.SetupTradeDetailsViewModel.Form._
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid,PostcodeValid, TraderEmailValid}
+import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
 
 class SetupTradeDetailsFormSpec extends UnitSpec {
 
@@ -13,14 +14,14 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
         traderBusinessName = TraderBusinessNameValid,
         traderPostcode = PostcodeValid,
         traderEmail = TraderEmailValid).get
-      model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
+      model.traderBusinessName should equal(TraderBusinessNameValid)
       model.traderPostcode should equal(PostcodeValid)
       model.traderEmail should equal(Some(TraderEmailValid))
     }
 
     "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(traderBusinessName = TraderBusinessNameValid, traderPostcode = PostcodeValid).get
-      model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
+      model.traderBusinessName should equal(TraderBusinessNameValid)
       model.traderPostcode should equal(PostcodeValid)
     }
 
@@ -39,20 +40,20 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
       errors(1).key should equal(TraderNameId)
       errors(1).message should equal("error.required")
       errors(2).key should equal(TraderNameId)
-      errors(2).message should equal("error.validTraderBusinessName")
+      errors(2).message should equal("error.validBusinessName")
     }
 
     "reject if trader business name is less than minimum length" in {
-      formWithValidDefaults(traderBusinessName = "A").errors should have length 1
+      formWithValidDefaults(traderBusinessName = "A").errors should have length 2
     }
 
     "reject if trader business name is more than the maximum length" in {
-      formWithValidDefaults(traderBusinessName = "A" * 101).errors should have length 1
+      formWithValidDefaults(traderBusinessName = "A" * BusinessName.MaxLength + 1).errors should have length 1
     }
 
     "accept if trader business name is valid" in {
       formWithValidDefaults(traderBusinessName = TraderBusinessNameValid, traderPostcode = PostcodeValid).
-        get.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
+        get.traderBusinessName should equal(TraderBusinessNameValid)
     }
   }
 
