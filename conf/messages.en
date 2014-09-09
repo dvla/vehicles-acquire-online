@@ -90,6 +90,7 @@ error.validBusinessName = Must be between two and 56 characters and only contain
 error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
+error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -220,12 +221,14 @@ acquire_individualkeeperdetails.vehiclemodel = Model
 acquire_individualkeeperdetails.backbutton = Back
 acquire_individualkeeperdetails.submitbutton = Submit
 acquire_individualkeeperdetails.titlelabel = Title
+acquire_individualkeeperdetails.firstnamelabel = First name
 acquire_individualkeeperdetails.emaillabel = Email address
 acquire_individualkeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_individualkeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
 acquire_individualkeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
 privatekeeper_title = Title
 privatekeeper_email = Email
+privatekeeper_firstname = First name
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
