@@ -9,7 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import play.api.data.{FormError, Form}
 import viewmodels.PrivateKeeperDetailsViewModel
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId, FirstNameId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import scala.Some
@@ -37,7 +37,8 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
           form.bindFromRequest.fold(
             invalidForm => {
               val formWithReplacedErrors = invalidForm.
-                replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).distinctErrors
+                replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).
+                replaceError(FirstNameId, FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },
             validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm))

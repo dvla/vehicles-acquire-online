@@ -15,7 +15,7 @@ config: utils.helpers.Config)
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId}
+@import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength}
 
 @main(
 progress = Some(Messages("acquire_progress_5")),
@@ -37,6 +37,11 @@ currentForm = Some(privateKeeperDetailsForm)
              args = Map(
              '_label -> Messages("acquire_individualkeeperdetails.titlelabel"),
              'autofocus -> true))
+
+            @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
+            Map('_label -> Messages("acquire_individualkeeperdetails.firstnamelabel"),
+            '_showConstraints -> false,
+            'maxLength -> FirstNameMaxLength))
 
             @valtechInputText(privateKeeperDetailsForm(EmailId), args =
             Map('_label -> Messages("acquire_individualkeeperdetails.emaillabel"),
