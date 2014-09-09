@@ -28,7 +28,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def titleDropDown(implicit driver: WebDriver): SingleSel = singleSel(id(TitleId))
 
-  def emailTextBox(implicit driver: WebDriver): TextField = textField(id(EmailId))
+  def emailTextBox(implicit driver: WebDriver): EmailField = emailField(id(EmailId))
 
   def firstNameTextBox(implicit driver: WebDriver): TextField = textField(id(FirstNameId))
 

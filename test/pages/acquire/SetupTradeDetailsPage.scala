@@ -1,6 +1,6 @@
 package pages.acquire
 
-import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory, TextField}
+import helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import views.acquire.SetupTradeDetails.SubmitId
@@ -20,7 +20,7 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
 
   def traderPostcode(implicit driver: WebDriver): TextField = textField(id(TraderPostcodeId))
 
-  def traderEmail(implicit driver: WebDriver): TextField = textField(id(TraderEmailId))
+  def traderEmail(implicit driver: WebDriver): EmailField = emailField(id(TraderEmailId))
 
   def lookup(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 

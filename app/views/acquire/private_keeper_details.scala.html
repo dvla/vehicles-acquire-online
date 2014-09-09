@@ -27,15 +27,15 @@ currentForm = Some(privateKeeperDetailsForm)
 
 <div class="two-col clearfix">
     <div class="second-col">
-        <p>@Messages("acquire_individualkeeperdetails.p1")</p>
-        <p>@Messages("acquire_individualkeeperdetails.p2")</p>
-        <p>@Messages("acquire_individualkeeperdetails.p3")</p>
+        <p>@Messages("acquire_privatekeeperdetails.p1")</p>
+        <p>@Messages("acquire_privatekeeperdetails.p2")</p>
+        <p>@Messages("acquire_privatekeeperdetails.p3")</p>
         <div class="uppercase-input">
 
             @valtechSelect(privateKeeperDetailsForm(TitleId),
             options = titleOptions.toSeq,
              args = Map(
-             '_label -> Messages("acquire_privatekeeperdetails.title"),
+             '_label -> Messages("acquire_privatekeeperdetails.titlelabel"),
              'autofocus -> true))
 
             @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
@@ -46,6 +46,7 @@ currentForm = Some(privateKeeperDetailsForm)
             @valtechInputText(privateKeeperDetailsForm(EmailId), args =
             Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
             '_showConstraints -> false,
+            'typeEmail -> true,
             'maxLength -> EmailMaxLength))
 
         </div>

@@ -212,7 +212,7 @@ acquire_keeperstillonrecord.vehiclereg = Registration
 acquire_keeperstillonrecord.vehiclemake = Make
 acquire_keeperstillonrecord.vehiclemodel = Model
 
-#individual keeper details
+#private keeper details
 acquire_privatekeeperdetails.title = Enter keeper details
 acquire_privatekeeperdetails.vehicledetails = Vehicle details
 acquire_privatekeeperdetails.vehiclereg = Registration
