@@ -2,8 +2,8 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid}
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId}
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
@@ -11,6 +11,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     "accept if form is completed with all fields correctly" in {
       val model = formWithValidDefaults(
         title = TitleValid,
+        firstName = FirstNameValid,
         email = EmailValid).get
       model.title should equal(TitleValid)
     }
@@ -18,12 +19,13 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(
         title = TitleValid,
+        firstName = FirstNameValid,
         email = "").get
       model.title should equal(TitleValid)
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(title = "", email = "").errors should have length 1
+      formWithValidDefaults(title = "", firstName = "", email = "").errors should have length 4
     }
   }
 
@@ -56,20 +58,28 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       formWithValidDefaults(email = "no_at_symbol.com").errors should have length 1
     }
 
-    "reject if less than min legnth" in {
+    "reject if less than min length" in {
       formWithValidDefaults(email = "no").errors should have length 1
     }
 
-    "reject if greater than max legnth" in {
+    "reject if greater than max length" in {
       formWithValidDefaults(email = "n@" + ("a" * 248) + ".com").errors should have length 1
+    }
+
+    "firstName" should {
+      "reject if empty" in {
+        formWithValidDefaults(firstName = "").errors.flatMap(_.messages) should contain theSameElementsAs
+          List("error.minLength", "error.validFirstName", "error.required")
+      }
     }
   }
 
-  private def formWithValidDefaults(title: String = TitleValid, email: String = EmailValid) = {
+  private def formWithValidDefaults(title: String = TitleValid, firstName: String = FirstNameValid, email: String = EmailValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
           TitleId -> title,
+          FirstNameId -> firstName,
           EmailId -> email
         )
       )
