@@ -71,14 +71,10 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
           }
         },
       validForm => {
-        lookupVehicleResult(convertToUpperCaseAndRemoveSpaces(validForm))
+        lookupVehicleResult(validForm)
       }
     )
   }
-
-  private def convertToUpperCaseAndRemoveSpaces(model: VehicleLookupFormViewModel): VehicleLookupFormViewModel =
-    model.copy(registrationNumber = model.registrationNumber.replace(" ", "")
-      .toUpperCase)
 
   def back = Action { implicit request =>
     request.cookies.getModel[TraderDetailsModel] match {
