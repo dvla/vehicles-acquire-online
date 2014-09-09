@@ -14,6 +14,8 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val TitleValid = "Mrs"
   final val TitleInvalid = ""
   final val OptionValid = "firstOption"
+  final val FirstNameValid = "Paul"
+  final val FirstNameInvalid = "A"
   final val EmailValid = "my@email.com"
   final val EmailInvalid = "no_at_symbol.com"
   final val TitleInvalidError = "Please select a title from the drop down list."
@@ -28,19 +30,24 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def emailTextBox(implicit driver: WebDriver): TextField = textField(id(EmailId))
 
-  def happyPath(title: String = OptionValid, email: String = EmailValid)(implicit driver: WebDriver) = {
+  def firstNameTextBox(implicit driver: WebDriver): TextField = textField(id(FirstNameId))
+
+
+  def happyPath(title: String = OptionValid, firstName: String = FirstNameValid, email: String = EmailValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
+    firstNameTextBox enter FirstNameValid
     emailTextBox enter email
 
     click on next
   }
 
-  def sadPath (title: String = TitleInvalid, email: String = EmailInvalid)(implicit driver: WebDriver) = {
+  def sadPath (title: String = TitleInvalid, firstName: String = FirstNameInvalid, email: String = EmailInvalid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
+    firstNameTextBox enter firstName
     emailTextBox enter email
 
     click on next

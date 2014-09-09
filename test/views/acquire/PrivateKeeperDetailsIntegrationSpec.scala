@@ -87,7 +87,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
 
       sadPath(email = EmailValid)
 
-      ErrorPanel.numberOfErrors should equal(1)
+      ErrorPanel.numberOfErrors should equal(2)
     }
 
     "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
@@ -96,7 +96,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
 
       sadPath(title = OptionValid, email = EmailInvalid)
 
-      ErrorPanel.numberOfErrors should equal(1)
+      ErrorPanel.numberOfErrors should equal(2)
     }
   }
 
@@ -122,12 +122,4 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       setupTradeDetails()
       .dealerDetails()
       .vehicleDetails()
-
-  private val fakeAppWithHtml5ValidationEnabledConfig = FakeApplication(
-    withGlobal = Some(TestGlobal),
-    additionalConfiguration = Map("html5Validation.enabled" -> true))
-
-  private val fakeAppWithHtml5ValidationDisabledConfig = FakeApplication(
-    withGlobal = Some(TestGlobal),
-    additionalConfiguration = Map("html5Validation.enabled" -> false))
 }
