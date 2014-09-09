@@ -3,7 +3,7 @@ package controllers.acquire
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
 import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid}
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
@@ -35,22 +35,19 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "accept if title is selected" in {
-      val model = formWithValidDefaults(
-        title = TitleValid).get
+      val model = formWithValidDefaults(title = TitleValid).get
       model.title should equal(TitleValid)
     }
   }
 
   "email" should {
     "accept in valid format" in {
-      val model = formWithValidDefaults(
-        email = EmailValid).get
+      val model = formWithValidDefaults(email = EmailValid).get
       model.email should equal(Some(EmailValid))
     }
 
     "accept with no entry" in {
-      val model = formWithValidDefaults(
-        email = "").get
+      val model = formWithValidDefaults(email = "").get
       model.email should equal(None)
     }
 
@@ -65,12 +62,67 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     "reject if greater than max length" in {
       formWithValidDefaults(email = "n@" + ("a" * 248) + ".com").errors should have length 1
     }
+  }
 
-    "firstName" should {
-      "reject if empty" in {
-        formWithValidDefaults(firstName = "").errors.flatMap(_.messages) should contain theSameElementsAs
-          List("error.minLength", "error.validFirstName", "error.required")
-      }
+  "firstName" should {
+    "reject if empty" in {
+      formWithValidDefaults(firstName = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.validFirstName", "error.required")
+    }
+
+    "reject if less than min length" in {
+      formWithValidDefaults(firstName = "a" * (FirstNameMinLength - 1)).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.validFirstName")
+    }
+
+    "reject if greater than max length" in {
+      formWithValidDefaults(firstName = "a" * (FirstNameMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
+    }
+
+    "reject if denied special characters are present $" in {
+      formWithValidDefaults(firstName = FirstNameValid + "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validFirstName")
+    }
+
+    "reject if denied special characters are present *" in {
+      formWithValidDefaults(firstName = FirstNameValid + "*").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validFirstName")
+    }
+
+    "accept in valid format" in {
+      val model = formWithValidDefaults(firstName = FirstNameValid).get
+      model.firstName should equal(FirstNameValid)
+    }
+
+    "accept allowed special characters ." in {
+      val model = formWithValidDefaults(firstName = FirstNameValid + ".").get
+      model.firstName should equal(FirstNameValid + ".")
+    }
+
+    "accept allowed special characters ," in {
+      val model = formWithValidDefaults(firstName = FirstNameValid + ",").get
+      model.firstName should equal( FirstNameValid + ",")
+    }
+
+    "accept allowed special characters -" in {
+      val model = formWithValidDefaults(firstName = FirstNameValid + "'").get
+      model.firstName should equal(FirstNameValid + "'")
+    }
+
+    "accept allowed special characters \"" in {
+      val model = formWithValidDefaults(firstName = FirstNameValid + "'").get
+      model.firstName should equal(FirstNameValid + "'")
+    }
+
+    "accept allowed special characters '" in {
+      val model = formWithValidDefaults(firstName = FirstNameValid + "'").get
+      model.firstName should equal(FirstNameValid + "'")
+    }
+
+    "accept when a space is present within the first name" in {
+      val model = formWithValidDefaults(firstName = FirstNameValid + " " + FirstNameValid).get
+      model.firstName should equal(FirstNameValid + " " + FirstNameValid)
     }
   }
 
