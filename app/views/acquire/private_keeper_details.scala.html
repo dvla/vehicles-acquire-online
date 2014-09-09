@@ -19,7 +19,7 @@ config: utils.helpers.Config)
 
 @main(
 progress = Some(Messages("acquire_progress_5")),
-title = Messages("acquire_individualkeeperdetails.title"),
+title = Messages("acquire_privatekeeperdetails.title"),
 currentForm = Some(privateKeeperDetailsForm)
 ) {
 @form(action = PrivateKeeperDetails.submit) {
@@ -35,36 +35,36 @@ currentForm = Some(privateKeeperDetailsForm)
             @valtechSelect(privateKeeperDetailsForm(TitleId),
             options = titleOptions.toSeq,
              args = Map(
-             '_label -> Messages("acquire_individualkeeperdetails.titlelabel"),
+             '_label -> Messages("acquire_privatekeeperdetails.title"),
              'autofocus -> true))
 
             @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
-            Map('_label -> Messages("acquire_individualkeeperdetails.firstnamelabel"),
+            Map('_label -> Messages("acquire_privatekeeperdetails.firstnamelabel"),
             '_showConstraints -> false,
             'maxLength -> FirstNameMaxLength))
 
             @valtechInputText(privateKeeperDetailsForm(EmailId), args =
-            Map('_label -> Messages("acquire_individualkeeperdetails.emaillabel"),
+            Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
             '_showConstraints -> false,
             'maxLength -> EmailMaxLength))
 
         </div>
         <div class="form-steps">
-            <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_individualkeeperdetails.submitbutton")</button>
+            <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_privatekeeperdetails.submitbutton")</button>
             <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
-                @Messages("acquire_individualkeeperdetails.backbutton")
+                @Messages("acquire_privatekeeperdetails.backbutton")
             </a>
         </div>
     </div>
 
     <div class="first-col">
-        <h2>@Messages("acquire_individualkeeperdetails.vehicledetails")</h2>
+        <h2>@Messages("acquire_privatekeeperdetails.vehicledetails")</h2>
         <dl class="summary-detail-list">
-            <dt>@Messages("acquire_individualkeeperdetails.vehiclereg")</dt>
+            <dt>@Messages("acquire_privatekeeperdetails.vehiclereg")</dt>
             <dd>@data.registrationNumber</dd>
-            <dt>@Messages("acquire_individualkeeperdetails.vehiclemake")</dt>
+            <dt>@Messages("acquire_privatekeeperdetails.vehiclemake")</dt>
             <dd>@data.vehicleMake</dd>
-            <dt>@Messages("acquire_individualkeeperdetails.vehiclemodel")</dt>
+            <dt>@Messages("acquire_privatekeeperdetails.vehiclemodel")</dt>
             <dd>@data.vehicleModel</dd>
         </dl>
     </div>
