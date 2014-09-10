@@ -1,11 +1,10 @@
 package viewmodels
 
-import play.api.libs.json.Json
-import play.api.data.Forms._
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import mappings.DropDown.titleDropDown
-import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
+import play.api.data.Forms._
+import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
+import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
 
 case class PrivateKeeperDetailsViewModel(title: String, email: Option[String])
 

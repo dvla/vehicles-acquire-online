@@ -60,12 +60,13 @@ error.invalid = Invalid value
 ##
 
 # progress messages
-acquire_progress_1 = Step 1 of 6
-acquire_progress_2 = Step 2 of 6
-acquire_progress_3 = Step 3 of 6
-acquire_progress_4 = Step 4 of 6
-acquire_progress_5 = Step 5 of 6
-acquire_progress_6 = Step 6 of 6
+acquire_progress_1 = Step 1 of 7
+acquire_progress_2 = Step 2 of 7
+acquire_progress_3 = Step 3 of 7
+acquire_progress_4 = Step 4 of 7
+acquire_progress_5 = Step 5 of 7
+acquire_progress_6 = Step 6 of 7
+acquire_progress_7 = Step 7 of 7
 
 # help
 #disposal.help.title = Help
@@ -227,6 +228,11 @@ acquire_individualkeeperdetails.p3 = An email address is optional, and only used
 privatekeeper_title = Title
 privatekeeper_email = Email
 
+#individual keeper detail complete
+acquire_keeperdetailscomplete.title = Complete and confirm
+acquire_keeperdetailscomplete.submitbutton = Submit
+acquire_keeperdetailscomplete.backbutton = Back
+
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
 acquire_businesskeeperdetails.p1 = Enter the details of the person buying the vehicle.
@@ -239,3 +245,8 @@ acquire_businesskeeperdetails.vehiclemodel = Model
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.businessname = Business name
 acquire_businesskeeperdetails.nextbutton = Next
+
+#date of birth field
+dateOfBirthInput.label = Testing date of birth
+dateOfBirthInput.hint = Eg. 24 05 2012
+dateOfBirthInput.future = Date of birth cannot be in the future
