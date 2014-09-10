@@ -20,7 +20,7 @@ final class FleetNumberUnitSpec extends UnitSpec {
         val result = FleetNumber.fleetNumber(num)
         result shouldBe an [Invalid]
         val invalid = result.asInstanceOf[Invalid]
-        invalid.errors(0).message should equal ("error.restricted.fleetNumber")
+        invalid.errors(0).message should equal ("error.fleetNumber")
       }
     }
   }

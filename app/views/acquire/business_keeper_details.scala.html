@@ -12,7 +12,7 @@
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.mappings.BusinessName
-@import mappings.FleetNumber
+@import constraints.FleetNumber
 @import views.html.helper.form
 @import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId}
 
@@ -46,7 +46,7 @@
                         hintText = Some(Messages("acquire_businesskeeperdetails.businessname.hint")), args =
                         Map('_label -> Messages("acquire_businesskeeperdetails.fleetnumber"),
                             'maxLength -> FleetNumber.MaxLength,
-                            'typeNumber -> true,
+                            'typeFleetNumber -> true,
                             '_showConstraints -> false,
                             'autofocus -> true
                         ) ++
