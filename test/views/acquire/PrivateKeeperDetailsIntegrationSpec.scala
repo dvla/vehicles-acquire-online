@@ -15,7 +15,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, OptionValid, back, EmailValid, EmailInvalid}
+import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, OptionValid, back, EmailValid, EmailInvalid, FirstNameValid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -94,9 +94,9 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       cacheSetup()
 
-      sadPath(title = OptionValid, email = EmailInvalid)
+      sadPath(title = OptionValid, firstName = FirstNameValid, email = EmailInvalid)
 
-      ErrorPanel.numberOfErrors should equal(2)
+      ErrorPanel.numberOfErrors should equal(1)
     }
   }
 

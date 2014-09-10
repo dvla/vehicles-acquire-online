@@ -52,15 +52,18 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "reject if incorrect format" in {
-      formWithValidDefaults(email = "no_at_symbol.com").errors should have length 1
+      formWithValidDefaults(email = "no_at_symbol.com").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.email")
     }
 
     "reject if less than min length" in {
-      formWithValidDefaults(email = "no").errors should have length 1
+      formWithValidDefaults(email = "no").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.email")
     }
 
     "reject if greater than max length" in {
-      formWithValidDefaults(email = "n@" + ("a" * 248) + ".com").errors should have length 1
+      formWithValidDefaults(email = "n@" + ("a" * 248) + ".com").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.email")
     }
   }
 
@@ -82,6 +85,16 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
     "reject if denied special characters are present $" in {
       formWithValidDefaults(firstName = FirstNameValid + "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validFirstName")
+    }
+
+    "reject if denied special characters are present +" in {
+      formWithValidDefaults(firstName = FirstNameValid + "+").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validFirstName")
+    }
+
+    "reject if denied special characters are present ^" in {
+      formWithValidDefaults(firstName = FirstNameValid + "^").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.validFirstName")
     }
 
