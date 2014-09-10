@@ -16,7 +16,9 @@ import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import webserviceclients.fakes.FakeVehicleLookupWebService._
 import pages.acquire.PrivateKeeperDetailsPage.ModelValid
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel._
-import scala.Some
+import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
+import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -51,6 +53,17 @@ object CookieFactoryForUISpecs {
   def businessChooseYourAddress(uprn: Long = traderUprnValid)(implicit webDriver: WebDriver) = {
     val key = BusinessChooseYourAddressCacheKey
     val value = BusinessChooseYourAddressViewModel(uprnSelected = uprn.toString)
+    addCookie(key, value)
+    this
+  }
+
+  def enterAddressManually()(implicit webDriver: WebDriver) = {
+    val key = EnterAddressManuallyCacheKey
+    val value = EnterAddressManuallyViewModel(addressAndPostcodeModel = AddressAndPostcodeViewModel(
+      addressLinesModel = AddressLinesViewModel(buildingNameOrNumber = BuildingNameOrNumberValid,
+        line2 = Some(Line2Valid),
+        line3 = Some(Line3Valid),
+        postTown = PostTownValid)))
     addCookie(key, value)
     this
   }
