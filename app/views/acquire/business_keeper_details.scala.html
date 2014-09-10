@@ -12,6 +12,7 @@
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.mappings.BusinessName
+@import mappings.FleetNumber
 @import views.html.helper.form
 @import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId}
 
@@ -44,11 +45,12 @@
                     @valtechInputText(viewModel.form(FleetNumberId),
                         hintText = Some(Messages("acquire_businesskeeperdetails.businessname.hint")), args =
                         Map('_label -> Messages("acquire_businesskeeperdetails.fleetnumber"),
-                            'maxLength -> 6,
-                            'typeTel -> true,
+                            'maxLength -> FleetNumber.MaxLength,
+                            'typeNumber -> true,
                             '_showConstraints -> false,
                             'autofocus -> true
-                        )
+                        ) ++
+                        (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
                     )
 
                     @valtechInputText(viewModel.form(BusinessNameId), args =
