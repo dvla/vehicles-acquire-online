@@ -8,13 +8,14 @@
 @import controllers.routes.VehicleLookup
 @import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 @import uk.gov.dvla.vehicles.presentation.common
+@import common.mappings.Email.EmailMaxLength
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.mappings.BusinessName
 @import constraints.FleetNumber
 @import views.html.helper.form
-@import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId}
+@import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 
 @main(
     title = Messages("acquire_businesskeeperdetails.title")
@@ -57,6 +58,14 @@
                         Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
                             'maxLength -> BusinessName.MaxLength,
                             '_showConstraints -> false
+                        )
+                    )
+
+                    @valtechInputText(viewModel.form(EmailId), args =
+                        Map('_label -> Messages("acquire_businesskeeperdetails.email"),
+                            '_showConstraints -> false,
+                            'typeEmail -> true,
+                            'maxLength -> EmailMaxLength
                         )
                     )
 
