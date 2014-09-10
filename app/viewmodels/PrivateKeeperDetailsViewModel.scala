@@ -2,13 +2,10 @@ package viewmodels
 
 import play.api.libs.json.Json
 import play.api.data.Forms._
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import mappings.DropDown.titleDropDown
 import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import play.api.data.Mapping
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import play.api.data.validation.Constraint
 import play.api.data.validation.Constraints._
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
@@ -31,7 +28,7 @@ object PrivateKeeperDetailsViewModel {
       nonEmptyTextWithTransform(_.trim)(FirstNameMinLength, FirstNameMaxLength) verifying validFirstName
 
     def validFirstName: Constraint[String] = pattern(
-      regex = """^[a-zA-Z0-9\s\-\"\,\.\']{2,}$""".r,
+      regex = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r,
       name = "constraint.validFirstName",
       error = "error.validFirstName")
 

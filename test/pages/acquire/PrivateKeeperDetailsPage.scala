@@ -15,7 +15,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val TitleInvalid = ""
   final val OptionValid = "firstOption"
   final val FirstNameValid = "Paul"
-  final val FirstNameInvalid = "A"
+  final val FirstNameInvalid = ""
   final val EmailValid = "my@email.com"
   final val EmailInvalid = "no_at_symbol.com"
   final val TitleInvalidError = "Please select a title from the drop down list."

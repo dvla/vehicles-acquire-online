@@ -98,6 +98,16 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         List("error.validFirstName")
     }
 
+    "accept if equal to max length" in {
+      val model = formWithValidDefaults(firstName = "a" * FirstNameMaxLength).get
+      model.firstName should equal("a" * FirstNameMaxLength)
+    }
+
+    "accept if equal to min length" in {
+      val model = formWithValidDefaults(firstName = "a" * FirstNameMinLength).get
+      model.firstName should equal("a" * FirstNameMinLength)
+    }
+
     "accept in valid format" in {
       val model = formWithValidDefaults(firstName = FirstNameValid).get
       model.firstName should equal(FirstNameValid)
