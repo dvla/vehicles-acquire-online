@@ -242,8 +242,6 @@ acquire_businesskeeperdetails.vehiclemodel = Model
 acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
 acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it to register this vehicle into their fleet... any more benefits/motivations?
-
-aaa = The fleet number can only be a 6 digit number, please try again.
-
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
+error.fleetNumber = The fleet number can only be a 6 digit number, please try again.

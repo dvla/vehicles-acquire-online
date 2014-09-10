@@ -10,7 +10,7 @@ object FleetNumber {
 
   val fleetNumber = pattern(
     regex = Pattern.r,
-    name = "constraint.restricted.fleetNumber",
-    error = "error.restricted.fleetNumber"
+    name = "constraint.fleetNumber",
+    error = "error.fleetNumber"
   )
 }
