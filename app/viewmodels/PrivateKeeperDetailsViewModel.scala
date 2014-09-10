@@ -24,7 +24,7 @@ object PrivateKeeperDetailsViewModel {
     final val TitleId = "privatekeeper_title"
     final val EmailId = "privatekeeper_email"
     final val FirstNameId = "privatekeeper_firstname"
-    final val FirstNameMinLength = 2
+    final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
 
     def firstNameMapping: Mapping[String] =

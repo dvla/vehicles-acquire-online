@@ -73,11 +73,6 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         List("error.minLength", "error.validFirstName", "error.required")
     }
 
-    "reject if less than min length" in {
-      formWithValidDefaults(firstName = "a" * (FirstNameMinLength - 1)).errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.minLength", "error.validFirstName")
-    }
-
     "reject if greater than max length" in {
       formWithValidDefaults(firstName = "a" * (FirstNameMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.maxLength")
