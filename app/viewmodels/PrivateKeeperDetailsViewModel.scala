@@ -1,14 +1,14 @@
 package viewmodels
 
-import play.api.libs.json.Json
-import play.api.data.Forms._
 import mappings.DropDown.titleDropDown
-import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
+import play.api.data.Forms._
 import play.api.data.Mapping
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
 import play.api.data.validation.Constraint
 import play.api.data.validation.Constraints._
+import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
+import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
+import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
 
 case class PrivateKeeperDetailsViewModel(title: String, firstName: String, email: Option[String])
 

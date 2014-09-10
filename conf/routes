@@ -41,6 +41,10 @@ GET     /vrm-acquire/keeper-still-on-record         @controllers.KeeperStillOnRe
 GET     /vrm-acquire/private-keeper-details         @controllers.PrivateKeeperDetails.present
 POST    /vrm-acquire/private-keeper-details         @controllers.PrivateKeeperDetails.submit
 
+# Individual keeper details complete
+GET     /vrm-acquire/private-complete-and-confirm  @controllers.PrivateKeeperDetailsComplete.present
+POST    /vrm-acquire/private-complete-and-confirm  @controllers.PrivateKeeperDetailsComplete.submit
+
 # Business keeper details
 GET     /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.present
 POST    /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.submit

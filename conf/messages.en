@@ -66,6 +66,7 @@ acquire_progress_3 = Step 3 of 6
 acquire_progress_4 = Step 4 of 6
 acquire_progress_5 = Step 5 of 6
 acquire_progress_6 = Step 6 of 6
+acquire_progress_7 = Step 7 of 7
 
 # help
 #disposal.help.title = Help
@@ -230,6 +231,11 @@ privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
 
+#individual keeper detail complete
+acquire_keeperdetailscomplete.title = Complete and confirm
+acquire_keeperdetailscomplete.submitbutton = Submit
+acquire_keeperdetailscomplete.backbutton = Back
+
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
 acquire_businesskeeperdetails.p1 = Enter the details of the person buying the vehicle.
@@ -245,4 +251,12 @@ acquire_businesskeeperdetails.businessname.hint = If the business buying this ve
 acquire_businesskeeperdetails.email = Business email
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
+
+#date of birth field
+dateOfBirthInput.pageTitle = Date Of Birth Input
+dateOfBirthInput.label = Testing date of birth
+dateOfBirthInput.hint = for example, 20 3 1976
+error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
+error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
+
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
