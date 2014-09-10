@@ -10,7 +10,7 @@ import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire._
-import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath}
+import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 
@@ -76,28 +76,28 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
 
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
-    //  ToDo uncomment below tests when EnterAddressManually is implemented
-    //    "manualAddress button that is displayed when addresses have been found" should {
-    //      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
-    //        go to BeforeYouStartPage
-    //        cacheSetup()
-    //        go to BusinessChooseYourAddressPage
-    //
-    //        click on manualAddress
-    //
-    //        page.title should equal(EnterAddressManuallyPage.title)
-    //      }
-    //    }
-    //
-    //    "manualAddress button that is displayed when no addresses have been found" should {
-    //      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
-    //        SetupTradeDetailsPage.submitPostcodeWithoutAddresses
-    //
-    //        click on manualAddress
-    //
-    //        page.title should equal(EnterAddressManuallyPage.title)
-    //      }
-    //    }
+
+    "manualAddress button that is displayed when addresses have been found" should {
+      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
+        go to BeforeYouStartPage
+        cacheSetup()
+        go to BusinessChooseYourAddressPage
+
+        click on manualAddress
+
+        page.title should equal(EnterAddressManuallyPage.title)
+      }
+    }
+
+    "manualAddress button that is displayed when no addresses have been found" should {
+      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
+        SetupTradeDetailsPage.submitPostcodeWithoutAddresses
+
+        click on manualAddress
+
+        page.title should equal(EnterAddressManuallyPage.title)
+      }
+    }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
       SetupTradeDetailsPage.happyPath()
@@ -121,14 +121,13 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
     }
 
     "select button" should {
-//      ToDo uncomment test below when VehicleLookup is implemented
-//      "go to the next page when correct data is entered" taggedAs UiTag in new WebBrowser {
-//        go to BeforeYouStartPage
-//        cacheSetup()
-//        happyPath
-//
-//        page.title should equal(VehicleLookupPage.title)
-//      }
+      "go to the next page when correct data is entered" taggedAs UiTag in new WebBrowser {
+        go to BeforeYouStartPage
+        cacheSetup()
+        happyPath
+
+        page.title should equal(VehicleLookupPage.title)
+      }
 
       "display validation error messages when addressSelected is not in the list" taggedAs UiTag in new WebBrowser {
         go to BeforeYouStartPage
@@ -138,10 +137,11 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
         ErrorPanel.numberOfErrors should equal(1)
       }
 
-//      ToDo uncomment test below when EnterAddressManually is implemented
 //      "remove redundant EnterAddressManually cookie (as we are now in an alternate history)" taggedAs UiTag in new WebBrowser {
 //        def cacheSetupVisitedEnterAddressManuallyPage()(implicit webDriver: WebDriver) =
-//          CookieFactoryForUISpecs.setupTradeDetails().enterAddressManually()
+//          CookieFactoryForUISpecs
+//            .setupTradeDetails()
+//            .enterAddressManually()
 //
 //        go to BeforeYouStartPage
 //        cacheSetupVisitedEnterAddressManuallyPage()

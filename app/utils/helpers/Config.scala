@@ -12,6 +12,7 @@ class Config {
 
   // Progress step indicator
   val isProgressBarEnabled: Boolean = getProperty("progressBar.enabled", default = false)
+
   val isHtml5ValidationEnabled: Boolean = getProperty("html5Validation.enabled", default = false)
 
   val startUrl: String = getProperty("start.page", default = "NOT FOUND")

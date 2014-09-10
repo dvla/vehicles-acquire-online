@@ -15,7 +15,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, OptionValid, back, EmailValid, EmailInvalid}
+import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, OptionValid, back, EmailValid, EmailInvalid, FirstNameValid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -87,14 +87,14 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
 
       sadPath(email = EmailValid)
 
-      ErrorPanel.numberOfErrors should equal(1)
+      ErrorPanel.numberOfErrors should equal(2)
     }
 
     "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
 
-      sadPath(title = OptionValid, email = EmailInvalid)
+      sadPath(title = OptionValid, firstName = FirstNameValid, email = EmailInvalid)
 
       ErrorPanel.numberOfErrors should equal(1)
     }
@@ -122,12 +122,4 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       setupTradeDetails()
       .dealerDetails()
       .vehicleDetails()
-
-  private val fakeAppWithHtml5ValidationEnabledConfig = FakeApplication(
-    withGlobal = Some(TestGlobal),
-    additionalConfiguration = Map("html5Validation.enabled" -> true))
-
-  private val fakeAppWithHtml5ValidationDisabledConfig = FakeApplication(
-    withGlobal = Some(TestGlobal),
-    additionalConfiguration = Map("html5Validation.enabled" -> false))
 }

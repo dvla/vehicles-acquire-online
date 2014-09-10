@@ -12,12 +12,14 @@
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.mappings.BusinessName
+@import constraints.FleetNumber
 @import views.html.helper.form
-@import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{BusinessNameId}
+@import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId}
 
 @main(
     title = Messages("acquire_businesskeeperdetails.title")
 ) {
+    <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/numeric-input-only.js")" type="text/javascript"></script>
     <div class="two-col clearfix">
         <div class="first-col">
             <h2>@Messages("acquire_businesskeeperdetails.vehicledetails")</h2>
@@ -40,11 +42,23 @@
                 @form(action = controllers.routes.BusinessKeeperDetails.submit()) {
                     @csrfTokenHiddenField()
 
+                    @valtechInputText(viewModel.form(FleetNumberId),
+                        hintText = Some(Messages("acquire_businesskeeperdetails.businessname.hint")), args =
+                        Map('_label -> Messages("acquire_businesskeeperdetails.fleetnumber"),
+                            'maxLength -> FleetNumber.MaxLength,
+                            'typeFleetNumber -> true,
+                            '_showConstraints -> false,
+                            'autofocus -> true
+                        ) ++
+                        (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
+                    )
+
                     @valtechInputText(viewModel.form(BusinessNameId), args =
-                    Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
-                    'maxLength -> BusinessName.MaxLength,
-                    '_showConstraints -> false,
-                    'autofocus -> true))
+                        Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
+                            'maxLength -> BusinessName.MaxLength,
+                            '_showConstraints -> false
+                        )
+                    )
 
                     <button id="@NextId" type="submit" name="action" class="button">@Messages("acquire_businesskeeperdetails.nextbutton")</button>
                     <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">

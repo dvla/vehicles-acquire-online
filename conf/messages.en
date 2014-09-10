@@ -60,12 +60,12 @@ error.invalid = Invalid value
 ##
 
 # progress messages
-acquire_progress_1 = Step 1 of 7
-acquire_progress_2 = Step 2 of 7
-acquire_progress_3 = Step 3 of 7
-acquire_progress_4 = Step 4 of 7
-acquire_progress_5 = Step 5 of 7
-acquire_progress_6 = Step 6 of 7
+acquire_progress_1 = Step 1 of 6
+acquire_progress_2 = Step 2 of 6
+acquire_progress_3 = Step 3 of 6
+acquire_progress_4 = Step 4 of 6
+acquire_progress_5 = Step 5 of 6
+acquire_progress_6 = Step 6 of 6
 acquire_progress_7 = Step 7 of 7
 
 # help
@@ -91,6 +91,7 @@ error.validBusinessName = Must be between two and 56 characters and only contain
 error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
+error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -212,21 +213,23 @@ acquire_keeperstillonrecord.vehiclereg = Registration
 acquire_keeperstillonrecord.vehiclemake = Make
 acquire_keeperstillonrecord.vehiclemodel = Model
 
-#individual keeper details
-acquire_individualkeeperdetails.title = Enter keeper details
-acquire_individualkeeperdetails.vehicledetails = Vehicle details
-acquire_individualkeeperdetails.vehiclereg = Registration
-acquire_individualkeeperdetails.vehiclemake = Make
-acquire_individualkeeperdetails.vehiclemodel = Model
-acquire_individualkeeperdetails.backbutton = Back
-acquire_individualkeeperdetails.submitbutton = Submit
-acquire_individualkeeperdetails.titlelabel = Title
-acquire_individualkeeperdetails.emaillabel = Email address
-acquire_individualkeeperdetails.p1 = Enter the details of the person buying this vehicle.
-acquire_individualkeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
-acquire_individualkeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
+#private keeper details
+acquire_privatekeeperdetails.title = Enter keeper details
+acquire_privatekeeperdetails.vehicledetails = Vehicle details
+acquire_privatekeeperdetails.vehiclereg = Registration
+acquire_privatekeeperdetails.vehiclemake = Make
+acquire_privatekeeperdetails.vehiclemodel = Model
+acquire_privatekeeperdetails.backbutton = Back
+acquire_privatekeeperdetails.submitbutton = Submit
+acquire_privatekeeperdetails.titlelabel = Title
+acquire_privatekeeperdetails.firstnamelabel = First name
+acquire_privatekeeperdetails.emaillabel = Email address
+acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
+acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
+acquire_privatekeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
 privatekeeper_title = Title
 privatekeeper_email = Email
+privatekeeper_firstname = First name
 
 #individual keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
@@ -242,11 +245,17 @@ acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
 acquire_businesskeeperdetails.vehiclemake = Make
 acquire_businesskeeperdetails.vehiclemodel = Model
-acquire_businesskeeperdetails.backbutton = Back
+acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
+acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it to register this vehicle into their fleet... any more benefits/motivations?
+acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
 
 #date of birth field
+dateOfBirthInput.pageTitle = Date Of Birth Input
 dateOfBirthInput.label = Testing date of birth
-dateOfBirthInput.hint = Eg. 24 05 2012
-dateOfBirthInput.future = Date of birth cannot be in the future
+dateOfBirthInput.hint = for example, 20 3 1976
+error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
+error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
+
+error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
