@@ -18,7 +18,9 @@
 @import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 
 @main(
-    title = Messages("acquire_businesskeeperdetails.title")
+    progress = Some(Messages("acquire_progress_5")),
+    title = Messages("acquire_businesskeeperdetails.title"),
+    currentForm = Some(viewModel.form)
 ) {
     <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/numeric-input-only.js")" type="text/javascript"></script>
     <div class="two-col clearfix">

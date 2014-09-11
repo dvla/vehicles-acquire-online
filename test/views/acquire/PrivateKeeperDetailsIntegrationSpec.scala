@@ -5,17 +5,18 @@ import helpers.acquire.CookieFactoryForUISpecs
 import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.{TestGlobal, TestHarness}
+import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.PrivateKeeperDetailsPage
-import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, OptionValid, back, EmailValid, EmailInvalid, FirstNameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, back}
+import pages.acquire.PrivateKeeperDetailsPage.{OptionValid, EmailValid, FirstNameValid, SurnameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, SurnameInvalid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -85,18 +86,36 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       cacheSetup()
 
-      sadPath(email = EmailValid)
+      sadPath(email = EmailValid, firstName = FirstNameValid, surname = SurnameValid)
 
-      ErrorPanel.numberOfErrors should equal(2)
+      ErrorPanel.numberOfErrors should equal(1)
     }
 
     "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
 
-      sadPath(title = OptionValid, firstName = FirstNameValid, email = EmailInvalid)
+      sadPath(title = OptionValid, firstName = FirstNameValid, surname = SurnameValid, email = EmailInvalid)
 
       ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when no firstname is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      sadPath(title = OptionValid, firstName = FirstNameInvalid, surname = SurnameValid, email = EmailInvalid)
+
+      ErrorPanel.numberOfErrors should equal(2)
+    }
+
+    "display one validation error message when no surname is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      sadPath(title = OptionValid, firstName = SurnameInvalid, surname = SurnameValid, email = EmailInvalid)
+
+      ErrorPanel.numberOfErrors should equal(2)
     }
   }
 

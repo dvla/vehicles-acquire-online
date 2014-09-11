@@ -1,21 +1,19 @@
 package controllers.acquire
 
 import play.api.test.WithApplication
-import controllers.acquire.Common._
+import controllers.acquire.Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
-import controllers.{PrivateKeeperDetails, SetUpTradeDetails}
-import helpers.JsonUtils.deserializeJsonToModel
-import helpers.common.CookieHelper
+import controllers.PrivateKeeperDetails
 import helpers.UnitSpec
-import CookieHelper.fetchCookiesFromHeaders
 import org.mockito.Mockito.when
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers._
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId}
-import pages.acquire.PrivateKeeperDetailsPage._
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, SurnameId}
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError, SurnameValid}
 import pages.acquire.SetupTradeDetailsPage
+import scala.Some
 import scala.Some
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
@@ -37,10 +35,23 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       implicit val config: Config = mock[Config]
       when(config.isPrototypeBannerVisible).thenReturn(false)
 
-      val privateKeeperDetailsPrototypeNotVisible = new SetUpTradeDetails()
+      val privateKeeperDetailsPrototypeNotVisible = new PrivateKeeperDetails()
       val result = privateKeeperDetailsPrototypeNotVisible.present(request)
       contentAsString(result) should not include PrototypeHtml
     }
+
+    "display populated fields when cookie exists" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = privateKeeperDetails.present(request)
+      val content = contentAsString(result)
+      content should include(TitleValid)
+      content should include(FirstNameValid)
+      content should include(SurnameValid)
+      content should include(EmailValid)
+    }
+
 
     "display empty fields when cookie does not exist" in new WithApplication {
       val request = FakeRequest().
@@ -53,59 +64,63 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
   }
 
-    "submit" should {
-      "redirect to next page when mandatory fields are complete" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(email = "")
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) {
-          r =>
-            r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
-        }
-      }
-
-      "redirect to next page when all fields are complete" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest()
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) {
-          r =>
-            r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
-        }
-      }
-
-      "redirect to setup trade details when no cookie is present" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(title = TitleValid)
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) {
-          r =>
-            r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
-        }
-      }
-
-      "return a bad request if no details are entered" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(title = "")
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) { r =>
-          r.header.status should equal(BAD_REQUEST)
-        }
-      }
-
-      "replace required error message for title with standard error message " in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(title = "")
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        val count = TitleInvalidError.
-          r.findAllIn(contentAsString(result)).length
-        count should equal(2)
+  "submit" should {
+    "redirect to next page when mandatory fields are complete" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(email = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
       }
     }
 
-  private def buildCorrectlyPopulatedRequest(title: String = TitleValid, firstName: String = FirstNameValid, email: String = EmailValid) = {
+    "redirect to next page when all fields are complete" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+      }
+    }
+
+    "redirect to setup trade details when no cookie is present" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(title = TitleValid)
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      }
+    }
+
+    "return a bad request if no details are entered" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(title = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+      }
+    }
+
+    "replace required error message for title with standard error message " in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(title = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      val count = TitleInvalidError.
+        r.findAllIn(contentAsString(result)).length
+      count should equal(2)
+    }
+  }
+
+  private def buildCorrectlyPopulatedRequest(title: String = TitleValid,
+                                             firstName: String = FirstNameValid,
+                                             surname: String = SurnameValid,
+                                             email: String = EmailValid) = {
     FakeRequest().withFormUrlEncodedBody(
       TitleId -> title,
       FirstNameId -> firstName,
+      SurnameId -> surname,
       EmailId -> email
     )
   }

@@ -92,6 +92,7 @@ error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
 error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.validSurname = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -223,6 +224,7 @@ acquire_privatekeeperdetails.backbutton = Back
 acquire_privatekeeperdetails.submitbutton = Submit
 acquire_privatekeeperdetails.titlelabel = Title
 acquire_privatekeeperdetails.firstnamelabel = First name
+acquire_privatekeeperdetails.surnamelabel = Surname
 acquire_privatekeeperdetails.emaillabel = Email address
 acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
@@ -230,6 +232,7 @@ acquire_privatekeeperdetails.p3 = An email address is optional, and only used to
 privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
+privatekeeper_surname = Surname
 
 #individual keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
@@ -254,7 +257,8 @@ acquire_businesskeeperdetails.nextbutton = Next
 
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input
-dateOfBirthInput.label = Testing date of birth
+dateOfBirthInput.label = Date of Birth
+privatekeeper_dateofbirth = Date of Birth
 dateOfBirthInput.hint = for example, 20 3 1976
 error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
 error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
