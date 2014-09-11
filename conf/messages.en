@@ -254,7 +254,8 @@ acquire_businesskeeperdetails.nextbutton = Next
 
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input
-dateOfBirthInput.label = Testing date of birth
+dateOfBirthInput.label = Date of Birth
+privatekeeper_dateofbirth = Date of Birth
 dateOfBirthInput.hint = for example, 20 3 1976
 error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
 error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976

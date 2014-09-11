@@ -1,6 +1,7 @@
 package helpers.acquire
 
 import composition.TestComposition
+import org.joda.time.LocalDate
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common
@@ -8,7 +9,14 @@ import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, Trad
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import viewmodels._
+import viewmodels.SeenCookieMessageCacheKey
+import viewmodels.SetupTradeDetailsViewModel
+import viewmodels.BusinessChooseYourAddressViewModel
+import viewmodels.EnterAddressManuallyViewModel
+import viewmodels.VehicleLookupFormViewModel
+import viewmodels.PrivateKeeperDetailsViewModel
+import viewmodels.BusinessKeeperDetailsFormViewModel
+import viewmodels.PrivateKeeperDetailsCompleteFormModel
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
 import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
@@ -138,6 +146,11 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       email = email
     )
     createCookie(key, value)
+  }
+
+  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate]): Cookie = {
+    val value = PrivateKeeperDetailsCompleteFormModel(dateOfBirth)
+    createCookie(PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey, value)
   }
 
   def trackingIdModel(value: String = TrackingIdValue): Cookie = {

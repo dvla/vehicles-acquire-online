@@ -9,7 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common.mappings.DateOfBirth.optionalMap
 case class PrivateKeeperDetailsCompleteFormModel(dateOfBirth: Option[LocalDate])
 
 object PrivateKeeperDetailsCompleteFormModel {
-//  implicit val DateOfBirthJsonFormat = Json.format[DateOfBirth]
+//  implicit val LocalDateJsonFormat = Json.format[LocalDate]
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsCompleteFormModel]
   final val PrivateKeeperDetailsCompleteCacheKey = "privateKeeperDetailsComplete"
   implicit val Key = CacheKey[PrivateKeeperDetailsCompleteFormModel](PrivateKeeperDetailsCompleteCacheKey)
