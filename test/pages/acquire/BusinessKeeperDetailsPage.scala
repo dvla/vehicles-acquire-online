@@ -24,7 +24,9 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def next(implicit driver: WebDriver): Element = find(id(NextId)).get
 
-  def navigate(fleetNumber: String = FleetNumberValid, businessName: String = BusinessNameValid, email: String = EmailValid)(implicit driver: WebDriver) = {
+  def navigate(fleetNumber: String = FleetNumberValid,
+               businessName: String = BusinessNameValid,
+               email: String = EmailValid)(implicit driver: WebDriver) = {
     go to BusinessKeeperDetailsPage
 
     fleetNumberField enter fleetNumber
