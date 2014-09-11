@@ -130,7 +130,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def privateKeeperDetailsModel(title: String = TitleValid,
                                 firstName: String = FirstNameValid,
                                 surname: String = SurnameValid,
-                                email: Option[String] = None): Cookie = {
+                                email: Option[String] = Some(EmailValid)): Cookie = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsViewModel(
       title = title,

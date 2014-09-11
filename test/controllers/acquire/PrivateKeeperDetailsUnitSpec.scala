@@ -7,12 +7,13 @@ import controllers.PrivateKeeperDetails
 import helpers.UnitSpec
 import org.mockito.Mockito.when
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers._
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, SurnameId}
 import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError, SurnameValid}
 import pages.acquire.SetupTradeDetailsPage
+import scala.Some
 import scala.Some
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
@@ -38,6 +39,19 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       val result = privateKeeperDetailsPrototypeNotVisible.present(request)
       contentAsString(result) should not include PrototypeHtml
     }
+
+    "display populated fields when cookie exists" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = privateKeeperDetails.present(request)
+      val content = contentAsString(result)
+      content should include(TitleValid)
+      content should include(FirstNameValid)
+      content should include(SurnameValid)
+      content should include(EmailValid)
+    }
+
 
     "display empty fields when cookie does not exist" in new WithApplication {
       val request = FakeRequest().
