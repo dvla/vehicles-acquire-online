@@ -14,9 +14,8 @@ import pages.acquire.VehicleLookupPage
 import pages.acquire.PrivateKeeperDetailsPage
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsPage.{happyPath, sadPath, back}
-import pages.acquire.PrivateKeeperDetailsPage.{OptionValid, EmailValid, FirstNameValid, SurnameValid}
-import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, SurnameInvalid}
+import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, SurnameInvalid, TitleInvalid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -60,43 +59,43 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
     "go to the appropriate next page when all private keeper details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      happyPath()
+      navigate()
       page.title should equal("Not implemented") //ToDo amend title once next page is implemented
     }
 
     "go to the appropriate next page when mandatory private keeper details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      happyPath(email = "")
+      navigate(email = "")
       page.title should equal("Not implemented") //ToDo amend title once next page is implemented
     }
 
     "display one validation error message when no title is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      sadPath(email = EmailValid, firstName = FirstNameValid, surname = SurnameValid)
+      navigate(title = TitleInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
     "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      sadPath(title = OptionValid, firstName = FirstNameValid, surname = SurnameValid, email = EmailInvalid)
+      navigate(email = EmailInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
     "display one validation error message when no firstname is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      sadPath(title = OptionValid, firstName = FirstNameInvalid, surname = SurnameValid, email = EmailInvalid)
-      ErrorPanel.numberOfErrors should equal(2)
+      navigate(firstName = FirstNameInvalid)
+      ErrorPanel.numberOfErrors should equal(1)
     }
 
     "display one validation error message when no surname is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      sadPath(title = OptionValid, firstName = SurnameInvalid, surname = SurnameValid, email = EmailInvalid)
-      ErrorPanel.numberOfErrors should equal(2)
+      navigate(surname = SurnameInvalid)
+      ErrorPanel.numberOfErrors should equal(1)
     }
   }
 

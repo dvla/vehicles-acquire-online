@@ -36,24 +36,10 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   def surnameTextBox(implicit driver: WebDriver): TextField = textField(id(SurnameId))
 
 
-  def happyPath(title: String = OptionValid,
+  def navigate(title: String = OptionValid,
                 firstName: String = FirstNameValid,
                 surname: String = SurnameValid,
                 email: String = EmailValid)(implicit driver: WebDriver) = {
-    go to PrivateKeeperDetailsPage
-
-    titleDropDown select title
-    firstNameTextBox enter firstName
-    surnameTextBox enter surname
-    emailTextBox enter email
-
-    click on next
-  }
-
-  def sadPath (title: String = TitleInvalid,
-               firstName: String = FirstNameInvalid,
-               surname: String = SurnameInvalid,
-               email: String = EmailInvalid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
