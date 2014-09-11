@@ -1,10 +1,9 @@
 package pages.acquire
 
-import helpers.webbrowser._
+import helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, Element, SingleSel, EmailField, TextField}
 import org.openqa.selenium.WebDriver
-import views.acquire.PrivateKeeperDetails._
-import viewmodels.PrivateKeeperDetailsViewModel.Form._
-import views.acquire.PrivateKeeperDetails.BackId
+import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, SurnameId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val address = s"/$basePath/private-keeper-details"
@@ -44,8 +43,8 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
-    firstNameTextBox enter FirstNameValid
-    surnameTextBox enter SurnameValid
+    firstNameTextBox enter firstName
+    surnameTextBox enter surname
     emailTextBox enter email
 
     click on next
