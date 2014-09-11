@@ -12,7 +12,6 @@ import viewmodels.PrivateKeeperDetailsViewModel
 import viewmodels.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId, FirstNameId, SurnameId, EmailId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
-import scala.Some
 
 final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
