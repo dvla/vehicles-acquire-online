@@ -1,20 +1,17 @@
 package controllers.acquire
 
 import play.api.test.WithApplication
-import controllers.acquire.Common._
+import controllers.acquire.Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
-import controllers.{PrivateKeeperDetails, SetUpTradeDetails}
-import helpers.JsonUtils.deserializeJsonToModel
-import helpers.common.CookieHelper
+import controllers.PrivateKeeperDetails
 import helpers.UnitSpec
-import CookieHelper.fetchCookiesFromHeaders
 import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId}
-import pages.acquire.PrivateKeeperDetailsPage._
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError}
 import pages.acquire.SetupTradeDetailsPage
 import scala.Some
 
@@ -37,7 +34,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       implicit val config: Config = mock[Config]
       when(config.isPrototypeBannerVisible).thenReturn(false)
 
-      val privateKeeperDetailsPrototypeNotVisible = new SetUpTradeDetails()
+      val privateKeeperDetailsPrototypeNotVisible = new PrivateKeeperDetails()
       val result = privateKeeperDetailsPrototypeNotVisible.present(request)
       contentAsString(result) should not include PrototypeHtml
     }
@@ -53,54 +50,54 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
   }
 
-    "submit" should {
-      "redirect to next page when mandatory fields are complete" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(email = "")
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) {
-          r =>
-            r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
-        }
-      }
-
-      "redirect to next page when all fields are complete" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest()
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) {
-          r =>
-            r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
-        }
-      }
-
-      "redirect to setup trade details when no cookie is present" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(title = TitleValid)
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) {
-          r =>
-            r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
-        }
-      }
-
-      "return a bad request if no details are entered" in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(title = "")
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        whenReady(result) { r =>
-          r.header.status should equal(BAD_REQUEST)
-        }
-      }
-
-      "replace required error message for title with standard error message " in new WithApplication {
-        val request = buildCorrectlyPopulatedRequest(title = "")
-          .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        val result = privateKeeperDetails.submit(request)
-        val count = TitleInvalidError.
-          r.findAllIn(contentAsString(result)).length
-        count should equal(2)
+  "submit" should {
+    "redirect to next page when mandatory fields are complete" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(email = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
       }
     }
+
+    "redirect to next page when all fields are complete" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+      }
+    }
+
+    "redirect to setup trade details when no cookie is present" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(title = TitleValid)
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) {
+        r =>
+          r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      }
+    }
+
+    "return a bad request if no details are entered" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(title = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+      }
+    }
+
+    "replace required error message for title with standard error message " in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(title = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      val count = TitleInvalidError.
+        r.findAllIn(contentAsString(result)).length
+      count should equal(2)
+    }
+  }
 
   private def buildCorrectlyPopulatedRequest(title: String = TitleValid, firstName: String = FirstNameValid, email: String = EmailValid) = {
     FakeRequest().withFormUrlEncodedBody(
