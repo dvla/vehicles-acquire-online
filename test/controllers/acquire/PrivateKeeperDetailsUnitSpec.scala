@@ -10,8 +10,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId}
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, SurnameId}
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError, SurnameValid}
 import pages.acquire.SetupTradeDetailsPage
 import scala.Some
 
@@ -99,10 +99,14 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
   }
 
-  private def buildCorrectlyPopulatedRequest(title: String = TitleValid, firstName: String = FirstNameValid, email: String = EmailValid) = {
+  private def buildCorrectlyPopulatedRequest(title: String = TitleValid,
+                                             firstName: String = FirstNameValid,
+                                             surname: String = SurnameValid,
+                                             email: String = EmailValid) = {
     FakeRequest().withFormUrlEncodedBody(
       TitleId -> title,
       FirstNameId -> firstName,
+      SurnameId -> surname,
       EmailId -> email
     )
   }

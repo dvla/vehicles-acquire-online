@@ -2,8 +2,9 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, SurnameValid}
 import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{SurnameId, SurnameMaxLength, SurnameMinLength}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
@@ -12,20 +13,28 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       val model = formWithValidDefaults(
         title = TitleValid,
         firstName = FirstNameValid,
+        surname = SurnameValid,
         email = EmailValid).get
       model.title should equal(TitleValid)
+      model.firstName should equal(FirstNameValid)
+      model.surname should equal(SurnameValid)
+      model.email should equal(Some(EmailValid))
     }
 
     "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(
         title = TitleValid,
         firstName = FirstNameValid,
+        surname = SurnameValid,
         email = "").get
       model.title should equal(TitleValid)
+      model.firstName should equal(FirstNameValid)
+      model.surname should equal(SurnameValid)
+      model.email should equal(None)
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(title = "", firstName = "", email = "").errors should have length 4
+      formWithValidDefaults(title = "", firstName = "", surname = "", email = "").errors should have length 7
     }
   }
 
@@ -139,17 +148,98 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "accept when a space is present within the first name" in {
-      val model = formWithValidDefaults(firstName = FirstNameValid + " " + FirstNameValid).get
-      model.firstName should equal(FirstNameValid + " " + FirstNameValid)
+      val model = formWithValidDefaults(firstName = "a" + " " + "a").get
+      model.firstName should equal("a" + " " + "a")
     }
   }
 
-  private def formWithValidDefaults(title: String = TitleValid, firstName: String = FirstNameValid, email: String = EmailValid) = {
+  "surname" should {
+    "reject if empty" in {
+      formWithValidDefaults(surname = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.validSurname", "error.required")
+    }
+
+    "reject if greater than max length" in {
+      formWithValidDefaults(surname = "a" * (SurnameMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
+    }
+
+    "reject if denied special characters are present $" in {
+      formWithValidDefaults(surname = SurnameValid + "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validSurname")
+    }
+
+    "reject if denied special characters are present +" in {
+      formWithValidDefaults(surname = SurnameValid + "+").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validSurname")
+    }
+
+    "reject if denied special characters are present ^" in {
+      formWithValidDefaults(surname = SurnameValid + "^").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validSurname")
+    }
+
+    "reject if denied special characters are present *" in {
+      formWithValidDefaults(surname = SurnameValid + "*").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validSurname")
+    }
+
+    "accept if equal to max length" in {
+      val model = formWithValidDefaults(surname = "a" * SurnameMaxLength).get
+      model.surname should equal("a" * SurnameMaxLength)
+    }
+
+    "accept if equal to min length" in {
+      val model = formWithValidDefaults(surname = "a" * SurnameMinLength).get
+      model.surname should equal("a" * SurnameMinLength)
+    }
+
+    "accept in valid format" in {
+      val model = formWithValidDefaults(surname = SurnameValid).get
+      model.surname should equal(SurnameValid)
+    }
+
+    "accept allowed special characters ." in {
+      val model = formWithValidDefaults(surname = SurnameValid + ".").get
+      model.surname should equal(SurnameValid + ".")
+    }
+
+    "accept allowed special characters ," in {
+      val model = formWithValidDefaults(surname = SurnameValid + ",").get
+      model.surname should equal( SurnameValid + ",")
+    }
+
+    "accept allowed special characters -" in {
+      val model = formWithValidDefaults(surname = SurnameValid + "'").get
+      model.surname should equal(SurnameValid + "'")
+    }
+
+    "accept allowed special characters \"" in {
+      val model = formWithValidDefaults(surname = SurnameValid + "'").get
+      model.surname should equal(SurnameValid + "'")
+    }
+
+    "accept allowed special characters '" in {
+      val model = formWithValidDefaults(surname = SurnameValid + "'").get
+      model.surname should equal(SurnameValid + "'")
+    }
+
+    "accept when a space is present within the first name" in {
+      val model = formWithValidDefaults(surname = "a" + " " + "a").get
+      model.surname should equal("a" + " " + "a")
+    }
+  }
+
+  private def formWithValidDefaults(title: String = TitleValid,
+                                    firstName: String = FirstNameValid,
+                                    surname: String = SurnameValid,
+                                    email: String = EmailValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
           TitleId -> title,
           FirstNameId -> firstName,
+          SurnameId -> surname,
           EmailId -> email
         )
       )
