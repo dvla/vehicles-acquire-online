@@ -44,11 +44,13 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     }
 
     "reject if trader business name is less than minimum length" in {
-      formWithValidDefaults(traderBusinessName = "A").errors should have length 1
+      formWithValidDefaults(traderBusinessName = "A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength")
     }
 
     "reject if trader business name is more than the maximum length" in {
-      formWithValidDefaults(traderBusinessName = "A" * BusinessName.MaxLength + 1).errors should have length 1
+      formWithValidDefaults(traderBusinessName = "A" * BusinessName.MaxLength + 1).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
     }
 
     "accept if trader business name is valid" in {
@@ -71,19 +73,23 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     }
 
     "reject if trader postcode is less than the minimum length" in {
-      formWithValidDefaults(traderPostcode = "M15A").errors should have length 2
+      formWithValidDefaults(traderPostcode = "M15A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.restricted.validPostcode")
     }
 
     "reject if trader postcode is more than the maximum length" in {
-      formWithValidDefaults(traderPostcode = "SA99 1DDD").errors should have length 2
+      formWithValidDefaults(traderPostcode = "SA99 1DDD").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength", "error.restricted.validPostcode")
     }
 
     "reject if trader postcode contains special characters" in {
-      formWithValidDefaults(traderPostcode = "SA99 1D$").errors should have length 1
+      formWithValidDefaults(traderPostcode = "SA99 1D$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validPostcode")
     }
 
     "reject if trader postcode contains an incorrect format" in {
-      formWithValidDefaults(traderPostcode = "SAR99").errors should have length 1
+      formWithValidDefaults(traderPostcode = "SAR99").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validPostcode")
     }
   }
 
