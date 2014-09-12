@@ -26,7 +26,8 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(traderBusinessName = "", traderPostcode = "").errors should have length 6
+      formWithValidDefaults(traderBusinessName = "", traderPostcode = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.required", "error.validBusinessName", "error.minLength", "error.required", "error.restricted.validPostcode")
     }
   }
 

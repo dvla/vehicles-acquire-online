@@ -40,15 +40,19 @@ final class EnterAddressManuallyFormSpec extends UnitSpec {
     }
 
     "reject when all fields are blank" in {
-      formWithValidDefaults(buildingNameOrNumber = "", line2 = "", line3 = "", postTown = "").errors should have length 4
+      formWithValidDefaults(buildingNameOrNumber = "", line2 = "", line3 = "", postTown = "").
+        errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.required", "error.minLength", "error.required")
     }
 
     "reject if post town is blank" in {
-      formWithValidDefaults(postTown = "").errors should have length 2
+      formWithValidDefaults(postTown = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.required")
     }
 
     "reject if post town contains numbers" in {
-      formWithValidDefaults(postTown = "123456").errors should have length 1
+      formWithValidDefaults(postTown = "123456").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.postTown.characterInvalid")
     }
 
     "accept if post town starts with spaces" in {
@@ -57,43 +61,50 @@ final class EnterAddressManuallyFormSpec extends UnitSpec {
     }
 
     "reject if buildingNameOrNumber is blank" in {
-      formWithValidDefaults(buildingNameOrNumber = "").errors should have length 2
+      formWithValidDefaults(buildingNameOrNumber = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.required")
     }
 
     "reject if buildingNameOrNumber is less than min length" in {
-      formWithValidDefaults(buildingNameOrNumber = "abc", line2 = "", line3 = "", postTown = PostTownValid).
-        errors should have length 1
+      formWithValidDefaults(buildingNameOrNumber = "abc", line2 = "", line3 = "", postTown = PostTownValid)
+        .errors.flatMap(_.messages) should contain theSameElementsAs List("error.minLength")
     }
 
     "reject if buildingNameOrNumber is more than max length" in {
       formWithValidDefaults(buildingNameOrNumber = "a" * (LineMaxLength + 1),
-        line2 = "", line3 = "", postTown = PostTownValid).errors should have length 1
+        line2 = "", line3 = "", postTown = PostTownValid).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
     }
 
     "reject if buildingNameOrNumber is greater than max length" in {
-      formWithValidDefaults(buildingNameOrNumber = "a" * (LineMaxLength + 1)).errors should have length 1
+      formWithValidDefaults(buildingNameOrNumber = "a" * (LineMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
     }
 
     "reject if buildingNameOrNumber contains special characters" in {
-      formWithValidDefaults(buildingNameOrNumber = "The*House").errors should have length 1
+      formWithValidDefaults(buildingNameOrNumber = "The*House").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.address.characterInvalid")
     }
 
     "reject if line2 is more than max length" in {
       formWithValidDefaults(line2 = "a" * (LineMaxLength + 1),
-        line3 = "", postTown = PostTownValid).errors should have length 1
+        line3 = "", postTown = PostTownValid).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
     }
 
     "reject if line3 is more than max length" in {
-      formWithValidDefaults(line2 = "", line3 = "a" * (LineMaxLength + 1),
-        postTown = PostTownValid).errors should have length 1
+      formWithValidDefaults(line2 = "", line3 = "a" * (LineMaxLength + 1), postTown = PostTownValid).
+        errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
 
     "reject if postTown is more than max length" in {
-      formWithValidDefaults(line2 = "", line3 = "", postTown = "a" * (LineMaxLength + 1)).errors should have length 1
+      formWithValidDefaults(line2 = "", line3 = "", postTown = "a" * (LineMaxLength + 1)).
+        errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
 
     "reject if postTown is less than min length" in {
-      formWithValidDefaults(line2 = "", line3 = "", postTown = "ab").errors should have length 1
+      formWithValidDefaults(line2 = "", line3 = "", postTown = "ab").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength")
     }
 
     "reject if total length of all address lines is more than maxLengthOfLinesConcatenated" in {

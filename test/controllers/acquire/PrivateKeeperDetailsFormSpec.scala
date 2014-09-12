@@ -34,7 +34,9 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(title = "", firstName = "", surname = "", email = "").errors should have length 7
+      formWithValidDefaults(title = "", firstName = "", surname = "", email = "").
+        errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.required", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validSurname")
     }
   }
 
