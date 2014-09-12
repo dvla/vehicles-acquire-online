@@ -33,7 +33,8 @@ final class VehicleLookupFormSpec extends UnitSpec {
 
   "referenceNumber" should {
     allInvalidVrmFormats.map(vrm => "reject invalid vehicle registration mark : " + vrm in {
-      formWithValidDefaults(registrationNumber = vrm).errors should have length 1
+      formWithValidDefaults(registrationNumber = vrm).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validVrnOnly")
     })
 
     allValidVrmFormats.map(vrm => "accept valid vehicle registration mark : " + vrm in {
@@ -54,19 +55,23 @@ final class VehicleLookupFormSpec extends UnitSpec {
     }
 
     "reject if less than min length" in {
-      formWithValidDefaults(referenceNumber = "1234567891").errors should have length 1
+      formWithValidDefaults(referenceNumber = "1234567891").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength")
     }
 
     "reject if greater than max length" in {
-      formWithValidDefaults(referenceNumber = "123456789101").errors should have length 1
+      formWithValidDefaults(referenceNumber = "123456789101").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength")
     }
 
     "reject if contains letters" in {
-      formWithValidDefaults(referenceNumber = "qwertyuiopl").errors should have length 1
+      formWithValidDefaults(referenceNumber = "qwertyuiopl").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validNumberOnly")
     }
 
     "reject if contains special characters" in {
-      formWithValidDefaults(referenceNumber = "£££££££££££").errors should have length 1
+      formWithValidDefaults(referenceNumber = "£££££££££££").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validNumberOnly")
     }
 
     "accept if valid" in {
@@ -76,23 +81,28 @@ final class VehicleLookupFormSpec extends UnitSpec {
 
   "registrationNumber" should {
     "reject if empty" in {
-      formWithValidDefaults(registrationNumber = "").errors should have length 3
+      formWithValidDefaults(registrationNumber = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.required", "error.restricted.validVrnOnly")
     }
 
     "reject if less than min length" in {
-      formWithValidDefaults(registrationNumber = "a").errors should have length 2
+      formWithValidDefaults(registrationNumber = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.restricted.validVrnOnly")
     }
 
     "reject if more than max length" in {
-      formWithValidDefaults(registrationNumber = "AB53WERT").errors should have length 1
+      formWithValidDefaults(registrationNumber = "AB53WERT").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validVrnOnly")
     }
 
     "reject if more than max length 2" in {
-      formWithValidDefaults(registrationNumber = "PJ056YYY").errors should have length 1
+      formWithValidDefaults(registrationNumber = "PJ056YYY").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validVrnOnly")
     }
 
     "reject if contains special characters" in {
-      formWithValidDefaults(registrationNumber = "ab53ab%").errors should have length 1
+      formWithValidDefaults(registrationNumber = "ab53ab%").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validVrnOnly")
     }
 
     "accept a selection of randomly generated vrms that all satisfy vrm regex" in {
