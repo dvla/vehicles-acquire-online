@@ -26,7 +26,9 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(fleetNumber = "", businessName = "", email = "").errors should have length 3
+      formWithValidDefaults(fleetNumber = "", businessName = "", email = "").
+        errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.required", "error.validBusinessName")
     }
   }
 
@@ -44,11 +46,13 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "reject if business name is less than minimum length" in {
-      formWithValidDefaults(businessName = "A").errors should have length 1
+      formWithValidDefaults(businessName = "A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength")
     }
 
     "reject if business name is more than the maximum length" in {
-      formWithValidDefaults(businessName = "A" * BusinessName.MaxLength + 1).errors should have length 1
+      formWithValidDefaults(businessName = "A" * BusinessName.MaxLength + 1)
+        .errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
   }
 
