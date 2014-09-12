@@ -8,8 +8,10 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.RichResult
 import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.RichCookies
+import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
 import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import viewmodels.AllCacheKeys
 
 final class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -26,6 +28,11 @@ final class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: C
 
   def buyAnotherVehicle = Action { implicit request =>
     Redirect(routes.VehicleLookup.present()).
-      discardingCookies(Set(VehicleLookupFormModelCacheKey))
+      discardingCookies(Set(VehicleLookupFormModelCacheKey, VehicleLookupDetailsCacheKey))
+  }
+
+  def finish = Action { implicit request =>
+    Redirect(routes.BeforeYouStart.present()).
+      discardingCookies(AllCacheKeys)
   }
 }

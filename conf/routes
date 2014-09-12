@@ -38,6 +38,7 @@ GET     /vrm-acquire/vehicle-lookup-back                @controllers.VehicleLook
 #error page when the user looks up a vehicle and it has not been disposed (the keeper is still on record)
 GET     /vrm-acquire/keeper-still-on-record             @controllers.KeeperStillOnRecord.present
 GET     /vrm-acquire/keeper-still-on-record/buy-another @controllers.KeeperStillOnRecord.buyAnotherVehicle
+GET     /vrm-acquire/keeper-still-on-record/finish      @controllers.KeeperStillOnRecord.finish
 
 # Individual keeper details
 GET     /vrm-acquire/private-keeper-details             @controllers.PrivateKeeperDetails.present
