@@ -4,7 +4,7 @@ import helpers.UnitSpec
 import controllers.BusinessKeeperDetails
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
-import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+import viewmodels.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 
 class BusinessKeeperDetailsFormSpec extends UnitSpec {
 

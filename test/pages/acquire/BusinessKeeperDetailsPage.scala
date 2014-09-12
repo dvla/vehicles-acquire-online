@@ -2,7 +2,7 @@ package pages.acquire
 
 import org.openqa.selenium.WebDriver
 import helpers.webbrowser.{Element, EmailField, Page, TextField, WebBrowserDSL, WebDriverFactory}
-import viewmodels.BusinessKeeperDetailsFormViewModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+import viewmodels.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 
 object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {

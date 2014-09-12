@@ -8,12 +8,12 @@ import common.clientsidesession.CacheKey
 import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
 
-final case class BusinessKeeperDetailsFormViewModel(fleetNumber: Option[String], businessName: String, email: Option[String])
+final case class BusinessKeeperDetailsFormModel(fleetNumber: Option[String], businessName: String, email: Option[String])
 
-object BusinessKeeperDetailsFormViewModel {
-  implicit val JsonFormat = Json.format[BusinessKeeperDetailsFormViewModel]
+object BusinessKeeperDetailsFormModel {
+  implicit val JsonFormat = Json.format[BusinessKeeperDetailsFormModel]
   final val BusinessKeeperDetailsCacheKey = "businessKeeperDetails"
-  implicit val Key = CacheKey[BusinessKeeperDetailsFormViewModel](BusinessKeeperDetailsCacheKey)
+  implicit val Key = CacheKey[BusinessKeeperDetailsFormModel](BusinessKeeperDetailsCacheKey)
 
   object Form {
     final val FleetNumberId = "fleetNumber"
@@ -24,6 +24,6 @@ object BusinessKeeperDetailsFormViewModel {
       FleetNumberId -> fleetNumberMapping,
       BusinessNameId -> businessNameMapping,
       EmailId -> optional(email)
-    )(BusinessKeeperDetailsFormViewModel.apply)(BusinessKeeperDetailsFormViewModel.unapply)
+    )(BusinessKeeperDetailsFormModel.apply)(BusinessKeeperDetailsFormModel.unapply)
   }
 }

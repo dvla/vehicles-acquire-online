@@ -9,14 +9,14 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import viewmodels.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormViewModel}
+import viewmodels.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormModel}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 
 final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    BusinessKeeperDetailsFormViewModel.Form.Mapping
+    BusinessKeeperDetailsFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
@@ -40,9 +40,9 @@ final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory:
         request.cookies.getModel[VehicleDetailsModel] match {
           case Some(vehicleDetails) =>
             val formWithReplacedErrors = invalidForm.replaceError(
-              BusinessKeeperDetailsFormViewModel.Form.BusinessNameId,
+              BusinessKeeperDetailsFormModel.Form.BusinessNameId,
               FormError(
-                key = BusinessKeeperDetailsFormViewModel.Form.BusinessNameId,
+                key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,
                 message = "error.validBusinessName"
               )
             ).distinctErrors

@@ -15,7 +15,7 @@ import viewmodels.BusinessChooseYourAddressViewModel
 import viewmodels.EnterAddressManuallyViewModel
 import viewmodels.VehicleLookupFormViewModel
 import viewmodels.PrivateKeeperDetailsViewModel
-import viewmodels.BusinessKeeperDetailsFormViewModel
+import viewmodels.BusinessKeeperDetailsFormModel
 import viewmodels.PrivateKeeperDetailsCompleteFormModel
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
@@ -31,7 +31,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstName
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 
 import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
-import viewmodels.BusinessKeeperDetailsFormViewModel.BusinessKeeperDetailsCacheKey
+import viewmodels.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -145,7 +145,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                                 businessName: String = BusinessNameValid,
                                 email: Option[String] = Some(EmailValid)) : Cookie = {
     val key = BusinessKeeperDetailsCacheKey
-    val value = BusinessKeeperDetailsFormViewModel(
+    val value = BusinessKeeperDetailsFormModel(
       fleetNumber = fleetNumber,
       businessName = businessName,
       email = email

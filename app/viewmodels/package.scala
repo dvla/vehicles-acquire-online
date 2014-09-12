@@ -6,7 +6,7 @@ import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCa
 import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
-import viewmodels.BusinessKeeperDetailsFormViewModel.BusinessKeeperDetailsCacheKey
+import viewmodels.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 
 package object viewmodels {
   final val HelpCacheKey = "help"
