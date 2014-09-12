@@ -9,51 +9,53 @@
 # Guice to provide the actual instance complete with its injected dependencies
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /vrm-acquire/assets/*file                   controllers.Assets.at(path="/public", file)
+GET     /vrm-acquire/assets/*file                       controllers.Assets.at(path="/public", file)
 
 # Home page
-GET     /                                           @controllers.Application.index
+GET     /                                               @controllers.Application.index
 
 #page 1 - Before You Start
-GET     /vrm-acquire/before-you-start               @controllers.BeforeYouStart.present
-GET     /vrm-acquire                                @controllers.BeforeYouStart.present
+GET     /vrm-acquire/before-you-start                   @controllers.BeforeYouStart.present
+GET     /vrm-acquire                                    @controllers.BeforeYouStart.present
 
 #page 2 - Setup Trade Details
-GET     /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.present
-POST    /vrm-acquire/setup-trade-details            @controllers.SetUpTradeDetails.submit
+GET     /vrm-acquire/setup-trade-details                @controllers.SetUpTradeDetails.present
+POST    /vrm-acquire/setup-trade-details                @controllers.SetUpTradeDetails.submit
 
 #page 3 - Business Choose Your Address
-GET     /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.present
-POST    /vrm-acquire/business-choose-your-address   @controllers.BusinessChooseYourAddress.submit
+GET     /vrm-acquire/business-choose-your-address       @controllers.BusinessChooseYourAddress.present
+POST    /vrm-acquire/business-choose-your-address       @controllers.BusinessChooseYourAddress.submit
 
 #page 3 [optional] - enter address manually
-GET     /vrm-acquire/enter-address-manually         @controllers.EnterAddressManually.present
-POST    /vrm-acquire/enter-address-manually         @controllers.EnterAddressManually.submit
+GET     /vrm-acquire/enter-address-manually             @controllers.EnterAddressManually.present
+POST    /vrm-acquire/enter-address-manually             @controllers.EnterAddressManually.submit
 
 #page 4 - Enter vehicle details
-GET     /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.present
-POST    /vrm-acquire/vehicle-lookup                 @controllers.VehicleLookup.submit
-GET     /vrm-acquire/vehicle-lookup-back            @controllers.VehicleLookup.back
+GET     /vrm-acquire/vehicle-lookup                     @controllers.VehicleLookup.present
+POST    /vrm-acquire/vehicle-lookup                     @controllers.VehicleLookup.submit
+GET     /vrm-acquire/vehicle-lookup-back                @controllers.VehicleLookup.back
 
-GET     /vrm-acquire/keeper-still-on-record         @controllers.KeeperStillOnRecord.present
+#error page when the user looks up a vehicle and it has not been disposed (the keeper is still on record)
+GET     /vrm-acquire/keeper-still-on-record             @controllers.KeeperStillOnRecord.present
+GET     /vrm-acquire/keeper-still-on-record/buy-another @controllers.KeeperStillOnRecord.buyAnotherVehicle
 
 # Individual keeper details
-GET     /vrm-acquire/private-keeper-details         @controllers.PrivateKeeperDetails.present
-POST    /vrm-acquire/private-keeper-details         @controllers.PrivateKeeperDetails.submit
+GET     /vrm-acquire/private-keeper-details             @controllers.PrivateKeeperDetails.present
+POST    /vrm-acquire/private-keeper-details             @controllers.PrivateKeeperDetails.submit
 
 # Individual keeper details complete
-GET     /vrm-acquire/private-complete-and-confirm  @controllers.PrivateKeeperDetailsComplete.present
-POST    /vrm-acquire/private-complete-and-confirm  @controllers.PrivateKeeperDetailsComplete.submit
+GET     /vrm-acquire/private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.present
+POST    /vrm-acquire/private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.submit
 
 # Business keeper details
-GET     /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.present
-POST    /vrm-acquire/business-keeper-details        @controllers.BusinessKeeperDetails.submit
+GET     /vrm-acquire/business-keeper-details            @controllers.BusinessKeeperDetails.present
+POST    /vrm-acquire/business-keeper-details            @controllers.BusinessKeeperDetails.submit
 
-GET     /vrm-acquire/uprn-not-found                 @controllers.UprnNotFound.present
+GET     /vrm-acquire/uprn-not-found                     @controllers.UprnNotFound.present
 
-GET     /vrm-acquire/not-implemented                @controllers.NotImplemented.present
+GET     /vrm-acquire/not-implemented                    @controllers.NotImplemented.present
 
-GET     /vrm-acquire/error/:exceptionDigest         @controllers.Error.present(exceptionDigest)
-POST    /vrm-acquire/error/:exceptionDigest         @controllers.Error.submit(exceptionDigest)
+GET     /vrm-acquire/error/:exceptionDigest             @controllers.Error.present(exceptionDigest)
+POST    /vrm-acquire/error/:exceptionDigest             @controllers.Error.submit(exceptionDigest)
 
-GET     /healthcheck                                @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /healthcheck                                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
