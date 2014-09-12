@@ -26,6 +26,21 @@ currentForm = Some(privateKeeperDetailsForm)
 @csrfTokenHiddenField()
 
 <div class="two-col clearfix">
+    <div class="first-col">
+        <h2>@Messages("acquire_privatekeeperdetails.vehicledetails")</h2>
+        <dl class="summary-detail-list">
+            <dt>@Messages("acquire_privatekeeperdetails.vehiclereg")</dt>
+            <dd>@data.registrationNumber</dd>
+            <dt>@Messages("acquire_privatekeeperdetails.vehiclemake")</dt>
+            <dd>@data.vehicleMake</dd>
+            <dt>@Messages("acquire_privatekeeperdetails.vehiclemodel")</dt>
+            <dd>@data.vehicleModel</dd>
+        </dl>
+        <div class="alert-warning print-message">
+          <p><strong>@Messages("acquire_privatekeeperdetails.p4")</strong></p>
+        </div>
+    </div>
+
     <div class="second-col">
         <p>@Messages("acquire_privatekeeperdetails.p1")</p>
         <p>@Messages("acquire_privatekeeperdetails.p2")</p>
@@ -60,21 +75,6 @@ currentForm = Some(privateKeeperDetailsForm)
             <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
                 @Messages("acquire_privatekeeperdetails.backbutton")
             </a>
-        </div>
-    </div>
-
-    <div class="first-col">
-        <h2>@Messages("acquire_privatekeeperdetails.vehicledetails")</h2>
-        <dl class="summary-detail-list">
-            <dt>@Messages("acquire_privatekeeperdetails.vehiclereg")</dt>
-            <dd>@data.registrationNumber</dd>
-            <dt>@Messages("acquire_privatekeeperdetails.vehiclemake")</dt>
-            <dd>@data.vehicleMake</dd>
-            <dt>@Messages("acquire_privatekeeperdetails.vehiclemodel")</dt>
-            <dd>@data.vehicleModel</dd>
-        </dl>
-        <div class="alert-warning print-message">
-          <p><strong>@Messages("acquire_privatekeeperdetails.p4")</strong></p>
         </div>
     </div>
 </div>
