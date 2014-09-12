@@ -40,7 +40,8 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
   "title" should {
     "reject if no selection is made" in {
-      formWithValidDefaults(title = "").errors should have length 1
+      formWithValidDefaults(title = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.required")
     }
 
     "accept if title is selected" in {
