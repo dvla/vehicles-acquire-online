@@ -16,8 +16,8 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
   "Private keeper detail complete controller" should {
     "present an empty form" in new WithApplication {
       val request = FakeRequest()
-      whenReady(privateKeeperDetailsComplete.present(request)) {
-        r => r.header.status should equal(OK)
+      whenReady(privateKeeperDetailsComplete.present(request)) { r =>
+        r.header.status should equal(OK)
       }
     }
 

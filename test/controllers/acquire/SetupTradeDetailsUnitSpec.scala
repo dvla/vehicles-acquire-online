@@ -23,9 +23,8 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {
-      whenReady(present) {
-        r =>
-          r.header.status should equal(OK)
+      whenReady(present) { r =>
+        r.header.status should equal(OK)
       }
     }
 
@@ -65,20 +64,18 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       "redirect to next page when the form is completed successfully" in new WithApplication {
         val request = buildCorrectlyPopulatedRequest()
         val result = setUpTradeDetails.submit(request)
-        whenReady(result) {
-          r =>
-            println(r)
-            r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
-            val cookies = fetchCookiesFromHeaders(r)
-            val cookieName = "setupTraderDetails"
-            cookies.find(_.name == cookieName) match {
-              case Some(cookie) =>
-                val json = cookie.value
-                val model = deserializeJsonToModel[SetupTradeDetailsViewModel](json)
-                model.traderBusinessName should equal(TraderBusinessNameValid)
-                model.traderPostcode should equal(PostcodeValid.toUpperCase)
-              case None => fail(s"$cookieName cookie not found")
-            }
+        whenReady(result) { r =>
+          r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
+          val cookies = fetchCookiesFromHeaders(r)
+          val cookieName = "setupTraderDetails"
+          cookies.find(_.name == cookieName) match {
+            case Some(cookie) =>
+              val json = cookie.value
+              val model = deserializeJsonToModel[SetupTradeDetailsViewModel](json)
+              model.traderBusinessName should equal(TraderBusinessNameValid)
+              model.traderPostcode should equal(PostcodeValid.toUpperCase)
+            case None => fail(s"$cookieName cookie not found")
+          }
         }
       }
 

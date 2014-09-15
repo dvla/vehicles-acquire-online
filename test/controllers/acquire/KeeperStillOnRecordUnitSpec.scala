@@ -16,16 +16,15 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {
-      whenReady(present) {
-        r => r.header.status should equal(OK)
+      whenReady(present) { r =>
+        r.header.status should equal(OK)
       }
     }
 
     "redirect to setup trade details when no cookies are in the request" in new WithApplication {
-      whenReady(presentWithNoCookies) {
-        r =>
-          r.header.status should equal(SEE_OTHER)
-          r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      whenReady(presentWithNoCookies) { r =>
+        r.header.status should equal(SEE_OTHER)
+        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
       }
     }
   }
@@ -59,19 +58,18 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = keeperStillOnRecord.finish(request)
 
-      whenReady(result) {
-        r =>
-          r.header.status should equal(SEE_OTHER)
-          r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
+      whenReady(result) { r =>
+        r.header.status should equal(SEE_OTHER)
+        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
 
-          val cookies = fetchCookiesFromHeaders(r)
-          val cookieNames = List(
-            SetupTradeDetailsCacheKey,
-            BusinessChooseYourAddressCacheKey,
-            VehicleLookupFormModelCacheKey,
-            VehicleLookupDetailsCacheKey
-          )
-          cookieNames.foreach(verifyCookieHasBeenDiscarded(_, cookies))
+        val cookies = fetchCookiesFromHeaders(r)
+        val cookieNames = List(
+          SetupTradeDetailsCacheKey,
+          BusinessChooseYourAddressCacheKey,
+          VehicleLookupFormModelCacheKey,
+          VehicleLookupDetailsCacheKey
+        )
+        cookieNames.foreach(verifyCookieHasBeenDiscarded(_, cookies))
       }
     }
   }

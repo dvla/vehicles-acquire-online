@@ -18,8 +18,8 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {
-      whenReady(present) {
-        r => r.header.status should equal(OK)
+      whenReady(present) { r =>
+        r.header.status should equal(OK)
       }
     }
 
@@ -52,9 +52,8 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
     "redirect to setup trade details when no cookie is present" in new WithApplication {
       val request = buildRequest()
       val result = businessKeeperDetails.present(request)
-      whenReady(result) {
-        r =>
-          r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
       }
     }
   }
@@ -64,10 +63,9 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
       val request = buildRequest(fleetNumber = "", email = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = businessKeeperDetails.submit(request)
-      whenReady(result) {
-        r =>
-//          r.header.headers.get(LOCATION) should equal(Some("vrm-acquire/select-keeper-address")) //ToDo amend when next page implemented
-          r.header.headers.get(LOCATION) should equal(None) //ToDo amend when next page implemented
+      whenReady(result) { r =>
+//      r.header.headers.get(LOCATION) should equal(Some("vrm-acquire/select-keeper-address")) //ToDo amend when next page implemented
+        r.header.headers.get(LOCATION) should equal(None) //ToDo amend when next page implemented
       }
     }
 
@@ -75,19 +73,17 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
       val request = buildRequest()
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = businessKeeperDetails.submit(request)
-      whenReady(result) {
-        r =>
-//          r.header.headers.get(LOCATION) should equal(Some("vrm-acquire/select-keeper-address")) //ToDo amend when next page implemented
-          r.header.headers.get(LOCATION) should equal(None) //ToDo amend when next page implemented
+      whenReady(result) { r =>
+//      r.header.headers.get(LOCATION) should equal(Some("vrm-acquire/select-keeper-address")) //ToDo amend when next page implemented
+        r.header.headers.get(LOCATION) should equal(None) //ToDo amend when next page implemented
       }
     }
 
     "redirect to setup trade details when no cookie is present with invalid submission" in new WithApplication {
       val request = buildRequest(fleetNumber = "-12345")
       val result = businessKeeperDetails.submit(request)
-      whenReady(result) {
-        r =>
-          r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
       }
     }
 
@@ -125,8 +121,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
   }
 
   private lazy val present = {
-    val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+    val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
     businessKeeperDetails.present(request)
   }
 }

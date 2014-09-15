@@ -31,9 +31,8 @@ import pages.common.UprnNotFoundPage
 final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   "present" should {
     "display the page if dealer details cached" in new WithApplication {
-      whenReady(present, timeout) {
-        r =>
-          r.header.status should equal(OK)
+      whenReady(present, timeout) { r =>
+        r.header.status should equal(OK)
       }
     }
 
@@ -78,8 +77,7 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressWithUprnFound.submit(request)
-      whenReady(result) {
-        r =>
+      whenReady(result) { r =>
           r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
@@ -162,8 +160,7 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   private val businessChooseYourAddressWithUprnNotFound = businessChooseYourAddressWithFakeWebService(uprnFound = false)
 
   private lazy val present = {
-    val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+    val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
     businessChooseYourAddressWithUprnFound.present(request)
   }
 }

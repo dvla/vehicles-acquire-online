@@ -18,8 +18,8 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {
-      whenReady(present) {
-        r => r.header.status should equal(OK)
+      whenReady(present) { r =>
+        r.header.status should equal(OK)
       }
     }
 
@@ -66,9 +66,8 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       val request = buildCorrectlyPopulatedRequest(email = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
-      whenReady(result) {
-        r =>
-          r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
       }
     }
 
@@ -76,18 +75,16 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
-      whenReady(result) {
-        r =>
-          r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
       }
     }
 
     "redirect to setup trade details when no cookie is present" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(title = TitleValid)
       val result = privateKeeperDetails.submit(request)
-      whenReady(result) {
-        r =>
-          r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
       }
     }
 
