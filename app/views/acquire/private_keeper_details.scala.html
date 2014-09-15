@@ -45,8 +45,8 @@ currentForm = Some(privateKeeperDetailsForm)
         <p>@Messages("acquire_privatekeeperdetails.p1")</p>
         <p>@Messages("acquire_privatekeeperdetails.p2")</p>
         <p>@Messages("acquire_privatekeeperdetails.p3")</p>
-        <div class="uppercase-input">
 
+        <div class="uppercase-input">
             @valtechSelect(privateKeeperDetailsForm(TitleId),
             options = titleOptions.toSeq,
              args = Map(
@@ -62,6 +62,7 @@ currentForm = Some(privateKeeperDetailsForm)
             Map('_label -> Messages("acquire_privatekeeperdetails.surnamelabel"),
             '_showConstraints -> false,
             'maxLength -> SurnameMaxLength))
+        </div>
 
             @valtechInputText(privateKeeperDetailsForm(EmailId), args =
             Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
@@ -69,7 +70,6 @@ currentForm = Some(privateKeeperDetailsForm)
             'typeEmail -> true,
             'maxLength -> EmailMaxLength))
 
-        </div>
         <div class="form-steps">
             <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_privatekeeperdetails.submitbutton")</button>
             <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">

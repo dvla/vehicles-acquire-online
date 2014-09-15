@@ -42,7 +42,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                 replaceError(EmailId, FormError(key = FirstNameId, message = "error.validEmail", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },
-            validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm))
+            validForm => Redirect(routes.PrivateKeeperDetailsComplete.present()).withCookie(validForm))
         case _ =>
           Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
           Redirect(routes.SetUpTradeDetails.present())

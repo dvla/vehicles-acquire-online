@@ -67,7 +67,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/private-complete-and-confirm")) //ToDo amend when next page implemented
       }
     }
 
@@ -76,7 +76,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/not-implemented")) //ToDo amend when next page implemented
+        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/private-complete-and-confirm")) //ToDo amend when next page implemented
       }
     }
 
