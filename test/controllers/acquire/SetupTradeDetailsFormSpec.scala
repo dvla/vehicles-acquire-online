@@ -14,14 +14,14 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
         traderBusinessName = TraderBusinessNameValid,
         traderPostcode = PostcodeValid,
         traderEmail = TraderEmailValid).get
-      model.traderBusinessName should equal(TraderBusinessNameValid)
+      model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
       model.traderPostcode should equal(PostcodeValid)
       model.traderEmail should equal(Some(TraderEmailValid))
     }
 
     "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(traderBusinessName = TraderBusinessNameValid, traderPostcode = PostcodeValid).get
-      model.traderBusinessName should equal(TraderBusinessNameValid)
+      model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
       model.traderPostcode should equal(PostcodeValid)
     }
 
@@ -56,7 +56,7 @@ class SetupTradeDetailsFormSpec extends UnitSpec {
 
     "accept if trader business name is valid" in {
       formWithValidDefaults(traderBusinessName = TraderBusinessNameValid, traderPostcode = PostcodeValid).
-        get.traderBusinessName should equal(TraderBusinessNameValid)
+        get.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
     }
   }
 

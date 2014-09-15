@@ -72,7 +72,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
             case Some(cookie) =>
               val json = cookie.value
               val model = deserializeJsonToModel[SetupTradeDetailsViewModel](json)
-              model.traderBusinessName should equal(TraderBusinessNameValid)
+              model.traderBusinessName should equal(TraderBusinessNameValid.toUpperCase)
               model.traderPostcode should equal(PostcodeValid.toUpperCase)
             case None => fail(s"$cookieName cookie not found")
           }
