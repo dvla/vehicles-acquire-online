@@ -8,8 +8,8 @@ import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import play.api.data.{FormError, Form}
-import viewmodels.PrivateKeeperDetailsViewModel
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
+import models.PrivateKeeperDetailsViewModel
+import models.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 

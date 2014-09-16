@@ -15,8 +15,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import viewmodels.SetupTradeDetailsViewModel
-import viewmodels.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import models.SetupTradeDetailsViewModel
+import models.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {

@@ -1,4 +1,4 @@
-package viewmodels
+package models
 
 import mappings.DropDown.titleDropDown
 import play.api.data.Forms._

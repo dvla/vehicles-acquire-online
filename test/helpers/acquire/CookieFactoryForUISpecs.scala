@@ -6,10 +6,10 @@ import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{CyId, EnId}
-import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
-import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
+import models.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
-import viewmodels._
+import models._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
@@ -18,7 +18,7 @@ import pages.acquire.PrivateKeeperDetailsPage.ModelValid
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel._
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
-import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
+import models.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {

@@ -10,8 +10,8 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClientSideSes
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.AddressLookupService
 import utils.helpers.Config
-import viewmodels.BusinessChooseYourAddressViewModel.Form.AddressSelectId
-import viewmodels.{BusinessChooseYourAddressViewModel, SetupTradeDetailsViewModel}
+import models.BusinessChooseYourAddressViewModel.Form.AddressSelectId
+import models.{BusinessChooseYourAddressViewModel, SetupTradeDetailsViewModel}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

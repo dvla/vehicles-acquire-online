@@ -1,4 +1,4 @@
-package viewmodels
+package models
 
 import org.joda.time.LocalDate
 import play.api.data.Forms.mapping

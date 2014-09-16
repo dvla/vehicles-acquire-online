@@ -9,7 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import viewmodels.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormModel}
+import models.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormModel}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 
 final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,

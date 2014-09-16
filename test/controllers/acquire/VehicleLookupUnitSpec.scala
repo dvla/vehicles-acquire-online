@@ -13,7 +13,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.mappings.DocumentReferenceNumber
 import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleLookupServiceImpl, VehicleLookupWebService}
 import utils.helpers.Config
-import viewmodels.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
+import models.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, TraderBusinessNameValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import webserviceclients.fakes.FakeResponse

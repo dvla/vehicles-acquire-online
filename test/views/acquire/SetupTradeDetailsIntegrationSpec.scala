@@ -7,7 +7,7 @@ import helpers.webbrowser.TestHarness
 import pages.common.{Accessibility, ErrorPanel}
 import pages.acquire.SetupTradeDetailsPage._
 import pages.acquire.SetupTradeDetailsPage
-import viewmodels.SetupTradeDetailsViewModel
+import models.SetupTradeDetailsViewModel
 
 final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

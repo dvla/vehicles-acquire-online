@@ -9,18 +9,18 @@ import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, Trad
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import viewmodels.SeenCookieMessageCacheKey
-import viewmodels.SetupTradeDetailsViewModel
-import viewmodels.BusinessChooseYourAddressViewModel
-import viewmodels.EnterAddressManuallyViewModel
-import viewmodels.VehicleLookupFormViewModel
-import viewmodels.PrivateKeeperDetailsViewModel
-import viewmodels.BusinessKeeperDetailsFormModel
-import viewmodels.PrivateKeeperDetailsCompleteFormModel
-import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
-import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
-import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
-import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import models.SeenCookieMessageCacheKey
+import models.SetupTradeDetailsViewModel
+import models.BusinessChooseYourAddressViewModel
+import models.EnterAddressManuallyViewModel
+import models.VehicleLookupFormViewModel
+import models.PrivateKeeperDetailsViewModel
+import models.BusinessKeeperDetailsFormModel
+import models.PrivateKeeperDetailsCompleteFormModel
+import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
+import models.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import models.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
+import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
@@ -30,8 +30,8 @@ import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 
-import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
-import viewmodels.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 

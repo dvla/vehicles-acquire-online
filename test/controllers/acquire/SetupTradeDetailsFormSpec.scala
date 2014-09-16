@@ -2,7 +2,7 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.SetUpTradeDetails
-import viewmodels.SetupTradeDetailsViewModel.Form._
+import models.SetupTradeDetailsViewModel.Form._
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid,PostcodeValid, TraderEmailValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
 

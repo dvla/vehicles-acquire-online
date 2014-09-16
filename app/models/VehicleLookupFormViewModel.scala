@@ -1,4 +1,4 @@
-package viewmodels
+package models
 
 import play.api.data.Forms.{mapping, nonEmptyText}
 import play.api.libs.json.Json

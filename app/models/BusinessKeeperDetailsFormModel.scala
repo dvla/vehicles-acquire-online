@@ -1,4 +1,4 @@
-package viewmodels
+package models
 
 import mappings.FleetNumber.fleetNumberMapping
 import play.api.data.Forms._
