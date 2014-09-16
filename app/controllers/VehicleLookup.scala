@@ -12,8 +12,8 @@ import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleDetailsDto, VehicleLookupService}
 import utils.helpers.Config
-import models.VehicleLookupFormViewModel.VehicleLookupResponseCodeCacheKey
-import models.{VehicleLookupFormViewModel, VehicleLookupViewModel}
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -23,7 +23,7 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
                                     config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    VehicleLookupFormViewModel.Form.Mapping
+    VehicleLookupFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
@@ -47,16 +47,16 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
           request.cookies.getModel[TraderDetailsModel] match {
             case Some(traderDetails) =>
               val formWithReplacedErrors = invalidForm.replaceError(
-                VehicleLookupFormViewModel.Form.VehicleRegistrationNumberId,
+                VehicleLookupFormModel.Form.VehicleRegistrationNumberId,
                 FormError(
-                  key = VehicleLookupFormViewModel.Form.VehicleRegistrationNumberId,
+                  key = VehicleLookupFormModel.Form.VehicleRegistrationNumberId,
                   message = "error.restricted.validVrnOnly",
                   args = Seq.empty
                 )
               ).replaceError(
-                  VehicleLookupFormViewModel.Form.DocumentReferenceNumberId,
+                  VehicleLookupFormModel.Form.DocumentReferenceNumberId,
                   FormError(
-                    key = VehicleLookupFormViewModel.Form.DocumentReferenceNumberId,
+                    key = VehicleLookupFormModel.Form.DocumentReferenceNumberId,
                     message = "error.validDocumentReferenceNumber",
                     args = Seq.empty)
                 ).distinctErrors
@@ -85,7 +85,7 @@ final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
     }
   }
 
-  private def lookupVehicleResult(model: VehicleLookupFormViewModel)
+  private def lookupVehicleResult(model: VehicleLookupFormModel)
                                  (implicit request: Request[_]): Future[Result] = {
 
     def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String) = {

@@ -13,14 +13,14 @@ import models.SeenCookieMessageCacheKey
 import models.SetupTradeDetailsViewModel
 import models.BusinessChooseYourAddressFormModel
 import models.EnterAddressManuallyFormModel
-import models.VehicleLookupFormViewModel
+import models.VehicleLookupFormModel
 import models.PrivateKeeperDetailsFormModel
 import models.BusinessKeeperDetailsFormModel
 import models.PrivateKeeperDetailsCompleteFormModel
 import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
@@ -105,7 +105,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                              registrationNumber: String = RegistrationNumberValid,
                              vehicleSoldTo: String = VehicleSoldTo_Private): Cookie = {
     val key = VehicleLookupFormModelCacheKey
-    val value = VehicleLookupFormViewModel(
+    val value = VehicleLookupFormModel(
       referenceNumber = referenceNumber,
       registrationNumber = registrationNumber,
       vehicleSoldTo = vehicleSoldTo

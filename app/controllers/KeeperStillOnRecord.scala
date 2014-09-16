@@ -10,7 +10,7 @@ import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
-import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.AllCacheKeys
 
 final class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,

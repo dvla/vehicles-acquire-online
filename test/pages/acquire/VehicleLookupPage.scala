@@ -3,7 +3,7 @@ package pages.acquire
 import helpers.webbrowser.{Element, Page, RadioButton, WebBrowserDSL, WebDriverFactory, TelField, TextField}
 import views.acquire.VehicleLookup
 import VehicleLookup.{BackId, SubmitId}
-import models.VehicleLookupFormViewModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
+import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import org.openqa.selenium.WebDriver
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
 import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}

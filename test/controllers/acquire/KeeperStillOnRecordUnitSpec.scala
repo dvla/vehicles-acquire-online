@@ -8,7 +8,7 @@ import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPa
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 
