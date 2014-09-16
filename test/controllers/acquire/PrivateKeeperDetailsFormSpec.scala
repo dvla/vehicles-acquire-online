@@ -2,9 +2,9 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, SurnameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, LastNameValid}
 import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength}
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{SurnameId, SurnameMaxLength, SurnameMinLength}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
@@ -13,11 +13,11 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       val model = formWithValidDefaults(
         title = TitleValid,
         firstName = FirstNameValid,
-        surname = SurnameValid,
+        lastName = LastNameValid,
         email = EmailValid).get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
-      model.surname should equal(SurnameValid)
+      model.lastName should equal(LastNameValid)
       model.email should equal(Some(EmailValid))
     }
 
@@ -25,18 +25,18 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       val model = formWithValidDefaults(
         title = TitleValid,
         firstName = FirstNameValid,
-        surname = SurnameValid,
+        lastName = LastNameValid,
         email = "").get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
-      model.surname should equal(SurnameValid)
+      model.lastName should equal(LastNameValid)
       model.email should equal(None)
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(title = "", firstName = "", surname = "", email = "").
+      formWithValidDefaults(title = "", firstName = "", lastName = "", email = "").
         errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.required", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validSurname")
+        List("error.required", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validLastName")
     }
   }
 
@@ -156,93 +156,93 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
-  "surname" should {
+  "lastName" should {
     "reject if empty" in {
-      formWithValidDefaults(surname = "").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.minLength", "error.validSurname", "error.required")
+      formWithValidDefaults(lastName = "").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.validLastName", "error.required")
     }
 
     "reject if greater than max length" in {
-      formWithValidDefaults(surname = "a" * (SurnameMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
+      formWithValidDefaults(lastName = "a" * (LastNameMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.maxLength")
     }
 
     "reject if denied special characters are present $" in {
-      formWithValidDefaults(surname = SurnameValid + "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.validSurname")
+      formWithValidDefaults(lastName = LastNameValid + "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validLastName")
     }
 
     "reject if denied special characters are present +" in {
-      formWithValidDefaults(surname = SurnameValid + "+").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.validSurname")
+      formWithValidDefaults(lastName = LastNameValid + "+").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validLastName")
     }
 
     "reject if denied special characters are present ^" in {
-      formWithValidDefaults(surname = SurnameValid + "^").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.validSurname")
+      formWithValidDefaults(lastName = LastNameValid + "^").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validLastName")
     }
 
     "reject if denied special characters are present *" in {
-      formWithValidDefaults(surname = SurnameValid + "*").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.validSurname")
+      formWithValidDefaults(lastName = LastNameValid + "*").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.validLastName")
     }
 
     "accept if equal to max length" in {
-      val model = formWithValidDefaults(surname = "a" * SurnameMaxLength).get
-      model.surname should equal("a" * SurnameMaxLength)
+      val model = formWithValidDefaults(lastName = "a" * LastNameMaxLength).get
+      model.lastName should equal("a" * LastNameMaxLength)
     }
 
     "accept if equal to min length" in {
-      val model = formWithValidDefaults(surname = "a" * SurnameMinLength).get
-      model.surname should equal("a" * SurnameMinLength)
+      val model = formWithValidDefaults(lastName = "a" * LastNameMinLength).get
+      model.lastName should equal("a" * LastNameMinLength)
     }
 
     "accept in valid format" in {
-      val model = formWithValidDefaults(surname = SurnameValid).get
-      model.surname should equal(SurnameValid)
+      val model = formWithValidDefaults(lastName = LastNameValid).get
+      model.lastName should equal(LastNameValid)
     }
 
     "accept allowed special characters ." in {
-      val model = formWithValidDefaults(surname = SurnameValid + ".").get
-      model.surname should equal(SurnameValid + ".")
+      val model = formWithValidDefaults(lastName = LastNameValid + ".").get
+      model.lastName should equal(LastNameValid + ".")
     }
 
     "accept allowed special characters ," in {
-      val model = formWithValidDefaults(surname = SurnameValid + ",").get
-      model.surname should equal( SurnameValid + ",")
+      val model = formWithValidDefaults(lastName = LastNameValid + ",").get
+      model.lastName should equal( LastNameValid + ",")
     }
 
     "accept allowed special characters -" in {
-      val model = formWithValidDefaults(surname = SurnameValid + "'").get
-      model.surname should equal(SurnameValid + "'")
+      val model = formWithValidDefaults(lastName = LastNameValid + "'").get
+      model.lastName should equal(LastNameValid + "'")
     }
 
     "accept allowed special characters \"" in {
-      val model = formWithValidDefaults(surname = SurnameValid + "'").get
-      model.surname should equal(SurnameValid + "'")
+      val model = formWithValidDefaults(lastName = LastNameValid + "'").get
+      model.lastName should equal(LastNameValid + "'")
     }
 
     "accept allowed special characters '" in {
-      val model = formWithValidDefaults(surname = SurnameValid + "'").get
-      model.surname should equal(SurnameValid + "'")
+      val model = formWithValidDefaults(lastName = LastNameValid + "'").get
+      model.lastName should equal(LastNameValid + "'")
     }
 
     "accept when a space is present within the first name" in {
-      val model = formWithValidDefaults(surname = "a" + " " + "a").get
-      model.surname should equal("a" + " " + "a")
+      val model = formWithValidDefaults(lastName = "a" + " " + "a").get
+      model.lastName should equal("a" + " " + "a")
     }
   }
 
   private def formWithValidDefaults(title: String = TitleValid,
                                     firstName: String = FirstNameValid,
-                                    surname: String = SurnameValid,
+                                    lastName: String = LastNameValid,
                                     email: String = EmailValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
           TitleId -> title,
           FirstNameId -> firstName,
-          SurnameId -> surname,
+          LastNameId -> lastName,
           EmailId -> email
         )
       )

@@ -10,7 +10,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
 
-case class PrivateKeeperDetailsViewModel(title: String, firstName: String, surname: String, email: Option[String])
+case class PrivateKeeperDetailsViewModel(title: String, firstName: String, lastName: String, email: Option[String])
 
 object PrivateKeeperDetailsViewModel {
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsViewModel]
@@ -20,12 +20,12 @@ object PrivateKeeperDetailsViewModel {
   object Form {
     final val TitleId = "privatekeeper_title"
     final val FirstNameId = "privatekeeper_firstname"
-    final val SurnameId = "privatekeeper_surname"
+    final val LastNameId = "privatekeeper_lastname"
     final val EmailId = "privatekeeper_email"
     final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
-    final val SurnameMinLength = 1
-    final val SurnameMaxLength = 25
+    final val LastNameMinLength = 1
+    final val LastNameMaxLength = 25
 
     def firstNameMapping: Mapping[String] =
       nonEmptyTextWithTransform(_.trim)(FirstNameMinLength, FirstNameMaxLength) verifying validFirstName
@@ -35,13 +35,13 @@ object PrivateKeeperDetailsViewModel {
       name = "constraint.validFirstName",
       error = "error.validFirstName")
 
-    def surnameMapping: Mapping[String] =
-      nonEmptyTextWithTransform(_.trim)(SurnameMinLength, SurnameMaxLength) verifying validSurname
+    def lastNameMapping: Mapping[String] =
+      nonEmptyTextWithTransform(_.trim)(LastNameMinLength, LastNameMaxLength) verifying validLastName
 
-    def validSurname: Constraint[String] = pattern(
+    def validLastName: Constraint[String] = pattern(
       regex = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r,
-      name = "constraint.validSurname",
-      error = "error.validSurname")
+      name = "constraint.validLastName",
+      error = "error.validLastName")
 
     val titleOptions = Seq(
       ("firstOption", "Mr"),
@@ -53,7 +53,7 @@ object PrivateKeeperDetailsViewModel {
     final val Mapping = mapping(
       TitleId -> titleDropDown(titleOptions),
       FirstNameId -> firstNameMapping,
-      SurnameId -> surnameMapping,
+      LastNameId -> lastNameMapping,
       EmailId -> optional(email)
     )(PrivateKeeperDetailsViewModel.apply)(PrivateKeeperDetailsViewModel.unapply)
   }

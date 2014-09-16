@@ -27,7 +27,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
 import webserviceclients.fakes.FakeVehicleLookupWebService._
 import webserviceclients.fakes.FakeAddressLookupService._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, SurnameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 
 import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
@@ -129,13 +129,13 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def privateKeeperDetailsModel(title: String = TitleValid,
                                 firstName: String = FirstNameValid,
-                                surname: String = SurnameValid,
+                                lastName: String = LastNameValid,
                                 email: Option[String] = Some(EmailValid)): Cookie = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsViewModel(
       title = title,
       firstName = firstName,
-      surname = surname,
+      lastName = lastName,
       email = email
     )
     createCookie(key, value)

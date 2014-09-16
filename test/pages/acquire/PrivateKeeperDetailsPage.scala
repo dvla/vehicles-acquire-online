@@ -3,7 +3,7 @@ package pages.acquire
 import helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, Element, SingleSel, EmailField, TextField}
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, SurnameId}
+import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val address = s"/$basePath/private-keeper-details"
@@ -15,8 +15,8 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val OptionValid = "firstOption"
   final val FirstNameValid = "TestFirstName"
   final val FirstNameInvalid = ""
-  final val SurnameValid = "TestSurname"
-  final val SurnameInvalid = ""
+  final val LastNameValid = "TestLastName"
+  final val LastNameInvalid = ""
   final val EmailValid = "my@email.com"
   final val EmailInvalid = "no_at_symbol.com"
   final val TitleInvalidError = "Please select a title from the drop down list."
@@ -33,18 +33,18 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def firstNameTextBox(implicit driver: WebDriver): TextField = textField(id(FirstNameId))
 
-  def surnameTextBox(implicit driver: WebDriver): TextField = textField(id(SurnameId))
+  def lastNameTextBox(implicit driver: WebDriver): TextField = textField(id(LastNameId))
 
 
   def navigate(title: String = OptionValid,
                 firstName: String = FirstNameValid,
-                surname: String = SurnameValid,
+                lastName: String = LastNameValid,
                 email: String = EmailValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
     firstNameTextBox enter firstName
-    surnameTextBox enter surname
+    lastNameTextBox enter lastName
     emailTextBox enter email
 
     click on next

@@ -15,7 +15,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
-import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, SurnameInvalid, TitleInvalid}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, LastNameInvalid, TitleInvalid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -91,10 +91,10 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when no surname is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when no lastName is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      navigate(surname = SurnameInvalid)
+      navigate(lastName = LastNameInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
   }
