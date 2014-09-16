@@ -1,4 +1,4 @@
-@(traderLookupForm: Form[models.SetupTradeDetailsViewModel])(implicit lang: Lang,
+@(traderLookupForm: Form[models.SetupTradeDetailsFormModel])(implicit lang: Lang,
 token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
 config: utils.helpers.Config)
 
@@ -6,7 +6,7 @@ config: utils.helpers.Config)
 @import views.acquire.SetupTradeDetails.SubmitId
 @import views.html.acquire.main
 @import views.html.helper.form
-@import models.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+@import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.Postcode
 @import common.mappings.Email.EmailMaxLength

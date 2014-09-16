@@ -2,7 +2,7 @@ package pages.acquire
 
 import helpers.webbrowser._
 import org.openqa.selenium.WebDriver
-import models.SetupTradeDetailsViewModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import views.acquire.SetupTradeDetails.SubmitId
 
 object SetupTradeDetailsPage extends Page with WebBrowserDSL {

@@ -7,7 +7,7 @@ import helpers.webbrowser.TestHarness
 import pages.common.{Accessibility, ErrorPanel}
 import pages.acquire.SetupTradeDetailsPage._
 import pages.acquire.SetupTradeDetailsPage
-import models.SetupTradeDetailsViewModel
+import models.SetupTradeDetailsFormModel
 
 final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -60,22 +60,22 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
 
     "add aria required attribute to trader name field when required field not input" taggedAs UiTag in new WebBrowser {
       happyPath(traderBusinessName = "")
-      Accessibility.ariaRequiredPresent(SetupTradeDetailsViewModel.Form.TraderNameId) should equal(true)
+      Accessibility.ariaRequiredPresent(SetupTradeDetailsFormModel.Form.TraderNameId) should equal(true)
     }
 
     "add aria invalid attribute to trader name field when required field not input" taggedAs UiTag in new WebBrowser {
       happyPath(traderBusinessName = "")
-      Accessibility.ariaInvalidPresent(SetupTradeDetailsViewModel.Form.TraderNameId) should equal(true)
+      Accessibility.ariaInvalidPresent(SetupTradeDetailsFormModel.Form.TraderNameId) should equal(true)
     }
 
     "add aria required attribute to trader postcode field when required field not input" taggedAs UiTag in new WebBrowser {
       happyPath(traderBusinessPostcode = "")
-      Accessibility.ariaRequiredPresent(SetupTradeDetailsViewModel.Form.TraderPostcodeId) should equal(true)
+      Accessibility.ariaRequiredPresent(SetupTradeDetailsFormModel.Form.TraderPostcodeId) should equal(true)
     }
 
     "add aria invalid attribute to trader postcode field when required field not input" taggedAs UiTag in new WebBrowser {
       happyPath(traderBusinessPostcode = "")
-      Accessibility.ariaInvalidPresent(SetupTradeDetailsViewModel.Form.TraderPostcodeId) should equal(true)
+      Accessibility.ariaInvalidPresent(SetupTradeDetailsFormModel.Form.TraderPostcodeId) should equal(true)
     }
   }
 }

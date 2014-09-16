@@ -7,7 +7,7 @@ import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{CyId, EnId}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import models._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
@@ -44,7 +44,7 @@ object CookieFactoryForUISpecs {
 
   def setupTradeDetails(traderPostcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
     val key = SetupTradeDetailsCacheKey
-    val value = SetupTradeDetailsViewModel(traderBusinessName = TraderBusinessNameValid,
+    val value = SetupTradeDetailsFormModel(traderBusinessName = TraderBusinessNameValid,
       traderPostcode = traderPostcode, traderEmail = Some(TraderEmailValid))
     addCookie(key, value)
     this

@@ -8,12 +8,12 @@ import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
 import common.mappings.Postcode.postcode
 
-final case class SetupTradeDetailsViewModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])
+final case class SetupTradeDetailsFormModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])
 
-object SetupTradeDetailsViewModel {
-  implicit val JsonFormat = Json.format[SetupTradeDetailsViewModel]
+object SetupTradeDetailsFormModel {
+  implicit val JsonFormat = Json.format[SetupTradeDetailsFormModel]
   final val SetupTradeDetailsCacheKey = "setupTraderDetails"
-  implicit val Key = CacheKey[SetupTradeDetailsViewModel](SetupTradeDetailsCacheKey)
+  implicit val Key = CacheKey[SetupTradeDetailsFormModel](SetupTradeDetailsCacheKey)
 
   object Form {
     final val TraderNameId = "traderName"
@@ -24,6 +24,6 @@ object SetupTradeDetailsViewModel {
       TraderNameId -> businessNameMapping,
       TraderPostcodeId -> postcode,
       TraderEmailId -> optional(email)
-    )(SetupTradeDetailsViewModel.apply)(SetupTradeDetailsViewModel.unapply)
+    )(SetupTradeDetailsFormModel.apply)(SetupTradeDetailsFormModel.unapply)
   }
 }
