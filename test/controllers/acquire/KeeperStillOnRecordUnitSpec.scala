@@ -10,7 +10,7 @@ import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
-import models.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 
 class KeeperStillOnRecordUnitSpec extends UnitSpec {
 

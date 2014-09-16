@@ -1,7 +1,7 @@
 package pages.acquire
 
 import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
-import models.BusinessChooseYourAddressViewModel.Form.AddressSelectId
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import views.acquire.BusinessChooseYourAddress
 import BusinessChooseYourAddress.BackId
 import BusinessChooseYourAddress.EnterAddressManuallyButtonId

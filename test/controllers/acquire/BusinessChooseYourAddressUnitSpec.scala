@@ -14,8 +14,8 @@ import CookieHelper.fetchCookiesFromHeaders
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import play.api.test.WithApplication
-import models.BusinessChooseYourAddressViewModel.Form.AddressSelectId
-import models.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}

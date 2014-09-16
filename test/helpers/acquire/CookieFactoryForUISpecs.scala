@@ -6,7 +6,7 @@ import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{CyId, EnId}
-import models.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import models._
@@ -52,7 +52,7 @@ object CookieFactoryForUISpecs {
 
   def businessChooseYourAddress(uprn: Long = traderUprnValid)(implicit webDriver: WebDriver) = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressViewModel(uprnSelected = uprn.toString)
+    val value = BusinessChooseYourAddressFormModel(uprnSelected = uprn.toString)
     addCookie(key, value)
     this
   }

@@ -11,14 +11,14 @@ import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import models.SeenCookieMessageCacheKey
 import models.SetupTradeDetailsViewModel
-import models.BusinessChooseYourAddressViewModel
+import models.BusinessChooseYourAddressFormModel
 import models.EnterAddressManuallyViewModel
 import models.VehicleLookupFormViewModel
 import models.PrivateKeeperDetailsViewModel
 import models.BusinessKeeperDetailsFormModel
 import models.PrivateKeeperDetailsCompleteFormModel
 import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
-import models.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
 import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
@@ -65,7 +65,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def businessChooseYourAddress(): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressViewModel(uprnSelected = traderUprnValid.toString)
+    val value = BusinessChooseYourAddressFormModel(uprnSelected = traderUprnValid.toString)
     createCookie(key, value)
   }
 
