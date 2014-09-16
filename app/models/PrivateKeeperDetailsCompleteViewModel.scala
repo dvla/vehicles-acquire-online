@@ -5,4 +5,4 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 
 case class PrivateKeeperDetailsCompleteViewModel(form: Form[PrivateKeeperDetailsCompleteFormModel],
                                                  vehicleDetails: VehicleDetailsModel,
-                                                 keeperDetails: PrivateKeeperDetailsViewModel)
+                                                 keeperDetails: PrivateKeeperDetailsFormModel)

@@ -10,7 +10,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import models.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
+import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
 import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError, LastNameValid}
 import pages.acquire.SetupTradeDetailsPage
 

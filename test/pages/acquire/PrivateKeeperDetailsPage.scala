@@ -3,7 +3,7 @@ package pages.acquire
 import helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, Element, SingleSel, EmailField, TextField}
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
-import models.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
+import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val address = s"/$basePath/private-keeper-details"

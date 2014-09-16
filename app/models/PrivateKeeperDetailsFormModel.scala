@@ -10,12 +10,12 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
 
-case class PrivateKeeperDetailsViewModel(title: String, firstName: String, lastName: String, email: Option[String])
+case class PrivateKeeperDetailsFormModel(title: String, firstName: String, lastName: String, email: Option[String])
 
-object PrivateKeeperDetailsViewModel {
-  implicit val JsonFormat = Json.format[PrivateKeeperDetailsViewModel]
+object PrivateKeeperDetailsFormModel {
+  implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
   final val PrivateKeeperDetailsCacheKey = "privateKeeperDetails"
-  implicit val Key = CacheKey[PrivateKeeperDetailsViewModel](PrivateKeeperDetailsCacheKey)
+  implicit val Key = CacheKey[PrivateKeeperDetailsFormModel](PrivateKeeperDetailsCacheKey)
 
   object Form {
     final val TitleId = "privatekeeper_title"
@@ -55,6 +55,6 @@ object PrivateKeeperDetailsViewModel {
       FirstNameId -> firstNameMapping,
       LastNameId -> lastNameMapping,
       EmailId -> optional(email)
-    )(PrivateKeeperDetailsViewModel.apply)(PrivateKeeperDetailsViewModel.unapply)
+    )(PrivateKeeperDetailsFormModel.apply)(PrivateKeeperDetailsFormModel.unapply)
   }
 }

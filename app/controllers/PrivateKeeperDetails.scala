@@ -8,8 +8,8 @@ import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import play.api.data.{FormError, Form}
-import models.PrivateKeeperDetailsViewModel
-import models.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
+import models.PrivateKeeperDetailsFormModel
+import models.PrivateKeeperDetailsFormModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 
@@ -17,7 +17,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    PrivateKeeperDetailsViewModel.Form.Mapping
+    PrivateKeeperDetailsFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
