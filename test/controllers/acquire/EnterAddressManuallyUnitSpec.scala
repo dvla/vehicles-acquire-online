@@ -18,7 +18,7 @@ import common.views.helpers.FormExtensions
 import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config
 import views.acquire.EnterAddressManually.PostcodeId
-import models.EnterAddressManuallyViewModel.Form.AddressAndPostcodeId
+import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import TraderDetailsModel.TraderDetailsCacheKey
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid}
 

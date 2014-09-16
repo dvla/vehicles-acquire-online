@@ -12,14 +12,14 @@ import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import models.SeenCookieMessageCacheKey
 import models.SetupTradeDetailsViewModel
 import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyViewModel
+import models.EnterAddressManuallyFormModel
 import models.VehicleLookupFormViewModel
 import models.PrivateKeeperDetailsViewModel
 import models.BusinessKeeperDetailsFormModel
 import models.PrivateKeeperDetailsCompleteFormModel
 import models.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
@@ -71,7 +71,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def enterAddressManually(): Cookie = {
     val key = EnterAddressManuallyCacheKey
-    val value = EnterAddressManuallyViewModel(
+    val value = EnterAddressManuallyFormModel(
       addressAndPostcodeModel = AddressAndPostcodeViewModel(
         addressLinesModel = AddressLinesViewModel(
           buildingNameOrNumber = BuildingNameOrNumberValid,
