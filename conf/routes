@@ -12,7 +12,7 @@
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
 
 # Home page
-GET     /                                               @controllers.Application.index
+GET     /                                   @controllers.Application.index
 
 #page 1 - Before You Start
 GET     /before-you-start                   @controllers.BeforeYouStart.present
