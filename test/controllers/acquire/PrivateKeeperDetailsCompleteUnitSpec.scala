@@ -3,17 +3,16 @@ package controllers.acquire
 import controllers.{PrivateKeeperDetails, PrivateKeeperDetailsComplete}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import play.api.test.Helpers._
+import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
-import controllers.acquire.Common._
+import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import pages.acquire.PrivateKeeperDetailsCompletePage._
+import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, MileageValid}
 import utils.helpers.Config
-import org.mockito.Mockito._
+import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
-import models.PrivateKeeperDetailsCompleteFormModel.Form._
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear._
-import scala.Some
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
 class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
@@ -86,15 +85,6 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
         r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
       }
     }
-
-//    "not redirect when mandadtory fields are not completed" in new WithApplication {
-//      val request = buildCorrectlyPopulatedRequest(consent = "")
-//
-//      val result = privateKeeperDetailsComplete.submit(request)
-//      whenReady(result) { r =>
-//        r.header.headers.get(LOCATION) should equal (Some(PrivateKeeperDetailsCompletePage.address)) //ToDo - update when consent is implemented
-//      }
-//    }
 
 //    "return a bad request if no details are entered" in new WithApplication { // ToDo - uncomment when consent box is implemented
 //      val request = buildCorrectlyPopulatedRequest()
