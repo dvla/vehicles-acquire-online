@@ -125,3 +125,6 @@ lazy val p1 = osAddressLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p2 = vehiclesLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p4 = legacyStubs.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p7 = gatlingTests.disablePlugins(PlayScala, SassPlugin, SbtWeb)
+
+resolvers ++= Seq("Bintray-repo" at "http://dl.bintray.com/dvla/maven/")
+
