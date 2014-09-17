@@ -1,4 +1,4 @@
-@(viewModel: viewmodels.BusinessKeeperDetailsViewModel
+@(viewModel: models.BusinessKeeperDetailsViewModel
 )(implicit lang: Lang,
   token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
   config: utils.helpers.Config
@@ -15,7 +15,7 @@
 @import common.mappings.BusinessName
 @import constraints.FleetNumber
 @import views.html.helper.form
-@import viewmodels.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+@import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 
 @main(
     progress = Some(Messages("acquire_progress_5")),

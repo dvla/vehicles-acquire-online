@@ -1,14 +1,14 @@
 import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
-import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
-import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
-import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
-import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
-import viewmodels.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 
-package object viewmodels {
+package object models {
   final val HelpCacheKey = "help"
   final val SeenCookieMessageCacheKey = "seen_cookie_message"
 

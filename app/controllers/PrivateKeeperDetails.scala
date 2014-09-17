@@ -8,8 +8,8 @@ import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import play.api.data.{FormError, Form}
-import viewmodels.PrivateKeeperDetailsViewModel
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{titleOptions,TitleId, FirstNameId, SurnameId, EmailId}
+import models.PrivateKeeperDetailsFormModel
+import models.PrivateKeeperDetailsFormModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 
@@ -17,7 +17,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    PrivateKeeperDetailsViewModel.Form.Mapping
+    PrivateKeeperDetailsFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
@@ -38,7 +38,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
               val formWithReplacedErrors = invalidForm.
                 replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).
                 replaceError(FirstNameId, FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)).
-                replaceError(SurnameId, FormError(key = SurnameId, message = "error.validSurname", args = Seq.empty)).
+                replaceError(LastNameId, FormError(key = LastNameId, message = "error.validLastName", args = Seq.empty)).
                 replaceError(EmailId, FormError(key = FirstNameId, message = "error.validEmail", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },

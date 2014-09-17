@@ -4,7 +4,7 @@ import helpers.UnitSpec
 import controllers.BusinessKeeperDetails
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
-import viewmodels.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 
 class BusinessKeeperDetailsFormSpec extends UnitSpec {
 
@@ -12,7 +12,7 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
     "accept if form is completed with all fields correct" in {
       val model = formWithValidDefaults().get
       model.fleetNumber should equal(Some(FleetNumberValid))
-      model.businessName should equal(BusinessNameValid)
+      model.businessName should equal(BusinessNameValid.toUpperCase)
       model.email should equal(Some(EmailValid))
     }
 
@@ -21,7 +21,7 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
         fleetNumber = "",
         email = "").get
       model.fleetNumber should equal(None)
-      model.businessName should equal(BusinessNameValid)
+      model.businessName should equal(BusinessNameValid.toUpperCase)
       model.email should equal(None)
     }
 

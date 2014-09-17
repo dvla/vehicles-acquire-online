@@ -1,4 +1,4 @@
-@(businessChooseYourAddressForm: Form[viewmodels.BusinessChooseYourAddressViewModel],
+@(businessChooseYourAddressForm: Form[models.BusinessChooseYourAddressFormModel],
         traderBusinessName: String,
         traderPostcode: String,
         traderEmail: String,
@@ -14,7 +14,7 @@
 @import views.acquire.BusinessChooseYourAddress.{BackId, EnterAddressManuallyButtonId, SelectId}
 @import views.html.acquire.main
 @import views.html.helper.form
-@import viewmodels.BusinessChooseYourAddressViewModel.Form.AddressSelectId
+@import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 
 @main(
     progress = Some(Messages("acquire_progress_3")),

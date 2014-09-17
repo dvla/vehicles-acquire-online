@@ -92,7 +92,7 @@ error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
 error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
-error.validSurname = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -224,7 +224,7 @@ acquire_privatekeeperdetails.backbutton = Back
 acquire_privatekeeperdetails.submitbutton = Submit
 acquire_privatekeeperdetails.titlelabel = Title
 acquire_privatekeeperdetails.firstnamelabel = First name(s)
-acquire_privatekeeperdetails.surnamelabel = Surname
+acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address
 acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
@@ -233,12 +233,16 @@ acquire_privatekeeperdetails.p4 = If the details above do not match the vehicle 
 privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
-privatekeeper_surname = Surname
+privatekeeper_lastname = Last name
 
 #individual keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
+acquire_keeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of the vehicle
+acquire_keeperdetailscomplete.mileage.label = Vehicle mileage
 acquire_keeperdetailscomplete.submitbutton = Submit
 acquire_keeperdetailscomplete.backbutton = Back
+acquire_keeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
+privatekeeper_mileage = Mileage
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
@@ -252,7 +256,7 @@ acquire_businesskeeperdetails.vehiclemake = Make
 acquire_businesskeeperdetails.vehiclemodel = Model
 acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
-acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it to register this vehicle into their fleet... any more benefits/motivations?
+acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it to register this vehicle into their fleet e.g. 012345 or 54321-
 acquire_businesskeeperdetails.email = Business email
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
