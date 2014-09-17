@@ -22,7 +22,7 @@ publishTo <<= version { v: String =>
 
 name := "vehicles-acquire-online"
 
-version := "1.1-SNAPSHOT"
+version := "1.1"
 
 organization := "dvla"
 
