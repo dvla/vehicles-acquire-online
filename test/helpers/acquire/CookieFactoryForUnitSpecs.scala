@@ -29,6 +29,7 @@ import webserviceclients.fakes.FakeAddressLookupService._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid}
 
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
@@ -153,12 +154,16 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate], mileage: Option[Int]): Cookie = {
+  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate] =  Some(new LocalDate(YearDateOfBirthValid.toInt,
+                                                                                             MonthDateOfBirthValid.toInt,
+                                                                                             DayDateOfBirthValid.toInt)),
+                                        mileage: Option[Int] = Some(MileageValid.toInt)): Cookie = {
+    val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
     val value = PrivateKeeperDetailsCompleteFormModel(
       dateOfBirth,
       mileage
     )
-    createCookie(PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey, value)
+    createCookie(key, value)
   }
 
   def trackingIdModel(value: String = TrackingIdValue): Cookie = {

@@ -1,13 +1,16 @@
 package controllers
 
-import com.google.inject.Inject
-import play.api.data.Form
-import play.api.mvc.{Action, Controller}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
-import utils.helpers.Config
 import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel}
 import views.html.acquire.private_keeper_details_complete
+import com.google.inject.Inject
+import play.api.mvc.{Action, Controller}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import utils.helpers.Config
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
+import play.api.data.Form
+import models.PrivateKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
+import play.api.Logger
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                config: Config) extends Controller {
@@ -17,9 +20,17 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
   )
 
   def present = Action { implicit request =>
-    Ok(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
-      form.fill(), null, null
-    )))
+
+    request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
+      case Some(privateKeeperDetails) => {
+        Ok(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
+          form.fill(), null, null
+        )))
+      }
+      case _ =>
+        Logger.warn("Did not find PrivateKeeperDetails cookie. Now redirecting to SetUpTradeDetails.")
+        Redirect(routes.SetUpTradeDetails.present())
+    }
   }
 
   def submit = Action { implicit request =>

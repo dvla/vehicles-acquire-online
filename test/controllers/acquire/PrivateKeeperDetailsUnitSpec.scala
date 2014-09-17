@@ -13,6 +13,7 @@ import utils.helpers.Config
 import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
 import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError, LastNameValid}
 import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.PrivateKeeperDetailsCompletePage
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
@@ -67,7 +68,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/private-complete-and-confirm")) //ToDo amend when next page implemented
+        r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
       }
     }
 
@@ -76,7 +77,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some("/vrm-acquire/private-complete-and-confirm")) //ToDo amend when next page implemented
+        r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
       }
     }
 
