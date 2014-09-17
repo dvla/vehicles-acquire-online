@@ -6,7 +6,7 @@ import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
-  final val address = s"/$basePath/private-keeper-details"
+  final val address = s"$basePath/private-keeper-details"
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter keeper details"
 
