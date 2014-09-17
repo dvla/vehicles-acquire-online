@@ -2,14 +2,15 @@
   token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
   config: utils.helpers.Config)
 
-@import views.html.helper.{form => formElement}
+@import views.html.helper.form
 @import controllers.routes.PrivateKeeperDetailsComplete
 @import uk.gov.dvla.vehicles.presentation.common
+@import common.mappings.Mileage
 @import common.views.html.widgets.dates.valtechDateOfBirth
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import viewmodels.PrivateKeeperDetailsCompleteFormModel.Form.DateOfBirthId
+@import viewmodels.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
 @import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
 
 @main(
@@ -17,9 +18,24 @@
     title = Messages("acquire_keeperdetailscomplete.title"),
     currentForm = Some(data.form)
 ) {
-    @formElement(action = PrivateKeeperDetailsComplete.submit) {
+    @form(action = PrivateKeeperDetailsComplete.submit) {
         @csrfTokenHiddenField()
+
+        <p>@Messages("acquire_keeperdetailscomplete.p1")</p>
+
+        <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/numeric-input-only.js")" type="text/javascript"></script>
+
         @valtechDateOfBirth(data.form(DateOfBirthId))
+
+        @valtechInputText(data.form(MileageId), args =
+        Map('_label -> Messages("acquire_keeperdetailscomplete.mileage.label"),
+        '_showConstraints -> false,
+        'typeTel -> true,
+        'maxLength -> Mileage.MaxLength // Must be set independently of the pattern as the pattern is only checked when the user submits.
+        //'title -> Messages("acquire_keeperdetailscomplete.mileage.validation")
+        ) ++
+        (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
+        )
 
         <div class="second-col">
             <div class="form-steps">

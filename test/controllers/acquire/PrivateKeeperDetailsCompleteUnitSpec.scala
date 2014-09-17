@@ -9,6 +9,7 @@ import play.api.test.{FakeRequest, WithApplication}
 
 
 class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
+
   private val privateKeeperDetailsComplete = {
     injector.getInstance(classOf[PrivateKeeperDetailsComplete])
   }
@@ -21,9 +22,9 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
       }
     }
 
-    "present an a full form" in new WithApplication {
+    "present a full form when privateKeeperDetailsComplete cookie is present" in new WithApplication {
       val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsCompleteModel(Some(new LocalDate(1234, 12, 24))))
+        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsCompleteModel(Some(new LocalDate(1234, 12, 24)), Some(12000)))
       val html = contentAsString(privateKeeperDetailsComplete.present(request))
       html should include("24")
       html should include("12")

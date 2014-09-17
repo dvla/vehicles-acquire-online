@@ -6,8 +6,9 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import utils.helpers.Config
-import viewmodels.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel}
+import viewmodels.PrivateKeeperDetailsCompleteFormModel
 import views.html.acquire.private_keeper_details_complete
+import viewmodels.PrivateKeeperDetailsCompleteViewModel
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                config: Config) extends Controller {
@@ -24,9 +25,10 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm => BadRequest(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
-        invalidForm, null, null
-      ))),
+      invalidForm =>
+        BadRequest(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
+          invalidForm, null, null
+        ))),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )
   }

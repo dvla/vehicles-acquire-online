@@ -153,8 +153,11 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate]): Cookie = {
-    val value = PrivateKeeperDetailsCompleteFormModel(dateOfBirth)
+  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate], mileage: Option[Int]): Cookie = {
+    val value = PrivateKeeperDetailsCompleteFormModel(
+      dateOfBirth,
+      mileage
+    )
     createCookie(PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey, value)
   }
 

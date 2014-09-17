@@ -237,8 +237,12 @@ privatekeeper_lastname = Last name
 
 #individual keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
+acquire_keeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of the vehicle
+acquire_keeperdetailscomplete.mileage.label = Vehicle mileage
 acquire_keeperdetailscomplete.submitbutton = Submit
 acquire_keeperdetailscomplete.backbutton = Back
+acquire_keeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
+privatekeeper_mileage = Mileage
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
