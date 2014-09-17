@@ -9,18 +9,18 @@ import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, Trad
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import viewmodels.SeenCookieMessageCacheKey
-import viewmodels.SetupTradeDetailsViewModel
-import viewmodels.BusinessChooseYourAddressViewModel
-import viewmodels.EnterAddressManuallyViewModel
-import viewmodels.VehicleLookupFormViewModel
-import viewmodels.PrivateKeeperDetailsViewModel
-import viewmodels.BusinessKeeperDetailsFormModel
-import viewmodels.PrivateKeeperDetailsCompleteFormModel
-import viewmodels.SetupTradeDetailsViewModel.SetupTradeDetailsCacheKey
-import viewmodels.BusinessChooseYourAddressViewModel.BusinessChooseYourAddressCacheKey
-import viewmodels.EnterAddressManuallyViewModel.EnterAddressManuallyCacheKey
-import viewmodels.VehicleLookupFormViewModel.VehicleLookupFormModelCacheKey
+import models.SeenCookieMessageCacheKey
+import models.SetupTradeDetailsFormModel
+import models.BusinessChooseYourAddressFormModel
+import models.EnterAddressManuallyFormModel
+import models.VehicleLookupFormModel
+import models.PrivateKeeperDetailsFormModel
+import models.BusinessKeeperDetailsFormModel
+import models.PrivateKeeperDetailsCompleteFormModel
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
@@ -30,8 +30,8 @@ import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 
-import viewmodels.PrivateKeeperDetailsViewModel.PrivateKeeperDetailsCacheKey
-import viewmodels.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -58,20 +58,20 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def setupTradeDetails(traderPostcode: String = PostcodeValid, traderEmail: Option[String] = None): Cookie = {
     val key = SetupTradeDetailsCacheKey
-    val value = SetupTradeDetailsViewModel(traderBusinessName = TraderBusinessNameValid,
+    val value = SetupTradeDetailsFormModel(traderBusinessName = TraderBusinessNameValid,
       traderPostcode = traderPostcode, traderEmail = traderEmail)
     createCookie(key, value)
   }
 
   def businessChooseYourAddress(): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressViewModel(uprnSelected = traderUprnValid.toString)
+    val value = BusinessChooseYourAddressFormModel(uprnSelected = traderUprnValid.toString)
     createCookie(key, value)
   }
 
   def enterAddressManually(): Cookie = {
     val key = EnterAddressManuallyCacheKey
-    val value = EnterAddressManuallyViewModel(
+    val value = EnterAddressManuallyFormModel(
       addressAndPostcodeModel = AddressAndPostcodeViewModel(
         addressLinesModel = AddressLinesViewModel(
           buildingNameOrNumber = BuildingNameOrNumberValid,
@@ -105,7 +105,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                              registrationNumber: String = RegistrationNumberValid,
                              vehicleSoldTo: String = VehicleSoldTo_Private): Cookie = {
     val key = VehicleLookupFormModelCacheKey
-    val value = VehicleLookupFormViewModel(
+    val value = VehicleLookupFormModel(
       referenceNumber = referenceNumber,
       registrationNumber = registrationNumber,
       vehicleSoldTo = vehicleSoldTo
@@ -132,7 +132,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                                 lastName: String = LastNameValid,
                                 email: Option[String] = Some(EmailValid)): Cookie = {
     val key = PrivateKeeperDetailsCacheKey
-    val value = PrivateKeeperDetailsViewModel(
+    val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
       lastName = lastName,

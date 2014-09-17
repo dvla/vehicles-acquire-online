@@ -3,8 +3,8 @@ package controllers.acquire
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
 import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, LastNameValid}
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength}
-import viewmodels.PrivateKeeperDetailsViewModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength}
+import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength}
+import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 

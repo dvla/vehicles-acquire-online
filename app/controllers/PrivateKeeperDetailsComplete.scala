@@ -6,9 +6,8 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import utils.helpers.Config
-import viewmodels.PrivateKeeperDetailsCompleteFormModel
+import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel}
 import views.html.acquire.private_keeper_details_complete
-import viewmodels.PrivateKeeperDetailsCompleteViewModel
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                config: Config) extends Controller {

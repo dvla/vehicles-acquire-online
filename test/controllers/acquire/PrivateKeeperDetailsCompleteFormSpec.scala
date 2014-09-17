@@ -2,9 +2,9 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import org.joda.time.LocalDate
-import viewmodels.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
-import viewmodels.PrivateKeeperDetailsCompleteFormModel
+import models.PrivateKeeperDetailsCompleteFormModel
 import play.api.data.Form
 import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, MileageValid}
 import scala.Some

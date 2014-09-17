@@ -11,7 +11,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import viewmodels.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 
 class BusinessKeeperDetailsUnitSpec extends UnitSpec {

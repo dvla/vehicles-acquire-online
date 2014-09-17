@@ -7,7 +7,6 @@ import org.joda.time.LocalDate
 import play.api.test.Helpers.{OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 
-
 class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
   private val privateKeeperDetailsComplete = {
