@@ -13,7 +13,7 @@ object ProgressBar {
     additionalConfiguration = Map("progressBar.enabled" -> "true"))
 
   def progressStep(currentStep: Int): String = {
-    val end = 6
+    val end = 7
     s"Step $currentStep of $end"
   }
 
