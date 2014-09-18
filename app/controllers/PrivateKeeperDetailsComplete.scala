@@ -6,10 +6,11 @@ import com.google.inject.Inject
 import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import play.api.data.{FormError, Form}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import play.api.Logger
+import models.PrivateKeeperDetailsFormModel.Form.ConsentId
+import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                config: Config) extends Controller {
@@ -40,6 +41,16 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
         ))),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )
+  }
+
+  private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsCompleteFormModel])(implicit request: Request[_]) = {
+    form.replaceError(
+      ConsentId,
+      "error.required",
+      FormError(key = ConsentId,
+        message = "acquire_keeperdetailscomplete.consentError",
+        args = Seq.empty)
+    ).distinctErrors
   }
 
 }

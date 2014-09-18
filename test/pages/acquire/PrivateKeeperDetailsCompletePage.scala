@@ -3,7 +3,7 @@ package pages.acquire
 import helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfBirthId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfBirthId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear._
 
 object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
@@ -15,6 +15,7 @@ object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
   final val MonthDateOfBirthValid = "12"
   final val YearDateOfBirthValid = "1920"
   final val MileageValid = "1000"
+  final val ConsentTrue = "consent"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
@@ -28,16 +29,20 @@ object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
 
   def mileageTextBox(implicit driver: WebDriver): TelField = telField(id(MileageId))
 
+  def consent(implicit driver: WebDriver): Checkbox = checkbox(id(ConsentId))
+
   def navigate(dayDateOfBirth: String = DayDateOfBirthValid,
                monthDateOfBirth: String = MonthDateOfBirthValid,
                yearDateOfBirth: String = YearDateOfBirthValid,
-               mileage: String = MileageValid)(implicit driver: WebDriver) = {
+               mileage: String = MileageValid,
+               consent: String = ConsentTrue)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsCompletePage
 
     dayDateOfBirthTextBox enter dayDateOfBirth
     monthDateOfBirthTextBox enter monthDateOfBirth
     yearDateOfBirthTextBox enter yearDateOfBirth
     mileageTextBox enter mileage
+    click on consent
 
     click on next
   }

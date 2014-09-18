@@ -1,12 +1,13 @@
 package controllers.acquire
 
 import helpers.UnitSpec
+import mappings.Consent
 import org.joda.time.LocalDate
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import models.PrivateKeeperDetailsCompleteFormModel
 import play.api.data.Form
-import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, MileageValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage._
 import scala.Some
 import controllers.PrivateKeeperDetailsComplete
 
@@ -147,14 +148,16 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
   private def formWithValidDefaults(dayDateOfBirth: String = DayDateOfBirthValid,
                                     monthDateOfBirth: String = MonthDateOfBirthValid,
                                     yearDateOfBirth: String = YearDateOfBirthValid,
-                                    mileage: String = MileageValid): Form[PrivateKeeperDetailsCompleteFormModel] = {
+                                    mileage: String = MileageValid,
+                                    consent: String = ConsentTrue): Form[PrivateKeeperDetailsCompleteFormModel] = {
     injector.getInstance(classOf[PrivateKeeperDetailsComplete])
       .form.bind(
         Map(
           s"$DateOfBirthId.$DayId" -> dayDateOfBirth,
           s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
           s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
-          MileageId -> mileage
+          MileageId -> mileage,
+          ConsentId -> consent
         )
       )
   }

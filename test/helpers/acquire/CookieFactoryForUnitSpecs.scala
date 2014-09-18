@@ -161,7 +161,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
     val value = PrivateKeeperDetailsCompleteFormModel(
       dateOfBirth,
-      mileage
+      mileage,
+      ""
     )
     createCookie(key, value)
   }

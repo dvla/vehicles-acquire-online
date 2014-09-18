@@ -7,11 +7,11 @@ import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaul
 import play.api.test.{FakeRequest, WithApplication}
 import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, MileageValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, MileageValid, ConsentTrue}
 import utils.helpers.Config
 import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
 class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
@@ -86,25 +86,26 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
       }
     }
 
-//    "return a bad request if no details are entered" in new WithApplication { // ToDo - uncomment when consent box is implemented
-//      val request = buildCorrectlyPopulatedRequest()
-//        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-//      val result = privateKeeperDetailsComplete.submit(request)
-//      whenReady(result) { r =>
-//        r.header.status should equal(BAD_REQUEST)
-//      }
-//    }
+    "return a bad request if consent is not ticked" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(consent="")
+      val result = privateKeeperDetailsComplete.submit(request)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+      }
+    }
   }
 
   private def buildCorrectlyPopulatedRequest(dayDateOfBirth: String = DayDateOfBirthValid,
                                              monthDateOfBirth: String = MonthDateOfBirthValid,
                                              yearDateOfBirth: String = YearDateOfBirthValid,
-                                             mileage: String = MileageValid) = {
+                                             mileage: String = MileageValid,
+                                             consent: String = ConsentTrue) = {
     FakeRequest().withFormUrlEncodedBody(
       s"$DateOfBirthId.$DayId" -> dayDateOfBirth,
       s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
       s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
-      MileageId -> mileage
+      MileageId -> mileage,
+      ConsentId -> consent
     )
   }
 
