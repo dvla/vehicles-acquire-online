@@ -12,6 +12,7 @@ import TraderDetailsModel.TraderDetailsCacheKey
 import models._
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
+import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import webserviceclients.fakes.FakeVehicleLookupWebService._
 import pages.acquire.PrivateKeeperDetailsPage._
@@ -19,7 +20,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel._
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import scala.Some
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
 import models.PrivateKeeperDetailsFormModel._
 import scala.Some
@@ -101,6 +102,19 @@ object CookieFactoryForUISpecs {
       title = title,
       firstName = firstName,
       lastName = lastName,
+      email = email
+    )
+    addCookie(key, value)
+    this
+  }
+
+  def businessKeeperDetails(fleetNumber: Option[String] = Some(FleetNumberValid),
+                            businessName: String = BusinessNameValid,
+                            email: Option[String] = Some(EmailValid))(implicit webDriver: WebDriver) = {
+    val key = BusinessKeeperDetailsCacheKey
+    val value = BusinessKeeperDetailsFormModel(
+      fleetNumber = fleetNumber,
+      businessName = businessName,
       email = email
     )
     addCookie(key, value)

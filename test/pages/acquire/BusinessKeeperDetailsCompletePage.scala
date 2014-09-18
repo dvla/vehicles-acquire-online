@@ -2,9 +2,8 @@ package pages.acquire
 
 import helpers.webbrowser._
 import org.openqa.selenium.WebDriver
-import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfBirthId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear._
+import views.acquire.BusinessKeeperDetailsComplete.{BackId, SubmitId}
+import models.BusinessKeeperDetailsCompleteFormModel.Form.MileageId
 
 object BusinessKeeperDetailsCompletePage extends Page with WebBrowserDSL {
   final val address = s"/$basePath/business-complete-and-confirm"
