@@ -8,7 +8,7 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
+import pages.acquire.{BeforeYouStartPage,PrivateKeeperDetailsCompletePage,SetupTradeDetailsPage,PrivateKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsCompletePage.{navigate, back}
