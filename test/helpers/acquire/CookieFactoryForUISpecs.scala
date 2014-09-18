@@ -14,11 +14,15 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import webserviceclients.fakes.FakeVehicleLookupWebService._
-import pages.acquire.PrivateKeeperDetailsPage.ModelValid
+import pages.acquire.PrivateKeeperDetailsPage._
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel._
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import scala.Some
+import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import models.PrivateKeeperDetailsFormModel._
+import scala.Some
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -84,6 +88,21 @@ object CookieFactoryForUISpecs {
                                     vehicleMake,
                                     vehicleModel,
                                     disposeFlag)
+    addCookie(key, value)
+    this
+  }
+
+  def privateKeeperDetails(title: String = TitleValid,
+                           firstName: String = FirstNameValid,
+                           lastName: String = LastNameValid,
+                           email: Option[String] = Some(EmailValid))(implicit webDriver: WebDriver) = {
+    val key = PrivateKeeperDetailsCacheKey
+    val value = PrivateKeeperDetailsFormModel(
+      title = title,
+      firstName = firstName,
+      lastName = lastName,
+      email = email
+    )
     addCookie(key, value)
     this
   }

@@ -1,9 +1,10 @@
 package pages.acquire
 
-import helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, Element, SingleSel, EmailField, TextField}
+import helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
-import models.PrivateKeeperDetailsCompleteFormModel.Form.MileageId
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfBirthId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear._
 
 object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
   final val address = s"/$basePath/private-complete-and-confirm"
@@ -19,7 +20,25 @@ object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
-  //def dayDateOfBirthTextBox(implicit driver: WebDriver): EmailField = emailField(id(EmailId))
+  def dayDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_day"))
 
-  def mileageTextBox(implicit driver: WebDriver): EmailField = emailField(id(MileageId))
+  def monthDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_month"))
+
+  def yearDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_year"))
+
+  def mileageTextBox(implicit driver: WebDriver): TelField = telField(id(MileageId))
+
+  def navigate(dayDateOfBirth: String = DayDateOfBirthValid,
+               monthDateOfBirth: String = MonthDateOfBirthValid,
+               yearDateOfBirth: String = YearDateOfBirthValid,
+               mileage: String = MileageValid)(implicit driver: WebDriver) = {
+    go to PrivateKeeperDetailsCompletePage
+
+    dayDateOfBirthTextBox enter dayDateOfBirth
+    monthDateOfBirthTextBox enter monthDateOfBirth
+    yearDateOfBirthTextBox enter yearDateOfBirth
+    mileageTextBox enter mileage
+
+    click on next
+  }
 }
