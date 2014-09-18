@@ -9,14 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, Trad
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models.SeenCookieMessageCacheKey
-import models.SetupTradeDetailsFormModel
-import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyFormModel
-import models.VehicleLookupFormModel
-import models.PrivateKeeperDetailsFormModel
-import models.BusinessKeeperDetailsFormModel
-import models.PrivateKeeperDetailsCompleteFormModel
+import models._
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -33,6 +26,8 @@ import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBi
 
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import scala.Some
+import play.api.mvc.Cookie
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -142,6 +137,20 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
+  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate] =
+                                        Some(new LocalDate(YearDateOfBirthValid.toInt,
+                                                           MonthDateOfBirthValid.toInt,
+                                                           DayDateOfBirthValid.toInt)),
+                                        mileage: Option[Int] = Some(MileageValid.toInt)): Cookie = {
+    val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
+    val value = PrivateKeeperDetailsCompleteFormModel(
+      dateOfBirth,
+      mileage,
+    ""
+    )
+    createCookie(key, value)
+  }
+
   def businessKeeperDetailsModel(fleetNumber: Option[String] = Some(FleetNumberValid),
                                 businessName: String = BusinessNameValid,
                                 email: Option[String] = Some(EmailValid)) : Cookie = {
@@ -154,16 +163,9 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate] =  Some(new LocalDate(YearDateOfBirthValid.toInt,
-                                                                                             MonthDateOfBirthValid.toInt,
-                                                                                             DayDateOfBirthValid.toInt)),
-                                        mileage: Option[Int] = Some(MileageValid.toInt)): Cookie = {
-    val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
-    val value = PrivateKeeperDetailsCompleteFormModel(
-      dateOfBirth,
-      mileage,
-      ""
-    )
+  def businessKeeperDetailsCompleteModel(mileage: Option[Int] = Some(MileageValid.toInt)): Cookie = {
+    val key = BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
+    val value = BusinessKeeperDetailsCompleteFormModel(mileage)
     createCookie(key, value)
   }
 

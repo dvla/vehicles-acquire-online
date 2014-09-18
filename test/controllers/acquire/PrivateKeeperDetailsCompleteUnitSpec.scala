@@ -71,9 +71,8 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
       val request = buildCorrectlyPopulatedRequest()
 
       val result = privateKeeperDetailsComplete.submit(request)
-      whenReady(result) {
-        r =>
-          r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
       }
     }
 

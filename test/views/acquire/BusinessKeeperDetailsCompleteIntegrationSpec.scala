@@ -8,42 +8,42 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.{BeforeYouStartPage,PrivateKeeperDetailsCompletePage,SetupTradeDetailsPage,PrivateKeeperDetailsPage}
+import pages.acquire.{BeforeYouStartPage,BusinessKeeperDetailsCompletePage,SetupTradeDetailsPage,BusinessKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsCompletePage.{navigate, back}
+import pages.acquire.BusinessKeeperDetailsCompletePage.{navigate, back}
 
-final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with TestHarness {
+final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      go to PrivateKeeperDetailsCompletePage
-      page.title should equal(PrivateKeeperDetailsCompletePage.title)
+      go to BusinessKeeperDetailsCompletePage
+      page.title should equal(BusinessKeeperDetailsCompletePage.title)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
-      go to PrivateKeeperDetailsCompletePage
+      go to BusinessKeeperDetailsCompletePage
       page.source.contains(progressStep(7)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
-      go to PrivateKeeperDetailsCompletePage
+      go to BusinessKeeperDetailsCompletePage
       page.source.contains(progressStep(7)) should equal(false)
     }
 
-    "Redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowser {
-      go to PrivateKeeperDetailsCompletePage
+    "redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowser {
+      go to BusinessKeeperDetailsCompletePage
       page.title should equal(SetupTradeDetailsPage.title)
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
-      go to PrivateKeeperDetailsCompletePage
+      go to BusinessKeeperDetailsCompletePage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
@@ -52,7 +52,7 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
   }
 
   "submit button" should {
-    "go to the appropriate next page when all private keeper complete details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all business keeper complete details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
@@ -63,9 +63,6 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
       go to BeforeYouStartPage
       cacheSetup()
       navigate(
-        dayDateOfBirth = "",
-        monthDateOfBirth = "",
-        yearDateOfBirth = "",
         mileage = ""
       )
       page.title should equal("Not implemented") //ToDo change title when next page is implemented
@@ -91,27 +88,6 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
       navigate(mileage = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
-
-    "display one validation error message when day date of birth contains letters" taggedAs UiTag in new WebBrowser {
-      go to BeforeYouStartPage
-      cacheSetup()
-      navigate(dayDateOfBirth = "a")
-      ErrorPanel.numberOfErrors should equal(1)
-    }
-
-    "display one validation error message when day month of birth contains letters" taggedAs UiTag in new WebBrowser {
-      go to BeforeYouStartPage
-      cacheSetup()
-      navigate(monthDateOfBirth = "a")
-      ErrorPanel.numberOfErrors should equal(1)
-    }
-
-    "display one validation error message when year month of birth contains letters" taggedAs UiTag in new WebBrowser {
-      go to BeforeYouStartPage
-      cacheSetup()
-      navigate(yearDateOfBirth = "a")
-      ErrorPanel.numberOfErrors should equal(1)
-    }
   }
 
   "back" should {
@@ -121,11 +97,11 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
         setupTradeDetails().
         dealerDetails(addressWithUprn).
         vehicleDetails().
-        privateKeeperDetails()
+        businessKeeperDetails()
 
-      go to PrivateKeeperDetailsCompletePage
+      go to BusinessKeeperDetailsCompletePage
       click on back
-      page.title should equal(PrivateKeeperDetailsPage.title)
+      page.title should equal(BusinessKeeperDetailsPage.title)
     }
   }
 
@@ -134,5 +110,5 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
       setupTradeDetails()
       .dealerDetails()
       .vehicleDetails()
-      .privateKeeperDetails()
+      .businessKeeperDetails()
 }

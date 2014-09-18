@@ -22,11 +22,10 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
   def present = Action { implicit request =>
 
     request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
-      case Some(privateKeeperDetails) => {
+      case Some(privateKeeperDetails) =>
         Ok(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
           form.fill(), null, null
         )))
-      }
       case _ =>
         Logger.warn("Did not find PrivateKeeperDetails cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
