@@ -235,11 +235,11 @@ privatekeeper_email = Email
 privatekeeper_firstname = First name
 privatekeeper_lastname = Last name
 
-#individual keeper detail complete
+#private keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
-acquire_keeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of the vehicle
+acquire_keeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
 acquire_keeperdetailscomplete.mileage.label = Vehicle mileage
-acquire_keeperdetailscomplete.submitbutton = Submit
+acquire_keeperdetailscomplete.submitbutton = Add Keeper
 acquire_keeperdetailscomplete.backbutton = Back
 acquire_keeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 privatekeeper_mileage = Mileage
@@ -260,6 +260,15 @@ acquire_businesskeeperdetails.businessname.hint = If the business buying this ve
 acquire_businesskeeperdetails.email = Business email
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
+
+#business keeper detail complete
+acquire_businesskeeperdetailscomplete.title = Complete and confirm
+acquire_businesskeeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
+acquire_businesskeeperdetailscomplete.mileage.label = Vehicle mileage
+acquire_businesskeeperdetailscomplete.submitbutton = Add Keeper
+acquire_businesskeeperdetailscomplete.backbutton = Back
+acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
+privatekeeper_mileage = Mileage
 
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input

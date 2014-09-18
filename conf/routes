@@ -52,6 +52,10 @@ POST    /vrm-acquire/private-complete-and-confirm       @controllers.PrivateKeep
 GET     /vrm-acquire/business-keeper-details            @controllers.BusinessKeeperDetails.present
 POST    /vrm-acquire/business-keeper-details            @controllers.BusinessKeeperDetails.submit
 
+# Business keeper details complete
+GET     /vrm-acquire/business-complete-and-confirm      @controllers.BusinessKeeperDetailsComplete.present
+POST    /vrm-acquire/business-complete-and-confirm      @controllers.BusinessKeeperDetailsComplete.submit
+
 GET     /vrm-acquire/uprn-not-found                     @controllers.UprnNotFound.present
 
 GET     /vrm-acquire/not-implemented                    @controllers.NotImplemented.present
