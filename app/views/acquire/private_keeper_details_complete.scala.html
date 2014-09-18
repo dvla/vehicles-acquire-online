@@ -9,8 +9,8 @@
 @import common.views.html.widgets.dates.valtechDateOfBirth
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
-@import common.views.html.widgets.base.valtechInputText
-@import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId}
+@import common.views.html.widgets.base.{valtechInputText, valtechDeclareCheck}
+@import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId}
 @import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
 
 @main(
@@ -36,6 +36,15 @@
         ) ++
         (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
         )
+
+        @valtechDeclareCheck(data.form(ConsentId),
+                args = Map(
+                        '_showConstraints -> false,
+        '_label -> Messages("acquire_keeperdetailscomplete.consent")
+        )
+        )
+
+
 
         <div class="second-col">
             <div class="form-steps">

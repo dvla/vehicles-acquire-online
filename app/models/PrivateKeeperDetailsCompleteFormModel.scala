@@ -6,8 +6,9 @@ import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.DateOfBirth.optionalMapping
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
+import mappings.Consent.consent
 
-case class PrivateKeeperDetailsCompleteFormModel(dateOfBirth: Option[LocalDate], mileage: Option[Int])
+case class PrivateKeeperDetailsCompleteFormModel(dateOfBirth: Option[LocalDate], mileage: Option[Int], consent: String)
 
 object PrivateKeeperDetailsCompleteFormModel {
 //  implicit val LocalDateJsonFormat = Json.format[LocalDate]
@@ -18,10 +19,12 @@ object PrivateKeeperDetailsCompleteFormModel {
   object Form {
     final val DateOfBirthId = "privatekeeper_dateofbirth"
     final val MileageId = "privatekeeper_mileage"
+    final val ConsentId = "consent"
 
     final val Mapping = mapping(
       DateOfBirthId -> optionalMapping,
-      MileageId -> mileage
+      MileageId -> mileage,
+      ConsentId -> consent
     )(PrivateKeeperDetailsCompleteFormModel.apply)(PrivateKeeperDetailsCompleteFormModel.unapply)
   }
 }

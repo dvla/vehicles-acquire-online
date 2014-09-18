@@ -1,14 +1,13 @@
 package controllers
 
-import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel}
+import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel, PrivateKeeperDetailsFormModel}
 import views.html.acquire.private_keeper_details_complete
 import com.google.inject.Inject
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
-import play.api.data.Form
-import models.PrivateKeeperDetailsFormModel
+import play.api.data.{FormError, Form}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import play.api.Logger
 
@@ -42,4 +41,5 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )
   }
+
 }
