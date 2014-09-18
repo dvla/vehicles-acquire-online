@@ -60,12 +60,12 @@ error.invalid = Invalid value
 ##
 
 # progress messages
-acquire_progress_1 = Step 1 of 6
-acquire_progress_2 = Step 2 of 6
-acquire_progress_3 = Step 3 of 6
-acquire_progress_4 = Step 4 of 6
-acquire_progress_5 = Step 5 of 6
-acquire_progress_6 = Step 6 of 6
+acquire_progress_1 = Step 1 of 7
+acquire_progress_2 = Step 2 of 7
+acquire_progress_3 = Step 3 of 7
+acquire_progress_4 = Step 4 of 7
+acquire_progress_5 = Step 5 of 7
+acquire_progress_6 = Step 6 of 7
 acquire_progress_7 = Step 7 of 7
 
 # help
