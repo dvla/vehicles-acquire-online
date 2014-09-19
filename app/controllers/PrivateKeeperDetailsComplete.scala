@@ -11,6 +11,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicit
 import play.api.Logger
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import models.PrivateKeeperDetailsCompleteFormModel.Form.MileageId
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                config: Config) extends Controller {
@@ -43,13 +44,9 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
   }
 
   private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsCompleteFormModel])(implicit request: Request[_]) = {
-    form.replaceError(
-      ConsentId,
-      "error.required",
-      FormError(key = ConsentId,
-        message = "acquire_keeperdetailscomplete.consentError",
-        args = Seq.empty)
-    ).distinctErrors
+    form.replaceError(ConsentId, "error.required", FormError(key = ConsentId, message = "acquire_keeperdetailscomplete.consentError", args = Seq.empty))
+      .replaceError(MileageId, "error.number", FormError(key = MileageId, message = "acquire_privatekeeperdetailscomplete.mileage.validation", args = Seq.empty))
+      .distinctErrors
   }
 
 }

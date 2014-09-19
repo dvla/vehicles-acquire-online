@@ -12,6 +12,7 @@ import play.api.data.{FormError, Form}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import models.BusinessKeeperDetailsCompleteFormModel.Form.MileageId
 
 class BusinessKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                config: Config) extends Controller {
@@ -45,13 +46,9 @@ class BusinessKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactor
   }
 
   private def formWithReplacedErrors(form: Form[BusinessKeeperDetailsCompleteFormModel])(implicit request: Request[_]) = {
-    form.replaceError(
-      ConsentId,
-      "error.required",
-      FormError(key = ConsentId,
-        message = "acquire_keeperdetailscomplete.consentError",
-        args = Seq.empty)
-    ).distinctErrors
+    form.replaceError(ConsentId, "error.required", FormError(key = ConsentId, message = "acquire_keeperdetailscomplete.consentError", args = Seq.empty))
+      .replaceError(MileageId, "error.number", FormError(key = MileageId, message = "acquire_businesskeeperdetailscomplete.mileage.validation", args = Seq.empty))
+      .distinctErrors
   }
 
 }

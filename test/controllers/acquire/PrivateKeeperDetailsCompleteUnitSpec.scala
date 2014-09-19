@@ -67,6 +67,14 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
   }
 
   "submit" should {
+    "replace numeric mileage error message for with standard error message " in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(mileage = "$$")
+      val result = privateKeeperDetailsComplete.submit(request)
+      val count = "You must enter a valid mileage between 0 and 999999".
+        r.findAllIn(contentAsString(result)).length
+      count should equal(2)
+    }
+
     "redirect to next page when mandatory fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
 
