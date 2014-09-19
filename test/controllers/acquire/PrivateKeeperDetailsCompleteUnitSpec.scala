@@ -8,10 +8,11 @@ import play.api.test.{FakeRequest, WithApplication}
 import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, MileageValid, ConsentTrue}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import utils.helpers.Config
 import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, DateOfSaleId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
 class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
@@ -106,12 +107,18 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
                                              monthDateOfBirth: String = MonthDateOfBirthValid,
                                              yearDateOfBirth: String = YearDateOfBirthValid,
                                              mileage: String = MileageValid,
+                                             dayDateOfSale: String = DayDateOfSaleValid,
+                                             monthDateOfSale: String = MonthDateOfSaleValid,
+                                             yearDateOfSale: String = YearDateOfSaleValid,
                                              consent: String = ConsentTrue) = {
     FakeRequest().withFormUrlEncodedBody(
       s"$DateOfBirthId.$DayId" -> dayDateOfBirth,
       s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
       s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
       MileageId -> mileage,
+      s"$DateOfSaleId.$DayId" -> dayDateOfSale,
+      s"$DateOfSaleId.$MonthId" -> monthDateOfSale,
+      s"$DateOfSaleId.$YearId" -> yearDateOfSale,
       ConsentId -> consent
     )
   }
