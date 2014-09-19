@@ -22,7 +22,7 @@ import webserviceclients.fakes.FakeAddressLookupService._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
-import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, ConsentTrue}
 
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
@@ -163,9 +163,9 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def businessKeeperDetailsCompleteModel(mileage: Option[Int] = Some(MileageValid.toInt)): Cookie = {
+  def businessKeeperDetailsCompleteModel(mileage: Option[Int] = Some(MileageValid.toInt), consent: String = ConsentTrue): Cookie = {
     val key = BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
-    val value = BusinessKeeperDetailsCompleteFormModel(mileage)
+    val value = BusinessKeeperDetailsCompleteFormModel(mileage, consent)
     createCookie(key, value)
   }
 

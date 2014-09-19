@@ -3,7 +3,9 @@ package controllers.acquire
 import controllers.{BusinessKeeperDetailsComplete, PrivateKeeperDetails}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import models.PrivateKeeperDetailsCompleteFormModel.Form._
+import pages.acquire.PrivateKeeperDetailsCompletePage._
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
@@ -80,17 +82,19 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
       }
     }
 
-//    "return a bad request if no details are entered" in new WithApplication { // ToDo - uncomment when consent box is implemented
-//      val request = buildCorrectlyPopulatedRequest()
-//        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-//      val result = privateKeeperDetailsComplete.submit(request)
-//      whenReady(result) { r =>
-//        r.header.status should equal(BAD_REQUEST)
-//      }
+    "return a bad request if consent is not ticked" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(consent="")
+      val result = businessKeeperDetailsComplete.submit(request)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+      }
+    }
     }
 
-  private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid) = {
-    FakeRequest().withFormUrlEncodedBody(MileageId -> mileage)
+  private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,
+                                             consent: String = ConsentTrue) = {
+    FakeRequest().withFormUrlEncodedBody(MileageId -> mileage,
+      ConsentId -> consent)
   }
 
   private val businessKeeperDetailsComplete = {

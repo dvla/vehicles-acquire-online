@@ -36,7 +36,7 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
     form.bindFromRequest.fold(
       invalidForm =>
         BadRequest(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
-          invalidForm, null, null
+          formWithReplacedErrors(invalidForm), null, null
         ))),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )

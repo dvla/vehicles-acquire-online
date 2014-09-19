@@ -3,6 +3,8 @@ package controllers.acquire
 import helpers.UnitSpec
 import models.BusinessKeeperDetailsCompleteFormModel.Form.MileageId
 import models.BusinessKeeperDetailsCompleteFormModel
+import models.PrivateKeeperDetailsCompleteFormModel.Form._
+import pages.acquire.PrivateKeeperDetailsCompletePage._
 import play.api.data.Form
 import pages.acquire.BusinessKeeperDetailsCompletePage.MileageValid
 import scala.Some
@@ -65,11 +67,13 @@ class BusinessKeeperDetailsCompleteFormSpec extends UnitSpec {
   }
 
 
-  private def formWithValidDefaults(mileage: String = MileageValid): Form[BusinessKeeperDetailsCompleteFormModel] = {
+  private def formWithValidDefaults(mileage: String = MileageValid,
+                                    consent: String = ConsentTrue): Form[BusinessKeeperDetailsCompleteFormModel] = {
     injector.getInstance(classOf[BusinessKeeperDetailsComplete])
       .form.bind(
         Map(
-          MileageId -> mileage
+          MileageId -> mileage,
+          ConsentId -> consent
         )
       )
   }
