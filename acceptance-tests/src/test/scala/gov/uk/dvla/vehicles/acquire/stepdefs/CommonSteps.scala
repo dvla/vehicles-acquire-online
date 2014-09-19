@@ -1,7 +1,8 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
+import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
-import helpers.webbrowser.WebBrowserDSL
+import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire._
@@ -9,7 +10,7 @@ import pages.acquire._
 
 // TODO - Store input as variables
 
-final class CoomonSteps(webBrowserDriver: WebDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+final class CommonSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -55,15 +56,32 @@ final class CoomonSteps(webBrowserDriver: WebDriver) extends ScalaDsl with EN wi
     BusinessKeeperDetailsPage.emailField enter "a@gmail.com"
     //click on BusinessKeeperDetailsPage.next
   }
-  Given("""^that the user has selected "(.*?)" on the Enter vehicle details page for the question "(.*?)"$""") { (str1: String, str2: String) =>
-    goToBusinessKeeperDetailsPage()
+
+  @Given("^that the user has selected \"(.*?)\" on the Enter vehicle details page for the question \"(.*?)\"$")
+  def that_the_user_has_selected_on_the_Enter_vehicle_details_page_for_the_question(arg1: String, arg2: String) {
+    // Write code here that turns the phrase above into concrete actions
   }
 
-  When("""^the user is on the "(.*?)" page$""") { (str3: String) =>
-    fillInBusinessKeeperDetailsPage()
+  @When("^the user is on the \"(.*?)\" page$")
+  def the_user_is_on_the_page(arg1: String) {
+    // Write code here that turns the phrase above into concrete actions
   }
 
-  Then("""^there is a label titled "(.*?)"$""") { (str4: String) =>
-    goToBusinessKeeperDetailsPage()
+  @Then("^there is a label titled \"Fleet number$")
+  def there_is_a_label_titled_Fleet_number() {
   }
+
+
+
+  //  Given("""^that the user has selected "(.*?)" on the Enter vehicle details page for the question "(.*?)"$""") { (str1: String, str2: String) =>
+//    goToBusinessKeeperDetailsPage()
+//  }
+//
+//  When("""^the user is on the "(.*?)" page$""") { (str3: String) =>
+//    fillInBusinessKeeperDetailsPage()
+//  }
+//
+//  Then("""^there is a label titled "(.*?)"$""") { (str4: String) =>
+//    goToBusinessKeeperDetailsPage()
+//  }
 }
