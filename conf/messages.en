@@ -273,6 +273,7 @@ acquire_businesskeeperdetailscomplete.submitbutton = Add Keeper
 acquire_businesskeeperdetailscomplete.backbutton = Back
 acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 businesskeeper_mileage = Mileage
+privatekeeper_dateofsale = Date of Sale
 
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input

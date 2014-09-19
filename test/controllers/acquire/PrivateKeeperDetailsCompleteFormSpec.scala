@@ -3,7 +3,7 @@ package controllers.acquire
 import helpers.UnitSpec
 import mappings.Consent
 import org.joda.time.LocalDate
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId, DateOfSaleId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import models.PrivateKeeperDetailsCompleteFormModel
 import play.api.data.Form
@@ -149,6 +149,9 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
                                     monthDateOfBirth: String = MonthDateOfBirthValid,
                                     yearDateOfBirth: String = YearDateOfBirthValid,
                                     mileage: String = MileageValid,
+                                    dayDateOfSale: String = DayDateOfSaleValid,
+                                    monthDateOfSale: String = MonthDateOfSaleValid,
+                                    yearDateOfSale: String = YearDateOfSaleValid,
                                     consent: String = ConsentTrue): Form[PrivateKeeperDetailsCompleteFormModel] = {
     injector.getInstance(classOf[PrivateKeeperDetailsComplete])
       .form.bind(
@@ -157,6 +160,9 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
           s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
           s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
           MileageId -> mileage,
+          s"$DateOfSaleId.$DayId" -> dayDateOfSale,
+          s"$DateOfSaleId.$MonthId" -> monthDateOfSale,
+          s"$DateOfSaleId.$YearId" -> yearDateOfSale,
           ConsentId -> consent
         )
       )
