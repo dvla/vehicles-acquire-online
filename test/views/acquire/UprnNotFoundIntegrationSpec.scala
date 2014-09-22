@@ -4,9 +4,9 @@ import helpers.UiSpec
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.webbrowser.TestHarness
-import pages.common.UprnNotFoundPage.{manualAddress, setupTradeDetails}
-import pages.common.UprnNotFoundPage
 import pages.acquire.SetupTradeDetailsPage
+import pages.common.UprnNotFoundPage
+import pages.common.UprnNotFoundPage.setupTradeDetails
 
 final class UprnNotFoundIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

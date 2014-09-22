@@ -1,13 +1,12 @@
 package pages.acquire
 
 import helpers.webbrowser._
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfBirthId, DateOfSaleId, MileageId}
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfBirthId, ConsentId, DateOfSaleId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear._
 
 object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
-  final val address = s"/$basePath/private-complete-and-confirm"
+  final val address = s"$applicationContext/private-complete-and-confirm"
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Complete and confirm"
 
