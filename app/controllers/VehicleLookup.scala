@@ -10,7 +10,12 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
-import common.webserviceclients.vehiclelookup.{VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleDetailsDto, VehicleLookupService}
+import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
+import common.webserviceclients.vehiclelookup.VehicleDetailsResponseDto
+import common.webserviceclients.vehiclelookup.VehicleDetailsDto
+import common.webserviceclients.vehiclelookup.VehicleLookupService
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
+import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import utils.helpers.Config
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
@@ -18,7 +23,9 @@ import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class VehicleLookup @Inject()(vehicleLookupService: VehicleLookupService)
+final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionService,
+                                    vehicleLookupService: VehicleLookupService,
+                                    dateService: DateService)
                                    (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                     config: Config) extends Controller {
 

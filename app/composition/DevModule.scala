@@ -15,8 +15,18 @@ import common.clientsidesession.CookieNameHashGenerator
 import common.clientsidesession.EncryptedClientSideSessionFactory
 import common.clientsidesession.Sha1HashGenerator
 import common.filters.AccessLoggingFilter.AccessLoggerName
+import common.services.DateService
+import common.services.DateServiceImpl
 import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
-import common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebServiceImpl, VehicleLookupWebService}
+import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
+import common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl
+import common.webserviceclients.vehiclelookup.VehicleLookupServiceImpl
+import common.webserviceclients.vehiclelookup.VehicleLookupService
+import common.webserviceclients.vehiclelookup.VehicleLookupWebServiceImpl
+import common.webserviceclients.vehiclelookup.VehicleLookupWebService
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
 
 /**
  * Provides real implementations of traits
@@ -30,9 +40,10 @@ import common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, Vehicle
  */
 object DevModule extends ScalaModule {
   def configure() {
-    bind[AddressLookupService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl].asEagerSingleton()
-    bind[AddressLookupWebService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl].asEagerSingleton()
+    bind[AddressLookupService].to[AddressLookupServiceImpl].asEagerSingleton()
+    bind[AddressLookupWebService].to[WebServiceImpl].asEagerSingleton()
 
+    bind[DateService].to[DateServiceImpl].asEagerSingleton()
     bind[CookieFlags].to[CookieFlagsFromConfig].asEagerSingleton()
 
     if (getProperty("encryptCookies", default = true)) {
@@ -44,6 +55,9 @@ object DevModule extends ScalaModule {
 
     bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
     bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
+
+    bind[BruteForcePreventionWebService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.WebServiceImpl].asEagerSingleton()
+    bind[BruteForcePreventionService].to[BruteForcePreventionServiceImpl].asEagerSingleton()
 
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
   }

@@ -5,11 +5,20 @@ import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
 import helpers.disposal_of_vehicle.ValidVRMFormat.allValidVrmFormats
+import play.api.http.Status.OK
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.webserviceclients.vehiclelookup.{VehicleLookupWebService, VehicleLookupServiceImpl, VehicleDetailsResponseDto, VehicleDetailsRequestDto}
+import common.services.DateServiceImpl
+import common.webserviceclients.vehiclelookup.VehicleLookupWebService
+import common.webserviceclients.vehiclelookup.VehicleLookupServiceImpl
+import common.webserviceclients.vehiclelookup.VehicleDetailsResponseDto
+import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionConfig
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
-import org.mockito.Matchers.any
+import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.when
 import play.api.libs.json.{JsValue, Json}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,7 +27,7 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.ConsentValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.vehicleDetailsResponseSuccess
-import webserviceclients.fakes.FakeResponse
+import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
@@ -113,6 +122,20 @@ final class VehicleLookupFormSpec extends UnitSpec {
     }
   }
 
+  private val bruteForceServiceImpl: BruteForcePreventionService = {
+    val bruteForcePreventionWebService: BruteForcePreventionWebService = mock[BruteForcePreventionWebService]
+    when(bruteForcePreventionWebService.callBruteForce(anyString())).
+      thenReturn( Future.successful( new FakeResponse(status = OK) ))
+
+    new BruteForcePreventionServiceImpl(
+      config = new BruteForcePreventionConfig,
+      ws = bruteForcePreventionWebService,
+      dateService = new FakeDateServiceImpl
+    )
+  }
+
+  val dateService = new DateServiceImpl
+
   private def vehicleLookupResponseGenerator(fullResponse:(Int, Option[VehicleDetailsResponseDto])) = {
     val vehicleLookupWebService: VehicleLookupWebService = mock[VehicleLookupWebService]
     when(vehicleLookupWebService.callVehicleLookupService(any[VehicleDetailsRequestDto], any[String])).thenReturn(Future {
@@ -125,7 +148,8 @@ final class VehicleLookupFormSpec extends UnitSpec {
     val vehicleLookupServiceImpl = new VehicleLookupServiceImpl(vehicleLookupWebService)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
-    new VehicleLookup(vehicleLookupService = vehicleLookupServiceImpl)
+    new VehicleLookup(bruteForceService = bruteForceServiceImpl,
+      vehicleLookupService = vehicleLookupServiceImpl, dateService)
   }
 
   private def formWithValidDefaults(referenceNumber: String = ReferenceNumberValid,
