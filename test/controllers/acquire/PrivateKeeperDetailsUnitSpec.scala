@@ -1,19 +1,17 @@
 package controllers.acquire
 
-import play.api.test.WithApplication
-import controllers.acquire.Common.PrototypeHtml
-import helpers.acquire.CookieFactoryForUnitSpecs
 import controllers.PrivateKeeperDetails
+import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
+import helpers.acquire.CookieFactoryForUnitSpecs
+import models.PrivateKeeperDetailsFormModel.Form.{EmailId, FirstNameId, LastNameId, TitleId}
 import org.mockito.Mockito.when
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, FirstNameValid, LastNameValid, TitleInvalidError, TitleValid}
+import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, LastNameId}
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, FirstNameValid, EmailValid, TitleInvalidError, LastNameValid}
-import pages.acquire.SetupTradeDetailsPage
-import pages.acquire.PrivateKeeperDetailsCompletePage
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
