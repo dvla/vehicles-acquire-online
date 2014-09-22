@@ -22,6 +22,7 @@ object PrivateKeeperDetailsFormModel {
     final val FirstNameId = "privatekeeper_firstname"
     final val LastNameId = "privatekeeper_lastname"
     final val EmailId = "privatekeeper_email"
+    final val ConsentId = "consent"
     final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
     final val LastNameMinLength = 1

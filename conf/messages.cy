@@ -1,5 +1,5 @@
 #main
-main.banner = Buy a vehicle from the motor trade
+main.banner = WELSH Buy a vehicle from the motor trade
 main.banner.help = Help
 main.banner.feedback = Feedback
 main.banner.feedback.link = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Sell%20to%20the%20Trade%20feedback
@@ -273,7 +273,6 @@ acquire_businesskeeperdetailscomplete.submitbutton = Add Keeper
 acquire_businesskeeperdetailscomplete.backbutton = Back
 acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 businesskeeper_mileage = Mileage
-privatekeeper_dateofsale = Date of Sale
 
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input

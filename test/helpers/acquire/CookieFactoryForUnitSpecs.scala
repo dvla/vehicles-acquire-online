@@ -9,14 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, Trad
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models.SeenCookieMessageCacheKey
-import models.SetupTradeDetailsFormModel
-import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyFormModel
-import models.VehicleLookupFormModel
-import models.PrivateKeeperDetailsFormModel
-import models.BusinessKeeperDetailsFormModel
-import models.PrivateKeeperDetailsCompleteFormModel
+import models._
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -29,9 +22,13 @@ import webserviceclients.fakes.FakeAddressLookupService._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, ConsentTrue}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import scala.Some
+import play.api.mvc.Cookie
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -141,6 +138,25 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
+  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate] = Some(new LocalDate(
+                                          YearDateOfBirthValid.toInt,
+                                          MonthDateOfBirthValid.toInt,
+                                          DayDateOfBirthValid.toInt)),
+                                        mileage: Option[Int] = Some(MileageValid.toInt),
+                                        dateOfSale: LocalDate = new LocalDate(
+                                          YearDateOfSaleValid.toInt,
+                                          MonthDateOfSaleValid.toInt,
+                                          DayDateOfSaleValid.toInt)): Cookie = {
+    val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
+    val value = PrivateKeeperDetailsCompleteFormModel(
+      dateOfBirth,
+      mileage,
+      dateOfSale,
+      ""
+    )
+    createCookie(key, value)
+  }
+
   def businessKeeperDetailsModel(fleetNumber: Option[String] = Some(FleetNumberValid),
                                 businessName: String = BusinessNameValid,
                                 email: Option[String] = Some(EmailValid)) : Cookie = {
@@ -153,9 +169,10 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate]): Cookie = {
-    val value = PrivateKeeperDetailsCompleteFormModel(dateOfBirth)
-    createCookie(PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey, value)
+  def businessKeeperDetailsCompleteModel(mileage: Option[Int] = Some(MileageValid.toInt), consent: String = ConsentTrue): Cookie = {
+    val key = BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
+    val value = BusinessKeeperDetailsCompleteFormModel(mileage, consent)
+    createCookie(key, value)
   }
 
   def trackingIdModel(value: String = TrackingIdValue): Cookie = {

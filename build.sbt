@@ -10,42 +10,40 @@ import Sandbox.gatlingTask
 import Sandbox.gatlingTests
 import Sandbox.vehiclesLookup
 import net.litola.SassPlugin
-
-val nexus = "http://rep002-01.skyscape.preview-dvla.co.uk:8081/nexus/content/repositories"
-
-publishTo <<= version { v: String =>
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at s"$nexus/snapshots")
-  else
-    Some("releases" at s"$nexus/releases")
-}
+import Common._
 
 name := "vehicles-acquire-online"
 
-version := "1.1-SNAPSHOT"
+version := versionString
 
-organization := "dvla"
+organization := organisationString
 
-organizationName := "Driver & Vehicle Licensing Agency"
+organizationName := organisationNameString
 
-scalaVersion := "2.10.3"
+scalaVersion := scalaVersionString
 
-scalacOptions := Seq("-deprecation", "-unchecked", "-feature", "-Xlint", "-language:reflectiveCalls", "-Xmax-classfile-name", "128")
+scalacOptions := scalaOptionsSeq
+
+publishTo.<<=(publishResolver)
+
+credentials += sbtCredentials
+
+resolvers ++= projectResolvers
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala, SassPlugin, SbtWeb)
+
+lazy val acceptanceTestsProject = Project("acceptance-tests", file("acceptance-tests"))
+  .dependsOn(root % "test->test")
+  .disablePlugins(PlayScala, SassPlugin, SbtWeb)
 
 libraryDependencies ++= Seq(
   cache,
   filters,
-  "dvla" %% "vehicles-presentation-common" % "2.1-SNAPSHOT" withSources() withJavadoc(),
+  "dvla" %% "vehicles-presentation-common" % "2.2-SNAPSHOT" withSources() withJavadoc() exclude("junit", "junit-dep"),
   "com.google.guava" % "guava" % "15.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "org.seleniumhq.selenium" % "selenium-java" % "2.42.2" % "test" withSources() withJavadoc(),
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),
-  "info.cukes" %% "cucumber-scala" % "1.1.7" % "test" withSources() withJavadoc(),
-  "info.cukes" % "cucumber-java" % "1.1.7" % "test" withSources() withJavadoc(),
-  "info.cukes" % "cucumber-picocontainer" % "1.1.7" % "test" withSources() withJavadoc(),
   "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
-  "com.github.tomakehurst" % "wiremock" % "1.46" % "test" withSources() withJavadoc() exclude("log4j", "log4j"),
   "org.slf4j" % "log4j-over-slf4j" % "1.7.7" % "test" withSources() withJavadoc(),
   "org.scalatest" %% "scalatest" % "2.2.1" % "test" withSources() withJavadoc(),
   "com.google.inject" % "guice" % "4.0-beta4" withSources() withJavadoc(),
@@ -99,15 +97,6 @@ sources in doc in Compile := List()
 ScalastylePlugin.Settings
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
-
-credentials += Credentials(Path.userHome / ".sbt/.credentials")
-
-val projectResolvers = Seq(
-  "local nexus snapshots" at s"$nexus/snapshots",
-  "local nexus releases" at s"$nexus/releases"
-)
-
-resolvers ++= projectResolvers
 
 runMicroServicesTask
 

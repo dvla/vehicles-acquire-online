@@ -7,6 +7,8 @@ import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
+import models.BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
 
 package object models {
   final val HelpCacheKey = "help"
@@ -21,7 +23,9 @@ package object models {
     VehicleLookupFormModelCacheKey,
     VehicleLookupDetailsCacheKey,
     PrivateKeeperDetailsCacheKey,
-    BusinessKeeperDetailsCacheKey
+    BusinessKeeperDetailsCacheKey,
+    PrivateKeeperDetailsCompleteCacheKey,
+    BusinessKeeperDetailsCompleteCacheKey
   )
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page

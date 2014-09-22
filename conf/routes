@@ -51,6 +51,10 @@ POST    /private-complete-and-confirm       @controllers.PrivateKeeperDetailsCom
 GET     /business-keeper-details            @controllers.BusinessKeeperDetails.present
 POST    /business-keeper-details            @controllers.BusinessKeeperDetails.submit
 
+# Business keeper details complete
+GET     /business-complete-and-confirm      @controllers.BusinessKeeperDetailsComplete.present
+POST    /business-complete-and-confirm      @controllers.BusinessKeeperDetailsComplete.submit
+
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 
 GET     /not-implemented                    @controllers.NotImplemented.present
