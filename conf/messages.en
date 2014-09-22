@@ -19,6 +19,9 @@ global.buttonnavprint = Print
 
 footer.builtbyintro = Built by
 footer.builtby = Driver & Vehicle Licensing Agency
+footer.text1 = All content is available under the
+footer.link = Open Government Licence v2.0
+footer.text2 = , except where otherwise stated
 
 #prototype
 prototype.banner = This service is under development -
