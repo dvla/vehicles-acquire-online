@@ -1,11 +1,11 @@
 package models
 
 import org.joda.time.LocalDate
-import play.api.data.Forms
+import play.api.data.Forms.mapping
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.DateOfBirth.optionalMapping
-import uk.gov.dvla.vehicles.presentation.common.mappings.DateOfBirth.mapping
+import uk.gov.dvla.vehicles.presentation.common.mappings.NonFutureDate
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 import mappings.Consent.consent
 
@@ -19,13 +19,13 @@ object PrivateKeeperDetailsCompleteFormModel {
   object Form {
     final val DateOfBirthId = "privatekeeper_dateofbirth"
     final val MileageId = "privatekeeper_mileage"
-    final val DateOfSaleId = "privatekeeper_dateofacquisition"
+    final val DateOfSaleId = "privatekeeper_dateofsale"
     final val ConsentId = "consent"
 
-    final val Mapping = Forms.mapping(
+    final val Mapping = mapping(
       DateOfBirthId -> optionalMapping,
       MileageId -> mileage,
-      DateOfSaleId -> mapping,
+      DateOfSaleId -> NonFutureDate.mapping,
       ConsentId -> consent
     )(PrivateKeeperDetailsCompleteFormModel.apply)(PrivateKeeperDetailsCompleteFormModel.unapply)
   }

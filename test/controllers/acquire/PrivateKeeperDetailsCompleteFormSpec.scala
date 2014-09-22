@@ -1,7 +1,6 @@
 package controllers.acquire
 
 import helpers.UnitSpec
-import mappings.Consent
 import org.joda.time.LocalDate
 import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId, DateOfSaleId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
@@ -21,6 +20,10 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
         MonthDateOfBirthValid.toInt,
         DayDateOfBirthValid.toInt)))
       model.mileage should equal(Some("1000".toInt))
+      model.dateOfSale should equal(new LocalDate(
+        YearDateOfSaleValid.toInt,
+        MonthDateOfSaleValid.toInt,
+        DayDateOfSaleValid.toInt))
     }
 
     "accept if form is completed with mandatory fields only" in {
@@ -31,16 +34,18 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
         mileage = "").get
       model.dateOfBirth should equal(None)
       model.mileage should equal(None)
+      model.dateOfSale should equal(new LocalDate(
+        YearDateOfSaleValid.toInt,
+        MonthDateOfSaleValid.toInt,
+        DayDateOfSaleValid.toInt))
     }
 
-    // ToDo introduce test below when mandatory fields are implemented
-    //    "reject if form has no fields completed" in {
-    //      formWithValidDefaults(title = "", firstName = "", lastName = "", email = "").
-    //        errors.flatMap(_.messages) should contain theSameElementsAs
-    //        List("error.required", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validLastName")
-    //    }
+    "reject if form has no fields completed" in {
+      formWithValidDefaults(dayDateOfSale = "", monthDateOfSale = "", yearDateOfSale = "", consent = "").
+        errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid", "error.required")
+    }
   }
-
 
   "date of birth" should {
     "not accept a date in the future" in {
@@ -141,6 +146,75 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
       val model = formWithValidDefaults(mileage = MileageValid).get
 
       model.mileage should equal(Some(MileageValid.toInt))
+    }
+  }
+
+  "date of sale" should {
+    "not accept a date in the future" in {
+      formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.inTheFuture")
+    }
+
+    "not accept an invalid day of month of 0" in {
+      formWithValidDefaults(dayDateOfSale = "0").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept an invalid day of month of 32" in {
+      formWithValidDefaults(dayDateOfSale = "32").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept an invalid month of 0" in {
+      formWithValidDefaults(monthDateOfSale = "0").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept an invalid month of 13" in {
+      formWithValidDefaults(monthDateOfSale = "13").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept special characters in day field" in {
+      formWithValidDefaults(dayDateOfSale = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept special characters in month field" in {
+      formWithValidDefaults(monthDateOfSale = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept special characters in year field" in {
+      formWithValidDefaults(yearDateOfSale = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept letters in day field" in {
+      formWithValidDefaults(dayDateOfSale = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept letters in month field" in {
+      formWithValidDefaults(monthDateOfSale = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "not accept letters in year field" in {
+      formWithValidDefaults(yearDateOfSale = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.nonFutureDate.invalid")
+    }
+
+    "accept if date of sale is entered correctly" in {
+      val model = formWithValidDefaults(
+        dayDateOfSale = DayDateOfSaleValid,
+        monthDateOfSale = MonthDateOfSaleValid,
+        yearDateOfSale = YearDateOfSaleValid).get
+
+      model.dateOfSale should equal (new LocalDate(
+        YearDateOfSaleValid.toInt,
+        MonthDateOfSaleValid.toInt,
+        DayDateOfSaleValid.toInt))
     }
   }
 
