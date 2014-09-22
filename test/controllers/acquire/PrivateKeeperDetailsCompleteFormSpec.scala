@@ -43,64 +43,64 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
     "reject if form has no fields completed" in {
       formWithValidDefaults(dayDateOfSale = "", monthDateOfSale = "", yearDateOfSale = "", consent = "").
         errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid", "error.required")
+        List("error.date.invalid", "error.required")
     }
   }
 
   "date of birth" should {
     "not accept a date in the future" in {
       formWithValidDefaults(yearDateOfBirth = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.inTheFuture")
+        List("error.date.inTheFuture")
     }
 
     "not accept an invalid day of month of 0" in {
       formWithValidDefaults(dayDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept an invalid day of month of 32" in {
       formWithValidDefaults(dayDateOfBirth = "32").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept an invalid month of 0" in {
       formWithValidDefaults(monthDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept an invalid month of 13" in {
       formWithValidDefaults(monthDateOfBirth = "13").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept special characters in day field" in {
       formWithValidDefaults(dayDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept special characters in month field" in {
       formWithValidDefaults(monthDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept special characters in year field" in {
       formWithValidDefaults(yearDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept letters in day field" in {
       formWithValidDefaults(dayDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept letters in month field" in {
       formWithValidDefaults(monthDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "not accept lettersin year field" in {
       formWithValidDefaults(yearDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
+        List("error.date.invalid")
     }
 
     "accept if date of birth is entered correctly" in {
@@ -152,57 +152,57 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
   "date of sale" should {
     "not accept a date in the future" in {
       formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.inTheFuture")
+        List("error.date.inTheFuture")
     }
 
     "not accept an invalid day of month of 0" in {
       formWithValidDefaults(dayDateOfSale = "0").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept an invalid day of month of 32" in {
       formWithValidDefaults(dayDateOfSale = "32").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept an invalid month of 0" in {
       formWithValidDefaults(monthDateOfSale = "0").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept an invalid month of 13" in {
       formWithValidDefaults(monthDateOfSale = "13").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept special characters in day field" in {
       formWithValidDefaults(dayDateOfSale = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept special characters in month field" in {
       formWithValidDefaults(monthDateOfSale = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept special characters in year field" in {
       formWithValidDefaults(yearDateOfSale = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept letters in day field" in {
       formWithValidDefaults(dayDateOfSale = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept letters in month field" in {
       formWithValidDefaults(monthDateOfSale = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "not accept letters in year field" in {
       formWithValidDefaults(yearDateOfSale = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.nonFutureDate.invalid")
+        List("error.date.invalid")
     }
 
     "accept if date of sale is entered correctly" in {
