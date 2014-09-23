@@ -25,7 +25,10 @@
 
         <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/numeric-input-only.js")" type="text/javascript"></script>
 
-        @valtechDate(data.form(DateOfBirthId))
+        @valtechDate(data.form(DateOfBirthId),
+                     Messages("privatekeeper_dateofbirth"),
+                     Some(Messages("acquire_privatekeeperdetailscomplete.dateofbirth.hint")
+        ))
 
         @valtechInputText(data.form(MileageId), args =
         Map('_label -> Messages("acquire_keeperdetailscomplete.mileage.label"),
@@ -37,18 +40,13 @@
         (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
         )
 
-
-        @valtechDate(data.form(DateOfSaleId))
-
+        @valtechDate(data.form(DateOfSaleId), Messages("privatekeeper_dateofsale"))
 
         @valtechDeclareCheck(data.form(ConsentId),
                 args = Map(
                         '_showConstraints -> false,
-        '_label -> Messages("acquire_keeperdetailscomplete.consent")
-        )
-        )
-
-
+                '_label -> Messages("acquire_keeperdetailscomplete.consent")
+        ))
 
         <div class="second-col">
             <div class="form-steps">

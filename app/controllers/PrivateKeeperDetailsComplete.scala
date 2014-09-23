@@ -48,5 +48,4 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
       .replaceError(MileageId, "error.number", FormError(key = MileageId, message = "acquire_privatekeeperdetailscomplete.mileage.validation", args = Seq.empty))
       .distinctErrors
   }
-
 }

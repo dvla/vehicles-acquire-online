@@ -245,9 +245,17 @@ acquire_keeperdetailscomplete.mileage.label = Vehicle mileage
 acquire_keeperdetailscomplete.submitbutton = Add Keeper
 acquire_keeperdetailscomplete.backbutton = Back
 acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
+acquire_privatekeeperdetailscomplete.dateofbirth.hint = for example, 20 3 1976
+privatekeeper_dateofbirth = Date of birth
+privatekeeper_dateofsale = Date of sale
 privatekeeper_mileage = Mileage
+dateOfBirthInput.label = Date of Birth
+dateOfBirthInput.hint = for example, 20 3 1976
+error.date.inTheFuture = Date cannot be in the future
+error.date.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
 acquire_keeperdetailscomplete.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
+
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
@@ -277,13 +285,5 @@ acquire_businesskeeperdetailscomplete.backbutton = Back
 acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 businesskeeper_mileage = Mileage
 privatekeeper_dateofsale = Date of Sale
-
-#date of birth field
-dateOfBirthInput.pageTitle = Date Of Birth Input
-dateOfBirthInput.label = Date of Birth
-privatekeeper_dateofbirth = Date of Birth
-dateOfBirthInput.hint = for example, 20 3 1976
-error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
-error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
 
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
