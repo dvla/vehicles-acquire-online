@@ -92,7 +92,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "replace max length error message for document reference number with standard error message (US43)" in new WithApplication {
+    "replace max length error message for document reference number with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(referenceNumber = "1" * (DocumentReferenceNumber.MaxLength + 1)).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
@@ -104,7 +104,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
         r.findAllIn(contentAsString(result)).length should equal(1)
     }
 
-    "replace required and min length error messages for document reference number with standard error message (US43)" in new WithApplication {
+    "replace required and min length error messages for document reference number with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(referenceNumber = "").
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
@@ -125,7 +125,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       count should equal(2)
     }
 
-    "replace required and min length error messages for vehicle registration number with standard error message (US43)" in new WithApplication {
+    "replace required and min length error messages for vehicle registration number with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(registrationNumber = "").
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
@@ -173,7 +173,6 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       result.futureValue.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
     }
 
-//    TODO : Resolve this failing test, currently redirects to private rather than business
     "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
@@ -277,5 +276,4 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     }).getInstance(classOf[VehicleLookup])
 */
   private val dateService = new DateServiceImpl
-//  private val ExitAnchorHtml = """a id="exit""""
 }

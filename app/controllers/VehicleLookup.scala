@@ -8,7 +8,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.LogFormats
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.model.{VehicleDetailsModel, TraderDetailsModel}
+import common.model.{BruteForcePreventionModel, VehicleDetailsModel, TraderDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
 import common.webserviceclients.vehiclelookup.VehicleDetailsResponseDto
@@ -78,7 +78,8 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
           }
         },
       validForm => {
-        lookupVehicleResult(validForm)
+//        lookupVehicleResult(validForm)
+        bruteForceAndLookup(validForm)
       }
     )
   }
@@ -92,7 +93,31 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
     }
   }
 
-  private def lookupVehicleResult(model: VehicleLookupFormModel)
+  private def bruteForceAndLookup(formModel: VehicleLookupFormModel)
+                                 (implicit request: Request[_]): Future[Result] =
+
+    bruteForceService.isVrmLookupPermitted(formModel.registrationNumber).flatMap { bruteForcePreventionViewModel =>
+      // US270: The security micro-service will return a Forbidden (403) message when the vrm is locked, we have hidden that logic as a boolean.
+      if (bruteForcePreventionViewModel.permitted) lookupVehicleResult(formModel, bruteForcePreventionViewModel)
+      else Future.successful {
+        val registrationNumber = LogFormats.anonymize(formModel.registrationNumber)
+        Logger.warn(s"BruteForceService locked out vrm: $registrationNumber")
+        Redirect(routes.VrmLocked.present()).
+          withCookie(bruteForcePreventionViewModel)
+      }
+    } recover {
+      case exception: Throwable =>
+        Logger.error(
+          s"Exception thrown by BruteForceService so for safety we won't let anyone through. " +
+            s"Exception ${exception.getStackTraceString}"
+        )
+//        Redirect(routes.MicroServiceError.present())
+        Redirect(routes.BeforeYouStart.present())
+    }
+
+
+  private def lookupVehicleResult(model: VehicleLookupFormModel,
+                                  bruteForcePreventionViewModel: BruteForcePreventionModel)
                                  (implicit request: Request[_]): Future[Result] = {
 
     def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String) = {

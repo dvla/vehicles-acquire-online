@@ -59,6 +59,11 @@ GET     /uprn-not-found                     @controllers.UprnNotFound.present
 
 GET     /not-implemented                    @controllers.NotImplemented.present
 
+GET     /vrm-locked                         @controllers.VrmLocked.present
+POST    /vrm-locked/buy-another             @controllers.VrmLocked.buyAnotherVehicle
+POST    /vrm-locked/exit                    @controllers.VrmLocked.exit
+
+
 GET     /error/:exceptionDigest             @controllers.Error.present(exceptionDigest)
 POST    /error/:exceptionDigest             @controllers.Error.submit(exceptionDigest)
 
