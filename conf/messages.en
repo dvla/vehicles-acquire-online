@@ -287,7 +287,7 @@ dateOfBirthInput.pageTitle = Date Of Birth Input
 dateOfBirthInput.label = Date of Birth
 privatekeeper_dateofbirth = Date of Birth
 dateOfBirthInput.hint = for example, 20 3 1976
-error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
-error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
+error.date.inTheFuture = Date cannot be in the future
+error.date.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
 
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
