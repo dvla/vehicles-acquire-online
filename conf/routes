@@ -59,12 +59,20 @@ GET     /uprn-not-found                     @controllers.UprnNotFound.present
 
 GET     /not-implemented                    @controllers.NotImplemented.present
 
+# Vehicle lookup failure
+GET     /vehicle-lookup-failure             @controllers.VehicleLookupFailure.present
+POST    /vehicle-lookup-failure             @controllers.VehicleLookupFailure.submit
+
+# Micro service error
+GET     /service-error                      @controllers.MicroServiceError.present
+GET     /service-error/try-again            @controllers.MicroServiceError.back
+
+# Brute force vrm locked
 GET     /vrm-locked                         @controllers.VrmLocked.present
 POST    /vrm-locked/buy-another             @controllers.VrmLocked.buyAnotherVehicle
 POST    /vrm-locked/exit                    @controllers.VrmLocked.exit
 
-
 GET     /error/:exceptionDigest             @controllers.Error.present(exceptionDigest)
 POST    /error/:exceptionDigest             @controllers.Error.submit(exceptionDigest)
 
-GET     /healthcheck                                    @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET     /healthcheck                        @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond

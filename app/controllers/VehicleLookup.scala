@@ -78,7 +78,6 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
           }
         },
       validForm => {
-//        lookupVehicleResult(validForm)
         bruteForceAndLookup(validForm)
       }
     )
@@ -111,8 +110,7 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
           s"Exception thrown by BruteForceService so for safety we won't let anyone through. " +
             s"Exception ${exception.getStackTraceString}"
         )
-//        Redirect(routes.MicroServiceError.present())
-        Redirect(routes.BeforeYouStart.present())
+        Redirect(routes.MicroServiceError.present())
     }
 
 
@@ -141,27 +139,23 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
     }
 
     def vehicleNotFoundResult(responseCode: String) = {
-      val enterAddressManualHtml = views.html.acquire.enter_address_manually
       val registrationNumber = LogFormats.anonymize(model.registrationNumber)
       Logger.debug(
-        s"VehicleLookup encountered a problem with request $enterAddressManualHtml " +
-          s"$registrationNumber, redirect to VehicleLookupFailure"
+        s"VehicleLookup did not find vehicle with vrm " +
+          s"$registrationNumber. Received response code $responseCode, redirecting to VehicleLookupFailure"
       )
-      // TODO : use the correct redirect when the target exists
-      Redirect(routes.NotImplemented.present())
+      Redirect(routes.VehicleLookupFailure.present())
         .withCookie(key = VehicleLookupResponseCodeCacheKey, value = responseCode)
     }
 
     def microServiceErrorResult(message: String) = {
-      // TODO : use the correct redirect when the target exists
       Logger.error(message)
-      Redirect(routes.NotImplemented.present())
+      Redirect(routes.MicroServiceError.present())
     }
 
     def microServiceThrowableResult(message: String, t: Throwable) = {
-      // TODO : use the correct redirect when the target exists
       Logger.error(message, t)
-      Redirect(routes.NotImplemented.present())
+      Redirect(routes.MicroServiceError.present())
     }
 
     def createResultFromVehicleLookupResponse(vehicleDetailsResponse: VehicleDetailsResponseDto,
@@ -203,8 +197,8 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
           responseStatusVehicleLookupMS = responseStatusVehicleLookupMS,
           soldTo = model.vehicleSoldTo,
           vehicleDetailsResponse = vehicleDetailsResponse).
-          withCookie(model)
-
+          withCookie(model).
+          withCookie(bruteForcePreventionViewModel)
     }.recover {
       case e: Throwable => microServiceThrowableResult(message = s"VehicleLookup Web service call failed.", e)
     }
