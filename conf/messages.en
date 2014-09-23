@@ -38,6 +38,19 @@ error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
 error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
 error.validTitle = Must be a valid title
+error.title=An unrecoverable error has occurred
+error.button=Start again
+error.validBusinessName = Must be between two and 56 characters and only contain valid characters (a-z, A-Z, 0-9, -, ‘, and ,)
+error.email = Enter a valid email address up to 254 characters
+error.dropDownInvalid = Please select a value from the drop down list.
+error.titleInvalid = Please select a title from the drop down list.
+error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.date.inTheFuture = Date cannot be in the future
+error.date.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
+error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
+error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
+error.postTown.characterInvalid = Town or city contains invalid characters
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -86,16 +99,6 @@ onHandlerNotFound.header=This page cannot be found
 onHandlerNotFound.body=We are unable to find the page you have requested, this event has been logged for investigation.
 onHandlerNotFound.noJavascript=If you wish to try again select the back button on your browser, if not select "Exit" to leave the service.
 onHandlerNotFound.start.button=Start
-
-#errors
-error.title=An unrecoverable error has occurred
-error.button=Start again
-error.validBusinessName = Must be between two and 56 characters and only contain valid characters (a-z, A-Z, 0-9, -, ‘, and ,)
-error.email = Enter a valid email address up to 254 characters
-error.dropDownInvalid = Please select a value from the drop down list.
-error.titleInvalid = Please select a title from the drop down list.
-error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
-error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 
 language.cy.button = Cymraeg
 language.en.button = YAGNI
@@ -194,8 +197,6 @@ addressAndPostcode.addressLines.line2 = Street name
 addressAndPostcode.addressLines.line3 = Area
 addressAndPostcode.addressLines.postTown = Town or city
 addressAndPostcode.addressLines.postTown.hint = e.g. SWANSEA
-error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
-error.postTown.characterInvalid = Town or city contains invalid characters
 
 addressAndPostcode.addressLines = Address
 addressAndPostcode.postcode = Postcode
@@ -251,11 +252,8 @@ privatekeeper_dateofsale = Date of sale
 privatekeeper_mileage = Mileage
 dateOfBirthInput.label = Date of Birth
 dateOfBirthInput.hint = for example, 20 3 1976
-error.date.inTheFuture = Date cannot be in the future
-error.date.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
 acquire_keeperdetailscomplete.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
-
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
@@ -284,6 +282,4 @@ acquire_businesskeeperdetailscomplete.submitbutton = Add Keeper
 acquire_businesskeeperdetailscomplete.backbutton = Back
 acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 businesskeeper_mileage = Mileage
-privatekeeper_dateofsale = Date of Sale
-
-error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
+businesskeeper_dateofsale = Date of sale
