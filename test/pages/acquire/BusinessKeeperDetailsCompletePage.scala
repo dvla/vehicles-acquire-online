@@ -6,7 +6,7 @@ import views.acquire.BusinessKeeperDetailsComplete.{BackId, SubmitId}
 import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, ConsentId}
 
 object BusinessKeeperDetailsCompletePage extends Page with WebBrowserDSL {
-  final val address = s"/$basePath/business-complete-and-confirm"
+  final val address = s"$applicationContext/business-complete-and-confirm"
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Complete and confirm"
 

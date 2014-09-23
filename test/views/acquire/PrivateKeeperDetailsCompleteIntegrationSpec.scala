@@ -112,6 +112,48 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
       navigate(yearDateOfBirth = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
+
+    "display one validation error message when day date of sale is empty" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(dayDateOfSale = "")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when month date of sale is empty" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(monthDateOfSale = "")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when year date of sale is empty" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(yearDateOfSale = "")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when day date of sale contains letters" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(dayDateOfSale = "a")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when month date of sale contains letters" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(monthDateOfSale = "a")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when year date of sale contains letters" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(yearDateOfSale = "a")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
   }
 
   "back" should {
