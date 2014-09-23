@@ -3,17 +3,17 @@ package controllers.acquire
 import controllers.{BusinessKeeperDetailsComplete, PrivateKeeperDetails}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsCompleteFormModel.Form._
-import pages.acquire.PrivateKeeperDetailsCompletePage._
+import pages.acquire.BusinessKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid, ConsentTrue, MileageValid}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import pages.acquire.BusinessKeeperDetailsCompletePage.MileageValid
 import utils.helpers.Config
 import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
-import models.BusinessKeeperDetailsCompleteFormModel.Form.MileageId
+import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
+import scala.Some
 
 class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
@@ -74,7 +74,6 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
     "redirect to next page when mandatory fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
-
       val result = businessKeeperDetailsComplete.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
@@ -83,7 +82,6 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
     "redirect to next page when all fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
-
       val result = businessKeeperDetailsComplete.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
@@ -97,11 +95,18 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
         r.header.status should equal(BAD_REQUEST)
       }
     }
-    }
+  }
 
   private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,
+                                             dayDateOfSale: String = DayDateOfSaleValid,
+                                             monthDateOfSale: String = MonthDateOfSaleValid,
+                                             yearDateOfSale: String = YearDateOfSaleValid,
                                              consent: String = ConsentTrue) = {
-    FakeRequest().withFormUrlEncodedBody(MileageId -> mileage,
+    FakeRequest().withFormUrlEncodedBody(
+      MileageId -> mileage,
+      s"$DateOfSaleId.$DayId" -> dayDateOfSale,
+      s"$DateOfSaleId.$MonthId" -> monthDateOfSale,
+      s"$DateOfSaleId.$YearId" -> yearDateOfSale,
       ConsentId -> consent)
   }
 
