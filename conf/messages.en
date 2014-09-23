@@ -245,9 +245,13 @@ acquire_keeperdetailscomplete.mileage.label = Vehicle mileage
 acquire_keeperdetailscomplete.submitbutton = Add Keeper
 acquire_keeperdetailscomplete.backbutton = Back
 acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
+acquire_privatekeeperdetailscomplete.dateofbirth.hint = for example, 20 3 1976
+privatekeeper_dateofbirth = Date of birth
+privatekeeper_dateofsale = Date of sale
 privatekeeper_mileage = Mileage
 acquire_keeperdetailscomplete.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
+
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
