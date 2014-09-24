@@ -11,9 +11,11 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicit
 import play.api.Logger
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import models.PrivateKeeperDetailsCompleteFormModel.Form.MileageId
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+                                               dateService: DateService,
                                                config: Config) extends Controller {
 
   private[controllers] val form = Form(
@@ -26,7 +28,7 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
       case Some(privateKeeperDetails) =>
         Ok(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
           form.fill(), null, null
-        )))
+        ), dateService))
       case _ =>
         Logger.warn("Did not find PrivateKeeperDetails cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
@@ -38,7 +40,7 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
       invalidForm =>
         BadRequest(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
           formWithReplacedErrors(invalidForm), null, null
-        ))),
+        ), dateService)),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )
   }

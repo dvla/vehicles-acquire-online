@@ -250,6 +250,7 @@ privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
 privatekeeper_lastname = Last name
+use_todays_date.label = Use today's date
 
 #private keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
