@@ -11,7 +11,7 @@ import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLoo
 import org.openqa.selenium.{Cookie, WebDriver}
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, EmailValid}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
@@ -137,13 +137,15 @@ object CookieFactoryForUISpecs {
   def privateKeeperDetails(title: String = TitleValid,
                            firstName: String = FirstNameValid,
                            lastName: String = LastNameValid,
-                           email: Option[String] = Some(EmailValid))(implicit webDriver: WebDriver) = {
+                           email: Option[String] = Some(EmailValid),
+                           driverNumber: Option[String] = Some(DriverNumberValid))(implicit webDriver: WebDriver) = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
       lastName = lastName,
-      email = email
+      email = email,
+      driverNumber = driverNumber
     )
     addCookie(key, value)
     this

@@ -8,9 +8,10 @@ import play.api.data.validation.Constraints._
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
+import uk.gov.dvla.vehicles.presentation.common.mappings.DriverNumber.driverNumber
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
 
-case class PrivateKeeperDetailsFormModel(title: String, firstName: String, lastName: String, email: Option[String])
+case class PrivateKeeperDetailsFormModel(title: String, firstName: String, lastName: String, email: Option[String], driverNumber: Option[String])
 
 object PrivateKeeperDetailsFormModel {
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
@@ -23,6 +24,7 @@ object PrivateKeeperDetailsFormModel {
     final val LastNameId = "privatekeeper_lastname"
     final val EmailId = "privatekeeper_email"
     final val ConsentId = "consent"
+    final val DriverNumberId = "privatekeeper_drivernumber"
     final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
     final val LastNameMinLength = 1
@@ -55,7 +57,8 @@ object PrivateKeeperDetailsFormModel {
       TitleId -> titleDropDown(titleOptions),
       FirstNameId -> firstNameMapping,
       LastNameId -> lastNameMapping,
-      EmailId -> optional(email)
+      EmailId -> optional(email),
+      DriverNumberId -> optional(driverNumber)
     )(PrivateKeeperDetailsFormModel.apply)(PrivateKeeperDetailsFormModel.unapply)
   }
 }

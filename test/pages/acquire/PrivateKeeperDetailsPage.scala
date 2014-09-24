@@ -22,6 +22,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val TitleInvalidError = "Please select a title from the drop down list."
   final val VehicleMakeValid = "Audi"
   final val ModelValid = "A6"
+  final val DriverNumberValid = "ABCDE603190FG9GH"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 

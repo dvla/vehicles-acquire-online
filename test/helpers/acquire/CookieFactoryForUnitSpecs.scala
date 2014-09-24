@@ -28,7 +28,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, DriverNumberValid}
 import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid}
 import pages.acquire.PrivateKeeperDetailsCompletePage.{YearDateOfBirthValid, ConsentTrue}
 import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
@@ -149,13 +149,15 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def privateKeeperDetailsModel(title: String = TitleValid,
                                 firstName: String = FirstNameValid,
                                 lastName: String = LastNameValid,
-                                email: Option[String] = Some(EmailValid)): Cookie = {
+                                email: Option[String] = Some(EmailValid),
+                                driverNumber: Option[String] = Some(DriverNumberValid)): Cookie = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
       lastName = lastName,
-      email = email
+      email = email,
+      driverNumber = driverNumber
     )
     createCookie(key, value)
   }
