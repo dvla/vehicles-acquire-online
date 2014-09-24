@@ -1,9 +1,10 @@
 package helpers.acquire
 
 import composition.TestComposition
+import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import org.joda.time.LocalDate
+import pages.acquire.VehicleLookupPage
 import play.api.libs.json.{Json, Writes}
-import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel, AddressModel}
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
@@ -27,7 +28,6 @@ import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, Month
 
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import scala.Some
 import play.api.mvc.Cookie
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
@@ -186,5 +186,11 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def trackingIdModel(value: String = TrackingIdValue): Cookie = {
     createCookie(ClientSideSessionFactory.TrackingIdCookieName, value)
+  }
+
+  def microServiceError(origin: String = VehicleLookupPage.address): Cookie = {
+    val key = MicroServiceErrorRefererCacheKey
+    val value = origin
+    createCookie(key, value)
   }
 }
