@@ -1,29 +1,34 @@
 package helpers.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel, AddressModel}
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.{SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel}
+import models.{VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel}
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import org.openqa.selenium.{Cookie, WebDriver}
+import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
+import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, EmailValid}
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
-import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{CyId, EnId}
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import TraderDetailsModel.TraderDetailsCacheKey
-import models._
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
-import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
-import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
-import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import webserviceclients.fakes.FakeVehicleLookupWebService._
-import pages.acquire.PrivateKeeperDetailsPage._
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel._
-import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common
+import common.controllers.AlternateLanguages.{CyId, EnId}
+import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import common.model.{BruteForcePreventionModel, VehicleDetailsModel, TraderDetailsModel, AddressModel}
+import TraderDetailsModel.TraderDetailsCacheKey
+import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
+import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
-import models.PrivateKeeperDetailsFormModel._
-import scala.Some
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -76,6 +81,42 @@ object CookieFactoryForUISpecs {
   def dealerDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
     val key = TraderDetailsCacheKey
     val value = TraderDetailsModel(traderName = TraderBusinessNameValid, traderAddress = address)
+    addCookie(key, value)
+    this
+  }
+
+  def bruteForcePreventionViewModel(permitted: Boolean = true,
+                                    attempts: Int = 0,
+                                    maxAttempts: Int = MaxAttempts,
+                                    dateTimeISOChronology: String = org.joda.time.DateTime.now().toString)
+                                   (implicit webDriver: WebDriver) = {
+    val key = BruteForcePreventionViewModelCacheKey
+    val value = BruteForcePreventionModel(
+      permitted,
+      attempts,
+      maxAttempts,
+      dateTimeISOChronology
+    )
+    addCookie(key, value)
+    this
+  }
+
+  def vehicleLookupFormModel(referenceNumber: String = ReferenceNumberValid,
+                             registrationNumber: String = RegistrationNumberValid,
+                             vehicleSoldTo: String = VehicleSoldTo_Private)
+                            (implicit webDriver: WebDriver) = {
+    val key = VehicleLookupFormModelCacheKey
+    val value = VehicleLookupFormModel(referenceNumber = referenceNumber,
+      registrationNumber = registrationNumber,
+      vehicleSoldTo = vehicleSoldTo)
+    addCookie(key, value)
+    this
+  }
+
+  def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure")
+                               (implicit webDriver: WebDriver) = {
+    val key = VehicleLookupResponseCodeCacheKey
+    val value = responseCode
     addCookie(key, value)
     this
   }
