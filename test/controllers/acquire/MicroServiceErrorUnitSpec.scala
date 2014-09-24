@@ -1,6 +1,7 @@
 package controllers.acquire
 
 import controllers.MicroServiceError
+import Common.PrototypeHtml
 import helpers.common.CookieHelper
 import helpers.{UnitSpec, WithApplication}
 import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
@@ -76,5 +77,4 @@ final class MicroServiceErrorUnitSpec extends UnitSpec {
 
   private val microServiceError = injector.getInstance(classOf[MicroServiceError])
   private lazy val present = microServiceError.present(FakeRequest())
-  private final val PrototypeHtml = """<div class="prototype">"""
 }
