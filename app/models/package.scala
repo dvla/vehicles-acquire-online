@@ -19,16 +19,31 @@ package object models {
     TraderDetailsCacheKey,
     BusinessChooseYourAddressCacheKey,
     EnterAddressManuallyCacheKey,
-    BruteForcePreventionViewModelCacheKey,
+    BruteForcePreventionViewModelCacheKey
+  )
+
+  // Set of cookies related to looking up a vehicle
+  final val VehicleLookupCacheKeys = Set(
     VehicleLookupFormModelCacheKey,
-    VehicleLookupDetailsCacheKey,
+    VehicleLookupDetailsCacheKey
+  )
+
+  // Set of cookies related to all data entered for a private keeper
+  final val PrivateKeeperDetailsCacheKeys = Set(
     PrivateKeeperDetailsCacheKey,
+    PrivateKeeperDetailsCompleteCacheKey
+  )
+
+  // Set of cookies related to all data entered for a business keeper
+  final val BusinessKeeperDetailsCacheKeys = Set(
     BusinessKeeperDetailsCacheKey,
-    PrivateKeeperDetailsCompleteCacheKey,
     BusinessKeeperDetailsCompleteCacheKey
   )
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page
   final val AllCacheKeys = AcquireCacheKeys
+    .++(VehicleLookupCacheKeys)
+    .++(PrivateKeeperDetailsCacheKeys)
+    .++(BusinessKeeperDetailsCacheKeys)
     .++(Set(HelpCacheKey))
 }

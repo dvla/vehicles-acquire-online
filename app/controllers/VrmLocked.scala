@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.{VrmLockedViewModel, AllCacheKeys, VehicleLookupCacheKeys}
 import org.joda.time.DateTime
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
@@ -8,10 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.model.{TraderDetailsModel, BruteForcePreventionModel}
-import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
-import models.{VrmLockedViewModel, AllCacheKeys}
-import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 
 final class VrmLocked @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                   config: Config) extends Controller {
@@ -31,7 +29,7 @@ final class VrmLocked @Inject()()(implicit clientSideSessionFactory: ClientSideS
     request.cookies.getModel[TraderDetailsModel] match {
       case (Some(traderDetails)) =>
         Redirect(routes.VehicleLookup.present()).
-          discardingCookies(Set(VehicleLookupFormModelCacheKey, VehicleLookupDetailsCacheKey))
+          discardingCookies(VehicleLookupCacheKeys)
       case _ => Redirect(routes.SetUpTradeDetails.present())
     }
   }
