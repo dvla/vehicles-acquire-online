@@ -44,13 +44,7 @@
             (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
         )
 
-        @valtechDeclareCheck(
-            data.form(ConsentId),
-            args = Map(
-                    '_showConstraints -> false,
-            '_label -> Messages("acquire_keeperdetailscomplete.consent")
-        ))
-
+        <div class="acquire-date">
         @inputDayMonthYearTextbox(
             field = data.form(DateOfSaleId),
             years = dateService.today.yearRangeToDropdown(yearsIntoThePast = 10),
@@ -61,6 +55,14 @@
             dateService = dateService,
             showTodaysDateButton = true
         )
+        </div>
+
+        @valtechDeclareCheck(
+            data.form(ConsentId),
+            args = Map(
+                    '_showConstraints -> false,
+            '_label -> Messages("acquire_keeperdetailscomplete.consent")
+        ))
 
         <div class="second-col">
             <div class="form-steps">
