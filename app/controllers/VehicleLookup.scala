@@ -1,27 +1,27 @@
 package controllers
 
 import com.google.inject.Inject
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller, Request, Result}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.LogFormats
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.model.{BruteForcePreventionModel, VehicleDetailsModel, TraderDetailsModel}
+import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
 import common.webserviceclients.vehiclelookup.VehicleDetailsResponseDto
 import common.webserviceclients.vehiclelookup.VehicleDetailsDto
 import common.webserviceclients.vehiclelookup.VehicleLookupService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
-import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import utils.helpers.Config
-import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionService,
                                     vehicleLookupService: VehicleLookupService,
