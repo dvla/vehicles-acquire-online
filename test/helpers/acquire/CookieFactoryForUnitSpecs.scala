@@ -1,34 +1,39 @@
 package helpers.acquire
 
 import composition.TestComposition
+import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import org.joda.time.LocalDate
+import pages.acquire.VehicleLookupPage
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel, AddressModel}
+import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models._
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.{SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
+import models.{EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel}
+import models.{PrivateKeeperDetailsCompleteFormModel, BusinessKeeperDetailsFormModel, BusinessKeeperDetailsCompleteFormModel}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
-import webserviceclients.fakes.FakeVehicleLookupWebService._
-import webserviceclients.fakes.FakeAddressLookupService._
-import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
+import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
-import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid, YearDateOfBirthValid, ConsentTrue}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{YearDateOfBirthValid, ConsentTrue}
 import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import scala.Some
-import play.api.mvc.Cookie
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
+import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -98,6 +103,20 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
+  def bruteForcePreventionViewModel(permitted: Boolean = true,
+                                    attempts: Int = 0,
+                                    maxAttempts: Int = MaxAttempts,
+                                    dateTimeISOChronology: String = org.joda.time.DateTime.now().toString): Cookie = {
+    val key = BruteForcePreventionViewModelCacheKey
+    val value = BruteForcePreventionModel(
+      permitted,
+      attempts,
+      maxAttempts,
+      dateTimeISOChronology = dateTimeISOChronology
+    )
+    createCookie(key, value)
+  }
+
   def vehicleLookupFormModel(referenceNumber: String = ReferenceNumberValid,
                              registrationNumber: String = RegistrationNumberValid,
                              vehicleSoldTo: String = VehicleSoldTo_Private): Cookie = {
@@ -123,6 +142,9 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     )
     createCookie(key, value)
   }
+
+  def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure"): Cookie =
+    createCookie(VehicleLookupResponseCodeCacheKey, responseCode)
 
   def privateKeeperDetailsModel(title: String = TitleValid,
                                 firstName: String = FirstNameValid,
@@ -186,5 +208,11 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def trackingIdModel(value: String = TrackingIdValue): Cookie = {
     createCookie(ClientSideSessionFactory.TrackingIdCookieName, value)
+  }
+
+  def microServiceError(origin: String = VehicleLookupPage.address): Cookie = {
+    val key = MicroServiceErrorRefererCacheKey
+    val value = origin
+    createCookie(key, value)
   }
 }
