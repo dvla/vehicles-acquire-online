@@ -110,8 +110,8 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
     )
 
     vehicleLookupService.invoke(vehicleDetailsRequest, trackingId) map {
-      case (responseStatusVehicleLookupMS: Int, vehicleDetailsResponse: Option[VehicleDetailsResponseDto]) =>
-        responseStatusVehicleLookupMS match {
+      case (microServiceResponseCode: Int, vehicleDetailsResponse: Option[VehicleDetailsResponseDto]) =>
+        microServiceResponseCode match {
           case OK =>
             vehicleDetailsResponse match {
               case Some(response) =>
