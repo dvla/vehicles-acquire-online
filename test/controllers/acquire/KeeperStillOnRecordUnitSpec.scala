@@ -11,6 +11,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.Vehicl
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 
 class KeeperStillOnRecordUnitSpec extends UnitSpec {
 
@@ -34,13 +35,15 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
       val result = keeperStillOnRecord.buyAnotherVehicle(request)
 
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.size should equal(2)
+        cookies.size should equal(3)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleLookupResponseCodeCacheKey, cookies)
 
         r.header.status should equal(SEE_OTHER)
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))

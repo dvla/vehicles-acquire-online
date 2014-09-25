@@ -1,14 +1,16 @@
-import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import models.PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
 import models.BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 
 package object models {
   final val HelpCacheKey = "help"
@@ -25,7 +27,8 @@ package object models {
   // Set of cookies related to looking up a vehicle
   final val VehicleLookupCacheKeys = Set(
     VehicleLookupFormModelCacheKey,
-    VehicleLookupDetailsCacheKey
+    VehicleLookupDetailsCacheKey,
+    VehicleLookupResponseCodeCacheKey
   )
 
   // Set of cookies related to all data entered for a private keeper
