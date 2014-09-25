@@ -113,7 +113,6 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
         Redirect(routes.MicroServiceError.present())
     }
 
-
   private def lookupVehicleResult(model: VehicleLookupFormModel,
                                   bruteForcePreventionViewModel: BruteForcePreventionModel)
                                  (implicit request: Request[_]): Future[Result] = {
@@ -203,5 +202,4 @@ final class VehicleLookup @Inject()(bruteForceService: BruteForcePreventionServi
       case e: Throwable => microServiceThrowableResult(message = s"VehicleLookup Web service call failed.", e)
     }
   }
-
 }
