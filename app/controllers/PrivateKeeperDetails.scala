@@ -9,7 +9,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import play.api.data.{FormError, Form}
 import models.PrivateKeeperDetailsFormModel
-import models.PrivateKeeperDetailsFormModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
+import models.PrivateKeeperDetailsFormModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId, DriverNumberId}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 
@@ -39,6 +39,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                 replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).
                 replaceError(FirstNameId, FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)).
                 replaceError(LastNameId, FormError(key = LastNameId, message = "error.validLastName", args = Seq.empty)).
+                replaceError(DriverNumberId, FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)).
                 replaceError(EmailId, FormError(key = FirstNameId, message = "error.validEmail", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },

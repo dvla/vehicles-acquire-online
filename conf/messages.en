@@ -51,6 +51,7 @@ error.date.invalid = Please enter a valid date in the format DD MM YYYY for exam
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
 error.postTown.characterInvalid = Town or city contains invalid characters
+error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -250,6 +251,7 @@ privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
 privatekeeper_lastname = Last name
+privatekeeper_drivernumber = Driver number
 acquire_privatekeeperdetails.drivernumberlabel = Driving license number of new keeper
 acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 

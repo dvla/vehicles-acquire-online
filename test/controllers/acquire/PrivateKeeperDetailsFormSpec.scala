@@ -2,8 +2,8 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, LastNameValid}
-import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength}
+import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, LastNameValid, DriverNumberValid}
+import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength, DriverNumberId}
 import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
@@ -19,6 +19,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
       model.email should equal(Some(EmailValid))
+      model.driverNumber should equal(Some(DriverNumberValid))
     }
 
     "accept if form is completed with mandatory fields only" in {
@@ -26,11 +27,13 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         title = TitleValid,
         firstName = FirstNameValid,
         lastName = LastNameValid,
-        email = "").get
+        email = "",
+        driverNumber = "").get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
       model.email should equal(None)
+      model.driverNumber should equal(None)
     }
 
     "reject if form has no fields completed" in {
@@ -236,14 +239,16 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
   private def formWithValidDefaults(title: String = TitleValid,
                                     firstName: String = FirstNameValid,
                                     lastName: String = LastNameValid,
-                                    email: String = EmailValid) = {
+                                    email: String = EmailValid,
+                                    driverNumber: String = DriverNumberValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
           TitleId -> title,
           FirstNameId -> firstName,
           LastNameId -> lastName,
-          EmailId -> email
+          EmailId -> email,
+          DriverNumberId -> driverNumber
         )
       )
   }

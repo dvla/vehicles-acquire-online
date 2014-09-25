@@ -4,13 +4,14 @@ import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsFormModel.Form.{EmailId, FirstNameId, LastNameId, TitleId}
+import models.PrivateKeeperDetailsFormModel.Form.{EmailId, FirstNameId, LastNameId, TitleId, DriverNumberId}
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, FirstNameValid, LastNameValid, TitleInvalidError, TitleValid}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, FirstNameValid, LastNameValid, TitleInvalidError, TitleValid, DriverNumberValid}
 import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.mappings.DriverNumber
 import utils.helpers.Config
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
@@ -109,12 +110,14 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
   private def buildCorrectlyPopulatedRequest(title: String = TitleValid,
                                              firstName: String = FirstNameValid,
                                              lastName: String = LastNameValid,
-                                             email: String = EmailValid) = {
+                                             email: String = EmailValid,
+                                             driverNumber: String = DriverNumberValid) = {
     FakeRequest().withFormUrlEncodedBody(
       TitleId -> title,
       FirstNameId -> firstName,
       LastNameId -> lastName,
-      EmailId -> email
+      EmailId -> email,
+      DriverNumberId -> driverNumber
     )
   }
 
