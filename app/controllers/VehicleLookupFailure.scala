@@ -48,7 +48,6 @@ final class VehicleLookupFailure @Inject()()
     Ok(views.html.acquire.vehicle_lookup_failure(
       data = vehicleLookUpFormModelDetails,
       responseCodeVehicleLookupMSErrorMessage = vehicleLookupResponseCode)
-    ).
-      discardingCookies(DiscardingCookie(name = VehicleLookupResponseCodeCacheKey))
+    ).discardingCookies(DiscardingCookie(name = VehicleLookupResponseCodeCacheKey))
   }
 }
