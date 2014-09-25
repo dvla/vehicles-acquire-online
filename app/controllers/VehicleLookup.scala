@@ -2,7 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import models.{VehicleLookupFormModel, VehicleLookupViewModel}
+import models.{VehicleLookupFormModel, VehicleLookupViewModel, PrivateKeeperDetailsCacheKeys, BusinessKeeperDetailsCacheKeys}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Call, Action, Request}
 import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase
@@ -145,9 +145,11 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
     soldTo match {
       case VehicleSoldTo_Private =>
         Redirect(routes.PrivateKeeperDetails.present()).
+          discardingCookies(BusinessKeeperDetailsCacheKeys).
           withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
       case _ =>
         Redirect(routes.BusinessKeeperDetails.present()).
+          discardingCookies(PrivateKeeperDetailsCacheKeys).
           withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
     }
 }

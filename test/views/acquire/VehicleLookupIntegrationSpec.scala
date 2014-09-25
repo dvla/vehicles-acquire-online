@@ -6,6 +6,10 @@ import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.{TestGlobal, TestHarness}
+import models.BusinessKeeperDetailsFormModel._
+import models.PrivateKeeperDetailsFormModel._
+import models.VehicleLookupFormModel._
+import models._
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
@@ -90,6 +94,17 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
+    "clear businessKeeperDetails when private keeper data is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      CookieFactoryForUISpecs.businessKeeperDetails()
+
+      happyPath()
+
+      webDriver.manage().getCookieNamed(BusinessKeeperDetailsCacheKey) should equal(null)
+    }
+
     "go to the appropriate next page when business keeper data is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
@@ -97,6 +112,17 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       happyPath(isVehicleSoldToPrivateIndividual = false)
 
       page.title should equal(BusinessKeeperDetailsPage.title)
+    }
+
+    "clear privateKeeperDetails when business keeper data is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+
+      CookieFactoryForUISpecs.privateKeeperDetails()
+
+      happyPath(isVehicleSoldToPrivateIndividual = false)
+
+      webDriver.manage().getCookieNamed(PrivateKeeperDetailsCacheKey) should equal(null)
     }
 
     "display one validation error message when no referenceNumber is entered" taggedAs UiTag in new WebBrowser {
