@@ -136,6 +136,7 @@ object Sandbox extends Plugin {
 
   lazy val testGatling = taskKey[Unit]("Runs the gatling test")
   lazy val testGatlingTask = testGatling := {
+//    System.setProperty("baseUrl", "http://localhost:9000/vrm-acquire")
     val classPath = fullClasspath.all(scopeGatlingTests).value.flatten
     val targetFolder = target.in(gatlingTests).value.getAbsolutePath
     val vehiclesGatlingExtractDir = new File(s"$targetFolder/gatlingJarExtract")
@@ -177,7 +178,7 @@ object Sandbox extends Plugin {
   lazy val runAsyncTask = runAsync := {
     System.setProperty("https.port", HttpsPort.toString)
     System.setProperty("http.port", "disabled")
-    System.setProperty("baseUrl", s"https://localhost:$HttpsPort")
+    System.setProperty("baseUrl", s"https://localhost:$HttpsPort/vrm-acquire")
     runProject(
       fullClasspath.in(Test).value,
       None,
