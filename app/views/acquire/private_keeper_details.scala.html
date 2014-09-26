@@ -15,7 +15,7 @@
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, LastNameId, LastNameMaxLength, DriverNumberId}
+@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, LastNameId, LastNameMaxLength, DriverNumberId, DriverNumberMaxLength}
 
 @main(
 progress = Some(Messages("acquire_progress_5")),
@@ -67,7 +67,8 @@ currentForm = Some(privateKeeperDetailsForm)
         <div class="uppercase-input">
             @valtechInputText(privateKeeperDetailsForm(DriverNumberId), hintText = Some(Messages("acquire_privatekeeperdetails.drivernumber.hint")),
             args = Map('_label -> Messages("acquire_privatekeeperdetails.drivernumberlabel"),
-            '_showConstraints -> false
+            '_showConstraints -> false,
+            'maxLength -> DriverNumberMaxLength
             )
             )
         </div>
