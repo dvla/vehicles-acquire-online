@@ -30,6 +30,7 @@ object PrivateKeeperDetailsFormModel {
     final val EmailId = "privatekeeper_email"
     final val ConsentId = "consent"
     final val DriverNumberId = "privatekeeper_drivernumber"
+    final val DriverNumberMaxLength = 16
     final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
     final val LastNameMinLength = 1

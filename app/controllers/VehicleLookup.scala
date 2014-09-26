@@ -109,27 +109,17 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
       userName = request.cookies.getModel[TraderDetailsModel].fold("")(_.traderName)
     )
 
-    vehicleLookupService.invoke(vehicleDetailsRequest, trackingId) map {
-      case (microServiceResponseCode: Int, vehicleDetailsResponse: Option[VehicleDetailsResponseDto]) =>
-        microServiceResponseCode match {
-          case OK =>
-            vehicleDetailsResponse match {
-              case Some(response) =>
-                response.responseCode match {
-                  case Some(responseCode) => VehicleNotFound(responseCode)
-                  case None =>
-                    response.vehicleDetailsDto match {
-                      case Some(dto) => VehicleFound(vehicleFoundResult(dto, form.vehicleSoldTo))
-                      case None => throw new RuntimeException("No vehicleDetailsDto found")
-                    }
-                }
-              case _ => throw new RuntimeException("No vehicleDetailsResponse found")
-            }
-          case faultCode => throw new RuntimeException(
-            s"Vehicle lookup web service call http status not OK, it " +
-              s"was: $faultCode. Problem may come from either vehicle lookup micro-service or the VSS"
-          )
-        }
+    vehicleLookupService.invoke(vehicleDetailsRequest, trackingId) map { response =>
+      response.responseCode match {
+        case Some(responseCode) =>
+          VehicleNotFound(responseCode)
+
+        case None =>
+          response.vehicleDetailsDto match {
+            case Some(dto) => VehicleFound(vehicleFoundResult(dto, form.vehicleSoldTo))
+            case None => throw new RuntimeException("No vehicleDetailsDto found")
+          }
+      }
     }
   }
 
