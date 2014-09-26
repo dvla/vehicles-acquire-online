@@ -1,14 +1,18 @@
 package models
 
+import mappings.Consent.consent
 import org.joda.time.LocalDate
 import play.api.data.Forms.mapping
 import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{optionalNonFutureDateMapping, nonFutureDateMapping}
-import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
-import mappings.Consent.consent
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.CacheKey
+import common.mappings.Date.{optionalNonFutureDateMapping, nonFutureDateMapping}
+import common.mappings.Mileage.mileage
 
-case class PrivateKeeperDetailsCompleteFormModel(dateOfBirth: Option[LocalDate], mileage: Option[Int], dateOfSale: LocalDate, consent: String)
+case class PrivateKeeperDetailsCompleteFormModel(dateOfBirth: Option[LocalDate],
+                                                 mileage: Option[Int],
+                                                 dateOfSale: LocalDate,
+                                                 consent: String)
 
 object PrivateKeeperDetailsCompleteFormModel {
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsCompleteFormModel]

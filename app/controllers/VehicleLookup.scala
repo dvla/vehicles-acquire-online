@@ -5,13 +5,13 @@ import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.{VehicleLookupFormModel, VehicleLookupViewModel, PrivateKeeperDetailsCacheKeys, BusinessKeeperDetailsCacheKeys}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Call, Action, Request}
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase.{VehicleFound, VehicleNotFound, LookupResult}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.controllers.VehicleLookupBase
+import common.controllers.VehicleLookupBase.{VehicleFound, VehicleNotFound, LookupResult}
 import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
@@ -110,8 +110,8 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
     )
 
     vehicleLookupService.invoke(vehicleDetailsRequest, trackingId) map {
-      case (responseStatusVehicleLookupMS: Int, vehicleDetailsResponse: Option[VehicleDetailsResponseDto]) =>
-        responseStatusVehicleLookupMS match {
+      case (microServiceResponseCode: Int, vehicleDetailsResponse: Option[VehicleDetailsResponseDto]) =>
+        microServiceResponseCode match {
           case OK =>
             vehicleDetailsResponse match {
               case Some(response) =>
