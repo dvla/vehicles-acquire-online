@@ -15,76 +15,77 @@
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, LastNameId, LastNameMaxLength, DriverNumberId}
+@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength}
+@import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, DriverNumberId}
 
 @main(
-progress = Some(Messages("acquire_progress_5")),
-title = Messages("acquire_privatekeeperdetails.title"),
-currentForm = Some(privateKeeperDetailsForm)
+    progress = Some(Messages("acquire_progress_5")),
+    title = Messages("acquire_privatekeeperdetails.title"),
+    currentForm = Some(privateKeeperDetailsForm)
 ) {
-@form(action = PrivateKeeperDetails.submit) {
-@csrfTokenHiddenField()
+    @form(action = PrivateKeeperDetails.submit) {
+        @csrfTokenHiddenField()
 
-<div class="two-col clearfix">
-    <div class="first-col">
-        <h2>@Messages("acquire_privatekeeperdetails.vehicledetails")</h2>
-        <dl class="playback">
-            <dt>@Messages("acquire_privatekeeperdetails.vehiclereg")</dt>
-            <dd>@data.registrationNumber</dd>
-            <dt>@Messages("acquire_privatekeeperdetails.vehiclemake")</dt>
-            <dd>@data.vehicleMake</dd>
-            <dt>@Messages("acquire_privatekeeperdetails.vehiclemodel")</dt>
-            <dd>@data.vehicleModel</dd>
-        </dl>
-        <div class="alert-warning print-message">
-          <p><strong>@Messages("acquire_privatekeeperdetails.p4")</strong></p>
+        <div class="two-col clearfix">
+            <div class="first-col">
+                <h2>@Messages("acquire_privatekeeperdetails.vehicledetails")</h2>
+                <dl class="playback">
+                    <dt>@Messages("acquire_privatekeeperdetails.vehiclereg")</dt>
+                    <dd>@data.registrationNumber</dd>
+                    <dt>@Messages("acquire_privatekeeperdetails.vehiclemake")</dt>
+                    <dd>@data.vehicleMake</dd>
+                    <dt>@Messages("acquire_privatekeeperdetails.vehiclemodel")</dt>
+                    <dd>@data.vehicleModel</dd>
+                </dl>
+                <div class="alert-warning print-message">
+                  <p><strong>@Messages("acquire_privatekeeperdetails.p4")</strong></p>
+                </div>
+            </div>
+
+            <div class="second-col">
+                <p>@Messages("acquire_privatekeeperdetails.p1")</p>
+                <p>@Messages("acquire_privatekeeperdetails.p2")</p>
+                <p>@Messages("acquire_privatekeeperdetails.p3")</p>
+
+                <div class="uppercase-input">
+                    @valtechSelect(privateKeeperDetailsForm(TitleId),
+                    options = titleOptions.toSeq,
+                     args = Map(
+                     '_label -> Messages("acquire_privatekeeperdetails.titlelabel"),
+                     'autofocus -> true))
+
+                    @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
+                    Map('_label -> Messages("acquire_privatekeeperdetails.firstnamelabel"),
+                    '_showConstraints -> false,
+                    'maxLength -> FirstNameMaxLength))
+
+                    @valtechInputText(privateKeeperDetailsForm(LastNameId), args =
+                    Map('_label -> Messages("acquire_privatekeeperdetails.lastnamelabel"),
+                    '_showConstraints -> false,
+                    'maxLength -> LastNameMaxLength))
+                </div>
+
+                <div class="uppercase-input">
+                    @valtechInputText(privateKeeperDetailsForm(DriverNumberId), hintText = Some(Messages("acquire_privatekeeperdetails.drivernumber.hint")),
+                    args = Map('_label -> Messages("acquire_privatekeeperdetails.drivernumberlabel"),
+                    '_showConstraints -> false
+                    )
+                    )
+                </div>
+
+                @valtechInputText(privateKeeperDetailsForm(EmailId), args =
+                    Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
+                    '_showConstraints -> false,
+                    'typeEmail -> true,
+                    'maxLength -> EmailMaxLength))
+
+                <div class="form-steps">
+                    <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_privatekeeperdetails.submitbutton")</button>
+                    <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
+                        @Messages("acquire_privatekeeperdetails.backbutton")
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="second-col">
-        <p>@Messages("acquire_privatekeeperdetails.p1")</p>
-        <p>@Messages("acquire_privatekeeperdetails.p2")</p>
-        <p>@Messages("acquire_privatekeeperdetails.p3")</p>
-
-        <div class="uppercase-input">
-            @valtechSelect(privateKeeperDetailsForm(TitleId),
-            options = titleOptions.toSeq,
-             args = Map(
-             '_label -> Messages("acquire_privatekeeperdetails.titlelabel"),
-             'autofocus -> true))
-
-            @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
-            Map('_label -> Messages("acquire_privatekeeperdetails.firstnamelabel"),
-            '_showConstraints -> false,
-            'maxLength -> FirstNameMaxLength))
-
-            @valtechInputText(privateKeeperDetailsForm(LastNameId), args =
-            Map('_label -> Messages("acquire_privatekeeperdetails.lastnamelabel"),
-            '_showConstraints -> false,
-            'maxLength -> LastNameMaxLength))
-        </div>
-
-        <div class="uppercase-input">
-            @valtechInputText(privateKeeperDetailsForm(DriverNumberId), hintText = Some(Messages("acquire_privatekeeperdetails.drivernumber.hint")),
-            args = Map('_label -> Messages("acquire_privatekeeperdetails.drivernumberlabel"),
-            '_showConstraints -> false
-            )
-            )
-        </div>
-
-        @valtechInputText(privateKeeperDetailsForm(EmailId), args =
-            Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
-            '_showConstraints -> false,
-            'typeEmail -> true,
-            'maxLength -> EmailMaxLength))
-
-        <div class="form-steps">
-            <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_privatekeeperdetails.submitbutton")</button>
-            <a id="@BackId" href="@controllers.routes.VehicleLookup.present()" class="button-secondary">
-                @Messages("acquire_privatekeeperdetails.backbutton")
-            </a>
-        </div>
-    </div>
-</div>
-}
+    }
 }
