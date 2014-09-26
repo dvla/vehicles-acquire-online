@@ -151,6 +151,8 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
 
   "date of sale" should {
     "not accept a date in the future" in {
+      info("@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) )
+
       formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.date.inTheFuture")
     }
@@ -161,6 +163,7 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
     }
 
     "not accept an invalid day of month of 32" in {
+      info("%%%%%%%%%%%%%%%%%%%%%%%%% " + formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) )
       formWithValidDefaults(dayDateOfSale = "32").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.date.invalid")
     }
