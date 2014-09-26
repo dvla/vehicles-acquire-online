@@ -49,10 +49,12 @@
                         <h2>@Messages("acquire_vehiclelookup.p1")</h2>
 
                         @valtechInputText(viewModel.form(VehicleRegistrationNumberId), args =
-                        Map('_label -> Messages("acquire_vehiclelookup.vrninputlabel"),
-                        'maxLength -> VehicleRegistrationNumber.MaxLength,
-                        '_showConstraints -> false,
-                        'autofocus -> true))
+                            Map('_label -> Messages("acquire_vehiclelookup.vrninputlabel"),
+                                'maxLength -> VehicleRegistrationNumber.MaxLength,
+                                '_showConstraints -> false,
+                                'autofocus -> true
+                            )
+                         )
 
                         @valtechInputText(viewModel.form(DocumentReferenceNumberId), args =
                             Map('_label -> Messages("acquire_vehiclelookup.refnumlabel"),
@@ -81,8 +83,12 @@
                         </div>
 
                         <div class="form-steps">
-                            <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_vehiclelookup.button")</button>
-                            <a id="@BackId" href="@controllers.routes.VehicleLookup.back()" class="button-secondary">@Messages("acquire_vehiclelookup.backbutton")</a>
+                            <button id="@SubmitId" type="submit" name="action" class="button">
+                                @Messages("acquire_vehiclelookup.button")
+                            </button>
+                            <a id="@BackId" href="@controllers.routes.VehicleLookup.back()" class="button-secondary">
+                                @Messages("acquire_vehiclelookup.backbutton")
+                            </a>
                         </div>
                     }
                 </div>

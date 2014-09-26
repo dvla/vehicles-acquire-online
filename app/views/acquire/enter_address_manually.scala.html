@@ -25,7 +25,9 @@
             <legend>@Messages("address.postcode.label")</legend>
             <div class="read-only-input">@traderPostcode</div>
             <div class="form-steps">
-                <button id="@NextId" type="submit" name="action" class="button">@Messages("acquire_enteraddressmanually.submitbutton")</button>
+                <button id="@NextId" type="submit" name="action" class="button">
+                    @Messages("acquire_enteraddressmanually.submitbutton")
+                </button>
                 <a id="@BackId" class="button-secondary" href="@controllers.routes.BusinessChooseYourAddress.submit()">
                     @Messages("acquire_enteraddressmanually.backbutton")
                 </a>
