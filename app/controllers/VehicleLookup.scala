@@ -123,23 +123,23 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
     }
   }
 
-  private def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String)(implicit request: Request[_]) =
-    VehicleDetailsModel.fromDto(vehicleDetailsDto).disposeFlag match {
-      case true => vehicleDisposedResult(vehicleDetailsDto, soldTo)
-      case false =>
-        Redirect(routes.KeeperStillOnRecord.present()).
-          withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
-    }
+  private def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String)(implicit request: Request[_]) = {
+    val model = VehicleDetailsModel.fromDto(vehicleDetailsDto)
+    if (model.disposeFlag)
+      vehicleDisposedResult(model, soldTo)
+    else
+      Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
+  }
 
-  private def vehicleDisposedResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String)(implicit request: Request[_]) =
-    soldTo match {
-      case VehicleSoldTo_Private =>
-        Redirect(routes.PrivateKeeperDetails.present()).
-          discardingCookies(BusinessKeeperDetailsCacheKeys).
-          withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
-      case _ =>
-        Redirect(routes.BusinessKeeperDetails.present()).
-          discardingCookies(PrivateKeeperDetailsCacheKeys).
-          withCookie(VehicleDetailsModel.fromDto(vehicleDetailsDto))
-    }
+  private def vehicleDisposedResult(vehicleDetailsModel: VehicleDetailsModel, soldTo: String)(implicit request: Request[_]) = {
+    val (call, discardedCookies) =
+      if (soldTo == VehicleSoldTo_Private)
+        (routes.PrivateKeeperDetails.present(), BusinessKeeperDetailsCacheKeys)
+      else
+        (routes.BusinessKeeperDetails.present(), PrivateKeeperDetailsCacheKeys)
+
+    Redirect(call).
+      discardingCookies(discardedCookies).
+      withCookie(vehicleDetailsModel)
+  }
 }
