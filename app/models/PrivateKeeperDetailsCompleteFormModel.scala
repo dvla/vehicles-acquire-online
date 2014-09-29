@@ -26,6 +26,7 @@ object PrivateKeeperDetailsCompleteFormModel {
     final val DateOfBirthId = "privatekeeper_dateofbirth"
     final val MileageId = "privatekeeper_mileage"
     final val DateOfSaleId = "privatekeeper_dateofsale"
+    final val TodaysDateId = "todays_date"
     final val ConsentId = "consent"
 
     final val Mapping = mapping(

@@ -1,7 +1,7 @@
 package pages.acquire
 
 import helpers.webbrowser._
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfBirthId, DateOfSaleId, MileageId}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfBirthId, DateOfSaleId, MileageId, TodaysDateId}
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetailsComplete.{BackId, SubmitId}
 
@@ -22,6 +22,8 @@ object PrivateKeeperDetailsCompletePage extends Page with WebBrowserDSL {
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
+
+  def useTodaysDate(implicit driver: WebDriver): Element = find(id(TodaysDateId)).get
 
   def dayDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_day"))
 

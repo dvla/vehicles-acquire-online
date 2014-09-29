@@ -11,7 +11,9 @@ import pages.common.ErrorPanel
 import pages.acquire.{BeforeYouStartPage,PrivateKeeperDetailsCompletePage,SetupTradeDetailsPage,PrivateKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.PrivateKeeperDetailsCompletePage.{navigate, back}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
+import models.PrivateKeeperDetailsCompleteFormModel.Form.TodaysDateId
+import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
 
 final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with TestHarness {
 
@@ -153,6 +155,28 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
       cacheSetup()
       navigate(yearDateOfSale = "a")
       ErrorPanel.numberOfErrors should equal(1)
+    }
+  }
+
+  "use todays date" should {
+    "input todays date into date of sale" taggedAs UiTag in new HtmlUnitWithJs {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to PrivateKeeperDetailsCompletePage
+
+      click on useTodaysDate
+
+      dayDateOfSaleTextBox.value should equal (DateOfAcquisitionDayValid)
+      monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
+      yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
+    }
+
+    "not display the Use Todays Date checkbox" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to PrivateKeeperDetailsCompletePage
+
+      webDriver.getPageSource shouldNot contain(TodaysDateId)
     }
   }
 
