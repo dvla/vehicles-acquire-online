@@ -3,15 +3,16 @@ package controllers
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import utils.helpers.Config
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
-import play.api.data.{FormError, Form}
 import models.PrivateKeeperDetailsFormModel
-import models.PrivateKeeperDetailsFormModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId}
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichResult}
+import models.PrivateKeeperDetailsFormModel.Form.{titleOptions,TitleId, FirstNameId, LastNameId, EmailId, DriverNumberId}
+import play.api.data.{FormError, Form}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.model.VehicleDetailsModel
+import common.clientsidesession.CookieImplicits.RichCookies
+import common.views.helpers.FormExtensions.formBinding
+import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
+import utils.helpers.Config
 
 final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -39,6 +40,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                 replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).
                 replaceError(FirstNameId, FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)).
                 replaceError(LastNameId, FormError(key = LastNameId, message = "error.validLastName", args = Seq.empty)).
+                replaceError(DriverNumberId, FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)).
                 replaceError(EmailId, FormError(key = FirstNameId, message = "error.validEmail", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },

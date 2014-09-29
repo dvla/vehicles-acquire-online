@@ -1,18 +1,20 @@
 package controllers
 
-import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel, PrivateKeeperDetailsFormModel}
-import views.html.acquire.private_keeper_details_complete
 import com.google.inject.Inject
-import play.api.mvc.{Request, Action, Controller}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import utils.helpers.Config
-import play.api.data.{FormError, Form}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import play.api.Logger
+import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel, PrivateKeeperDetailsFormModel}
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import models.PrivateKeeperDetailsCompleteFormModel.Form.MileageId
+import play.api.data.{FormError, Form}
+import play.api.mvc.{Action, Controller}
+import play.api.Logger
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.views.helpers.FormExtensions.formBinding
+import utils.helpers.Config
+import views.html.acquire.private_keeper_details_complete
 
 class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                dateService: DateService,
@@ -23,7 +25,6 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
   )
 
   def present = Action { implicit request =>
-
     request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
       case Some(privateKeeperDetails) =>
         Ok(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
@@ -45,9 +46,15 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
     )
   }
 
-  private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsCompleteFormModel])(implicit request: Request[_]) = {
-    form.replaceError(ConsentId, "error.required", FormError(key = ConsentId, message = "acquire_keeperdetailscomplete.consentError", args = Seq.empty))
-      .replaceError(MileageId, "error.number", FormError(key = MileageId, message = "acquire_privatekeeperdetailscomplete.mileage.validation", args = Seq.empty))
-      .distinctErrors
+  private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsCompleteFormModel]) = {
+    form.replaceError(
+      ConsentId,
+      "error.required",
+      FormError(key = ConsentId, message = "acquire_keeperdetailscomplete.consentError", args = Seq.empty)
+    ).replaceError(
+        MileageId,
+        "error.number",
+        FormError(key = MileageId, message = "acquire_privatekeeperdetailscomplete.mileage.validation", args = Seq.empty)
+    ).distinctErrors
   }
 }

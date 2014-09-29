@@ -8,7 +8,9 @@ import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
 import common.mappings.Postcode.postcode
 
-final case class SetupTradeDetailsFormModel(traderBusinessName: String, traderPostcode: String, traderEmail: Option[String])
+final case class SetupTradeDetailsFormModel(traderBusinessName: String,
+                                            traderPostcode: String,
+                                            traderEmail: Option[String])
 
 object SetupTradeDetailsFormModel {
   implicit val JsonFormat = Json.format[SetupTradeDetailsFormModel]

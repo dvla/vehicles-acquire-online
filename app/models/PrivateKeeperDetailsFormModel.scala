@@ -1,16 +1,22 @@
 package models
 
 import mappings.DropDown.titleDropDown
-import play.api.data.Forms._
+import play.api.data.Forms.{mapping, optional}
 import play.api.data.Mapping
 import play.api.data.validation.Constraint
-import play.api.data.validation.Constraints._
+import play.api.data.validation.Constraints.pattern
 import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.mappings.Email.email
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions._
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.CacheKey
+import common.mappings.Email.email
+import common.mappings.DriverNumber.driverNumber
+import common.views.helpers.FormExtensions.nonEmptyTextWithTransform
 
-case class PrivateKeeperDetailsFormModel(title: String, firstName: String, lastName: String, email: Option[String])
+case class PrivateKeeperDetailsFormModel(title: String, 
+                                         firstName: String, 
+                                         lastName: String, 
+                                         email: Option[String], 
+                                         driverNumber: Option[String])
 
 object PrivateKeeperDetailsFormModel {
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
@@ -23,6 +29,8 @@ object PrivateKeeperDetailsFormModel {
     final val LastNameId = "privatekeeper_lastname"
     final val EmailId = "privatekeeper_email"
     final val ConsentId = "consent"
+    final val DriverNumberId = "privatekeeper_drivernumber"
+    final val DriverNumberMaxLength = 16
     final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
     final val LastNameMinLength = 1
@@ -31,8 +39,10 @@ object PrivateKeeperDetailsFormModel {
     def firstNameMapping: Mapping[String] =
       nonEmptyTextWithTransform(_.trim)(FirstNameMinLength, FirstNameMaxLength) verifying validFirstName
 
+    final val NameRegEx = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r
+    
     def validFirstName: Constraint[String] = pattern(
-      regex = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r,
+      regex = NameRegEx,
       name = "constraint.validFirstName",
       error = "error.validFirstName")
 
@@ -40,7 +50,7 @@ object PrivateKeeperDetailsFormModel {
       nonEmptyTextWithTransform(_.trim)(LastNameMinLength, LastNameMaxLength) verifying validLastName
 
     def validLastName: Constraint[String] = pattern(
-      regex = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r,
+      regex = NameRegEx,
       name = "constraint.validLastName",
       error = "error.validLastName")
 
@@ -55,7 +65,8 @@ object PrivateKeeperDetailsFormModel {
       TitleId -> titleDropDown(titleOptions),
       FirstNameId -> firstNameMapping,
       LastNameId -> lastNameMapping,
-      EmailId -> optional(email)
+      EmailId -> optional(email),
+      DriverNumberId -> optional(driverNumber)
     )(PrivateKeeperDetailsFormModel.apply)(PrivateKeeperDetailsFormModel.unapply)
   }
 }

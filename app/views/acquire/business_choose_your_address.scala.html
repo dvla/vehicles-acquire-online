@@ -48,16 +48,24 @@
         }
 
         @if(dropDownOptions.nonEmpty) {
-            <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.EnterAddressManually.present()">@Messages("acquire_businessChooseYourAddress.manualAddressEntry")</a>
+            <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.EnterAddressManually.present()">
+                @Messages("acquire_businessChooseYourAddress.manualAddressEntry")
+            </a>
         }
         <div class="form-steps">
             @if(dropDownOptions.isEmpty) {
-                <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.EnterAddressManually.present()" class="button">@Messages("acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton")</a>
+                <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.EnterAddressManually.present()" class="button">
+                    @Messages("acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton")
+                </a>
             }
             @if(dropDownOptions.nonEmpty) {
-                <button id="@SelectId" type="submit" name="action" class="button">@Messages("acquire_businessChooseYourAddress.submitbutton")</button>
+                <button id="@SelectId" type="submit" name="action" class="button">
+                    @Messages("acquire_businessChooseYourAddress.submitbutton")
+                </button>
             }
-            <a id="@BackId" href="@controllers.routes.SetUpTradeDetails.present()" class="button-secondary">@Messages("acquire_businessChooseYourAddress.backbutton")</a>
+            <a id="@BackId" href="@controllers.routes.SetUpTradeDetails.present()" class="button-secondary">
+                @Messages("acquire_businessChooseYourAddress.backbutton")
+            </a>
         </div>
     }
 }

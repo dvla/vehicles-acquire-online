@@ -1,15 +1,16 @@
 package controllers
 
 import com.google.inject.Inject
+import models.{EnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
 import play.api.Logger
 import play.api.data.{Form, FormError}
-import play.api.mvc.{Action, Controller, Request}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import play.api.mvc.{Action, Controller}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
+import common.model.{TraderDetailsModel, AddressModel}
+import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
-import models.{EnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
 import views.html.acquire.enter_address_manually
 
 final class EnterAddressManually @Inject()()
@@ -61,16 +62,15 @@ final class EnterAddressManually @Inject()()
     )
   }
 
-  private def formWithReplacedErrors(form: Form[EnterAddressManuallyFormModel])(implicit request: Request[_]) =
+  private def formWithReplacedErrors(form: Form[EnterAddressManuallyFormModel]) =
     form.replaceError(
       "addressAndPostcode.addressLines.buildingNameOrNumber",
       FormError("addressAndPostcode.addressLines", "error.address.buildingNameOrNumber.invalid")
     ).replaceError(
-        "addressAndPostcode.addressLines.postTown",
-        FormError("addressAndPostcode.addressLines",
-          "error.address.postTown")
-      ).replaceError(
-        "addressAndPostcode.postcode",
-        FormError("addressAndPostcode.postcode", "error.address.postcode.invalid")
-      ).distinctErrors
+      "addressAndPostcode.addressLines.postTown",
+      FormError("addressAndPostcode.addressLines", "error.address.postTown")
+    ).replaceError(
+      "addressAndPostcode.postcode",
+      FormError("addressAndPostcode.postcode", "error.address.postcode.invalid")
+    ).distinctErrors
 }

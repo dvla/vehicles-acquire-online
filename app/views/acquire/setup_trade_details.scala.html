@@ -31,14 +31,17 @@ config: utils.helpers.Config)
             )
         )
 
-        @valtechInputText(traderLookupForm(TraderEmailId), args =
-        Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
-        '_showConstraints -> false,
-        'typeEmail -> true,
-        'maxLength -> EmailMaxLength))
+        @valtechInputText(traderLookupForm(TraderEmailId),
+            args = Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
+                '_showConstraints -> false,
+                'typeEmail -> true,
+                'maxLength -> EmailMaxLength
+            )
+        )
 
         <div class="uppercase-input">
-            @valtechInputText(traderLookupForm(TraderPostcodeId), hintText = Some(Messages("acquire_setuptradedetails.traderpostcode.hint")),
+            @valtechInputText(traderLookupForm(TraderPostcodeId),
+                hintText = Some(Messages("acquire_setuptradedetails.traderpostcode.hint")),
                 args = Map('_label -> Messages("acquire_setuptradedetails.traderpostcodelabel"),
                     '_showConstraints -> false,
                     'maxLength -> Postcode.MaxLength
@@ -46,7 +49,9 @@ config: utils.helpers.Config)
             )
         </div>
         <div class="form-steps">
-            <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_setuptradedetails.button")</button>
+            <button id="@SubmitId" type="submit" name="action" class="button">
+                @Messages("acquire_setuptradedetails.button")
+            </button>
         </div>
     }
 }

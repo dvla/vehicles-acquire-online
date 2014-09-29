@@ -48,9 +48,13 @@ error.validFirstName = Must contain between 1 and 25 characters from the followi
 error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 error.date.inTheFuture = Date cannot be in the future
 error.date.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
+error.dateOfBirth.inTheFuture = Date cannot be in the future
+error.dateOfBirth.invalid= Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
+error.dateOfBirth.110yearsInThePast = Date of birth cannot be in more than 110 years in the past
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
 error.postTown.characterInvalid = Town or city contains invalid characters
+error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -251,6 +255,9 @@ privatekeeper_email = Email
 privatekeeper_firstname = First name
 privatekeeper_lastname = Last name
 use_todays_date.label = Use today's date
+privatekeeper_drivernumber = Driver number
+acquire_privatekeeperdetails.drivernumberlabel = Driving license number of new keeper
+acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 
 #private keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
@@ -311,7 +318,12 @@ micro_service_error.exit.button=Exit
 vrm_locked.title=Registration number is locked
 vrm_locked.text1= There have been 3 unsuccessful attempts to access the vehicle details. For security reasons the vehicle registration number is now locked for 10 minutes. During this period other vehicles can be processed by selecting ‘Buy another vehicle’ below.
 vrm_locked.text2=Locked at
-vrm_locked.text3.1= We are unable to process your application for this vehicle. Please send your completed V5C/3 to
-vrm_locked.text3.2=DVLA, Swansea SA99 1BD
+vrm_locked.text3.1= We are unable to process your application for this vehicle. Please send your completed V5C to
+vrm_locked.text3.2=DVLA, Swansea SA99 1BA
 vrm_locked.buyanother.button=Buy another vehicle
 vrm_locked.exit.button=Exit
+
+# Date labels
+dateOfBirth.day = Day
+dateOfBirth.month = Month
+dateOfBirth.year = Year

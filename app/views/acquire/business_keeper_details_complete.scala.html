@@ -38,8 +38,7 @@
 
         @valtechDate(
             data.form(DateOfSaleId),
-            Messages("businesskeeper_dateofsale"
-            )
+            Messages("businesskeeper_dateofsale")
         )
 
         @valtechDeclareCheck(
@@ -52,13 +51,13 @@
 
         <div class="second-col">
             <div class="form-steps">
-                <button id="@SubmitId" type="submit" name="action" class="button">@Messages("acquire_businesskeeperdetailscomplete.submitbutton")</button>
+                <button id="@SubmitId" type="submit" name="action" class="button">
+                    @Messages("acquire_businesskeeperdetailscomplete.submitbutton")
+                </button>
                 <a id="@BackId" href="@controllers.routes.BusinessKeeperDetails.present()" class="button-secondary">
                     @Messages("acquire_businesskeeperdetailscomplete.backbutton")
                 </a>
             </div>
         </div>
-        </div>
     }
 }
-

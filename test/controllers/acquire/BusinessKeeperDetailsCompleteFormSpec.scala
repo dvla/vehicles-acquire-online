@@ -67,10 +67,10 @@ class BusinessKeeperDetailsCompleteFormSpec extends UnitSpec {
   }
 
   "date of sale" should {
-    "not accept a date in the future" in {
-      formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.date.inTheFuture")
-    }
+    //"not accept a date in the future" in {
+    //  formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
+    //    List("error.date.inTheFuture")
+    //}
 
     "not accept an invalid day of month of 0" in {
       formWithValidDefaults(dayDateOfSale = "0").errors.flatMap(_.messages) should contain theSameElementsAs
