@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import models.{BusinessKeeperDetailsCompleteFormModel, BusinessKeeperDetailsFormModel, BusinessKeeperDetailsCompleteViewModel}
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import models.BusinessKeeperDetailsCompleteFormModel.Form.MileageId
+import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import play.api.mvc.{Action, Controller}
 import play.api.data.{FormError, Form}
 import play.api.Logger
@@ -16,6 +17,7 @@ import common.views.helpers.FormExtensions.formBinding
 import views.html.acquire.business_keeper_details_complete
 
 class BusinessKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+                                               dateService: DateService,
                                                config: Config) extends Controller {
 
   private[controllers] val form = Form(
@@ -27,7 +29,7 @@ class BusinessKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactor
       case Some(businessKeeperDetails) =>
         Ok(business_keeper_details_complete(BusinessKeeperDetailsCompleteViewModel(
           form.fill(), null, null
-        )))
+        ), dateService))
       case _ =>
         Logger.warn("Did not find BusinessKeeperDetails cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
@@ -39,7 +41,7 @@ class BusinessKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactor
       invalidForm =>
         BadRequest(business_keeper_details_complete(BusinessKeeperDetailsCompleteViewModel(
           formWithReplacedErrors(invalidForm), null, null
-        ))),
+        ), dateService)),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )
   }
