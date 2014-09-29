@@ -11,7 +11,9 @@ import pages.common.ErrorPanel
 import pages.acquire.{BeforeYouStartPage,BusinessKeeperDetailsCompletePage,SetupTradeDetailsPage,BusinessKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.BusinessKeeperDetailsCompletePage.{navigate, back}
+import pages.acquire.BusinessKeeperDetailsCompletePage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
+import models.BusinessKeeperDetailsCompleteFormModel.Form.TodaysDateId
+import webserviceclients.fakes.FakeDateServiceImpl._
 
 final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with TestHarness {
 
@@ -129,6 +131,28 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
       cacheSetup()
       navigate(yearDateOfSale = "a")
       ErrorPanel.numberOfErrors should equal(1)
+    }
+  }
+
+  "use todays date" should {
+    "input todays date into date of sale" taggedAs UiTag in new HtmlUnitWithJs {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to BusinessKeeperDetailsCompletePage
+
+      click on useTodaysDate
+
+      dayDateOfSaleTextBox.value should equal (DateOfAcquisitionDayValid)
+      monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
+      yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
+    }
+
+    "not display the Use Todays Date checkbox" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to BusinessKeeperDetailsCompletePage
+
+      webDriver.getPageSource shouldNot contain(TodaysDateId)
     }
   }
 

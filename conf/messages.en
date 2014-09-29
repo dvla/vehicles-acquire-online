@@ -268,7 +268,7 @@ acquire_keeperdetailscomplete.backbutton = Back
 acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
 acquire_privatekeeperdetailscomplete.dateofbirth.hint = for example, 20 3 1976
 privatekeeper_dateofbirth = Date of birth of new keeper
-privatekeeper_dateofsale = Date of sale
+dateofsale = Date of sale
 privatekeeper_mileage = Mileage
 dateOfBirthInput.label = Date of Birth
 dateOfBirthInput.hint = for example, 20 3 1976
@@ -304,7 +304,7 @@ acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a vali
 businesskeeper_mileage = Mileage
 
 privatekeeper_dateofsale = Date of Sale
-businesskeeper_dateofsale = Date of sale
+businesskeeper_dateofsale = Date of Sale
 
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 

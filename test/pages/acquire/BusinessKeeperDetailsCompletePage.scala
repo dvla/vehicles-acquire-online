@@ -3,7 +3,7 @@ package pages.acquire
 import helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import views.acquire.BusinessKeeperDetailsComplete.{BackId, SubmitId}
-import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, ConsentId, DateOfSaleId}
+import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, ConsentId, DateOfSaleId, TodaysDateId}
 
 object BusinessKeeperDetailsCompletePage extends Page with WebBrowserDSL {
   final val address = s"$applicationContext/business-complete-and-confirm"
@@ -19,6 +19,8 @@ object BusinessKeeperDetailsCompletePage extends Page with WebBrowserDSL {
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
+
+  def useTodaysDate(implicit driver: WebDriver): Element = find(id(TodaysDateId)).get
 
   def mileageTextBox(implicit driver: WebDriver): TelField = telField(id(MileageId))
 

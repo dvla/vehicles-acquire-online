@@ -22,7 +22,8 @@ object BusinessKeeperDetailsCompleteFormModel {
 
   object Form {
     final val MileageId = "businesskeeper_mileage"
-    final val DateOfSaleId = "businesskeeper_dateofsale"
+    final val DateOfSaleId = "dateofsale"
+    final val TodaysDateId = "todays_date"
     final val ConsentId = "consent"
 
     final val Mapping = mapping(
