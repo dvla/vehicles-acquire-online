@@ -44,7 +44,7 @@
             (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
         )
 
-        <div id=@DateOfSaleId class="acquire-date">
+        <div id=@DateOfSaleId>
             @inputDayMonthYearTextbox(
                 field = data.form(DateOfSaleId),
                 years = dateService.today.yearRangeToDropdown(yearsIntoThePast = 10),
