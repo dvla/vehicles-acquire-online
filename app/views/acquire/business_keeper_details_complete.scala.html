@@ -41,6 +41,7 @@
         <div id=@DateOfSaleId class="acquire-date">
         @inputDayMonthYearTextbox(
             field = data.form(DateOfSaleId),
+            years = dateService.today.yearRangeToDropdown(yearsIntoThePast = 10),
             args = Map(
                 '_label -> Messages("businesskeeper_dateofsale"),
                 'autofocus -> true
