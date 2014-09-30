@@ -47,7 +47,6 @@
         <div id=@DateOfSaleId>
             @inputDayMonthYearTextbox(
                 field = data.form(DateOfSaleId),
-                years = dateService.today.yearRangeToDropdown(yearsIntoThePast = 10),
                 args = Map(
                     '_label -> Messages("privatekeeper_dateofsale"),
                     'autofocus -> true
