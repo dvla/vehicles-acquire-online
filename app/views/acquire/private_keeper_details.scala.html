@@ -13,9 +13,10 @@
 @import common.mappings.Email.EmailMaxLength
 @import common.views.html.widgets.base.valtechSelect
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.dates.valtechDate
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength}
+@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, DateOfBirthId, EmailId, FirstNameId, FirstNameMaxLength}
 @import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, DriverNumberId, DriverNumberMaxLength}
 
 @main(
@@ -69,6 +70,13 @@
                             'maxLength -> LastNameMaxLength
                         )
                     )
+
+                    @valtechDate(
+                        privateKeeperDetailsForm(DateOfBirthId),
+                        Messages("privatekeeper_dateofbirth"),
+                        Some(Messages("acquire_privatekeeperdetails.dateofbirth.hint")
+                    ))
+
                 </div>
 
                 <div class="uppercase-input">

@@ -64,12 +64,7 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
     "go to the appropriate next page when mandatory private keeper complete details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      navigate(
-        dayDateOfBirth = "",
-        monthDateOfBirth = "",
-        yearDateOfBirth = "",
-        mileage = ""
-      )
+      navigate(mileage = "")
       page.title should equal("Not implemented") //ToDo change title when next page is implemented
     }
 
@@ -91,27 +86,6 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "a")
-      ErrorPanel.numberOfErrors should equal(1)
-    }
-
-    "display one validation error message when day date of birth contains letters" taggedAs UiTag in new WebBrowser {
-      go to BeforeYouStartPage
-      cacheSetup()
-      navigate(dayDateOfBirth = "a")
-      ErrorPanel.numberOfErrors should equal(1)
-    }
-
-    "display one validation error message when day month of birth contains letters" taggedAs UiTag in new WebBrowser {
-      go to BeforeYouStartPage
-      cacheSetup()
-      navigate(monthDateOfBirth = "a")
-      ErrorPanel.numberOfErrors should equal(1)
-    }
-
-    "display one validation error message when year month of birth contains letters" taggedAs UiTag in new WebBrowser {
-      go to BeforeYouStartPage
-      cacheSetup()
-      navigate(yearDateOfBirth = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
 

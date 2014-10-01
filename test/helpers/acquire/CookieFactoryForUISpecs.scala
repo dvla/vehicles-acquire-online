@@ -8,6 +8,7 @@ import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import org.joda.time.LocalDate
 import org.openqa.selenium.{Cookie, WebDriver}
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
@@ -29,6 +30,9 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -138,12 +142,16 @@ object CookieFactoryForUISpecs {
                            firstName: String = FirstNameValid,
                            lastName: String = LastNameValid,
                            email: Option[String] = Some(EmailValid),
+                           dateOfBirth: Option[LocalDate] = Some(new LocalDate(
+                             YearDateOfBirthValid.toInt, MonthDateOfBirthValid.toInt, DayDateOfBirthValid.toInt
+                           )),
                            driverNumber: Option[String] = Some(DriverNumberValid))(implicit webDriver: WebDriver) = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
       lastName = lastName,
+      dateOfBirth,
       email = email,
       driverNumber = driverNumber
     )

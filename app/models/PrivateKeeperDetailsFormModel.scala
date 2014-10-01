@@ -1,6 +1,7 @@
 package models
 
 import mappings.DropDown.titleDropDown
+import org.joda.time.LocalDate
 import play.api.data.Forms.{mapping, optional}
 import play.api.data.Mapping
 import play.api.data.validation.Constraint
@@ -8,13 +9,15 @@ import play.api.data.validation.Constraints.pattern
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
+import common.mappings.Date.optionalDateOfBirth
 import common.mappings.Email.email
 import common.mappings.DriverNumber.driverNumber
 import common.views.helpers.FormExtensions.nonEmptyTextWithTransform
 
 case class PrivateKeeperDetailsFormModel(title: String, 
                                          firstName: String, 
-                                         lastName: String, 
+                                         lastName: String,
+                                         dateOfBirth: Option[LocalDate],
                                          email: Option[String], 
                                          driverNumber: Option[String])
 
@@ -27,6 +30,7 @@ object PrivateKeeperDetailsFormModel {
     final val TitleId = "privatekeeper_title"
     final val FirstNameId = "privatekeeper_firstname"
     final val LastNameId = "privatekeeper_lastname"
+    final val DateOfBirthId = "privatekeeper_dateofbirth"
     final val EmailId = "privatekeeper_email"
     final val ConsentId = "consent"
     final val DriverNumberId = "privatekeeper_drivernumber"
@@ -65,6 +69,7 @@ object PrivateKeeperDetailsFormModel {
       TitleId -> titleDropDown(titleOptions),
       FirstNameId -> firstNameMapping,
       LastNameId -> lastNameMapping,
+      DateOfBirthId -> optionalDateOfBirth,
       EmailId -> optional(email),
       DriverNumberId -> optional(driverNumber)
     )(PrivateKeeperDetailsFormModel.apply)(PrivateKeeperDetailsFormModel.unapply)

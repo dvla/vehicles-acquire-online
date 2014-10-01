@@ -4,14 +4,13 @@ import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsFormModel.Form.{EmailId, FirstNameId, LastNameId, TitleId, DriverNumberId}
+import models.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, FirstNameId, LastNameId, TitleId}
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, FirstNameValid, LastNameValid, TitleInvalidError, TitleValid, DriverNumberValid}
+import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid, MonthDateOfBirthValid, TitleInvalidError, TitleValid, YearDateOfBirthValid}
 import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.DriverNumber
 import utils.helpers.Config
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
@@ -47,6 +46,9 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       content should include(TitleValid)
       content should include(FirstNameValid)
       content should include(LastNameValid)
+      content should include(DayDateOfBirthValid)
+      content should include(MonthDateOfBirthValid)
+      content should include(YearDateOfBirthValid)
       content should include(EmailValid)
     }
 

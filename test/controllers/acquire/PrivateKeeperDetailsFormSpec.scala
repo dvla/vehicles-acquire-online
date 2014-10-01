@@ -2,9 +2,23 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, LastNameValid, DriverNumberValid}
-import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength, DriverNumberId}
-import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength}
+import org.joda.time.LocalDate
+import pages.acquire.PrivateKeeperDetailsPage.TitleValid
+import pages.acquire.PrivateKeeperDetailsPage.EmailValid
+import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
+import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
+import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
+import models.PrivateKeeperDetailsFormModel.Form.TitleId
+import models.PrivateKeeperDetailsFormModel.Form.EmailId
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameMaxLength
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameMinLength
+import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength, DateOfBirthId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{YearId, MonthId, DayId}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
@@ -18,6 +32,10 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
+      model.dateOfBirth should equal(Some(new LocalDate(
+        YearDateOfBirthValid.toInt,
+        MonthDateOfBirthValid.toInt,
+        DayDateOfBirthValid.toInt)))
       model.email should equal(Some(EmailValid))
       model.driverNumber should equal(Some(DriverNumberValid))
     }
@@ -27,11 +45,15 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         title = TitleValid,
         firstName = FirstNameValid,
         lastName = LastNameValid,
+        dayDateOfBirth = "",
+        monthDateOfBirth = "",
+        yearDateOfBirth = "",
         email = "",
         driverNumber = "").get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
+      model.dateOfBirth should equal(None)
       model.email should equal(None)
       model.driverNumber should equal(None)
     }
@@ -236,9 +258,76 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
+  "date of birth" should {
+    "not accept an invalid day of month of 0" in {
+      formWithValidDefaults(dayDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept an invalid day of month of 32" in {
+      formWithValidDefaults(dayDateOfBirth = "32").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept an invalid month of 0" in {
+      formWithValidDefaults(monthDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept an invalid month of 13" in {
+      formWithValidDefaults(monthDateOfBirth = "13").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept special characters in day field" in {
+      formWithValidDefaults(dayDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept special characters in month field" in {
+      formWithValidDefaults(monthDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept special characters in year field" in {
+      formWithValidDefaults(yearDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept letters in day field" in {
+      formWithValidDefaults(dayDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept letters in month field" in {
+      formWithValidDefaults(monthDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept lettersin year field" in {
+      formWithValidDefaults(yearDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "accept if date of birth is entered correctly" in {
+      val model = formWithValidDefaults(
+        dayDateOfBirth = DayDateOfBirthValid,
+        monthDateOfBirth = MonthDateOfBirthValid,
+        yearDateOfBirth = YearDateOfBirthValid).get
+
+      model.dateOfBirth should equal(Some(new LocalDate(
+        YearDateOfBirthValid.toInt,
+        MonthDateOfBirthValid.toInt,
+        DayDateOfBirthValid.toInt)))
+    }
+  }
+
   private def formWithValidDefaults(title: String = TitleValid,
                                     firstName: String = FirstNameValid,
                                     lastName: String = LastNameValid,
+                                    dayDateOfBirth: String = DayDateOfBirthValid,
+                                    monthDateOfBirth: String = MonthDateOfBirthValid,
+                                    yearDateOfBirth: String = YearDateOfBirthValid,
                                     email: String = EmailValid,
                                     driverNumber: String = DriverNumberValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
@@ -247,6 +336,9 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
           TitleId -> title,
           FirstNameId -> firstName,
           LastNameId -> lastName,
+          s"$DateOfBirthId.$DayId" -> dayDateOfBirth,
+          s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
+          s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
           EmailId -> email,
           DriverNumberId -> driverNumber
         )
