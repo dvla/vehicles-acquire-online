@@ -29,6 +29,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val MonthDateOfBirthValid = "12"
   final val YearDateOfBirthValid = "1920"
   final val PostcodeValid = "QQ99QQ"
+  final val PostcodeInvalid = "Q9"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 

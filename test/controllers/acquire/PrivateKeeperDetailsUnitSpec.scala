@@ -9,10 +9,11 @@ import org.mockito.Mockito.when
 import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid}
 import pages.acquire.PrivateKeeperDetailsPage.{MonthDateOfBirthValid, TitleInvalidError, TitleValid, YearDateOfBirthValid, PostcodeValid}
 import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
+import scala.Some
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
@@ -92,7 +93,12 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
 
     "return a bad request if no details are entered" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(title = "")
+      val request = buildCorrectlyPopulatedRequest(title = "",
+                                                   firstName = "",
+                                                   lastName = "",
+                                                   email = "",
+                                                   driverNumber = "",
+                                                   postcode = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
@@ -106,6 +112,15 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       val result = privateKeeperDetails.submit(request)
       val count = TitleInvalidError.
         r.findAllIn(contentAsString(result)).length
+      count should equal(2)
+    }
+
+    "replace required error message for postcode with standard error message" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(postcode = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = privateKeeperDetails.submit(request)
+      val errorMessage = "Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA"
+      val count = errorMessage.r.findAllIn(contentAsString(result)).length
       count should equal(2)
     }
   }

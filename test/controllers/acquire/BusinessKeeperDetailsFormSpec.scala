@@ -56,6 +56,38 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
+  "postcode" should {
+    "reject if postcode is empty" in {
+      formWithValidDefaults(postcode = "M15A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.restricted.validPostcode")
+    }
+
+    "reject if postcode is less than the minimum length" in {
+      formWithValidDefaults(postcode = "M15A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.restricted.validPostcode")
+    }
+
+    "reject if postcode is more than the maximum length" in {
+      formWithValidDefaults(postcode = "SA99 1DDD").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength", "error.restricted.validPostcode")
+    }
+
+    "reject if postcode contains special characters" in {
+      formWithValidDefaults(postcode = "SA99 1D$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validPostcode")
+    }
+
+    "reject if postcode contains an incorrect format" in {
+      formWithValidDefaults(postcode = "SAR99").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validPostcode")
+    }
+
+    "accept when a valid postcode is entered" in {
+      val model = formWithValidDefaults(postcode = PostcodeValid).get
+      model.postcode should equal(PostcodeValid)
+    }
+  }
+
   private def formWithValidDefaults(fleetNumber: String = FleetNumberValid,
                                     businessName: String = BusinessNameValid,
                                     email: String = EmailValid,

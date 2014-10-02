@@ -57,10 +57,17 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
       page.title should equal (BusinessKeeperDetailsCompletePage.title)
     }
 
-    "display one validation error message when no business name is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect business name is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(businessName = "")
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(postcode = "Q9")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
