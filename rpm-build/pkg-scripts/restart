@@ -1,5 +1,5 @@
 #!/bin/bash
 
-initctl stop vehicles-acquire-online
-initctl start vehicles-acquire-online
+initctl stop vehicles-acquire-online 2>/dev/null
+initctl start vehicles-acquire-online 2>/dev/null
 exit 0
