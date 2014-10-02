@@ -1,13 +1,24 @@
 package controllers.acquire
 
 import controllers.VehicleLookup
+import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
+import helpers.WithApplication
+import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.BusinessKeeperDetailsPage
+import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.MicroServiceErrorPage
 import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.WSResponse
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import common.clientsidesession.ClientSideSessionFactory
 import common.mappings.DocumentReferenceNumber
 import common.services.DateServiceImpl
@@ -20,7 +31,7 @@ import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import utils.helpers.Config
-import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
+import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
@@ -31,17 +42,10 @@ import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
 import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.vehicleDetailsResponseSuccess
-import play.api.libs.ws.WSResponse
-import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseFirstAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseSecondAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.VrmThrows
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.WithApplication
-import pages.acquire.{BusinessKeeperDetailsPage, PrivateKeeperDetailsPage, SetupTradeDetailsPage, BusinessChooseYourAddressPage}
 
 final class VehicleLookupUnitSpec extends UnitSpec {
 
@@ -180,8 +184,16 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))
     }
-  }
 
+    "redirect to MicroserviceError when microservice throws" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+      val result = vehicleLookupError.submit(request)
+
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(MicroServiceErrorPage.address))
+      }
+    }
+  }
 
   private def responseThrows: Future[WSResponse] = Future {
     throw new RuntimeException("This error is generated deliberately by a test")
@@ -238,7 +250,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       dateService = dateService
     )
   }
-/*
+
   private lazy val vehicleLookupError = {
     val permitted = true // The lookup is permitted as we want to test failure on the vehicle lookup micro-service step.
     val vehicleLookupWebService: VehicleLookupWebService = mock[VehicleLookupWebService]
@@ -255,7 +267,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       dateService = dateService
     )
   }
-*/
+
   private def buildCorrectlyPopulatedRequest(referenceNumber: String = ReferenceNumberValid,
                                              registrationNumber: String = RegistrationNumberValid,
                                              soldTo: String = VehicleSoldTo_Private
@@ -272,11 +284,5 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     vehicleLookupResponseGenerator(vehicleDetailsResponseSuccess).present(request)
   }
 
-/*
-  private def lookupWithMockConfig(config: Config): VehicleLookup =
-    testInjector(new ScalaModule() {
-      override def configure(): Unit = bind[Config].toInstance(config)
-    }).getInstance(classOf[VehicleLookup])
-*/
   private val dateService = new DateServiceImpl
 }
