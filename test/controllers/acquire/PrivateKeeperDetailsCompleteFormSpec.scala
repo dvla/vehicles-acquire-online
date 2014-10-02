@@ -1,24 +1,23 @@
 package controllers.acquire
 
-import helpers.UnitSpec
-import org.joda.time.LocalDate
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{DateOfBirthId, MileageId, ConsentId, DateOfSaleId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
-import models.PrivateKeeperDetailsCompleteFormModel
-import play.api.data.{Form, FormError}
-import pages.acquire.PrivateKeeperDetailsCompletePage._
-import scala.Some
 import controllers.PrivateKeeperDetailsComplete
+import helpers.UnitSpec
+import models.PrivateKeeperDetailsCompleteFormModel
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
+import org.joda.time.LocalDate
+import pages.acquire.PrivateKeeperDetailsCompletePage.DayDateOfSaleValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.MonthDateOfSaleValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.YearDateOfSaleValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.MileageValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.ConsentTrue
+import play.api.data.Form
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
 class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields entered correctly" in {
       val model = formWithValidDefaults().get
-      model.dateOfBirth should equal(Some(new LocalDate(
-        YearDateOfBirthValid.toInt,
-        MonthDateOfBirthValid.toInt,
-        DayDateOfBirthValid.toInt)))
       model.mileage should equal(Some("1000".toInt))
       model.dateOfSale should equal(new LocalDate(
         YearDateOfSaleValid.toInt,
@@ -28,11 +27,7 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
 
     "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(
-        dayDateOfBirth = "",
-        monthDateOfBirth = "",
-        yearDateOfBirth = "",
         mileage = "").get
-      model.dateOfBirth should equal(None)
       model.mileage should equal(None)
       model.dateOfSale should equal(new LocalDate(
         YearDateOfSaleValid.toInt,
@@ -47,74 +42,7 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
     }
   }
 
-  "date of birth" should {
-    //"not accept a date in the future" in {
-    //  formWithValidDefaults(yearDateOfBirth = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
-    //    List("error.dateOfBirth.inTheFuture")
-    //}
 
-    "not accept an invalid day of month of 0" in {
-      formWithValidDefaults(dayDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept an invalid day of month of 32" in {
-      formWithValidDefaults(dayDateOfBirth = "32").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept an invalid month of 0" in {
-      formWithValidDefaults(monthDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept an invalid month of 13" in {
-      formWithValidDefaults(monthDateOfBirth = "13").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept special characters in day field" in {
-      formWithValidDefaults(dayDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept special characters in month field" in {
-      formWithValidDefaults(monthDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept special characters in year field" in {
-      formWithValidDefaults(yearDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept letters in day field" in {
-      formWithValidDefaults(dayDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept letters in month field" in {
-      formWithValidDefaults(monthDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "not accept lettersin year field" in {
-      formWithValidDefaults(yearDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.dateOfBirth.invalid")
-    }
-
-    "accept if date of birth is entered correctly" in {
-      val model = formWithValidDefaults(
-        dayDateOfBirth = DayDateOfBirthValid,
-        monthDateOfBirth = MonthDateOfBirthValid,
-        yearDateOfBirth = YearDateOfBirthValid).get
-
-      model.dateOfBirth should equal(Some(new LocalDate(
-        YearDateOfBirthValid.toInt,
-        MonthDateOfBirthValid.toInt,
-        DayDateOfBirthValid.toInt)))
-    }
-  }
 
   "mileage" should {
     "not accept less than 0" in {
@@ -220,10 +148,7 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
   }
 
 
-  private def formWithValidDefaults(dayDateOfBirth: String = DayDateOfBirthValid,
-                                    monthDateOfBirth: String = MonthDateOfBirthValid,
-                                    yearDateOfBirth: String = YearDateOfBirthValid,
-                                    mileage: String = MileageValid,
+  private def formWithValidDefaults(mileage: String = MileageValid,
                                     dayDateOfSale: String = DayDateOfSaleValid,
                                     monthDateOfSale: String = MonthDateOfSaleValid,
                                     yearDateOfSale: String = YearDateOfSaleValid,
@@ -231,9 +156,6 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
     injector.getInstance(classOf[PrivateKeeperDetailsComplete])
       .form.bind(
         Map(
-          s"$DateOfBirthId.$DayId" -> dayDateOfBirth,
-          s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
-          s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
           MileageId -> mileage,
           s"$DateOfSaleId.$DayId" -> dayDateOfSale,
           s"$DateOfSaleId.$MonthId" -> monthDateOfSale,

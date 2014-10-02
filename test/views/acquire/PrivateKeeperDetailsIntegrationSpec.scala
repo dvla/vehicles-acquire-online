@@ -15,7 +15,8 @@ import pages.acquire.PrivateKeeperDetailsPage
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
-import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, LastNameInvalid, TitleInvalid, DriverNumberInvalid}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, LastNameInvalid, TitleInvalid}
+import pages.acquire.PrivateKeeperDetailsPage.{DriverNumberInvalid, PostcodeInvalid}
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -25,6 +26,11 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       cacheSetup()
       go to PrivateKeeperDetailsPage
       page.title should equal(PrivateKeeperDetailsPage.title)
+
+      // Ensure the date of birth fields are on the page
+      PrivateKeeperDetailsPage.yearDateOfBirthTextBox.text should equal("")
+      PrivateKeeperDetailsPage.monthDateOfBirthTextBox.text should equal("")
+      PrivateKeeperDetailsPage.dayDateOfBirthTextBox.text should equal("")
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
@@ -102,6 +108,13 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       cacheSetup()
       navigate(lastName = LastNameInvalid)
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(postcode = PostcodeInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
   }

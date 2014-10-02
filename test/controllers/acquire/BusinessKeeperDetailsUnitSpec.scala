@@ -11,8 +11,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
-import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 
 class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
@@ -47,6 +47,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
       content should include(s"""value="$FleetNumberValid"""")
       content should include(s"""value="$BusinessNameValid"""")
       content should include(s"""value="$EmailValid"""")
+      content should include(s"""value="$PostcodeValid"""")
     }
 
     "redirect to setup trade details when no cookie is present" in new WithApplication {
@@ -86,7 +87,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
     }
 
     "return a bad request if no details are entered" in new WithApplication {
-      val request = buildRequest(businessName = "")
+      val request = buildRequest(businessName = "", postcode = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
@@ -102,15 +103,26 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
       val count = errorMessage.r.findAllIn(contentAsString(result)).length
       count should equal(2)
     }
+
+    "replace required error message for business postcode with standard error message " in new WithApplication {
+      val request = buildRequest(postcode = "")
+        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val result = businessKeeperDetails.submit(request)
+      val errorMessage = "Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA"
+      val count = errorMessage.r.findAllIn(contentAsString(result)).length
+      count should equal(2)
+    }
   }
 
   private def buildRequest(fleetNumber: String = FleetNumberValid,
                            businessName: String = BusinessNameValid,
-                           email: String = EmailValid) = {
+                           email: String = EmailValid,
+                           postcode: String = PostcodeValid) = {
     FakeRequest().withFormUrlEncodedBody(
       FleetNumberId -> fleetNumber,
       BusinessNameId -> businessName,
-      EmailId -> email
+      EmailId -> email,
+      PostcodeId -> postcode
     )
   }
 

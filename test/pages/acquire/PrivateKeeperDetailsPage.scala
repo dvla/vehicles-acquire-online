@@ -1,9 +1,10 @@
 package pages.acquire
 
-import helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, Element, SingleSel, EmailField, TextField}
+import helpers.webbrowser.{Element, EmailField, Page, SingleSel, TelField, TextField, WebBrowserDSL, WebDriverFactory}
+import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId}
+import models.PrivateKeeperDetailsFormModel.Form.{TitleId, PostcodeId}
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
-import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, LastNameId, DriverNumberId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val address = s"$applicationContext/private-keeper-details"
@@ -24,6 +25,11 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val ModelValid = "A6"
   final val DriverNumberValid = "ABCD9711215EFLGH"
   final val DriverNumberInvalid = "A"
+  final val DayDateOfBirthValid = "24"
+  final val MonthDateOfBirthValid = "12"
+  final val YearDateOfBirthValid = "1920"
+  final val PostcodeValid = "QQ99QQ"
+  final val PostcodeInvalid = "Q9"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
@@ -39,18 +45,34 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def lastNameTextBox(implicit driver: WebDriver): TextField = textField(id(LastNameId))
 
+  def dayDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_day"))
+
+  def monthDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_month"))
+
+  def yearDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_year"))
+
+  def postcodeTextBox(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
+
   def navigate(title: String = OptionValid,
                 firstName: String = FirstNameValid,
                 lastName: String = LastNameValid,
+                dayDateOfBirth: String = DayDateOfBirthValid,
+                monthDateOfBirth: String = MonthDateOfBirthValid,
+                yearDateOfBirth: String = YearDateOfBirthValid,
                 email: String = EmailValid,
-                driverNumber: String = DriverNumberValid)(implicit driver: WebDriver) = {
+                driverNumber: String = DriverNumberValid,
+                postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
     firstNameTextBox enter firstName
     lastNameTextBox enter lastName
+    dayDateOfBirthTextBox enter dayDateOfBirth
+    monthDateOfBirthTextBox enter monthDateOfBirth
+    yearDateOfBirthTextBox enter yearDateOfBirth
     emailTextBox enter email
     driverNumberTextBox enter driverNumber
+    postcodeTextBox enter postcode
 
     click on next
   }

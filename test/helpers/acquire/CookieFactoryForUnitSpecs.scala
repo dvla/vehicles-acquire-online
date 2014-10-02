@@ -29,8 +29,8 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, DriverNumberValid}
-import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid, DayDateOfBirthValid, MonthDateOfBirthValid}
-import pages.acquire.PrivateKeeperDetailsCompletePage.{YearDateOfBirthValid, ConsentTrue}
+import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid,ConsentTrue}
+import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBirthValid, MonthDateOfBirthValid}
 import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
@@ -149,23 +149,27 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def privateKeeperDetailsModel(title: String = TitleValid,
                                 firstName: String = FirstNameValid,
                                 lastName: String = LastNameValid,
+                                dateOfBirth: Option[LocalDate] = Some(new LocalDate(
+                                  YearDateOfBirthValid.toInt,
+                                  MonthDateOfBirthValid.toInt,
+                                  DayDateOfBirthValid.toInt)),
                                 email: Option[String] = Some(EmailValid),
-                                driverNumber: Option[String] = Some(DriverNumberValid)): Cookie = {
+                                driverNumber: Option[String] = Some(DriverNumberValid),
+                                postcode: String = PostcodeValid): Cookie = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
       lastName = lastName,
+      dateOfBirth,
       email = email,
-      driverNumber = driverNumber
+      driverNumber = driverNumber,
+      postcode = postcode
     )
     createCookie(key, value)
   }
 
-  def privateKeeperDetailsCompleteModel(dateOfBirth: Option[LocalDate] = Some(new LocalDate(
-                                          YearDateOfBirthValid.toInt,
-                                          MonthDateOfBirthValid.toInt,
-                                          DayDateOfBirthValid.toInt)),
+  def privateKeeperDetailsCompleteModel(
                                         mileage: Option[Int] = Some(MileageValid.toInt),
                                         dateOfSale: LocalDate = new LocalDate(
                                           YearDateOfSaleValid.toInt,
@@ -173,7 +177,6 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                                           DayDateOfSaleValid.toInt)): Cookie = {
     val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
     val value = PrivateKeeperDetailsCompleteFormModel(
-      dateOfBirth,
       mileage,
       dateOfSale,
       ""
@@ -183,12 +186,14 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def businessKeeperDetailsModel(fleetNumber: Option[String] = Some(FleetNumberValid),
                                 businessName: String = BusinessNameValid,
-                                email: Option[String] = Some(EmailValid)) : Cookie = {
+                                email: Option[String] = Some(EmailValid),
+                                postcode: String = PostcodeValid) : Cookie = {
     val key = BusinessKeeperDetailsCacheKey
     val value = BusinessKeeperDetailsFormModel(
       fleetNumber = fleetNumber,
       businessName = businessName,
-      email = email
+      email = email,
+      postcode = postcode
     )
     createCookie(key, value)
   }

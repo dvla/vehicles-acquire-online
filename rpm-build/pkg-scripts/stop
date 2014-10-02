@@ -1,4 +1,4 @@
 #!/bin/bash
 
-initctl stop vehicles-acquire-online
-exit
+initctl stop vehicles-acquire-online 2>/dev/null
+exit 0

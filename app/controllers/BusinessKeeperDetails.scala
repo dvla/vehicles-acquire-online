@@ -39,13 +39,13 @@ final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory:
       invalidForm => {
         request.cookies.getModel[VehicleDetailsModel] match {
           case Some(vehicleDetails) =>
-            val formWithReplacedErrors = invalidForm.replaceError(
-              BusinessKeeperDetailsFormModel.Form.BusinessNameId,
-              FormError(
-                key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,
-                message = "error.validBusinessName"
-              )
-            ).distinctErrors
+            val formWithReplacedErrors = invalidForm.
+              replaceError(BusinessKeeperDetailsFormModel.Form.BusinessNameId, FormError(
+                key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessName"
+            )).
+              replaceError(BusinessKeeperDetailsFormModel.Form.PostcodeId, FormError(
+                key = BusinessKeeperDetailsFormModel.Form.PostcodeId,message = "error.restricted.validPostcode"
+            )).distinctErrors
             BadRequest(views.html.acquire.business_keeper_details(
               BusinessKeeperDetailsViewModel(
                 formWithReplacedErrors,

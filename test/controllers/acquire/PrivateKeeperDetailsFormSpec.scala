@@ -2,38 +2,60 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
-import pages.acquire.PrivateKeeperDetailsPage.{TitleValid, EmailValid, FirstNameValid, LastNameValid, DriverNumberValid}
-import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength, FirstNameMinLength, DriverNumberId}
-import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength}
+import org.joda.time.LocalDate
+import pages.acquire.PrivateKeeperDetailsPage.TitleValid
+import pages.acquire.PrivateKeeperDetailsPage.EmailValid
+import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
+import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
+import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
+import models.PrivateKeeperDetailsFormModel.Form.TitleId
+import models.PrivateKeeperDetailsFormModel.Form.EmailId
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameMaxLength
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameMinLength
+import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import models.PrivateKeeperDetailsFormModel.Form.LastNameId
+import models.PrivateKeeperDetailsFormModel.Form.LastNameMaxLength
+import models.PrivateKeeperDetailsFormModel.Form.LastNameMinLength
+import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{YearId, MonthId, DayId}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields correctly" in {
-      val model = formWithValidDefaults(
-        title = TitleValid,
-        firstName = FirstNameValid,
-        lastName = LastNameValid,
-        email = EmailValid).get
+      val model = formWithValidDefaults().get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
+      model.dateOfBirth should equal(Some(new LocalDate(
+        YearDateOfBirthValid.toInt,
+        MonthDateOfBirthValid.toInt,
+        DayDateOfBirthValid.toInt)))
       model.email should equal(Some(EmailValid))
       model.driverNumber should equal(Some(DriverNumberValid))
+      model.postcode should equal(PostcodeValid)
     }
 
     "accept if form is completed with mandatory fields only" in {
       val model = formWithValidDefaults(
-        title = TitleValid,
-        firstName = FirstNameValid,
-        lastName = LastNameValid,
+        dayDateOfBirth = "",
+        monthDateOfBirth = "",
+        yearDateOfBirth = "",
         email = "",
         driverNumber = "").get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
+      model.dateOfBirth should equal(None)
       model.email should equal(None)
       model.driverNumber should equal(None)
+      model.postcode should equal(PostcodeValid)
     }
 
     "reject if form has no fields completed" in {
@@ -236,19 +258,123 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
+  "date of birth" should {
+    "not accept an invalid day of month of 0" in {
+      formWithValidDefaults(dayDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept an invalid day of month of 32" in {
+      formWithValidDefaults(dayDateOfBirth = "32").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept an invalid month of 0" in {
+      formWithValidDefaults(monthDateOfBirth = "0").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept an invalid month of 13" in {
+      formWithValidDefaults(monthDateOfBirth = "13").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept special characters in day field" in {
+      formWithValidDefaults(dayDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept special characters in month field" in {
+      formWithValidDefaults(monthDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept special characters in year field" in {
+      formWithValidDefaults(yearDateOfBirth = "$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept letters in day field" in {
+      formWithValidDefaults(dayDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept letters in month field" in {
+      formWithValidDefaults(monthDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "not accept lettersin year field" in {
+      formWithValidDefaults(yearDateOfBirth = "a").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.dateOfBirth.invalid")
+    }
+
+    "accept if date of birth is entered correctly" in {
+      val model = formWithValidDefaults(
+        dayDateOfBirth = DayDateOfBirthValid,
+        monthDateOfBirth = MonthDateOfBirthValid,
+        yearDateOfBirth = YearDateOfBirthValid).get
+
+      model.dateOfBirth should equal(Some(new LocalDate(
+        YearDateOfBirthValid.toInt,
+        MonthDateOfBirthValid.toInt,
+        DayDateOfBirthValid.toInt)))
+    }
+  }
+
+  "postcode" should {
+    "reject if postcode is empty" in {
+      formWithValidDefaults(postcode = "M15A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.restricted.validPostcode")
+    }
+
+    "reject if postcode is less than the minimum length" in {
+      formWithValidDefaults(postcode = "M15A").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.minLength", "error.restricted.validPostcode")
+    }
+
+    "reject if postcode is more than the maximum length" in {
+      formWithValidDefaults(postcode = "SA99 1DDD").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.maxLength", "error.restricted.validPostcode")
+    }
+
+    "reject if postcode contains special characters" in {
+      formWithValidDefaults(postcode = "SA99 1D$").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validPostcode")
+    }
+
+    "reject if postcode contains an incorrect format" in {
+      formWithValidDefaults(postcode = "SAR99").errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.restricted.validPostcode")
+    }
+
+    "accept when a valid postcode is entered" in {
+      val model = formWithValidDefaults(postcode = PostcodeValid).get
+      model.postcode should equal(PostcodeValid)
+    }
+  }
+
   private def formWithValidDefaults(title: String = TitleValid,
                                     firstName: String = FirstNameValid,
                                     lastName: String = LastNameValid,
+                                    dayDateOfBirth: String = DayDateOfBirthValid,
+                                    monthDateOfBirth: String = MonthDateOfBirthValid,
+                                    yearDateOfBirth: String = YearDateOfBirthValid,
                                     email: String = EmailValid,
-                                    driverNumber: String = DriverNumberValid) = {
+                                    driverNumber: String = DriverNumberValid,
+                                    postcode: String = PostcodeValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
           TitleId -> title,
           FirstNameId -> firstName,
           LastNameId -> lastName,
+          s"$DateOfBirthId.$DayId" -> dayDateOfBirth,
+          s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
+          s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
           EmailId -> email,
-          DriverNumberId -> driverNumber
+          DriverNumberId -> driverNumber,
+          PostcodeId -> postcode
         )
       )
   }

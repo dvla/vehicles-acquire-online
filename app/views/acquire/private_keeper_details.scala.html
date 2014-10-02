@@ -13,9 +13,11 @@
 @import common.mappings.Email.EmailMaxLength
 @import common.views.html.widgets.base.valtechSelect
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.dates.valtechDate
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, EmailId, FirstNameId, FirstNameMaxLength}
+@import common.mappings.Postcode
+@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, DateOfBirthId, EmailId, FirstNameId, FirstNameMaxLength, PostcodeId}
 @import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, DriverNumberId, DriverNumberMaxLength}
 
 @main(
@@ -69,6 +71,13 @@
                             'maxLength -> LastNameMaxLength
                         )
                     )
+
+                    @valtechDate(
+                        privateKeeperDetailsForm(DateOfBirthId),
+                        Messages("privatekeeper_dateofbirth"),
+                        Some(Messages("acquire_privatekeeperdetails.dateofbirth.hint")
+                    ))
+
                 </div>
 
                 <div class="uppercase-input">
@@ -88,6 +97,16 @@
                         'maxLength -> EmailMaxLength
                     )
                 )
+
+                <div class="uppercase-input">
+                    @valtechInputText(privateKeeperDetailsForm(PostcodeId),
+                    hintText = Some(Messages("acquire_privatekeeperdetails.postcode.hint")),
+                    args = Map('_label -> Messages("acquire_privatekeeperdetails.postcodelabel"),
+                    '_showConstraints -> false,
+                    'maxLength -> Postcode.MaxLength
+                    )
+                    )
+                </div>
 
                 <div class="form-steps">
                     <button id="@SubmitId" type="submit" name="action" class="button">
