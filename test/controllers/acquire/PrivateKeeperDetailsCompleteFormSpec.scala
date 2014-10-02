@@ -1,14 +1,17 @@
 package controllers.acquire
 
-import helpers.UnitSpec
-import org.joda.time.LocalDate
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, ConsentId, DateOfSaleId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
-import models.PrivateKeeperDetailsCompleteFormModel
-import play.api.data.{Form, FormError}
-import pages.acquire.PrivateKeeperDetailsCompletePage._
-import scala.Some
 import controllers.PrivateKeeperDetailsComplete
+import helpers.UnitSpec
+import models.PrivateKeeperDetailsCompleteFormModel
+import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
+import org.joda.time.LocalDate
+import pages.acquire.PrivateKeeperDetailsCompletePage.DayDateOfSaleValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.MonthDateOfSaleValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.YearDateOfSaleValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.MileageValid
+import pages.acquire.PrivateKeeperDetailsCompletePage.ConsentTrue
+import play.api.data.Form
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
 class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
 

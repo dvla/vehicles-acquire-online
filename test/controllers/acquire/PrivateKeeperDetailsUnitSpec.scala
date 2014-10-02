@@ -4,10 +4,23 @@ import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, FirstNameId, LastNameId, TitleId, PostcodeId}
+import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import models.PrivateKeeperDetailsFormModel.Form.EmailId
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import models.PrivateKeeperDetailsFormModel.Form.LastNameId
+import models.PrivateKeeperDetailsFormModel.Form.TitleId
+import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid}
-import pages.acquire.PrivateKeeperDetailsPage.{MonthDateOfBirthValid, TitleInvalidError, TitleValid, YearDateOfBirthValid, PostcodeValid}
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.EmailValid
+import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
+import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
+import pages.acquire.PrivateKeeperDetailsPage.TitleInvalidError
+import pages.acquire.PrivateKeeperDetailsPage.TitleValid
+import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
+import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}

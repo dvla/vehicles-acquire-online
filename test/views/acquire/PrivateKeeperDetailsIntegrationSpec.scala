@@ -26,6 +26,11 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       cacheSetup()
       go to PrivateKeeperDetailsPage
       page.title should equal(PrivateKeeperDetailsPage.title)
+
+      // Ensure the date of birth fields are on the page
+      PrivateKeeperDetailsPage.yearDateOfBirthTextBox.text should equal("")
+      PrivateKeeperDetailsPage.monthDateOfBirthTextBox.text should equal("")
+      PrivateKeeperDetailsPage.dayDateOfBirthTextBox.text should equal("")
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
