@@ -4,9 +4,17 @@ import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, FirstNameId, LastNameId, TitleId}
+import models.PrivateKeeperDetailsFormModel.Form.{EmailId, FirstNameId, LastNameId, TitleId, DriverNumberId}
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid, MonthDateOfBirthValid, TitleInvalidError, TitleValid, YearDateOfBirthValid}
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.EmailValid
+import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
+import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
+import pages.acquire.PrivateKeeperDetailsPage.TitleInvalidError
+import pages.acquire.PrivateKeeperDetailsPage.TitleValid
+import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
