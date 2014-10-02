@@ -11,24 +11,25 @@ import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import models.PrivateKeeperDetailsFormModel.Form.TitleId
 import models.PrivateKeeperDetailsFormModel.Form.EmailId
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameMaxLength
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameMinLength
 import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
-import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, LastNameMinLength, DateOfBirthId}
+import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import models.PrivateKeeperDetailsFormModel.Form.LastNameId
+import models.PrivateKeeperDetailsFormModel.Form.LastNameMaxLength
+import models.PrivateKeeperDetailsFormModel.Form.LastNameMinLength
+import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{YearId, MonthId, DayId}
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields correctly" in {
-      val model = formWithValidDefaults(
-        title = TitleValid,
-        firstName = FirstNameValid,
-        lastName = LastNameValid,
-        email = EmailValid).get
+      val model = formWithValidDefaults().get
       model.title should equal(TitleValid)
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
@@ -38,6 +39,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         DayDateOfBirthValid.toInt)))
       model.email should equal(Some(EmailValid))
       model.driverNumber should equal(Some(DriverNumberValid))
+      model.postcode should equal(PostcodeValid)
     }
 
     "accept if form is completed with mandatory fields only" in {
@@ -56,6 +58,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       model.dateOfBirth should equal(None)
       model.email should equal(None)
       model.driverNumber should equal(None)
+      model.postcode should equal(PostcodeValid)
     }
 
     "reject if form has no fields completed" in {
@@ -329,7 +332,8 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
                                     monthDateOfBirth: String = MonthDateOfBirthValid,
                                     yearDateOfBirth: String = YearDateOfBirthValid,
                                     email: String = EmailValid,
-                                    driverNumber: String = DriverNumberValid) = {
+                                    driverNumber: String = DriverNumberValid,
+                                    postcode: String = PostcodeValid) = {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
@@ -340,7 +344,8 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
           s"$DateOfBirthId.$MonthId" -> monthDateOfBirth,
           s"$DateOfBirthId.$YearId" -> yearDateOfBirth,
           EmailId -> email,
-          DriverNumberId -> driverNumber
+          DriverNumberId -> driverNumber,
+          PostcodeId -> postcode
         )
       )
   }

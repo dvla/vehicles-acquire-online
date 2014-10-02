@@ -7,8 +7,12 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
 import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
+import common.mappings.Postcode.postcode
 
-final case class BusinessKeeperDetailsFormModel(fleetNumber: Option[String], businessName: String, email: Option[String])
+final case class BusinessKeeperDetailsFormModel(fleetNumber: Option[String],
+                                                businessName: String,
+                                                email: Option[String],
+                                                postcode: String)
 
 object BusinessKeeperDetailsFormModel {
   implicit val JsonFormat = Json.format[BusinessKeeperDetailsFormModel]
@@ -19,11 +23,13 @@ object BusinessKeeperDetailsFormModel {
     final val FleetNumberId = "fleetNumber"
     final val BusinessNameId = "businessName"
     final val EmailId = "email"
+    final val PostcodeId = "businesskeeper_postcode"
 
     final val Mapping = mapping(
       FleetNumberId -> fleetNumberMapping,
       BusinessNameId -> businessNameMapping,
-      EmailId -> optional(email)
+      EmailId -> optional(email),
+      PostcodeId -> postcode
     )(BusinessKeeperDetailsFormModel.apply)(BusinessKeeperDetailsFormModel.unapply)
   }
 }

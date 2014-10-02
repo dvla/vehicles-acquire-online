@@ -1,7 +1,8 @@
 package pages.acquire
 
 import helpers.webbrowser.{Element, EmailField, Page, SingleSel, TelField, TextField, WebBrowserDSL, WebDriverFactory}
-import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId, TitleId}
+import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId}
+import models.PrivateKeeperDetailsFormModel.Form.{TitleId, PostcodeId}
 import org.openqa.selenium.WebDriver
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
@@ -27,6 +28,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val DayDateOfBirthValid = "24"
   final val MonthDateOfBirthValid = "12"
   final val YearDateOfBirthValid = "1920"
+  final val PostcodeValid = "QQ99QQ"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
@@ -48,6 +50,8 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def yearDateOfBirthTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfBirthId" + "_year"))
 
+  def postcodeTextBox(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
+
   def navigate(title: String = OptionValid,
                 firstName: String = FirstNameValid,
                 lastName: String = LastNameValid,
@@ -55,7 +59,8 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
                 monthDateOfBirth: String = MonthDateOfBirthValid,
                 yearDateOfBirth: String = YearDateOfBirthValid,
                 email: String = EmailValid,
-                driverNumber: String = DriverNumberValid)(implicit driver: WebDriver) = {
+                driverNumber: String = DriverNumberValid,
+                postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
 
     titleDropDown select title
@@ -66,6 +71,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
     yearDateOfBirthTextBox enter yearDateOfBirth
     emailTextBox enter email
     driverNumberTextBox enter driverNumber
+    postcodeTextBox enter postcode
 
     click on next
   }

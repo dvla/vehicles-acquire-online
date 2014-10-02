@@ -145,7 +145,8 @@ object CookieFactoryForUISpecs {
                            dateOfBirth: Option[LocalDate] = Some(new LocalDate(
                              YearDateOfBirthValid.toInt, MonthDateOfBirthValid.toInt, DayDateOfBirthValid.toInt
                            )),
-                           driverNumber: Option[String] = Some(DriverNumberValid))(implicit webDriver: WebDriver) = {
+                           driverNumber: Option[String] = Some(DriverNumberValid),
+                           postcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
@@ -153,7 +154,8 @@ object CookieFactoryForUISpecs {
       lastName = lastName,
       dateOfBirth,
       email = email,
-      driverNumber = driverNumber
+      driverNumber = driverNumber,
+      postcode = postcode
     )
     addCookie(key, value)
     this
@@ -161,12 +163,14 @@ object CookieFactoryForUISpecs {
 
   def businessKeeperDetails(fleetNumber: Option[String] = Some(FleetNumberValid),
                             businessName: String = BusinessNameValid,
-                            email: Option[String] = Some(EmailValid))(implicit webDriver: WebDriver) = {
+                            email: Option[String] = Some(EmailValid),
+                            postcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
     val key = BusinessKeeperDetailsCacheKey
     val value = BusinessKeeperDetailsFormModel(
       fleetNumber = fleetNumber,
       businessName = businessName,
-      email = email
+      email = email,
+      postcode = postcode
     )
     addCookie(key, value)
     this

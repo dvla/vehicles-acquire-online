@@ -12,6 +12,7 @@ import common.clientsidesession.CacheKey
 import common.mappings.Date.optionalDateOfBirth
 import common.mappings.Email.email
 import common.mappings.DriverNumber.driverNumber
+import common.mappings.Postcode.postcode
 import common.views.helpers.FormExtensions.nonEmptyTextWithTransform
 
 case class PrivateKeeperDetailsFormModel(title: String, 
@@ -19,7 +20,8 @@ case class PrivateKeeperDetailsFormModel(title: String,
                                          lastName: String,
                                          dateOfBirth: Option[LocalDate],
                                          email: Option[String], 
-                                         driverNumber: Option[String])
+                                         driverNumber: Option[String],
+                                         postcode: String)
 
 object PrivateKeeperDetailsFormModel {
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
@@ -32,8 +34,10 @@ object PrivateKeeperDetailsFormModel {
     final val LastNameId = "privatekeeper_lastname"
     final val DateOfBirthId = "privatekeeper_dateofbirth"
     final val EmailId = "privatekeeper_email"
-    final val ConsentId = "consent"
     final val DriverNumberId = "privatekeeper_drivernumber"
+    final val PostcodeId = "privatekeeper_postcode"
+    final val ConsentId = "consent"
+
     final val DriverNumberMaxLength = 16
     final val FirstNameMinLength = 1
     final val FirstNameMaxLength = 25
@@ -71,7 +75,8 @@ object PrivateKeeperDetailsFormModel {
       LastNameId -> lastNameMapping,
       DateOfBirthId -> optionalDateOfBirth,
       EmailId -> optional(email),
-      DriverNumberId -> optional(driverNumber)
+      DriverNumberId -> optional(driverNumber),
+      PostcodeId -> postcode
     )(PrivateKeeperDetailsFormModel.apply)(PrivateKeeperDetailsFormModel.unapply)
   }
 }

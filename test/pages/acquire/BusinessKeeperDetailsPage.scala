@@ -2,7 +2,7 @@ package pages.acquire
 
 import org.openqa.selenium.WebDriver
 import helpers.webbrowser.{Element, EmailField, Page, TextField, WebBrowserDSL, WebDriverFactory}
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 
 object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
@@ -13,12 +13,15 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   final val FleetNumberValid = "123456"
   final val BusinessNameValid = "Brand New Motors"
   final val EmailValid = "my@email.com"
+  final val PostcodeValid = "QQ99QQ"
 
   def fleetNumberField(implicit driver: WebDriver): TextField = textField(id(FleetNumberId))
 
   def businessNameField(implicit driver: WebDriver): TextField = textField(id(BusinessNameId))
 
   def emailField(implicit driver: WebDriver): EmailField = emailField(id(EmailId))
+
+  def postcodeField(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
   
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
@@ -26,12 +29,14 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def navigate(fleetNumber: String = FleetNumberValid,
                businessName: String = BusinessNameValid,
-               email: String = EmailValid)(implicit driver: WebDriver) = {
+               email: String = EmailValid,
+               postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to BusinessKeeperDetailsPage
 
     fleetNumberField enter fleetNumber
     businessNameField enter businessName
     emailField enter email
+    postcodeField enter postcode
 
     click on next
   }

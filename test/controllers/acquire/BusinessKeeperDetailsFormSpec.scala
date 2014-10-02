@@ -2,9 +2,9 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.BusinessKeeperDetails
-import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
+import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 
 class BusinessKeeperDetailsFormSpec extends UnitSpec {
 
@@ -58,13 +58,15 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
 
   private def formWithValidDefaults(fleetNumber: String = FleetNumberValid,
                                     businessName: String = BusinessNameValid,
-                                    email: String = EmailValid) = {
+                                    email: String = EmailValid,
+                                    postcode: String = PostcodeValid) = {
     injector.getInstance(classOf[BusinessKeeperDetails])
       .form.bind(
         Map(
           FleetNumberId -> fleetNumber,
           BusinessNameId -> businessName,
-          EmailId -> email
+          EmailId -> email,
+          PostcodeId -> postcode
         )
       )
   }

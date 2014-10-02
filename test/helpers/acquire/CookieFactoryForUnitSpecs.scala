@@ -154,7 +154,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                                   MonthDateOfBirthValid.toInt,
                                   DayDateOfBirthValid.toInt)),
                                 email: Option[String] = Some(EmailValid),
-                                driverNumber: Option[String] = Some(DriverNumberValid)): Cookie = {
+                                driverNumber: Option[String] = Some(DriverNumberValid),
+                                postcode: String = PostcodeValid): Cookie = {
     val key = PrivateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
@@ -162,7 +163,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       lastName = lastName,
       dateOfBirth,
       email = email,
-      driverNumber = driverNumber
+      driverNumber = driverNumber,
+      postcode = postcode
     )
     createCookie(key, value)
   }
@@ -184,12 +186,14 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def businessKeeperDetailsModel(fleetNumber: Option[String] = Some(FleetNumberValid),
                                 businessName: String = BusinessNameValid,
-                                email: Option[String] = Some(EmailValid)) : Cookie = {
+                                email: Option[String] = Some(EmailValid),
+                                postcode: String = PostcodeValid) : Cookie = {
     val key = BusinessKeeperDetailsCacheKey
     val value = BusinessKeeperDetailsFormModel(
       fleetNumber = fleetNumber,
       businessName = businessName,
-      email = email
+      email = email,
+      postcode = postcode
     )
     createCookie(key, value)
   }

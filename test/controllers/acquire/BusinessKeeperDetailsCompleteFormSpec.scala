@@ -3,7 +3,7 @@ package controllers.acquire
 import helpers.UnitSpec
 import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import models.BusinessKeeperDetailsCompleteFormModel
-import pages.acquire.BusinessKeeperDetailsCompletePage._
+import pages.acquire.BusinessKeeperDetailsCompletePage.ConsentTrue
 import play.api.data.Form
 import pages.acquire.BusinessKeeperDetailsCompletePage.{MileageValid, DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import controllers.BusinessKeeperDetailsComplete

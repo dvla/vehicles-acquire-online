@@ -11,8 +11,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId}
-import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 
 class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
@@ -106,11 +106,13 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
   private def buildRequest(fleetNumber: String = FleetNumberValid,
                            businessName: String = BusinessNameValid,
-                           email: String = EmailValid) = {
+                           email: String = EmailValid,
+                           postcode: String = PostcodeValid) = {
     FakeRequest().withFormUrlEncodedBody(
       FleetNumberId -> fleetNumber,
       BusinessNameId -> businessName,
-      EmailId -> email
+      EmailId -> email,
+      PostcodeId -> postcode
     )
   }
 

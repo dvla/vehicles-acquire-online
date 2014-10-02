@@ -4,9 +4,10 @@ import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, FirstNameId, LastNameId, TitleId}
+import models.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, FirstNameId, LastNameId, TitleId, PostcodeId}
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid, MonthDateOfBirthValid, TitleInvalidError, TitleValid, YearDateOfBirthValid}
+import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{MonthDateOfBirthValid, TitleInvalidError, TitleValid, YearDateOfBirthValid, PostcodeValid}
 import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
@@ -113,13 +114,15 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
                                              firstName: String = FirstNameValid,
                                              lastName: String = LastNameValid,
                                              email: String = EmailValid,
-                                             driverNumber: String = DriverNumberValid) = {
+                                             driverNumber: String = DriverNumberValid,
+                                             postcode: String = PostcodeValid) = {
     FakeRequest().withFormUrlEncodedBody(
       TitleId -> title,
       FirstNameId -> firstName,
       LastNameId -> lastName,
       EmailId -> email,
-      DriverNumberId -> driverNumber
+      DriverNumberId -> driverNumber,
+      PostcodeId -> postcode
     )
   }
 
