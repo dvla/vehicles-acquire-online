@@ -1,15 +1,12 @@
 package views.acquire
 
-import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
-import ProgressBar.progressStep
+import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.{TestGlobal, TestHarness}
-import models.BusinessKeeperDetailsFormModel._
-import models.PrivateKeeperDetailsFormModel._
-import models.VehicleLookupFormModel._
-import models._
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
@@ -21,6 +18,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.KeeperStillOnRecordPage
 import pages.acquire.BusinessKeeperDetailsPage
 import play.api.test.FakeApplication
+import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 

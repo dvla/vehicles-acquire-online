@@ -16,7 +16,6 @@ import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
-import common.webserviceclients.vehiclelookup.VehicleDetailsResponseDto
 import common.webserviceclients.vehiclelookup.VehicleDetailsDto
 import common.webserviceclients.vehiclelookup.VehicleLookupService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService

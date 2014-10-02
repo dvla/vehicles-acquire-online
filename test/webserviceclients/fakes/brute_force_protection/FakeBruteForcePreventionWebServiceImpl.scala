@@ -16,6 +16,10 @@ final class FakeBruteForcePreventionWebServiceImpl() extends BruteForcePreventio
       case _ => new FakeResponse(status = OK, fakeJson = responseFirstAttempt)
     }
   }
+
+  override def reset(vrm: String): Future[WSResponse] = Future.successful {
+    FakeResponse(status = OK)
+  }
 }
 
 object FakeBruteForcePreventionWebServiceImpl {

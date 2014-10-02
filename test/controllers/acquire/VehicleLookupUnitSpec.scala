@@ -193,8 +193,8 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       val status = if (permitted) play.api.http.Status.OK else play.api.http.Status.FORBIDDEN
       val bruteForcePreventionWebService: BruteForcePreventionWebService = mock[BruteForcePreventionWebService]
 
-      when(bruteForcePreventionWebService.callBruteForce(RegistrationNumberValid))
-        .thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseFirstAttempt)))
+      when(bruteForcePreventionWebService.callBruteForce(RegistrationNumberValid)).
+        thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseFirstAttempt)))
 
       when(bruteForcePreventionWebService.callBruteForce(FakeBruteForcePreventionWebServiceImpl.VrmAttempt2)).
         thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseSecondAttempt)))
@@ -203,6 +203,9 @@ final class VehicleLookupUnitSpec extends UnitSpec {
         thenReturn(Future.successful(new FakeResponse(status = status)))
 
       when(bruteForcePreventionWebService.callBruteForce(VrmThrows)).thenReturn(responseThrows)
+
+      when(bruteForcePreventionWebService.reset(any[String])).
+        thenReturn(Future.successful(new FakeResponse(status = play.api.http.Status.OK)))
 
       bruteForcePreventionWebService
     }
