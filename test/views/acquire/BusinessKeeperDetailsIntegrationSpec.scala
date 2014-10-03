@@ -8,13 +8,10 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.BeforeYouStartPage
-import pages.acquire.VehicleLookupPage
-import pages.acquire.BusinessKeeperDetailsPage
+import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, navigate, back}
-import pages.acquire.BusinessKeeperDetailsCompletePage
 
 final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -54,7 +51,7 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal (BusinessKeeperDetailsCompletePage.title)
+      page.title should equal (NewKeeperChooseYourAddressPage.title)
     }
 
     "display one validation error message when an incorrect business name is entered" taggedAs UiTag in new WebBrowser {

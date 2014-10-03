@@ -1,6 +1,6 @@
 package controllers.acquire
 
-import pages.acquire.{BusinessKeeperDetailsCompletePage, SetupTradeDetailsPage}
+import pages.acquire.{NewKeeperChooseYourAddressPage, BusinessKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.WithApplication
 import controllers.acquire.Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
@@ -65,7 +65,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsCompletePage.address))
+        r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
       }
     }
 
@@ -74,7 +74,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsCompletePage.address))
+        r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
       }
     }
 

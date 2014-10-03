@@ -8,7 +8,7 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.{BeforeYouStartPage,PrivateKeeperDetailsCompletePage,SetupTradeDetailsPage,PrivateKeeperDetailsPage}
+import pages.acquire.{BeforeYouStartPage,PrivateKeeperDetailsCompletePage,SetupTradeDetailsPage,NewKeeperChooseYourAddressPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsCompletePage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
@@ -165,7 +165,7 @@ final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with Test
 
       go to PrivateKeeperDetailsCompletePage
       click on back
-      page.title should equal(PrivateKeeperDetailsPage.title)
+      page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
   }
 

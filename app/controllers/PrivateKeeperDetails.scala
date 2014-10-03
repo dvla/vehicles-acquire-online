@@ -45,7 +45,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                 replaceError(PostcodeId, FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)).distinctErrors
               BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
             },
-            validForm => Redirect(routes.PrivateKeeperDetailsComplete.present()).withCookie(validForm))
+            validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm))
         case _ =>
           Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
           Redirect(routes.SetUpTradeDetails.present())

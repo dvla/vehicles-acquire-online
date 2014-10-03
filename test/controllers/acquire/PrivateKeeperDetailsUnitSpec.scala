@@ -21,7 +21,7 @@ import pages.acquire.PrivateKeeperDetailsPage.TitleInvalidError
 import pages.acquire.PrivateKeeperDetailsPage.TitleValid
 import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
-import pages.acquire.{PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
+import pages.acquire.{NewKeeperChooseYourAddressPage, PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
@@ -84,7 +84,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
+        r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
       }
     }
 
@@ -93,7 +93,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
+        r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
       }
     }
 

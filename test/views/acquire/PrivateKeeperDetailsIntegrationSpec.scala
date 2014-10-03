@@ -8,10 +8,7 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.BeforeYouStartPage
-import pages.acquire.SetupTradeDetailsPage
-import pages.acquire.VehicleLookupPage
-import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
@@ -66,14 +63,14 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal("Complete and confirm")
+      page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
 
     "go to the appropriate next page when mandatory private keeper details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(email = "")
-      page.title should equal("Complete and confirm")
+      page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
 
     "display one validation error message when no title is entered" taggedAs UiTag in new WebBrowser {

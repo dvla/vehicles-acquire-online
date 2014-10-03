@@ -43,6 +43,10 @@ GET     /keeper-still-on-record/finish      @controllers.KeeperStillOnRecord.fin
 GET     /private-keeper-details             @controllers.PrivateKeeperDetails.present
 POST    /private-keeper-details             @controllers.PrivateKeeperDetails.submit
 
+# New keeper choose your address
+GET     /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.present
+POST    /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.submit
+
 # Individual keeper details complete
 GET     /private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.present
 POST    /private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.submit

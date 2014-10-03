@@ -259,6 +259,8 @@ privatekeeper_postcode = Postcode
 privatekeeper_drivernumber = Driver number
 acquire_privatekeeperdetails.drivernumberlabel = Driving license number of new keeper
 acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
+acquire_privatekeeperdetails.postcodelabel = Postcode
+acquire_privatekeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 
 #private keeper detail complete
 acquire_keeperdetailscomplete.title = Complete and confirm
@@ -298,6 +300,24 @@ acquire_businesskeeperdetails.postcodelabel = Business postcode
 acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 businesskeeper_postcode = Business postcode
 businessName = Business name
+
+#new keeper choose your address
+acquire_newKeeperChooseYourAddress_title = Select new keeper address
+acquire_newKeeperChooseYourAddress_legend = Select new keeper address
+acquire_newKeeperChooseYourAddress_newKeeperName_label = New keeper name
+acquire_newKeeperChooseYourAddress_newKeeperName = {0}
+acquire_newKeeperChooseYourAddress_newKeeperEmail_label = New keeper email
+acquire_newKeeperChooseYourAddress_newKeeperEmail = {0}
+acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = New keeper postcode
+acquire_newKeeperChooseYourAddress_newKeeperAddress_label = New keeper address
+acquire_newKeeperChooseYourAddress_addressSelect = Choose your address
+acquire_newKeeperChooseYourAddress_addressSelect_label = Choose your address
+acquire_newKeeperChooseYourAddress.backbutton = Back
+acquire_newKeeperChooseYourAddress.submitbutton = Next
+acquire_newKeeperChooseYourAddress.manualAddressEntry = My address is not in the list
+acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
+acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
+acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
 
 #business keeper detail complete
 acquire_businesskeeperdetailscomplete.title = Complete and confirm

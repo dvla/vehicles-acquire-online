@@ -57,7 +57,7 @@ final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory:
             Redirect(routes.SetUpTradeDetails.present())
         }
       },
-      validForm => Redirect(routes.BusinessKeeperDetailsComplete.present()).withCookie(validForm)
+      validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm)
     )
   }
 }
