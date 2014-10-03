@@ -37,7 +37,7 @@ import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.TraderBusinessNameValid
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
 import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
@@ -140,7 +140,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
     "redirect to BusinessChooseYourAddress when back button is pressed and there is a uprn" in new WithApplication {
       val request = FakeRequest().withFormUrlEncodedBody().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().back(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
@@ -155,7 +155,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
     "redirect to SetUpTradeDetails when back button and the user has completed the vehicle lookup form" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().back(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
@@ -171,7 +171,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
     "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
@@ -179,7 +179,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
     "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(traderUprnValid)))
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))

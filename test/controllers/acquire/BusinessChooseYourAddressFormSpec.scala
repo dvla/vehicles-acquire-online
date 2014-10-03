@@ -7,7 +7,7 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
@@ -16,7 +16,7 @@ import utils.helpers.Config
 class BusinessChooseYourAddressFormSpec extends UnitSpec {
   "form" should {
     "accept when all fields contain valid responses" in {
-      formWithValidDefaults().get.uprnSelected should equal(traderUprnValid.toString)
+      formWithValidDefaults().get.uprnSelected should equal(UprnValid.toString)
     }
   }
 
@@ -40,7 +40,7 @@ class BusinessChooseYourAddressFormSpec extends UnitSpec {
     new BusinessChooseYourAddress(addressLookupService)
   }
 
-  private def formWithValidDefaults(addressSelected: String = traderUprnValid.toString) = {
+  private def formWithValidDefaults(addressSelected: String = UprnValid.toString) = {
     businessChooseYourAddressWithFakeWebService().form.bind(
       Map(AddressSelectId -> addressSelected)
     )

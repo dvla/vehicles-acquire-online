@@ -27,14 +27,14 @@ final class FakeAddressLookupWebServiceImpl(responseOfPostcodeWebService: Future
 }
 
 object FakeAddressLookupWebServiceImpl {
-  final val traderUprnValid = 12345L
-  final val traderUprnValid2 = 4567L
+  final val UprnValid = 12345L
+  final val UprnValid2 = 4567L
 
   private def addressSeq(houseName: String, houseNumber: String): Seq[String] = {
     Seq(houseName, houseNumber, "property stub", "street stub", "town stub", "area stub", PostcodeValid)
   }
 
-  def uprnAddressPairWithDefaults(uprn: String = traderUprnValid.toString, houseName: String = "presentationProperty stub", houseNumber: String = "123") =
+  def uprnAddressPairWithDefaults(uprn: String = UprnValid.toString, houseName: String = "presentationProperty stub", houseNumber: String = "123") =
     UprnAddressPairDto(uprn, address = addressSeq(houseName, houseNumber).mkString(", "))
 
   def postcodeToAddressResponseValid: PostcodeToAddressResponseDto = {
@@ -96,7 +96,7 @@ object FakeAddressLookupWebServiceImpl {
         town = Some("town stub"),
         area = Some("area stub"),
         postcode = PostcodeValid,
-        uprn = traderUprnValid.toString),
+        uprn = UprnValid.toString),
       details = Details(
         usrn = "usrn stub",
         isResidential = true,

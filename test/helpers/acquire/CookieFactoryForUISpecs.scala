@@ -17,7 +17,7 @@ import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import uk.gov.dvla.vehicles.presentation.common
 import common.controllers.AlternateLanguages.{CyId, EnId}
@@ -64,7 +64,7 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def businessChooseYourAddress(uprn: Long = traderUprnValid)(implicit webDriver: WebDriver) = {
+  def businessChooseYourAddress(uprn: Long = UprnValid)(implicit webDriver: WebDriver) = {
     val key = BusinessChooseYourAddressCacheKey
     val value = BusinessChooseYourAddressFormModel(uprnSelected = uprn.toString)
     addCookie(key, value)

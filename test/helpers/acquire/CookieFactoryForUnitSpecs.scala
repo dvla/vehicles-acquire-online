@@ -13,9 +13,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, Addre
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models.{SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
-import models.{EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel}
-import models.{PrivateKeeperDetailsCompleteFormModel, BusinessKeeperDetailsFormModel, BusinessKeeperDetailsCompleteFormModel}
+import models._
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -24,7 +22,7 @@ import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
@@ -34,6 +32,8 @@ import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBi
 import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
+import scala.Some
+import play.api.mvc.Cookie
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -67,7 +67,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def businessChooseYourAddress(): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressFormModel(uprnSelected = traderUprnValid.toString)
+    val value = BusinessChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
     createCookie(key, value)
   }
 
@@ -210,6 +210,12 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       consent,
       dateOfSale
     )
+    createCookie(key, value)
+  }
+
+  def newKeeperChooseYourAddress(): Cookie = {
+    val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+    val value = NewKeeperChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
     createCookie(key, value)
   }
 

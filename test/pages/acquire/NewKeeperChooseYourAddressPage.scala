@@ -7,7 +7,7 @@ import BusinessChooseYourAddress.BackId
 import BusinessChooseYourAddress.EnterAddressManuallyButtonId
 import BusinessChooseYourAddress.SelectId
 import org.openqa.selenium.WebDriver
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
 object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
   final val address = s"$applicationContext/new-keeper-choose-your-address"

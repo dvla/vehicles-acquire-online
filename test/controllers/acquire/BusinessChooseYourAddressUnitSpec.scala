@@ -9,7 +9,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.traderUprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import CookieHelper.fetchCookiesFromHeaders
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
@@ -43,7 +43,7 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val result = businessChooseYourAddressWithUprnFound.present(request)
       val content = contentAsString(result)
       content should include(TraderBusinessNameValid)
-      content should include( s"""<option value="$traderUprnValid" selected>""")
+      content should include( s"""<option value="$UprnValid" selected>""")
     }
 
     "display unselected field when cookie does not exist" in new WithApplication {
@@ -149,7 +149,7 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     new BusinessChooseYourAddress(addressLookupService)
   }
 
-  private def buildCorrectlyPopulatedRequest(traderUprn: String = traderUprnValid.toString) = {
+  private def buildCorrectlyPopulatedRequest(traderUprn: String = UprnValid.toString) = {
     FakeRequest().withFormUrlEncodedBody(
       AddressSelectId -> traderUprn)
   }
