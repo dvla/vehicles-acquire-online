@@ -36,12 +36,14 @@ package object models {
   // Set of cookies related to all data entered for a private keeper
   final val PrivateKeeperDetailsCacheKeys = Set(
     PrivateKeeperDetailsCacheKey,
+    NewKeeperChooseYourAddressCacheKey,
     PrivateKeeperDetailsCompleteCacheKey
   )
 
   // Set of cookies related to all data entered for a business keeper
   final val BusinessKeeperDetailsCacheKeys = Set(
     BusinessKeeperDetailsCacheKey,
+    NewKeeperChooseYourAddressCacheKey,
     BusinessKeeperDetailsCompleteCacheKey
   )
 

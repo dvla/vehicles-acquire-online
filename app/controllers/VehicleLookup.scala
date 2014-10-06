@@ -2,7 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import models.{VehicleLookupFormModel, VehicleLookupViewModel, PrivateKeeperDetailsCacheKeys, BusinessKeeperDetailsCacheKeys}
+import models._
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Call, Action, Request}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,6 +21,11 @@ import common.webserviceclients.vehiclelookup.VehicleLookupService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
+import scala.Some
+import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase.VehicleFound
+import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase.VehicleNotFound
+import play.api.mvc.Call
+import models.VehicleLookupViewModel
 
 final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService,
                                     vehicleLookupService: VehicleLookupService,

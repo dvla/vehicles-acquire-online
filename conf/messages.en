@@ -135,6 +135,8 @@ traderPostcode = Postcode
 traderEmail = Trader email address
 
 #page 3 - Business Choose Your Address
+disposal_businessChooseYourAddress_addressSelect = Select trader address
+disposal_businessChooseYourAddress.address.required = Please select a valid address
 acquire_businessChooseYourAddress_title = Select trader address
 acquire_businessChooseYourAddress_legend = Set up trade details
 acquire_businessChooseYourAddress_businessName_label = Trader name
