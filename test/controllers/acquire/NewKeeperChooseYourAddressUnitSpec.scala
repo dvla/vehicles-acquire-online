@@ -14,11 +14,11 @@ import CookieHelper.fetchCookiesFromHeaders
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import play.api.test.WithApplication
-import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
+import models.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
-import pages.acquire.{PrivateKeeperDetailsCompletePage, VehicleLookupPage, SetupTradeDetailsPage}
+import pages.acquire.{BusinessKeeperDetailsCompletePage, PrivateKeeperDetailsCompletePage, VehicleLookupPage, SetupTradeDetailsPage}
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
@@ -106,18 +106,36 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-//    "redirect to complete and confirm page after a valid submit for private keeper" in new WithApplication {
-//      val request = buildCorrectlyPopulatedRequest().
-//        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-//      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
-//      whenReady(result) { r =>
-//          r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
-//      }
-//    }
+    "redirect to complete and confirm page after a valid submit for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
+      whenReady(result) { r =>
+          r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
+      }
+    }
 
-    "return a bad request if not address selected" in new WithApplication {
+    "redirect to complete and confirm page after a valid submit for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsCompletePage.address))
+      }
+    }
+
+    "return a bad request if not address selected for private keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(newKeeperUprn = "").
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+      }
+    }
+
+    "return a bad request if not address selected for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(newKeeperUprn = "").
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
@@ -140,32 +158,51 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-//    "redirect to UprnNotFound page when submit with but uprn not found by the webservice using new private keeper" in new WithApplication {
-//      val request = buildCorrectlyPopulatedRequest().
-//        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-//      val result = newKeeperChooseYourAddressWithUprnNotFound.submit(request)
-//      whenReady(result) { r =>
-//        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
-//      }
-//    }
+    "redirect to UprnNotFound page when submit with but uprn not found by the webservice using new private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnNotFound.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
+      }
+    }
 
-//    "write cookie when uprn found" in new WithApplication {
-//      val request = buildCorrectlyPopulatedRequest().
-//        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-//      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
-//      whenReady(result) { r =>
-//        val cookies = fetchCookiesFromHeaders(r)
-//        cookies.map(_.name) should contain allOf(newKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
-//      }
-//    }
-//
+    "redirect to UprnNotFound page when submit with but uprn not found by the webservice using new business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnNotFound.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(UprnNotFoundPage.address))
+      }
+    }
+
+    "write cookie when uprn found for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
+      whenReady(result) { r =>
+        val cookies = fetchCookiesFromHeaders(r)
+        cookies.map(_.name) should contain allOf(newKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
+      }
+    }
+
+    "write cookie when uprn found for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
+      whenReady(result) { r =>
+        val cookies = fetchCookiesFromHeaders(r)
+        cookies.map(_.name) should contain allOf(newKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
+      }
+    }
+
     "does not write cookie when uprn not found" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = newKeeperChooseYourAddressWithUprnNotFound.submit(request)
       whenReady(result) { r =>
         val cookies = r.header.headers.get(SET_COOKIE).toSeq.flatMap(Cookies.decode)
-        cookies.map(_.name) should contain noneOf(BusinessChooseYourAddressCacheKey, TraderDetailsCacheKey)
+        cookies.map(_.name) should contain noneOf(newKeeperChooseYourAddressCacheKey, TraderDetailsCacheKey)
       }
     }
   }

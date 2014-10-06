@@ -86,6 +86,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       validForm =>
         request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
           case Some(privateKeeperDetails) =>
+            println("Private keeper details form model match, looking up uprn")
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
             lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, true)
           case None =>
