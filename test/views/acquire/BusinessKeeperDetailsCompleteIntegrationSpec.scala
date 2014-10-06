@@ -8,7 +8,7 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.{BeforeYouStartPage,BusinessKeeperDetailsCompletePage,SetupTradeDetailsPage,BusinessKeeperDetailsPage}
+import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.BusinessKeeperDetailsCompletePage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
@@ -167,7 +167,7 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
 
       go to BusinessKeeperDetailsCompletePage
       click on back
-      page.title should equal(BusinessKeeperDetailsPage.title)
+      page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
   }
 
