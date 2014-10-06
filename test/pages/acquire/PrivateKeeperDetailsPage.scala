@@ -29,7 +29,8 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
   final val MonthDateOfBirthValid = "12"
   final val YearDateOfBirthValid = "1920"
   final val PostcodeValid = "QQ99QQ"
-  final val PostcodeInvalid = "Q9"
+  final val NoPostcodeFound = "XX99XX"
+  final val PostcodeInvalid = "XX99X"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
@@ -63,7 +64,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
                 driverNumber: String = DriverNumberValid,
                 postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
-
+    
     titleDropDown select title
     firstNameTextBox enter firstName
     lastNameTextBox enter lastName
@@ -75,5 +76,9 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
     postcodeTextBox enter postcode
 
     click on next
+  }
+
+  def submitPostcodeWithoutAddresses(implicit driver: WebDriver) = {
+    navigate(postcode = NoPostcodeFound)
   }
 }

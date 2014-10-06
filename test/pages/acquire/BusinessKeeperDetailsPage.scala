@@ -14,6 +14,7 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   final val BusinessNameValid = "Brand New Motors"
   final val EmailValid = "my@email.com"
   final val PostcodeValid = "QQ99QQ"
+  final val PostcodeInvalid = "XX99XX"
 
   def fleetNumberField(implicit driver: WebDriver): TextField = textField(id(FleetNumberId))
 
@@ -39,5 +40,9 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
     postcodeField enter postcode
 
     click on next
+  }
+
+  def submitPostcodeWithoutAddresses(implicit driver: WebDriver) = {
+    navigate(postcode = PostcodeInvalid)
   }
 }

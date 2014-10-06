@@ -1,11 +1,11 @@
 package pages.acquire
 
 import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
-import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import views.acquire.BusinessChooseYourAddress
-import BusinessChooseYourAddress.BackId
-import BusinessChooseYourAddress.EnterAddressManuallyButtonId
-import BusinessChooseYourAddress.SelectId
+import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
+import views.acquire.NewKeeperChooseYourAddress
+import NewKeeperChooseYourAddress.BackId
+import NewKeeperChooseYourAddress.EnterAddressManuallyButtonId
+import NewKeeperChooseYourAddress.SelectId
 import org.openqa.selenium.WebDriver
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
@@ -26,4 +26,15 @@ object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
   def getListCount(implicit driver: WebDriver): Int = getList.size
 
   def select(implicit driver: WebDriver): Element = find(id(SelectId)).get
+
+  def happyPath(implicit driver: WebDriver) = {
+    go to NewKeeperChooseYourAddressPage
+    chooseAddress.value = UprnValid.toString
+    click on select
+  }
+
+  def sadPath(implicit driver: WebDriver) = {
+    go to NewKeeperChooseYourAddressPage
+    click on select
+  }
 }

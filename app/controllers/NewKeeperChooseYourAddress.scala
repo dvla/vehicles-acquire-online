@@ -87,12 +87,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
           case Some(privateKeeperDetails) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName)
+            lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, true)
           case None =>
             request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
               case Some(businessKeeperDetails) =>
                 implicit val session = clientSideSessionFactory.getSession(request.cookies)
-                lookupUprn(validForm, businessKeeperDetails.businessName)
+                lookupUprn(validForm, businessKeeperDetails.businessName, false)
               case None => Future {
                 Logger.error("Failed to find new keeper details, redirecting")
                 Redirect(routes.SetUpTradeDetails.present())
@@ -113,16 +113,20 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       FormError(key = AddressSelectId, message = "disposal_newKeeperChooseYourAddress.address.required", args = Seq.empty)).
       distinctErrors
 
-  private def lookupUprn(model: NewKeeperChooseYourAddressFormModel, newKeeperName: String)
+  private def lookupUprn(model: NewKeeperChooseYourAddressFormModel, newKeeperName: String, privateKeeper: Boolean)
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
-        val newKeeperDetailsModel = NewKeeperDetailsModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
-        Redirect(routes.PrivateKeeperDetailsComplete.present()).
-          //discardingCookie(EnterAddressManuallyCacheKey).
-          withCookie(model).
-          withCookie(newKeeperDetailsModel)
+        if (privateKeeper) {
+          val newKeeperDetailsModel = NewKeeperDetailsModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
+          Redirect(routes.PrivateKeeperDetailsComplete.present()).withCookie(model).withCookie(newKeeperDetailsModel)
+        } else {
+          val newKeeperDetailsModel = NewKeeperDetailsModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
+          Redirect(routes.BusinessKeeperDetailsComplete.present()).
+            withCookie(model).
+            withCookie(newKeeperDetailsModel)
+        }
       case None => Redirect(routes.UprnNotFound.present())
     }
   }
