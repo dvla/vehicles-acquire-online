@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{EnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
+import models.{NewKeeperEnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
@@ -11,21 +11,23 @@ import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResu
 import common.model.{TraderDetailsModel, AddressModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
-import views.html.acquire.enter_address_manually
+import views.html.acquire.new_keeper_enter_address_manually
 
 final class NewKeeperEnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    EnterAddressManuallyFormModel.Form.Mapping
+    NewKeeperEnterAddressManuallyFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
     request.cookies.getModel[SetupTradeDetailsFormModel] match {
       case Some(setupTradeDetails) =>
-        Ok(enter_address_manually(form.fill(), traderPostcode = setupTradeDetails.traderPostcode))
-      case None => Redirect(routes.SetUpTradeDetails.present())
+        Ok(new_keeper_enter_address_manually(form.fill(), setupTradeDetails.traderPostcode))
+      case None =>
+        Logger.warn("Failed to find a cookie for ")
+        Redirect(routes.VehicleLookup.present())
     }
   }
 
@@ -34,7 +36,7 @@ final class NewKeeperEnterAddressManually @Inject()()
       invalidForm =>
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetails) =>
-            BadRequest(enter_address_manually(formWithReplacedErrors(invalidForm), setupTradeDetails.traderPostcode))
+            BadRequest(new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm), setupTradeDetails.traderPostcode))
           case None =>
             Logger.debug("Failed to find dealer name in cache, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
@@ -62,7 +64,7 @@ final class NewKeeperEnterAddressManually @Inject()()
     )
   }
 
-  private def formWithReplacedErrors(form: Form[EnterAddressManuallyFormModel]) =
+  private def formWithReplacedErrors(form: Form[NewKeeperEnterAddressManuallyFormModel]) =
     form.replaceError(
       "addressAndPostcode.addressLines.buildingNameOrNumber",
       FormError("addressAndPostcode.addressLines", "error.address.buildingNameOrNumber.invalid")

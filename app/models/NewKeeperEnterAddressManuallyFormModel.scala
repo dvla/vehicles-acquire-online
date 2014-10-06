@@ -8,7 +8,7 @@ import uk.gov.dvla.vehicles.presentation.common.views.models.AddressAndPostcodeV
 final case class NewKeeperEnterAddressManuallyFormModel(addressAndPostcodeModel: AddressAndPostcodeViewModel)
 
 object NewKeeperEnterAddressManuallyFormModel {
-  implicit val JsonFormat = Json.format[EnterAddressManuallyFormModel]
+  implicit val JsonFormat = Json.format[NewKeeperEnterAddressManuallyFormModel]
 
   final val NewKeeperEnterAddressManuallyCacheKey = "newKeeperEnterAddressManually"
   implicit val Key = CacheKey[NewKeeperEnterAddressManuallyFormModel](NewKeeperEnterAddressManuallyCacheKey)

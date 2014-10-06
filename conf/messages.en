@@ -224,6 +224,11 @@ error.address.postTown = Town or city must contain a minimum of 3 characters
 error.address.postcode.invalid = Must be between five and eight characters and in a valid format, eg. AB1 2Ba or AB12BA
 error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
 
+#[optional] - new keeper manual address entry
+acquire_newkeeperenteraddressmanually.title = Enter address
+acquire_newkeeperenteraddressmanually.submitbutton = Next
+acquire_newkeeperenteraddressmanually.backbutton = Back
+
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
