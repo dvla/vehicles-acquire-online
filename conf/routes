@@ -47,6 +47,10 @@ POST    /private-keeper-details             @controllers.PrivateKeeperDetails.su
 GET     /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.present
 POST    /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.submit
 
+#[optional] - new keeper enter address manually
+GET     /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.present
+POST    /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.submit
+
 # Individual keeper details complete
 GET     /private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.present
 POST    /private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.submit

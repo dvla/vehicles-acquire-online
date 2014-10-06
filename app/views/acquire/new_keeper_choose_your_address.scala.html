@@ -48,13 +48,13 @@
         }
 
         @if(dropDownOptions.nonEmpty) {
-            <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.NotImplemented.present()">
+            <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.NewKeeperEnterAddressManually.present()">
                 @Messages("acquire_newKeeperChooseYourAddress.manualAddressEntry")
             </a>
         }
         <div class="form-steps">
             @if(dropDownOptions.isEmpty) {
-                <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.NotImplemented.present()" class="button">
+                <a id="@EnterAddressManuallyButtonId" href="@controllers.routes.NewKeeperEnterAddressManually.present()" class="button">
                     @Messages("acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton")
                 </a>
             }
