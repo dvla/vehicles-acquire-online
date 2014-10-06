@@ -26,7 +26,7 @@ final class NewKeeperEnterAddressManually @Inject()()
       case Some(setupTradeDetails) =>
         Ok(new_keeper_enter_address_manually(form.fill(), setupTradeDetails.traderPostcode))
       case None =>
-        Logger.warn("Failed to find a cookie for ")
+        Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
         Redirect(routes.VehicleLookup.present())
     }
   }
