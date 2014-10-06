@@ -5,7 +5,7 @@ import org.joda.time.LocalDate
 import play.api.data.Forms.mapping
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture, optionalDateOfBirth}
+import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 
 case class PrivateKeeperDetailsCompleteFormModel(mileage: Option[Int],

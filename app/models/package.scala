@@ -12,6 +12,7 @@ import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 
 package object models {
   final val HelpCacheKey = "help"
@@ -36,15 +37,17 @@ package object models {
   // Set of cookies related to all data entered for a private keeper
   final val PrivateKeeperDetailsCacheKeys = Set(
     PrivateKeeperDetailsCacheKey,
+    PrivateKeeperDetailsCompleteCacheKey,
     NewKeeperChooseYourAddressCacheKey,
-    PrivateKeeperDetailsCompleteCacheKey
+    NewKeeperEnterAddressManuallyCacheKey
   )
 
   // Set of cookies related to all data entered for a business keeper
   final val BusinessKeeperDetailsCacheKeys = Set(
     BusinessKeeperDetailsCacheKey,
+    BusinessKeeperDetailsCompleteCacheKey,
     NewKeeperChooseYourAddressCacheKey,
-    BusinessKeeperDetailsCompleteCacheKey
+    NewKeeperEnterAddressManuallyCacheKey
   )
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page
