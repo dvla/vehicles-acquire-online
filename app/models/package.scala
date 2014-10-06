@@ -11,6 +11,7 @@ import models.PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsComplete
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 
 package object models {
   final val HelpCacheKey = "help"
@@ -21,6 +22,7 @@ package object models {
     TraderDetailsCacheKey,
     BusinessChooseYourAddressCacheKey,
     EnterAddressManuallyCacheKey,
+    NewKeeperChooseYourAddressCacheKey,
     BruteForcePreventionViewModelCacheKey
   )
 

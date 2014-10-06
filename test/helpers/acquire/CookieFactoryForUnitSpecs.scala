@@ -214,7 +214,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   }
 
   def newKeeperChooseYourAddress(): Cookie = {
-    val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+    val key = NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
     val value = NewKeeperChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
     createCookie(key, value)
   }

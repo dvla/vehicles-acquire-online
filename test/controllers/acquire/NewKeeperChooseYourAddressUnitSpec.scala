@@ -15,7 +15,7 @@ import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import play.api.test.WithApplication
 import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
-import models.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{BusinessKeeperDetailsCompletePage, PrivateKeeperDetailsCompletePage, VehicleLookupPage, SetupTradeDetailsPage}
@@ -29,7 +29,7 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.common.UprnNotFoundPage
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
-import models.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import models.NewKeeperDetailsModel.NewKeeperDetailsCacheKey
 
 final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
@@ -182,7 +182,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.map(_.name) should contain allOf(newKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
+        cookies.map(_.name) should contain allOf(NewKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
       }
     }
 
@@ -192,7 +192,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.map(_.name) should contain allOf(newKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
+        cookies.map(_.name) should contain allOf(NewKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
       }
     }
 
@@ -202,7 +202,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       val result = newKeeperChooseYourAddressWithUprnNotFound.submit(request)
       whenReady(result) { r =>
         val cookies = r.header.headers.get(SET_COOKIE).toSeq.flatMap(Cookies.decode)
-        cookies.map(_.name) should contain noneOf(newKeeperChooseYourAddressCacheKey, TraderDetailsCacheKey)
+        cookies.map(_.name) should contain noneOf(NewKeeperChooseYourAddressCacheKey, TraderDetailsCacheKey)
       }
     }
   }

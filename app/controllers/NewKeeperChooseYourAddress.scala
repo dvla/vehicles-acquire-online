@@ -61,7 +61,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
             fetchPrivateKeeperAddresses(privateKeeperDetails).map { addresses =>
               BadRequest(new_keeper_choose_your_address(formWithReplacedErrors(invalidForm),
-                privateKeeperDetails.firstName,
+                privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
                 privateKeeperDetails.postcode,
                 privateKeeperDetails.email.getOrElse("Not entered"),
                 addresses))

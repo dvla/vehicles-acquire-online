@@ -302,16 +302,16 @@ businesskeeper_postcode = Business postcode
 businessName = Business name
 
 #new keeper choose your address
-acquire_newKeeperChooseYourAddress_title = Select new keeper address
-acquire_newKeeperChooseYourAddress_legend = Select new keeper address
-acquire_newKeeperChooseYourAddress_newKeeperName_label = New keeper name
+acquire_newKeeperChooseYourAddress_title = Select keeper address
+acquire_newKeeperChooseYourAddress_legend = Select eeper address
+acquire_newKeeperChooseYourAddress_newKeeperName_label = Name
 acquire_newKeeperChooseYourAddress_newKeeperName = {0}
-acquire_newKeeperChooseYourAddress_newKeeperEmail_label = New keeper email
+acquire_newKeeperChooseYourAddress_newKeeperEmail_label = Email
 acquire_newKeeperChooseYourAddress_newKeeperEmail = {0}
-acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = New keeper postcode
+acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Postcode
 acquire_newKeeperChooseYourAddress_newKeeperAddress_label = New keeper address
-acquire_newKeeperChooseYourAddress_addressSelect = Choose your address
-acquire_newKeeperChooseYourAddress_addressSelect_label = Choose your address
+acquire_newKeeperChooseYourAddress_addressSelect = Choose the new keeper's address
+acquire_newKeeperChooseYourAddress_addressSelect_label = Choose the new keeper's address
 acquire_newKeeperChooseYourAddress.backbutton = Back
 acquire_newKeeperChooseYourAddress.submitbutton = Next
 acquire_newKeeperChooseYourAddress.manualAddressEntry = My address is not in the list
