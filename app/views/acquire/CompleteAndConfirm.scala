@@ -1,6 +1,6 @@
 package views.acquire
 
-object BusinessKeeperDetailsComplete {
+object CompleteAndConfirm {
   final val BackId = "back"
   final val SubmitId = "submit"
 }

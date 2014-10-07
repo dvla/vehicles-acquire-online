@@ -13,7 +13,7 @@ import pages.acquire.NewKeeperChooseYourAddressPage.{back, sadPath, happyPath}
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 import pages.acquire.{PrivateKeeperDetailsPage, SetupTradeDetailsPage, NewKeeperChooseYourAddressPage, BeforeYouStartPage}
-import pages.acquire.{BusinessKeeperDetailsPage, VehicleLookupPage, PrivateKeeperDetailsCompletePage, BusinessKeeperDetailsCompletePage}
+import pages.acquire.{BusinessKeeperDetailsPage, VehicleLookupPage, CompleteAndConfirmPage}
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "new keeper choose your address page" should {
@@ -214,18 +214,18 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
         happyPath
 
-        page.title should equal(PrivateKeeperDetailsCompletePage.title)
+        page.title should equal(CompleteAndConfirmPage.title)
       }
 
-//      "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser { //Todo Reimplement
-//        go to BeforeYouStartPage
-//        cacheSetupCommon()
-//        cacheSetupBusinessKeeper()
-//
-//        happyPath
-//
-//        page.title should equal(BusinessKeeperDetailsCompletePage.title)
-//      }
+      "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
+        go to BeforeYouStartPage
+        cacheSetupCommon()
+        cacheSetupBusinessKeeper()
+
+        happyPath
+
+        page.title should equal(CompleteAndConfirmPage.title)
+      }
 
       "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
         go to BeforeYouStartPage

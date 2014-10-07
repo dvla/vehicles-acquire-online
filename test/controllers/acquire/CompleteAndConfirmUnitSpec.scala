@@ -1,21 +1,21 @@
 package controllers.acquire
 
-import controllers.{BusinessKeeperDetailsComplete, PrivateKeeperDetails}
+import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.acquire.BusinessKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid, ConsentTrue, MileageValid}
-import play.api.test.Helpers._
+import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
+import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import utils.helpers.Config
 import org.mockito.Mockito.when
-import pages.acquire.SetupTradeDetailsPage
-import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
+import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
-import scala.Some
 
-class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
+class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {
@@ -39,26 +39,27 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "present a full form when businessKeeperDetailsComplete cookie is present" in new WithApplication {
+    "present a full form when privateKeeperDetailsComplete cookie is present" in new WithApplication {
       val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsCompleteModel())
-      val content = contentAsString(businessKeeperDetailsComplete.present(request))
+        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+      val content = contentAsString(newKeeperDetailsComplete.present(request))
+
       content should include(MileageValid)
     }
 
-    "display empty fields when businessKeeperDetailsComplete cookie does not exist" in new WithApplication {
+    "display empty fields when privateKeeperDetailsComplete cookie does not exist" in new WithApplication {
       val request = FakeRequest()
-      val result = businessKeeperDetailsComplete.present(request)
+      val result = newKeeperDetailsComplete.present(request)
       val content = contentAsString(result)
       content should not include MileageValid
     }
 
-    "redirect to setuptrade details when no businesskeeperdetails cookie is present" in new WithApplication {
+    "redirect to vehicle lookup when no new keeper details cookie are present" in new WithApplication {
       val request = FakeRequest()
-      val result = businessKeeperDetailsComplete.present(request)
+      val result = newKeeperDetailsComplete.present(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
   }
@@ -66,7 +67,7 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
   "submit" should {
     "replace numeric mileage error message for with standard error message " in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$")
-      val result = businessKeeperDetailsComplete.submit(request)
+      val result = newKeeperDetailsComplete.submit(request)
       val count = "You must enter a valid mileage between 0 and 999999".
         r.findAllIn(contentAsString(result)).length
       count should equal(2)
@@ -74,7 +75,8 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
     "redirect to next page when mandatory fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
-      val result = businessKeeperDetailsComplete.submit(request)
+
+      val result = newKeeperDetailsComplete.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
       }
@@ -82,7 +84,8 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
     "redirect to next page when all fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
-      val result = businessKeeperDetailsComplete.submit(request)
+
+      val result = newKeeperDetailsComplete.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
       }
@@ -90,7 +93,7 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
 
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent="")
-      val result = businessKeeperDetailsComplete.submit(request)
+      val result = newKeeperDetailsComplete.submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
@@ -107,16 +110,17 @@ class BusinessKeeperDetailsCompleteUnitSpec extends UnitSpec {
       s"$DateOfSaleId.$DayId" -> dayDateOfSale,
       s"$DateOfSaleId.$MonthId" -> monthDateOfSale,
       s"$DateOfSaleId.$YearId" -> yearDateOfSale,
-      ConsentId -> consent)
+      ConsentId -> consent
+    )
   }
 
-  private val businessKeeperDetailsComplete = {
-    injector.getInstance(classOf[BusinessKeeperDetailsComplete])
+  private val newKeeperDetailsComplete = {
+    injector.getInstance(classOf[CompleteAndConfirm])
   }
 
   private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
-    businessKeeperDetailsComplete.present(request)
+      withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+    newKeeperDetailsComplete.present(request)
   }
 }

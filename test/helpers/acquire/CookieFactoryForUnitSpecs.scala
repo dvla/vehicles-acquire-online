@@ -27,9 +27,9 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, DriverNumberValid}
-import pages.acquire.PrivateKeeperDetailsCompletePage.{MileageValid,ConsentTrue}
+import pages.acquire.CompleteAndConfirmPage.{MileageValid,ConsentTrue}
 import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBirthValid, MonthDateOfBirthValid}
-import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
+import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import scala.Some
@@ -169,12 +169,11 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def privateKeeperDetailsCompleteModel(
-                                        mileage: Option[Int] = Some(MileageValid.toInt),
-                                        dateOfSale: LocalDate = new LocalDate(
-                                          YearDateOfSaleValid.toInt,
-                                          MonthDateOfSaleValid.toInt,
-                                          DayDateOfSaleValid.toInt)): Cookie = {
+  def completeAndConfirmModel(mileage: Option[Int] = Some(MileageValid.toInt),
+                              dateOfSale: LocalDate = new LocalDate(
+                              YearDateOfSaleValid.toInt,
+                              MonthDateOfSaleValid.toInt,
+                              DayDateOfSaleValid.toInt)): Cookie = {
     val key = CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
     val value = CompleteAndConfirmFormModel(
       mileage,
@@ -194,21 +193,6 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       businessName = businessName,
       email = email,
       postcode = postcode
-    )
-    createCookie(key, value)
-  }
-
-  def businessKeeperDetailsCompleteModel(mileage: Option[Int] = Some(MileageValid.toInt),
-                                         consent: String = ConsentTrue,
-                                         dateOfSale: LocalDate = new LocalDate(
-                                           YearDateOfSaleValid.toInt,
-                                           MonthDateOfSaleValid.toInt,
-                                           DayDateOfSaleValid.toInt)): Cookie = {
-    val key = BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
-    val value = BusinessKeeperDetailsCompleteFormModel(
-      mileage,
-      consent,
-      dateOfSale
     )
     createCookie(key, value)
   }

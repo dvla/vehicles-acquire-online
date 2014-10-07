@@ -8,44 +8,44 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
+import pages.acquire.{BeforeYouStartPage,CompleteAndConfirmPage,SetupTradeDetailsPage,NewKeeperChooseYourAddressPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.BusinessKeeperDetailsCompletePage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
-import models.BusinessKeeperDetailsCompleteFormModel.Form.TodaysDateId
-import webserviceclients.fakes.FakeDateServiceImpl._
+import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
+import models.CompleteAndConfirmFormModel.Form.TodaysDateId
+import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
 
-final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with TestHarness {
+final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      go to BusinessKeeperDetailsCompletePage
-      page.title should equal(BusinessKeeperDetailsCompletePage.title)
+      go to CompleteAndConfirmPage
+      page.title should equal(CompleteAndConfirmPage.title)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
-      go to BusinessKeeperDetailsCompletePage
+      go to CompleteAndConfirmPage
       page.source.contains(progressStep(7)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
-      go to BusinessKeeperDetailsCompletePage
+      go to CompleteAndConfirmPage
       page.source.contains(progressStep(7)) should equal(false)
     }
 
-    "redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowser {
-      go to BusinessKeeperDetailsCompletePage
+    "Redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowser {
+      go to CompleteAndConfirmPage
       page.title should equal(SetupTradeDetailsPage.title)
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
-      go to BusinessKeeperDetailsCompletePage
+      go to CompleteAndConfirmPage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
@@ -54,7 +54,7 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
   }
 
   "submit button" should {
-    "go to the appropriate next page when all business keeper complete details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all private keeper complete details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
@@ -64,9 +64,7 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
     "go to the appropriate next page when mandatory private keeper complete details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      navigate(
-        mileage = ""
-      )
+      navigate(mileage = "")
       page.title should equal("Not implemented") //ToDo change title when next page is implemented
     }
 
@@ -138,7 +136,7 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
     "input todays date into date of sale" taggedAs UiTag in new HtmlUnitWithJs {
       go to BeforeYouStartPage
       cacheSetup()
-      go to BusinessKeeperDetailsCompletePage
+      go to CompleteAndConfirmPage
 
       click on useTodaysDate
 
@@ -150,7 +148,7 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
     "not display the Use Todays Date checkbox" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      go to BusinessKeeperDetailsCompletePage
+      go to CompleteAndConfirmPage
 
       webDriver.getPageSource shouldNot contain(TodaysDateId)
     }
@@ -163,9 +161,9 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
         setupTradeDetails().
         dealerDetails(addressWithUprn).
         vehicleDetails().
-        businessKeeperDetails()
+        privateKeeperDetails()
 
-      go to BusinessKeeperDetailsCompletePage
+      go to CompleteAndConfirmPage
       click on back
       page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
@@ -176,5 +174,5 @@ final class BusinessKeeperDetailsCompleteIntegrationSpec extends UiSpec with Tes
       setupTradeDetails()
       .dealerDetails()
       .vehicleDetails()
-      .businessKeeperDetails()
+      .privateKeeperDetails()
 }

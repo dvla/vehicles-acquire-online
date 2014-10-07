@@ -1,37 +1,48 @@
 package controllers.acquire
 
+import controllers.CompleteAndConfirm
 import helpers.UnitSpec
-import models.BusinessKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
-import models.BusinessKeeperDetailsCompleteFormModel
-import pages.acquire.BusinessKeeperDetailsCompletePage.ConsentTrue
-import play.api.data.Form
-import pages.acquire.BusinessKeeperDetailsCompletePage.{MileageValid, DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-import controllers.BusinessKeeperDetailsComplete
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
-import scala.Some
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.LocalDate
+import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.MileageValid
+import pages.acquire.CompleteAndConfirmPage.ConsentTrue
+import play.api.data.Form
+import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
-class BusinessKeeperDetailsCompleteFormSpec extends UnitSpec {
+class CompleteAndConfirmFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields entered correctly" in {
       val model = formWithValidDefaults().get
-
       model.mileage should equal(Some("1000".toInt))
+      model.dateOfSale should equal(new LocalDate(
+        YearDateOfSaleValid.toInt,
+        MonthDateOfSaleValid.toInt,
+        DayDateOfSaleValid.toInt))
     }
 
     "accept if form is completed with mandatory fields only" in {
-      val model = formWithValidDefaults(mileage = "").get
-
+      val model = formWithValidDefaults(
+        mileage = "").get
       model.mileage should equal(None)
+      model.dateOfSale should equal(new LocalDate(
+        YearDateOfSaleValid.toInt,
+        MonthDateOfSaleValid.toInt,
+        DayDateOfSaleValid.toInt))
     }
 
     "reject if form has no fields completed" in {
-      formWithValidDefaults(mileage = "", dayDateOfSale = "", monthDateOfSale = "", yearDateOfSale = "", consent = "").
+      formWithValidDefaults(dayDateOfSale = "", monthDateOfSale = "", yearDateOfSale = "", consent = "").
         errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.required", "error.date.invalid")
+        List("error.date.invalid", "error.required")
     }
   }
+
+
 
   "mileage" should {
     "not accept less than 0" in {
@@ -67,10 +78,11 @@ class BusinessKeeperDetailsCompleteFormSpec extends UnitSpec {
   }
 
   "date of sale" should {
-    //"not accept a date in the future" in {
-    //  formWithValidDefaults(yearDateOfSale = "2500").errors.flatMap(_.messages) should contain theSameElementsAs
-    //    List("error.date.inTheFuture")
-    //}
+   // "not accept a date in the future" in {
+    //  formWithValidDefaults(yearDateOfBirth = "2500").errors should equal(
+   //     Seq(FormError("privatekeeper_dateofbirth", "error.dateOfBirth.inTheFuture"))
+   //   )
+   // }
 
     "not accept an invalid day of month of 0" in {
       formWithValidDefaults(dayDateOfSale = "0").errors.flatMap(_.messages) should contain theSameElementsAs
@@ -140,8 +152,8 @@ class BusinessKeeperDetailsCompleteFormSpec extends UnitSpec {
                                     dayDateOfSale: String = DayDateOfSaleValid,
                                     monthDateOfSale: String = MonthDateOfSaleValid,
                                     yearDateOfSale: String = YearDateOfSaleValid,
-                                    consent: String = ConsentTrue): Form[BusinessKeeperDetailsCompleteFormModel] = {
-    injector.getInstance(classOf[BusinessKeeperDetailsComplete])
+                                    consent: String = ConsentTrue): Form[CompleteAndConfirmFormModel] = {
+    injector.getInstance(classOf[CompleteAndConfirm])
       .form.bind(
         Map(
           MileageId -> mileage,
@@ -151,5 +163,5 @@ class BusinessKeeperDetailsCompleteFormSpec extends UnitSpec {
           ConsentId -> consent
         )
       )
-    }
+  }
 }

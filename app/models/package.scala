@@ -3,7 +3,6 @@ import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCache
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsCompleteCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
@@ -45,7 +44,6 @@ package object models {
   // Set of cookies related to all data entered for a business keeper
   final val BusinessKeeperDetailsCacheKeys = Set(
     BusinessKeeperDetailsCacheKey,
-    BusinessKeeperDetailsCompleteCacheKey,
     NewKeeperChooseYourAddressCacheKey,
     NewKeeperEnterAddressManuallyCacheKey
   )

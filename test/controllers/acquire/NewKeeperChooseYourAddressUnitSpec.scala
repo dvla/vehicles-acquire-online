@@ -17,7 +17,7 @@ import play.api.test.WithApplication
 import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
-import pages.acquire.{BusinessKeeperDetailsCompletePage, PrivateKeeperDetailsCompletePage, VehicleLookupPage}
+import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
@@ -109,7 +109,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-          r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
+          r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
       }
     }
 
@@ -118,7 +118,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
+        r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
       }
     }
 

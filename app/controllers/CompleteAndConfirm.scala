@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{CompleteAndConfirmFormModel, PrivateKeeperDetailsCompleteViewModel, PrivateKeeperDetailsFormModel}
+import models.{BusinessKeeperDetailsFormModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, PrivateKeeperDetailsFormModel}
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import models.CompleteAndConfirmFormModel.Form.MileageId
 import play.api.data.{FormError, Form}
@@ -24,19 +24,21 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
   )
 
   def present = Action { implicit request =>
-    request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
-      case Some(privateKeeperDetails) =>
-        Ok(complete_and_confirm(PrivateKeeperDetailsCompleteViewModel(form.fill(), null, null), dateService))
+    (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
+      case (Some(privateKeeperDetails), None) =>
+        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
+      case (None, Some(businessKeeperDetails)) =>
+        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
       case _ =>
-        Logger.warn("Did not find PrivateKeeperDetails cookie. Now redirecting to SetUpTradeDetails.")
-        Redirect(routes.SetUpTradeDetails.present())
+        Logger.warn("Did not find a new keeper details cookie. Now redirecting to Vehicle Lookup.")
+        Redirect(routes.VehicleLookup.present())
     }
   }
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
-        BadRequest(complete_and_confirm(PrivateKeeperDetailsCompleteViewModel(
+        BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
           formWithReplacedErrors(invalidForm), null, null
         ), dateService)),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
