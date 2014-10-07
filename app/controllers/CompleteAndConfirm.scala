@@ -25,9 +25,9 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
 
   def present = Action { implicit request =>
     (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
-      case (Some(privateKeeperDetails), None) =>
+      case (Some(privateKeeperDetails), _) =>
         Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
-      case (None, Some(businessKeeperDetails)) =>
+      case (_, Some(businessKeeperDetails)) =>
         Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
       case _ =>
         Logger.warn("Did not find a new keeper details cookie. Now redirecting to Vehicle Lookup.")
