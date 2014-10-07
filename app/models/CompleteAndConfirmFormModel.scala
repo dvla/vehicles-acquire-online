@@ -8,17 +8,17 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 
-case class PrivateKeeperDetailsCompleteFormModel(mileage: Option[Int],
+case class CompleteAndConfirmFormModel(mileage: Option[Int],
                                                  dateOfSale: LocalDate,
                                                  consent: String)
 
-object PrivateKeeperDetailsCompleteFormModel {
-  implicit val JsonFormat = Json.format[PrivateKeeperDetailsCompleteFormModel]
-  final val PrivateKeeperDetailsCompleteCacheKey = "privateKeeperDetailsComplete"
-  implicit val Key = CacheKey[PrivateKeeperDetailsCompleteFormModel](PrivateKeeperDetailsCompleteCacheKey)
+object CompleteAndConfirmFormModel {
+  implicit val JsonFormat = Json.format[CompleteAndConfirmFormModel]
+  final val CompleteAndConfirmCacheKey = "completeAndConfirm"
+  implicit val Key = CacheKey[CompleteAndConfirmFormModel](CompleteAndConfirmCacheKey)
 
   object Form {
-    final val MileageId = "privatekeeper_mileage"
+    final val MileageId = "mileage"
     final val DateOfSaleId = "dateofsale"
     final val TodaysDateId = "todays_date"
     final val ConsentId = "consent"
@@ -27,6 +27,6 @@ object PrivateKeeperDetailsCompleteFormModel {
       MileageId -> mileage,
       DateOfSaleId -> dateMapping.verifying(notInTheFuture()),
       ConsentId -> consent
-    )(PrivateKeeperDetailsCompleteFormModel.apply)(PrivateKeeperDetailsCompleteFormModel.unapply)
+    )(CompleteAndConfirmFormModel.apply)(CompleteAndConfirmFormModel.unapply)
   }
 }

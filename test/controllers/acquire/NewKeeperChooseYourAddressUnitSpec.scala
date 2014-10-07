@@ -118,7 +118,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsCompletePage.address))
+        r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsCompletePage.address))
       }
     }
 

@@ -115,15 +115,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
-        if (privateKeeper) {
           val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
-          Redirect(routes.PrivateKeeperDetailsComplete.present()).withCookie(model).withCookie(newKeeperDetailsModel)
-        } else {
-          val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
-          Redirect(routes.BusinessKeeperDetailsComplete.present()).
-            withCookie(model).
-            withCookie(newKeeperDetailsModel)
-        }
+          Redirect(routes.CompleteAndConfirm.present()).withCookie(model).withCookie(newKeeperDetailsModel)
       case None => Redirect(routes.UprnNotFound.present())
     }
   }

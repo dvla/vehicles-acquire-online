@@ -175,8 +175,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                                           YearDateOfSaleValid.toInt,
                                           MonthDateOfSaleValid.toInt,
                                           DayDateOfSaleValid.toInt)): Cookie = {
-    val key = PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
-    val value = PrivateKeeperDetailsCompleteFormModel(
+    val key = CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
+    val value = CompleteAndConfirmFormModel(
       mileage,
       dateOfSale,
       ""

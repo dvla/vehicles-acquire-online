@@ -1,9 +1,9 @@
 package controllers.acquire
 
-import controllers.PrivateKeeperDetailsComplete
+import controllers.CompleteAndConfirm
 import helpers.UnitSpec
-import models.PrivateKeeperDetailsCompleteFormModel
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.LocalDate
 import pages.acquire.PrivateKeeperDetailsCompletePage.DayDateOfSaleValid
 import pages.acquire.PrivateKeeperDetailsCompletePage.MonthDateOfSaleValid
@@ -152,8 +152,8 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
                                     dayDateOfSale: String = DayDateOfSaleValid,
                                     monthDateOfSale: String = MonthDateOfSaleValid,
                                     yearDateOfSale: String = YearDateOfSaleValid,
-                                    consent: String = ConsentTrue): Form[PrivateKeeperDetailsCompleteFormModel] = {
-    injector.getInstance(classOf[PrivateKeeperDetailsComplete])
+                                    consent: String = ConsentTrue): Form[CompleteAndConfirmFormModel] = {
+    injector.getInstance(classOf[CompleteAndConfirm])
       .form.bind(
         Map(
           MileageId -> mileage,

@@ -1,9 +1,9 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{PrivateKeeperDetailsCompleteFormModel, PrivateKeeperDetailsCompleteViewModel, PrivateKeeperDetailsFormModel}
+import models.{CompleteAndConfirmFormModel, PrivateKeeperDetailsCompleteViewModel, PrivateKeeperDetailsFormModel}
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
-import models.PrivateKeeperDetailsCompleteFormModel.Form.MileageId
+import models.CompleteAndConfirmFormModel.Form.MileageId
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
@@ -13,22 +13,20 @@ import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResu
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
-import views.html.acquire.private_keeper_details_complete
+import views.html.acquire.complete_and_confirm
 
-class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                dateService: DateService,
                                                config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    PrivateKeeperDetailsCompleteFormModel.Form.Mapping
+    CompleteAndConfirmFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
     request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
       case Some(privateKeeperDetails) =>
-        Ok(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
-          form.fill(), null, null
-        ), dateService))
+        Ok(complete_and_confirm(PrivateKeeperDetailsCompleteViewModel(form.fill(), null, null), dateService))
       case _ =>
         Logger.warn("Did not find PrivateKeeperDetails cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
@@ -38,14 +36,14 @@ class PrivateKeeperDetailsComplete @Inject()()(implicit clientSideSessionFactory
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
-        BadRequest(private_keeper_details_complete(PrivateKeeperDetailsCompleteViewModel(
+        BadRequest(complete_and_confirm(PrivateKeeperDetailsCompleteViewModel(
           formWithReplacedErrors(invalidForm), null, null
         ), dateService)),
       validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
     )
   }
 
-  private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsCompleteFormModel]) = {
+  private def formWithReplacedErrors(form: Form[CompleteAndConfirmFormModel]) = {
     form.replaceError(
       ConsentId,
       "error.required",

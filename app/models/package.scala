@@ -7,7 +7,7 @@ import models.BusinessKeeperDetailsCompleteFormModel.BusinessKeeperDetailsComple
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import models.PrivateKeeperDetailsCompleteFormModel.PrivateKeeperDetailsCompleteCacheKey
+import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
@@ -37,7 +37,7 @@ package object models {
   // Set of cookies related to all data entered for a private keeper
   final val PrivateKeeperDetailsCacheKeys = Set(
     PrivateKeeperDetailsCacheKey,
-    PrivateKeeperDetailsCompleteCacheKey,
+    CompleteAndConfirmCacheKey,
     NewKeeperChooseYourAddressCacheKey,
     NewKeeperEnterAddressManuallyCacheKey
   )

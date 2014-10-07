@@ -217,15 +217,15 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         page.title should equal(PrivateKeeperDetailsCompletePage.title)
       }
 
-      "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
-        go to BeforeYouStartPage
-        cacheSetupCommon()
-        cacheSetupBusinessKeeper()
-
-        happyPath
-
-        page.title should equal(BusinessKeeperDetailsCompletePage.title)
-      }
+//      "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser { //Todo Reimplement
+//        go to BeforeYouStartPage
+//        cacheSetupCommon()
+//        cacheSetupBusinessKeeper()
+//
+//        happyPath
+//
+//        page.title should equal(BusinessKeeperDetailsCompletePage.title)
+//      }
 
       "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
         go to BeforeYouStartPage

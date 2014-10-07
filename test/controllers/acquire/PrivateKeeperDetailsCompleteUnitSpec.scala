@@ -1,6 +1,6 @@
 package controllers.acquire
 
-import controllers.{PrivateKeeperDetails, PrivateKeeperDetailsComplete}
+import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
@@ -12,7 +12,7 @@ import pages.acquire.PrivateKeeperDetailsCompletePage.{DayDateOfSaleValid, Month
 import utils.helpers.Config
 import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
 class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
@@ -115,7 +115,7 @@ class PrivateKeeperDetailsCompleteUnitSpec extends UnitSpec {
   }
 
   private val privateKeeperDetailsComplete = {
-    injector.getInstance(classOf[PrivateKeeperDetailsComplete])
+    injector.getInstance(classOf[CompleteAndConfirm])
   }
 
   private lazy val present = {

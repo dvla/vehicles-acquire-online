@@ -12,7 +12,7 @@ import pages.acquire.{BeforeYouStartPage,PrivateKeeperDetailsCompletePage,SetupT
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsCompletePage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
-import models.PrivateKeeperDetailsCompleteFormModel.Form.TodaysDateId
+import models.CompleteAndConfirmFormModel.Form.TodaysDateId
 import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
 
 final class PrivateKeeperDetailsCompleteIntegrationSpec extends UiSpec with TestHarness {
