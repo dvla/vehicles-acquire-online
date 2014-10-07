@@ -14,6 +14,7 @@ import common.mappings.Email.email
 import common.mappings.DriverNumber.driverNumber
 import common.mappings.Postcode.postcode
 import common.views.helpers.FormExtensions.nonEmptyTextWithTransform
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
 
 case class PrivateKeeperDetailsFormModel(title: String, 
                                          firstName: String, 
@@ -70,7 +71,7 @@ object PrivateKeeperDetailsFormModel {
     )
 
     final val Mapping = mapping(
-      TitleId -> titleDropDown(titleOptions),
+      TitleId -> TitlePickerString.mapping,
       FirstNameId -> firstNameMapping,
       LastNameId -> lastNameMapping,
       DateOfBirthId -> optionalDateOfBirth,

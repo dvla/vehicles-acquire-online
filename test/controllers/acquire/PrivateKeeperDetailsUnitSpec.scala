@@ -21,12 +21,11 @@ import pages.acquire.PrivateKeeperDetailsPage.TitleInvalidError
 import pages.acquire.PrivateKeeperDetailsPage.TitleValid
 import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
-import pages.acquire.{NewKeeperChooseYourAddressPage, PrivateKeeperDetailsCompletePage, SetupTradeDetailsPage}
+import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import scala.Some
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
@@ -44,7 +43,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     "not display prototype message when config set to false" in new WithApplication {
       val request = FakeRequest()
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
-      implicit val config: Config = mock[Config]
+      implicit val config = mock[Config]
       when(config.isPrototypeBannerVisible).thenReturn(false)
 
       val privateKeeperDetailsPrototypeNotVisible = new PrivateKeeperDetails()
@@ -67,6 +66,15 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       content should include(EmailValid)
     }
 
+    "display populated other title when cookie exists" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel(title = "otherTitle"))
+      val result = privateKeeperDetails.present(request)
+      val content = contentAsString(result)
+      content should include("otherTitle")
+    }
+
     "display empty fields when cookie does not exist" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
@@ -82,6 +90,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     "redirect to next page when mandatory fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(email = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
