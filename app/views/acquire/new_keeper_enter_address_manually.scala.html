@@ -1,5 +1,5 @@
 @(enterAddressManuallyForm: Form[models.NewKeeperEnterAddressManuallyFormModel],
-    traderPostcode: String)(implicit lang: Lang,
+    newKeeperPostcode: String)(implicit lang: Lang,
     token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
     config: utils.helpers.Config)
 
@@ -23,13 +23,13 @@
     @addressAndPostcode(enterAddressManuallyForm(AddressAndPostcodeId))
 
     <legend>@Messages("address.postcode.label")</legend>
-    <div class="read-only-input">@traderPostcode</div>
+    <div class="read-only-input">@newKeeperPostcode</div>
     <div class="form-steps">
         <button id="@NextId" type="submit" name="action" class="button">
-            @Messages("acquire_enteraddressmanually.submitbutton")
+            @Messages("acquire_newkeeperenteraddressmanually.submitbutton")
         </button>
-        <a id="@BackId" class="button-secondary" href="@controllers.routes.NewKeeperEnterAddressManually.present()">
-            @Messages("acquire_enteraddressmanually.backbutton")
+        <a id="@BackId" class="button-secondary" href="@controllers.routes.NewKeeperChooseYourAddress.present()">
+            @Messages("acquire_newkeeperenteraddressmanually.backbutton")
         </a>
     </div>
     }

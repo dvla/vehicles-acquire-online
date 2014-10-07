@@ -1,44 +1,58 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{EnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
+import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperEnterAddressManuallyFormModel
+import models.PrivateKeeperDetailsFormModel
+import models.SetupTradeDetailsFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
+import common.clientsidesession.CookieImplicits.{RichForm, RichCookies}
 import common.model.{TraderDetailsModel, AddressModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
-import views.html.acquire.enter_address_manually
+import views.html.acquire.new_keeper_enter_address_manually
 
 final class NewKeeperEnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    EnterAddressManuallyFormModel.Form.Mapping
+    NewKeeperEnterAddressManuallyFormModel.Form.Mapping
   )
 
   def present = Action { implicit request =>
-    request.cookies.getModel[SetupTradeDetailsFormModel] match {
-      case Some(setupTradeDetails) =>
-        Ok(enter_address_manually(form.fill(), traderPostcode = setupTradeDetails.traderPostcode))
-      case None => Redirect(routes.SetUpTradeDetails.present())
+    val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
+    val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
+    (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
+      case (Some(privateKeeperDetails), _) =>
+        Ok(new_keeper_enter_address_manually(form.fill(), privateKeeperDetails.postcode))
+      case (_, Some(businessKeeperDetails)) =>
+        Ok(new_keeper_enter_address_manually(form.fill(), businessKeeperDetails.postcode))
+      case _ =>
+        Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
+        Redirect(routes.VehicleLookup.present())
     }
   }
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm =>
-        request.cookies.getModel[SetupTradeDetailsFormModel] match {
-          case Some(setupTradeDetails) =>
-            BadRequest(enter_address_manually(formWithReplacedErrors(invalidForm), setupTradeDetails.traderPostcode))
-          case None =>
-            Logger.debug("Failed to find dealer name in cache, redirecting")
-            Redirect(routes.SetUpTradeDetails.present())
-        },
+      invalidForm => {
+        val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
+        val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
+        (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
+          case (Some(privateKeeperDetails), _) =>
+            BadRequest(new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm), privateKeeperDetails.postcode))
+          case (_, Some(businessKeeperDetails)) =>
+            BadRequest(new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm), businessKeeperDetails.postcode))
+          case _ =>
+            Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
+            Redirect(routes.VehicleLookup.present())
+        }
+      },
       validForm =>
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetails) =>
@@ -52,9 +66,10 @@ final class NewKeeperEnterAddressManually @Inject()()
             )
 
             // Redirect to the next screen in the workflow
-            Redirect(routes.VehicleLookup.present()).
-              withCookie(validForm).
-              withCookie(traderDetailsModel)
+//            Redirect(routes.VehicleLookup.present()).
+//              withCookie(validForm).
+//              withCookie(traderDetailsModel)
+              Redirect(routes.NotImplemented.present())
           case None =>
             Logger.debug("Failed to find dealer name in cache on submit, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
@@ -62,7 +77,7 @@ final class NewKeeperEnterAddressManually @Inject()()
     )
   }
 
-  private def formWithReplacedErrors(form: Form[EnterAddressManuallyFormModel]) =
+  private def formWithReplacedErrors(form: Form[NewKeeperEnterAddressManuallyFormModel]) =
     form.replaceError(
       "addressAndPostcode.addressLines.buildingNameOrNumber",
       FormError("addressAndPostcode.addressLines", "error.address.buildingNameOrNumber.invalid")

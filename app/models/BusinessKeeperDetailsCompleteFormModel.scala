@@ -1,16 +1,12 @@
 package models
 
-import play.api.data.Forms.mapping
-import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
-import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
 import mappings.Consent.consent
 import org.joda.time.LocalDate
 import play.api.data.Forms.mapping
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
+import common.mappings.Date.{dateMapping, notInTheFuture}
 import common.mappings.Mileage.mileage
 
 case class BusinessKeeperDetailsCompleteFormModel(mileage: Option[Int], consent: String, dateOfSale: LocalDate)

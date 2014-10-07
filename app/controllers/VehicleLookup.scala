@@ -1,17 +1,18 @@
 package controllers
 
 import com.google.inject.Inject
+import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import models._
+import models.{BusinessKeeperDetailsCacheKeys, PrivateKeeperDetailsCacheKeys}
 import play.api.data.{Form, FormError}
-import play.api.mvc.{Call, Action, Request}
+import play.api.mvc.{Action, Call, Request}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.controllers.VehicleLookupBase
-import common.controllers.VehicleLookupBase.{VehicleFound, VehicleNotFound, LookupResult}
+import common.controllers.VehicleLookupBase.LookupResult
 import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
@@ -19,13 +20,10 @@ import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
 import common.webserviceclients.vehiclelookup.VehicleDetailsDto
 import common.webserviceclients.vehiclelookup.VehicleLookupService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
+import common.controllers.VehicleLookupBase.VehicleFound
+import common.controllers.VehicleLookupBase.VehicleNotFound
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import scala.Some
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase.VehicleFound
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase.VehicleNotFound
-import play.api.mvc.Call
-import models.VehicleLookupViewModel
 
 final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService,
                                     vehicleLookupService: VehicleLookupService,
