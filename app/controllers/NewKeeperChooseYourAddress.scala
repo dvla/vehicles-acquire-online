@@ -76,26 +76,34 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     Ok(views.html.acquire.new_keeper_choose_your_address(
       form.fill(), name, postcode, email.getOrElse("Not entered"), addresses))
 
+  private def handleInvalidForm(invalidForm: Form[NewKeeperChooseYourAddressFormModel],
+                  name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
+                 (implicit request: Request[_]) = {
+    BadRequest(new_keeper_choose_your_address(formWithReplacedErrors(invalidForm),
+      name, postcode, email.getOrElse("Not entered"), addresses))
+  }
+
   def submit = Action.async { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
         switch(request, { privateKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-            BadRequest(new_keeper_choose_your_address(formWithReplacedErrors(invalidForm),
+            handleInvalidForm(invalidForm,
               privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
               privateKeeperDetails.postcode,
-              privateKeeperDetails.email.getOrElse("Not entered"),
-              addresses))
+              privateKeeperDetails.email,
+              addresses)
           }
+
         }, { businessKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-            BadRequest(new_keeper_choose_your_address(formWithReplacedErrors(invalidForm),
+            handleInvalidForm(invalidForm,
               businessKeeperDetails.businessName,
               businessKeeperDetails.postcode,
-              businessKeeperDetails.email.getOrElse("Not entered"),
-              addresses))
+              businessKeeperDetails.email,
+              addresses)
           }
         }, message => Future.successful(neither(message))),
       validForm =>

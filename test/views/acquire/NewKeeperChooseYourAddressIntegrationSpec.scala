@@ -7,8 +7,14 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
-import pages.acquire.NewKeeperChooseYourAddressPage.{back, sadPath, happyPath}
+import pages.acquire.BeforeYouStartPage
+import pages.acquire.BusinessKeeperDetailsPage
+import pages.acquire.CompleteAndConfirmPage
+import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire.NewKeeperChooseYourAddressPage
+import pages.acquire.NewKeeperEnterAddressManuallyPage
+import pages.acquire.VehicleLookupPage
+import pages.acquire.NewKeeperChooseYourAddressPage.{back, manualAddress, sadPath, happyPath}
 import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
@@ -49,6 +55,15 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     "redirect to vehicle lookup when no keeper cookies are in cache" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupCommon
+      go to NewKeeperChooseYourAddressPage
+      page.title should equal(VehicleLookupPage.title)
+    }
+
+    "redirect to vehicle lookup when cookies are in cache for both private and business keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
+      cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
       page.title should equal(VehicleLookupPage.title)
     }
@@ -145,27 +160,23 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
-//    "manualAddress button that is displayed when addresses have been found" should { //ToDo implement test when enter address manually for new keeper is added
-//      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
-//        go to BeforeYouStartPage
-//        cacheSetup()
-//        go to BusinessChooseYourAddressPage
-//
-//        click on manualAddress
-//
-//        page.title should equal(EnterAddressManuallyPage.title)
-//      }
-//    }
+    "allow navigation to manual address entry when addresses have been found" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
+      go to NewKeeperChooseYourAddressPage
+      click on manualAddress
+      page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+    }
 
-//    "manualAddress button that is displayed when no addresses have been found" should { //ToDo implement test when enter address manually for new keeper is added
-//      "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
-//        SetupTradeDetailsPage.submitPostcodeWithoutAddresses
-//
-//        click on manualAddress
-//
-//        page.title should equal(EnterAddressManuallyPage.title)
-//      }
-//    }
+    "allow navigation to manual address entry when no addresses have been found" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
+      PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
+      click on manualAddress
+      page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+    }
 
     "contain the hidden csrfToken field for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
