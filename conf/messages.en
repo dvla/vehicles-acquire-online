@@ -55,6 +55,7 @@ error.fleetNumber = The fleet number can only be a 6 digit number, please try ag
 error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
 error.postTown.characterInvalid = Town or city contains invalid characters
 error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
+error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -120,7 +121,7 @@ acquire_beforeyoustart.listitem3.2 =, you will need to send the completed applic
 acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
 acquire_beforeyoustart.button = Start now
 
-#page2 - Setup trade details
+#page 2 - Setup trade details
 acquire_setuptradedetails.title = Provide trader details
 acquire_setuptradedetails.name = Sell a vehicle into the motor trade
 acquire_setuptradedetails.p1 = Set-up trade details
@@ -180,6 +181,7 @@ vehicleRegistrationNumber = Vehicle registration number
 documentReferenceNumber = Document reference number
 error.validDocumentReferenceNumber = Document reference number must be an 11-digit number
 
+#uprn not found
 acquire_uprnnotfound.title = Error confirming post code
 acquire_uprnnotfound.p1 = An error has occurred validating your postcode. Please re-enter or enter your details manually
 acquire_uprnnotfound.manualaddressbutton = Set-up trade details
@@ -325,20 +327,6 @@ acquire_newKeeperChooseYourAddress.manualAddressEntry = My address is not in the
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
-
-#business keeper detail complete
-acquire_businesskeeperdetailscomplete.title = Complete and confirm
-acquire_businesskeeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
-acquire_businesskeeperdetailscomplete.mileage.label = Vehicle mileage
-acquire_businesskeeperdetailscomplete.submitbutton = Add Keeper
-acquire_businesskeeperdetailscomplete.backbutton = Back
-acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
-businesskeeper_mileage = Mileage
-
-privatekeeper_dateofsale = Date of Sale
-businesskeeper_dateofsale = Date of Sale
-
-error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 
 #micro-service error page
 micro_service_error.title=We are sorry
