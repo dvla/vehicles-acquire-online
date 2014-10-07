@@ -265,27 +265,13 @@ privatekeeper_firstname = First name
 privatekeeper_lastname = Last name
 use_todays_date.label = Use today's date
 privatekeeper_postcode = Postcode
+dateOfBirthInput.label = Date of Birth
+dateOfBirthInput.hint = for example, 20 3 1976
 privatekeeper_drivernumber = Driver number
 acquire_privatekeeperdetails.drivernumberlabel = Driving license number of new keeper
 acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 acquire_privatekeeperdetails.postcodelabel = Postcode
 acquire_privatekeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
-
-#private keeper detail complete
-acquire_keeperdetailscomplete.title = Complete and confirm
-acquire_keeperdetailscomplete.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
-acquire_keeperdetailscomplete.mileage.label = Vehicle mileage
-acquire_keeperdetailscomplete.submitbutton = Add Keeper
-acquire_keeperdetailscomplete.backbutton = Back
-acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
-acquire_privatekeeperdetails.dateofbirth.hint = for example, 20 3 1976
-privatekeeper_dateofbirth = Date of birth of new keeper
-dateofsale = Date of sale
-privatekeeper_mileage = Mileage
-dateOfBirthInput.label = Date of Birth
-dateOfBirthInput.hint = for example, 20 3 1976
-acquire_keeperdetailscomplete.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
-acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
@@ -327,6 +313,21 @@ acquire_newKeeperChooseYourAddress.manualAddressEntry = My address is not in the
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+
+#complete and confirm
+acquire_completeAndConfirm.title = Complete and confirm
+acquire_completeAndConfirm.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
+acquire_completeAndConfirm.mileage.label = Vehicle mileage
+acquire_completeAndConfirm.submitbutton = Add Keeper
+acquire_completeAndConfirm.backbutton = Back
+acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
+acquire_privatekeeperdetails.dateofbirth.hint = for example, 20 3 1976
+privatekeeper_dateofbirth = Date of birth of new keeper
+dateofsale = Date of sale
+privatekeeper_mileage = Mileage
+
+acquire_keeperdetailscomplete.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
+acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
 
 #micro-service error page
 micro_service_error.title=We are sorry

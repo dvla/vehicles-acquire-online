@@ -16,19 +16,19 @@
 
 @main(
     progress = Some(Messages("acquire_progress_7")),
-    title = Messages("acquire_keeperdetailscomplete.title"),
+    title = Messages("acquire_completeAndConfirm.title"),
     currentForm = Some(data.form)
 ) {
     @form(action = CompleteAndConfirm.submit) {
         @csrfTokenHiddenField()
 
-        <p>@Messages("acquire_keeperdetailscomplete.p1")</p>
+        <p>@Messages("acquire_completeAndConfirm.p1")</p>
 
         <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/autofill-todays-date.js")" type="text/javascript"></script>
 
         @valtechInputText(
             data.form(MileageId), args =
-            Map('_label -> Messages("acquire_keeperdetailscomplete.mileage.label"),
+            Map('_label -> Messages("acquire_completeAndConfirm.mileage.label"),
                 '_showConstraints -> false,
                 'typeTel -> true,
                 'maxLength -> Mileage.MaxLength // Must be set independently of the pattern as the pattern is only checked when the user submits.
@@ -61,13 +61,12 @@
         <div class="second-col">
             <div class="form-steps">
                 <button id="@SubmitId" type="submit" name="action" class="button">
-                    @Messages("acquire_keeperdetailscomplete.submitbutton")
+                    @Messages("acquire_completeAndConfirm.submitbutton")
                 </button>
                 <a id="@BackId" href="@controllers.routes.NewKeeperChooseYourAddress.present()" class="button-secondary">
-                    @Messages("acquire_keeperdetailscomplete.backbutton")
+                    @Messages("acquire_completeAndConfirm.backbutton")
                 </a>
             </div>
         </div>
     }
 }
-
