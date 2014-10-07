@@ -1,6 +1,6 @@
 package controllers.acquire
 
-import controllers.{NewKeeperChooseYourAddress, BusinessChooseYourAddress}
+import controllers.NewKeeperChooseYourAddress
 import helpers.common.CookieHelper
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
@@ -15,16 +15,14 @@ import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import play.api.test.WithApplication
 import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
-import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
-import pages.acquire.{BusinessKeeperDetailsCompletePage, PrivateKeeperDetailsCompletePage, VehicleLookupPage, SetupTradeDetailsPage}
+import pages.acquire.{BusinessKeeperDetailsCompletePage, PrivateKeeperDetailsCompletePage, VehicleLookupPage}
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import utils.helpers.Config
-import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.common.UprnNotFoundPage
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
@@ -81,11 +79,11 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       content should not include "selected"
     }
 
-    "redirect to setupTradeDetails page when present with no dealer name cached" in new WithApplication {
+    "redirect to vehicle lookup page when present with no dealer name cached" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
       val result = newKeeperChooseYourAddressWithUprnFound.present(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
 
@@ -142,19 +140,19 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to setupTradeDetails page when valid submit with no new keeper cached" in new WithApplication {
+    "redirect to vehicle lookup page when valid submit with no new keeper cached" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
 
-    "redirect to setupTradeDetails page when bad submit with no new keeper cached" in new WithApplication {
+    "redirect to vehicle lookup page when bad submit with no new keeper cached" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(newKeeperUprn = "")
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
 

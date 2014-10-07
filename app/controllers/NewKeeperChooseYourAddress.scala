@@ -6,7 +6,6 @@ import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
 import play.api.mvc.{Action, Controller, Request}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -16,7 +15,7 @@ import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
-import scala.Some
+import models.{NewKeeperDetailsModel, BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperChooseYourAddressFormModel}
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -24,30 +23,30 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private[controllers] val form = Form(NewKeeperChooseYourAddressFormModel.Form.Mapping)
 
-  def present = Action.async { implicit request =>
-    request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
+  def present = Action.async { implicit request => request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
       case Some(privateKeeperDetails) =>
         val session = clientSideSessionFactory.getSession(request.cookies)
         fetchPrivateKeeperAddresses(privateKeeperDetails)(session, request2lang).map { addresses =>
-          Ok(views.html.acquire.new_keeper_choose_your_address(form.fill(),
+          Ok(views.html.acquire.new_keeper_choose_your_address(
+            form.fill(),
             privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
             privateKeeperDetails.postcode,
             privateKeeperDetails.email.getOrElse("Not entered"),
             addresses))
         }
-      case None =>
-        request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
+      case None => request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
           case Some(businessKeeperDetails) =>
             val session = clientSideSessionFactory.getSession(request.cookies)
             fetchBusinessKeeperAddresses(businessKeeperDetails)(session, request2lang).map { addresses =>
-              Ok(views.html.acquire.new_keeper_choose_your_address(form.fill(),
+              Ok(views.html.acquire.new_keeper_choose_your_address(
+                form.fill(),
                 businessKeeperDetails.businessName,
                 businessKeeperDetails.postcode,
                 businessKeeperDetails.email.getOrElse("Not entered"),
                 addresses))
             }
           case None => Future {
-            Redirect(routes.SetUpTradeDetails.present())
+            Redirect(routes.VehicleLookup.present())
           }
         }
     }
@@ -55,8 +54,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   def submit = Action.async { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm =>
-        request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
+      invalidForm => request.cookies.getModel[PrivateKeeperDetailsFormModel] match {
           case Some(privateKeeperDetails) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
             fetchPrivateKeeperAddresses(privateKeeperDetails).map { addresses =>
@@ -66,8 +64,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                 privateKeeperDetails.email.getOrElse("Not entered"),
                 addresses))
             }
-          case None =>
-            request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
+          case None => request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
               case Some(businessKeeperDetails) =>
                 implicit val session = clientSideSessionFactory.getSession(request.cookies)
                 fetchBusinessKeeperAddresses(businessKeeperDetails).map { addresses =>
@@ -79,7 +76,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                 }
               case None => Future {
                 Logger.error("Failed to find new keeper details, redirecting")
-                Redirect(routes.SetUpTradeDetails.present())
+                Redirect(routes.VehicleLookup.present())
               }
             }
         },
@@ -88,15 +85,14 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           case Some(privateKeeperDetails) =>
             println("Private keeper details form model match, looking up uprn")
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, true)
-          case None =>
-            request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
+            lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, privateKeeper = true)
+          case None => request.cookies.getModel[BusinessKeeperDetailsFormModel] match {
               case Some(businessKeeperDetails) =>
                 implicit val session = clientSideSessionFactory.getSession(request.cookies)
-                lookupUprn(validForm, businessKeeperDetails.businessName, false)
+                lookupUprn(validForm, businessKeeperDetails.businessName, privateKeeper = false)
               case None => Future {
                 Logger.error("Failed to find new keeper details, redirecting")
-                Redirect(routes.SetUpTradeDetails.present())
+                Redirect(routes.VehicleLookup.present())
               }
             }
         }
