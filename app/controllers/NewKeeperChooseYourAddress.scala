@@ -108,7 +108,6 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         }, message => Future.successful(neither(message))),
       validForm =>
         switch(request, { privateKeeperDetails =>
-          println("Private keeper details form model match, looking up uprn")
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, privateKeeper = true)
         }, { businessKeeperDetails =>
