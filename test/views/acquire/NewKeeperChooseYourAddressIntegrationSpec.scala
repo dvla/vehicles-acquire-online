@@ -9,10 +9,11 @@ import helpers.webbrowser.TestHarness
 import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
-import pages.acquire.NewKeeperChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
+import pages.acquire.NewKeeperChooseYourAddressPage.{back, sadPath, happyPath}
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import pages.acquire.{PrivateKeeperDetailsPage, SetupTradeDetailsPage, NewKeeperChooseYourAddressPage, BeforeYouStartPage}
+import pages.acquire.{BusinessKeeperDetailsPage, VehicleLookupPage, PrivateKeeperDetailsCompletePage, BusinessKeeperDetailsCompletePage}
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "new keeper choose your address page" should {

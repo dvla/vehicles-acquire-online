@@ -28,7 +28,7 @@ import pages.common.UprnNotFoundPage
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
-import models.NewKeeperDetailsModel.NewKeeperDetailsCacheKey
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 
 final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
   "present" should {

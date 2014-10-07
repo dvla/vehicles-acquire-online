@@ -15,7 +15,7 @@ import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
-import models.{NewKeeperDetailsModel, BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperChooseYourAddressFormModel}
+import models.{NewKeeperDetailsViewModel, BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperChooseYourAddressFormModel}
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -116,10 +116,10 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     lookedUpAddress.map {
       case Some(addressViewModel) =>
         if (privateKeeper) {
-          val newKeeperDetailsModel = NewKeeperDetailsModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
+          val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
           Redirect(routes.PrivateKeeperDetailsComplete.present()).withCookie(model).withCookie(newKeeperDetailsModel)
         } else {
-          val newKeeperDetailsModel = NewKeeperDetailsModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
+          val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
           Redirect(routes.BusinessKeeperDetailsComplete.present()).
             withCookie(model).
             withCookie(newKeeperDetailsModel)
