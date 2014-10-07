@@ -4,36 +4,35 @@ import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import helpers.webbrowser.TestHarness
-import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
+import pages.acquire._
 import pages.acquire.NewKeeperChooseYourAddressPage.{back, sadPath, happyPath}
+import ProgressBar.progressStep
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
-import pages.acquire.{PrivateKeeperDetailsPage, SetupTradeDetailsPage, NewKeeperChooseYourAddressPage, BeforeYouStartPage}
-import pages.acquire.{BusinessKeeperDetailsPage, VehicleLookupPage, CompleteAndConfirmPage}
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "new keeper choose your address page" should {
     "display the page for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupPrivateKeeper()
+      cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
       page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
 
     "display the page for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupBusinessKeeper()
+      cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
       page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
-      cacheSetupPrivateKeeper()
+      cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
       page.source.contains(progressStep(6)) should equal(true)
@@ -41,22 +40,23 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
-      cacheSetupPrivateKeeper()
+      cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
       page.source.contains(progressStep(6)) should equal(false)
     }
 
-    "redirect when no traderBusinessName is cached" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicle lookup when no keeper cookies are in cache" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
       go to NewKeeperChooseYourAddressPage
-
-      page.title should equal(SetupTradeDetailsPage.title)
+      page.title should equal(VehicleLookupPage.title)
     }
 
     "display appropriate content when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
-      cacheSetupPrivateKeeper()
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
       page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
@@ -65,8 +65,8 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display appropriate content when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
-      cacheSetupBusinessKeeper()
+      cacheSetupCommon
+      cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
       page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
@@ -75,8 +75,8 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display the postcode entered in the previous page for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
-      cacheSetupPrivateKeeper()
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
       page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
@@ -84,8 +84,8 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display the postcode entered in the previous page for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
-      cacheSetupBusinessKeeper()
+      cacheSetupCommon
+      cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
       page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
@@ -93,8 +93,8 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display expected addresses in dropdown when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
-      cacheSetupPrivateKeeper()
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
       NewKeeperChooseYourAddressPage.getListCount should equal(4) // The first option is the "Please select..." and the other options are the addresses.
@@ -111,8 +111,8 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display expected addresses in dropdown when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
-      cacheSetupBusinessKeeper()
+      cacheSetupCommon
+      cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
       NewKeeperChooseYourAddressPage.getListCount should equal(4) // The first option is the "Please select..." and the other options are the addresses.
@@ -129,7 +129,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display appropriate content when address service returns no addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
+      cacheSetupCommon
       go to PrivateKeeperDetailsPage
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
 
@@ -138,7 +138,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display appropriate content when address service returns no addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
+      cacheSetupCommon
       go to BusinessKeeperDetailsPage
       BusinessKeeperDetailsPage.submitPostcodeWithoutAddresses
 
@@ -192,61 +192,72 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     }
   }
 
-    "back button" should {
-      "display vehicle lookup" taggedAs UiTag in new WebBrowser {
-        go to BeforeYouStartPage
-        cacheSetupCommon()
-        cacheSetupPrivateKeeper()
-        go to NewKeeperChooseYourAddressPage
+  "back button" should {
+    "display private keeper details page when private keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
+      go to NewKeeperChooseYourAddressPage
 
-        click on back
+      click on back
 
-        page.title should equal(VehicleLookupPage.title)
-      }
+      page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
+    "display business keeper details page when business keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupBusinessKeeper
+      go to NewKeeperChooseYourAddressPage
 
-    "select button" should {
-      "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowser {
-        go to BeforeYouStartPage
-        cacheSetupCommon()
-        cacheSetupPrivateKeeper()
+      click on back
 
-        happyPath
+      page.title should equal(BusinessKeeperDetailsPage.title)
+    }
+  }
+
+  "select button" should {
+    "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupPrivateKeeper
+
+      happyPath
 
         page.title should equal(CompleteAndConfirmPage.title)
       }
 
-      "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
-        go to BeforeYouStartPage
-        cacheSetupCommon()
-        cacheSetupBusinessKeeper()
+    "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupBusinessKeeper
 
-        happyPath
+      happyPath
 
-        page.title should equal(CompleteAndConfirmPage.title)
+      page.title should equal(CompleteAndConfirmPage.title)
       }
 
-      "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
-        go to BeforeYouStartPage
-        cacheSetupCommon()
-        cacheSetupPrivateKeeper()
+    "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon()
+      cacheSetupPrivateKeeper
 
-        sadPath
+      sadPath
 
-        ErrorPanel.numberOfErrors should equal(1)
-      }
-
-      "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowser {
-        go to BeforeYouStartPage
-        cacheSetupCommon()
-        cacheSetupBusinessKeeper()
-
-        sadPath
-
-        ErrorPanel.numberOfErrors should equal(1)
-      }
+      ErrorPanel.numberOfErrors should equal(1)
     }
+
+
+    "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupCommon
+      cacheSetupBusinessKeeper
+
+      sadPath
+
+      ErrorPanel.numberOfErrors should equal(1)
+    }
+  }
 
   private def cacheSetupPrivateKeeper()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs.privateKeeperDetails()

@@ -44,8 +44,9 @@ GET     /private-keeper-details             @controllers.PrivateKeeperDetails.pr
 POST    /private-keeper-details             @controllers.PrivateKeeperDetails.submit
 
 # New keeper choose your address
-GET     /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.present
-POST    /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.submit
+GET     /new-keeper-choose-your-address      @controllers.NewKeeperChooseYourAddress.present
+POST    /new-keeper-choose-your-address      @controllers.NewKeeperChooseYourAddress.submit
+GET     /new-keeper-choose-your-address/back @controllers.NewKeeperChooseYourAddress.back
 
 #[optional] - new keeper enter address manually
 GET     /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.present

@@ -1,34 +1,35 @@
 package controllers.acquire
 
+import controllers.acquire.Common.PrototypeHtml
 import controllers.NewKeeperChooseYourAddress
 import helpers.common.CookieHelper
+import CookieHelper.fetchCookiesFromHeaders
+import helpers.UnitSpec
+import org.mockito.Mockito.when
+import pages.acquire.CompleteAndConfirmPage
+import helpers.acquire.CookieFactoryForUnitSpecs
+import pages.acquire.VehicleLookupPage
+import pages.common.UprnNotFoundPage
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
+import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
+import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import play.api.mvc.Cookies
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
+import play.api.test.WithApplication
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
+import TraderDetailsModel.TraderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
+import utils.helpers.Config
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import CookieHelper.fetchCookiesFromHeaders
-import controllers.acquire.Common.PrototypeHtml
-import helpers.UnitSpec
-import play.api.test.WithApplication
-import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
-import TraderDetailsModel.TraderDetailsCacheKey
-import org.mockito.Mockito.when
-import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
-import play.api.mvc.Cookies
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
-import utils.helpers.Config
-import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.common.UprnNotFoundPage
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
-import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
-import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
-import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 
 final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
   "present" should {
@@ -43,7 +44,6 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         r.header.status should equal(OK)
       }
     }
-
 
     "display selected field when private new keeper cookie exists" in new WithApplication {
       val request = FakeRequest().
@@ -79,7 +79,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       content should not include "selected"
     }
 
-    "redirect to vehicle lookup page when present with no dealer name cached" in new WithApplication {
+    "redirect to vehicle lookup page when present is called with no keeper details cached" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
       val result = newKeeperChooseYourAddressWithUprnFound.present(request)
       whenReady(result) { r =>
@@ -140,7 +140,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to vehicle lookup page when valid submit with no new keeper cached" in new WithApplication {
+    "redirect to vehicle lookup page when valid submit with keeper details cached" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
@@ -148,7 +148,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to vehicle lookup page when bad submit with no new keeper cached" in new WithApplication {
+    "redirect to vehicle lookup page when bad submit with no keeper details cached" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(newKeeperUprn = "")
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
