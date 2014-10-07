@@ -6,6 +6,10 @@ import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
 import play.api.mvc.{Action, Controller, Request}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperChooseYourAddressFormModel
+import models.NewKeeperDetailsViewModel
+import models.PrivateKeeperDetailsFormModel
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -15,7 +19,6 @@ import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
-import models.{NewKeeperDetailsViewModel, BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperChooseYourAddressFormModel}
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -46,6 +49,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                 addresses))
             }
           case None => Future {
+            Logger.error("Failed to find keeper details in cache. Now redirecting to vehicle lookup.")
             Redirect(routes.VehicleLookup.present())
           }
         }
@@ -75,7 +79,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                     addresses))
                 }
               case None => Future {
-                Logger.error("Failed to find new keeper details, redirecting")
+                Logger.error("Failed to find keeper details in cache. Now redirecting to vehicle lookup.")
                 Redirect(routes.VehicleLookup.present())
               }
             }
@@ -97,6 +101,21 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             }
         }
     )
+  }
+
+  def back = Action { implicit request =>
+    val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
+    val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
+    (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
+      case (Some(privateKeeperDetails), _) =>
+        Redirect(routes.PrivateKeeperDetails.present())
+      case (_, Some(businessKeeperDetails)) =>
+        Redirect(routes.BusinessKeeperDetails.present())
+      case _ =>
+        // This should never happen because this case is guarded in the present method
+        Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
+        Redirect(routes.VehicleLookup.present())
+    }
   }
 
   private def fetchPrivateKeeperAddresses(model: PrivateKeeperDetailsFormModel)(implicit session: ClientSideSession, lang: Lang) =
