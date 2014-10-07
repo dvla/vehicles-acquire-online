@@ -38,10 +38,27 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
-        BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
-          formWithReplacedErrors(invalidForm), null, null
-        ), dateService)),
-      validForm => Redirect(routes.NotImplemented.present()).withCookie(validForm)
+        (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
+          case (Some(privateKeeperDetails), _) =>
+            BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
+              formWithReplacedErrors(invalidForm), null, null
+            ), dateService))
+          case (_, Some(businessKeeperDetails)) =>
+            BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
+              formWithReplacedErrors(invalidForm), null, null
+            ), dateService))
+          case _ =>
+            Logger.warn("Did not find a new keeper details cookie on submit. Now redirecting to Vehicle Lookup.")
+            Redirect(routes.VehicleLookup.present())
+        },
+      validForm =>
+        (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
+          case (Some(privateKeeperDetails), _) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
+          case (_, Some(businessKeeperDetails)) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
+          case _ =>
+            Logger.warn("Did not find a new keeper details cookie on submit. Now redirecting to Vehicle Lookup.")
+            Redirect(routes.VehicleLookup.present())
+        }
     )
   }
 

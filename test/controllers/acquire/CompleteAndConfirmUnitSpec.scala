@@ -80,16 +80,19 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "replace numeric mileage error message for with standard error message " in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(mileage = "$$")
+    "replace numeric mileage error message for with standard error message" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(mileage = "$$").
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+
       val result = completeAndConfirm.submit(request)
       val count = "You must enter a valid mileage between 0 and 999999".
         r.findAllIn(contentAsString(result)).length
       count should equal(2)
     }
 
-    "redirect to next page when mandatory fields are complete" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest()
+    "redirect to next page when mandatory fields are complete for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -97,8 +100,30 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to next page when all fields are complete" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest()
+    "redirect to next page when mandatory fields are complete for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+
+      val result = completeAndConfirm.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+      }
+    }
+
+
+    "redirect to next page when all fields are complete for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+
+      val result = completeAndConfirm.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+      }
+    }
+
+    "redirect to next page when all fields are complete for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -107,7 +132,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
 
     "return a bad request if consent is not ticked" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(consent="")
+      val request = buildCorrectlyPopulatedRequest(consent="").
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
@@ -141,7 +168,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   private lazy val presentWithNewBusinessKeeper = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
     completeAndConfirm.present(request)
   }
 }
