@@ -123,7 +123,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       Redirect(routes.PrivateKeeperDetails.present())
     }, { businessKeeperDetails =>
       Redirect(routes.BusinessKeeperDetails.present())
-    }, neither)
+    }, message => neither(message))
   }
 
   private def fetchAddresses(postcode: String)(implicit session: ClientSideSession, lang: Lang) =
