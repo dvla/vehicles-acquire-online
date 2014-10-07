@@ -28,25 +28,26 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private[controllers] val form = Form(NewKeeperChooseYourAddressFormModel.Form.Mapping)
 
   private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
-  private def keeperDetailsNotInCacheCall = routes.VehicleLookup.present()
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
+    "This is an error condition. Now redirecting to vehicle lookup."
 
   private def switch[R](request: Request[AnyContent],
                      priv: PrivateKeeperDetailsFormModel => R,
                      business: BusinessKeeperDetailsFormModel => R,
-                     neither: => R): R = {
+                     neither: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => neither
+      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => neither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
       case (Some(privateKeeperDetails), _) => priv(privateKeeperDetails)
       case (_, Some(businessKeeperDetails)) => business(businessKeeperDetails)
-      case _ => neither
+      case _ => neither(KeeperDetailsNotInCacheMessage)
     }
   }
 
-  private def neither: Result = {
-    Logger.warn(KeeperDetailsNotInCacheMessage)
-    Redirect(keeperDetailsNotInCacheCall)
+  private def neither(message: String): Result = {
+    Logger.warn(message)
+    Redirect(routes.VehicleLookup.present())
   }
 
   def present = Action.async { implicit request => switch(request, { privateKeeperDetails =>
@@ -67,7 +68,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         addresses
       )
     }
-  }, Future(neither))
+  }, message => Future.successful(neither(message)))
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
@@ -96,7 +97,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
               businessKeeperDetails.email.getOrElse("Not entered"),
               addresses))
           }
-        }, Future(neither)),
+        }, message => Future.successful(neither(message))),
       validForm =>
         switch(request, { privateKeeperDetails =>
           println("Private keeper details form model match, looking up uprn")
@@ -105,7 +106,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         }, { businessKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(validForm, businessKeeperDetails.businessName, privateKeeper = false)
-        }, Future(neither))
+        }, message => Future.successful(neither(message)))
     )
   }
 
