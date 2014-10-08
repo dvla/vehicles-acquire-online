@@ -6,10 +6,7 @@ import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
 import play.api.mvc.{AnyContent, Action, Controller, Request}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models.BusinessKeeperDetailsFormModel
-import models.NewKeeperChooseYourAddressFormModel
-import models.NewKeeperDetailsViewModel
-import models.PrivateKeeperDetailsFormModel
+import models._
 import play.api.mvc.Result
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -20,6 +17,9 @@ import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import scala.Some
+import play.api.mvc.Result
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -72,15 +72,31 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
-                      (implicit request: Request[_]) =
-    Ok(views.html.acquire.new_keeper_choose_your_address(
-      form.fill(), name, postcode, email.getOrElse("Not entered"), addresses))
+                      (implicit request: Request[_]) = {
+    request.cookies.getModel[VehicleDetailsModel] match {
+      case Some(vehicleDetails) =>
+        Ok(views.html.acquire.new_keeper_choose_your_address(
+          NewKeeperChooseYourAddressViewModel(
+            form.fill(), vehicleDetails),
+            name,
+            postcode,
+            email.getOrElse("Not entered"),
+            addresses))
+      case _ =>
+        Redirect(routes.VehicleLookup.present())
+    }
+  }
 
   private def handleInvalidForm(invalidForm: Form[NewKeeperChooseYourAddressFormModel],
                   name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                  (implicit request: Request[_]) = {
-    BadRequest(new_keeper_choose_your_address(formWithReplacedErrors(invalidForm),
-      name, postcode, email.getOrElse("Not entered"), addresses))
+    val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
+    BadRequest(new_keeper_choose_your_address(NewKeeperChooseYourAddressViewModel(
+        formWithReplacedErrors(invalidForm), vehicleDetails.get),
+        name,
+        postcode,
+        email.getOrElse("Not entered"),
+        addresses))
   }
 
   def submit = Action.async { implicit request =>

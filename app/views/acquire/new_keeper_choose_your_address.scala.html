@@ -1,4 +1,4 @@
-@(newKeeperChooseYourAddressForm: Form[models.NewKeeperChooseYourAddressFormModel],
+@(newKeeperChooseYourAddressForm: models.NewKeeperChooseYourAddressViewModel,
         newKeeperName: String,
         newKeeperPostcode: String,
         newKeeperEmail: String,
@@ -19,7 +19,7 @@
 @main(
     progress = Some(Messages("acquire_progress_6")),
     title = Messages("acquire_newKeeperChooseYourAddress_title"),
-    currentForm = Some(newKeeperChooseYourAddressForm)
+    currentForm = Some(newKeeperChooseYourAddressForm.form)
 ) {
     @form(action = NewKeeperChooseYourAddress.submit()) {
         @csrfTokenHiddenField()
@@ -38,7 +38,7 @@
         <h2>@Messages("acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1")</h2>
         <h2>@Messages("acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2")</h2>
         } else {
-            @valtechSelect(newKeeperChooseYourAddressForm(AddressSelectId),
+            @valtechSelect(newKeeperChooseYourAddressForm.form(AddressSelectId),
                 options = dropDownOptions.toSeq,
                 args = Map(
                     '_label -> Messages("acquire_newKeeperChooseYourAddress_addressSelect_label"),

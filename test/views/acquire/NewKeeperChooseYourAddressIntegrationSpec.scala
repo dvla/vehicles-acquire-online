@@ -54,23 +54,44 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "redirect to vehicle lookup when no keeper cookies are in cache" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .dealerDetails()
+        .vehicleDetails()
       go to NewKeeperChooseYourAddressPage
       page.title should equal(VehicleLookupPage.title)
     }
 
     "redirect to vehicle lookup when cookies are in cache for both private and business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
       page.title should equal(VehicleLookupPage.title)
     }
 
+    "redirect to vehicle lookup when no vehicle cookies are in cache but private keeper details exist" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .dealerDetails()
+        .privateKeeperDetails()
+      go to NewKeeperChooseYourAddressPage
+      page.title should equal(VehicleLookupPage.title)
+    }
+
+    "redirect to vehicle lookup when no vehicle cookies are in cache but business keeper details exist" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .dealerDetails()
+        .businessKeeperDetails()
+      go to NewKeeperChooseYourAddressPage
+      page.title should equal(VehicleLookupPage.title)
+    }
+
     "display appropriate content when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -80,7 +101,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display appropriate content when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -90,7 +110,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display the postcode entered in the previous page for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -99,7 +118,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display the postcode entered in the previous page for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -108,7 +126,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display expected addresses in dropdown when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -126,7 +143,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display expected addresses in dropdown when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -144,7 +160,10 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display appropriate content when address service returns no addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .dealerDetails()
+        .vehicleDetails()
       go to PrivateKeeperDetailsPage
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
 
@@ -153,7 +172,10 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display appropriate content when address service returns no addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .dealerDetails()
+        .vehicleDetails()
       go to BusinessKeeperDetailsPage
       BusinessKeeperDetailsPage.submitPostcodeWithoutAddresses
 
@@ -162,7 +184,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "allow navigation to manual address entry when addresses have been found" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
       click on manualAddress
@@ -171,7 +192,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "allow navigation to manual address entry when no addresses have been found" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
       click on manualAddress
@@ -180,7 +200,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "contain the hidden csrfToken field for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
       cacheSetupPrivateKeeper()
       go to NewKeeperChooseYourAddressPage
 
@@ -192,7 +211,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "contain the hidden csrfToken field for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
       cacheSetupPrivateKeeper()
       go to NewKeeperChooseYourAddressPage
 
@@ -206,7 +224,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
   "back button" should {
     "display private keeper details page when private keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -217,7 +234,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display business keeper details page when business keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
@@ -230,7 +246,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
   "select button" should {
     "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupPrivateKeeper
 
       happyPath
@@ -240,7 +255,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupBusinessKeeper
 
       happyPath
@@ -250,7 +264,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon()
       cacheSetupPrivateKeeper
 
       sadPath
@@ -261,7 +274,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
 
     "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
-      cacheSetupCommon
       cacheSetupBusinessKeeper
 
       sadPath
@@ -271,14 +283,16 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
   }
 
   private def cacheSetupPrivateKeeper()(implicit webDriver: WebDriver) =
-    CookieFactoryForUISpecs.privateKeeperDetails()
-
-  private def cacheSetupBusinessKeeper()(implicit webDriver: WebDriver) =
-    CookieFactoryForUISpecs.businessKeeperDetails()
-
-  private def cacheSetupCommon()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs.
       setupTradeDetails()
       .dealerDetails()
       .vehicleDetails()
+      .privateKeeperDetails()
+
+  private def cacheSetupBusinessKeeper()(implicit webDriver: WebDriver) =
+    CookieFactoryForUISpecs.
+      setupTradeDetails()
+      .dealerDetails()
+      .vehicleDetails()
+      .businessKeeperDetails()
 }
