@@ -9,7 +9,7 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid
 import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
 
 object VehicleLookupPage extends Page with WebBrowserDSL {
-  final val address = s"$applicationContext/vehicle-lookup"
+  final val address = buildAppUrl("vehicle-lookup")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter vehicle details"
 

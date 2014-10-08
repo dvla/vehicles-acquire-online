@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
 object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
-  final val address = s"$applicationContext/new-keeper-choose-your-address"
+  final val address = buildAppUrl("new-keeper-choose-your-address")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select keeper address"
   //final val titleCy = "Dewiswch eich cyfeiriad masnach"

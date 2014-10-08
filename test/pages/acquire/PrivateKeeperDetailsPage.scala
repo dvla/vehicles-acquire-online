@@ -10,7 +10,7 @@ import TitlePickerString.{standardOptions, standardOptionsMessages}
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
-  final val address = s"$applicationContext/private-keeper-details"
+  final val address = buildAppUrl("private-keeper-details")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter keeper details"
 

@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
 object BusinessChooseYourAddressPage extends Page with WebBrowserDSL {
-  final val address = s"$applicationContext/business-choose-your-address"
+  final val address = buildAppUrl("business-choose-your-address")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select trader address"
   final val titleCy = "Dewiswch eich cyfeiriad masnach"
