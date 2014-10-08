@@ -6,8 +6,12 @@ import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
 import play.api.mvc.{AnyContent, Action, Controller, Request}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models._
-import play.api.mvc.Result
+import models.NewKeeperChooseYourAddressViewModel
+import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperChooseYourAddressFormModel
+import models.NewKeeperDetailsViewModel
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
+import models.PrivateKeeperDetailsFormModel
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -124,7 +128,6 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         }, message => Future.successful(neither(message))),
       validForm =>
         switch(request, { privateKeeperDetails =>
-          println("Private keeper details form model match, looking up uprn")
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, privateKeeper = true)
         }, { businessKeeperDetails =>
@@ -156,7 +159,11 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     lookedUpAddress.map {
       case Some(addressViewModel) =>
           val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
-          Redirect(routes.CompleteAndConfirm.present()).withCookie(model).withCookie(newKeeperDetailsModel)
+          Redirect(routes.CompleteAndConfirm.present()).
+            discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
+            withCookie(model).
+            withCookie(newKeeperDetailsModel
+          )
       case None => Redirect(routes.UprnNotFound.present())
     }
   }

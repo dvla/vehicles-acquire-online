@@ -66,10 +66,9 @@ final class NewKeeperEnterAddressManually @Inject()()
             )
 
             // Redirect to the next screen in the workflow
-//            Redirect(routes.VehicleLookup.present()).
+            Redirect(routes.CompleteAndConfirm.present())//.
 //              withCookie(validForm).
 //              withCookie(traderDetailsModel)
-              Redirect(routes.NotImplemented.present())
           case None =>
             Logger.debug("Failed to find dealer name in cache on submit, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
