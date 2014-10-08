@@ -15,10 +15,8 @@ import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameVa
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
 import play.api.Play
 import play.api.Play.current
-import play.api.i18n.Messages
 import play.api.libs.json.{Json, Writes}
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
-import TitlePickerString.standardOptions
+import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
@@ -141,7 +139,7 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def privateKeeperDetails(title: String = Messages(standardOptions(0)),
+  def privateKeeperDetails(title: TitleType = TitleType(1, ""),
                            firstName: String = FirstNameValid,
                            lastName: String = LastNameValid,
                            email: Option[String] = Some(EmailValid),

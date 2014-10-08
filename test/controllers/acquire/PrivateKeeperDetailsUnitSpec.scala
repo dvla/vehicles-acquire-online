@@ -24,7 +24,7 @@ import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
 import TitlePickerString.standardOptions
 import utils.helpers.Config
 
@@ -70,7 +70,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     "display populated other title when cookie exists" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel(title = "otherTitle"))
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel(title = TitleType(4, "otherTitle")))
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
       content should include("otherTitle")
@@ -91,7 +91,6 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     "redirect to next page when mandatory fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(email = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
@@ -108,7 +107,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
 
     "redirect to setup trade details when no cookie is present" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(title = Messages(standardOptions(0)))
+      val request = buildCorrectlyPopulatedRequest(title = "2")
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -139,7 +138,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
   }
 
-  private def buildCorrectlyPopulatedRequest(title: String = Messages(standardOptions(0)),
+  private def buildCorrectlyPopulatedRequest(title: String = "1",
                                              firstName: String = FirstNameValid,
                                              lastName: String = LastNameValid,
                                              email: String = EmailValid,

@@ -1,6 +1,5 @@
 package models
 
-import mappings.DropDown.titleDropDown
 import org.joda.time.LocalDate
 import play.api.data.Forms.{mapping, optional}
 import play.api.data.Mapping
@@ -14,9 +13,9 @@ import common.mappings.Email.email
 import common.mappings.DriverNumber.driverNumber
 import common.mappings.Postcode.postcode
 import common.views.helpers.FormExtensions.nonEmptyTextWithTransform
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
 
-case class PrivateKeeperDetailsFormModel(title: String, 
+case class PrivateKeeperDetailsFormModel(title: TitleType,
                                          firstName: String, 
                                          lastName: String,
                                          dateOfBirth: Option[LocalDate],
@@ -25,6 +24,7 @@ case class PrivateKeeperDetailsFormModel(title: String,
                                          postcode: String)
 
 object PrivateKeeperDetailsFormModel {
+  implicit val JsonFormatTitleType = Json.format[TitleType]
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
   final val PrivateKeeperDetailsCacheKey = "privateKeeperDetails"
   implicit val Key = CacheKey[PrivateKeeperDetailsFormModel](PrivateKeeperDetailsCacheKey)

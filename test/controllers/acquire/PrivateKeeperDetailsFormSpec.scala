@@ -24,7 +24,7 @@ import models.PrivateKeeperDetailsFormModel.Form.LastNameMinLength
 import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
 import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{YearId, MonthId, DayId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
 import TitlePickerString.standardOptions
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
@@ -32,7 +32,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
   "form" should {
     "accept if form is completed with all fields correctly" in {
       val model = formWithValidDefaults().get
-      model.title should equal(Messages(standardOptions(0)))
+      model.title should equal(TitleType(1, ""))
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
       model.dateOfBirth should equal(Some(new LocalDate(
@@ -51,7 +51,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         yearDateOfBirth = "",
         email = "",
         driverNumber = "").get
-      model.title should equal(Messages(standardOptions(0)))
+      model.title should equal(TitleType(1, ""))
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
       model.dateOfBirth should equal(None)
@@ -74,8 +74,8 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "accept if title is selected" in {
-      val model = formWithValidDefaults(title = Messages(standardOptions(0))).get
-      model.title should equal(Messages(standardOptions(0)))
+      val model = formWithValidDefaults(title = "2").get
+      model.title should equal(TitleType(2, ""))
     }
   }
 
@@ -356,7 +356,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
-  private def formWithValidDefaults(title: String = Messages(standardOptions(0)),
+  private def formWithValidDefaults(title: String = "1",
                                     firstName: String = FirstNameValid,
                                     lastName: String = LastNameValid,
                                     dayDateOfBirth: String = DayDateOfBirthValid,

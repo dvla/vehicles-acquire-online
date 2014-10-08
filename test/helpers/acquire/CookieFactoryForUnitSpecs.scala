@@ -7,7 +7,7 @@ import pages.acquire.VehicleLookupPage
 import play.api.i18n.Messages
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
 import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleDetailsModel}
 import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
@@ -146,7 +146,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure"): Cookie =
     createCookie(VehicleLookupResponseCodeCacheKey, responseCode)
 
-  def privateKeeperDetailsModel(title: String = Messages(TitlePickerString.standardOptions(0)),
+  def privateKeeperDetailsModel(title: TitleType = TitleType(1, ""),
                                 firstName: String = FirstNameValid,
                                 lastName: String = LastNameValid,
                                 dateOfBirth: Option[LocalDate] = Some(new LocalDate(
