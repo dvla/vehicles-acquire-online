@@ -4,9 +4,10 @@ import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import org.joda.time.LocalDate
 import pages.acquire.VehicleLookupPage
+import play.api.i18n.Messages
 import play.api.libs.json.{Json, Writes}
-import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
 import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleDetailsModel}
 import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
@@ -26,13 +27,12 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, DriverNumberValid}
-import pages.acquire.CompleteAndConfirmPage.{MileageValid,ConsentTrue}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid,  FirstNameValid, LastNameValid, DriverNumberValid}
+import pages.acquire.CompleteAndConfirmPage.MileageValid
 import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBirthValid, MonthDateOfBirthValid}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
-import scala.Some
 import play.api.mvc.Cookie
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
@@ -146,7 +146,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure"): Cookie =
     createCookie(VehicleLookupResponseCodeCacheKey, responseCode)
 
-  def privateKeeperDetailsModel(title: String = TitleValid,
+  def privateKeeperDetailsModel(title: String = Messages(TitlePickerString.standardOptions(0)),
                                 firstName: String = FirstNameValid,
                                 lastName: String = LastNameValid,
                                 dateOfBirth: Option[LocalDate] = Some(new LocalDate(

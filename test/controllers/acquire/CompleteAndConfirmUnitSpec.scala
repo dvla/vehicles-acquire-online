@@ -7,6 +7,7 @@ import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaul
 import play.api.test.{FakeRequest, WithApplication}
 import controllers.acquire.Common.PrototypeHtml
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import pages.acquire.buildAppUrl
 import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import utils.helpers.Config
@@ -79,7 +80,10 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
   }
 
+  final val notImplementedUrl = buildAppUrl("not-implemented")
+
   "submit" should {
+
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$").
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
@@ -96,7 +100,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
       }
     }
 
@@ -106,7 +110,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
       }
     }
 
@@ -117,7 +121,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
       }
     }
 
@@ -127,7 +131,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some("/vrm-acquire/not-implemented")) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
       }
     }
 

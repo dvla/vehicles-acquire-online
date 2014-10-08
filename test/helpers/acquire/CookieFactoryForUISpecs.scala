@@ -12,10 +12,13 @@ import org.joda.time.LocalDate
 import org.openqa.selenium.{Cookie, WebDriver}
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, TitleValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
+import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
 import play.api.Play
 import play.api.Play.current
+import play.api.i18n.Messages
 import play.api.libs.json.{Json, Writes}
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import TitlePickerString.standardOptions
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
@@ -138,7 +141,7 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def privateKeeperDetails(title: String = TitleValid,
+  def privateKeeperDetails(title: String = Messages(standardOptions(0)),
                            firstName: String = FirstNameValid,
                            lastName: String = LastNameValid,
                            email: Option[String] = Some(EmailValid),

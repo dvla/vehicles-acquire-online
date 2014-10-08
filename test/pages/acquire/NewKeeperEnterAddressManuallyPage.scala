@@ -10,7 +10,7 @@ import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 
 object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {
-  final val address = s"$applicationContext/new-keeper-enter-address-manually"
+  final val address = buildAppUrl("new-keeper-enter-address-manually")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter address"
 

@@ -354,3 +354,17 @@ vrm_locked.exit.button=Exit
 dateOfBirth.day = Day
 dateOfBirth.month = Month
 dateOfBirth.year = Year
+
+#titlePicker widget
+titlePicker.label = What is your title?
+titlePicker.mr = Mr
+titlePicker.miss = Miss
+titlePicker.mrs = Mrs
+titlePicker.other = Other
+titlePicker.or = Or
+titlePicker.textLabel = Please provide your 'Other' title
+titlePicker.textHint = (10 characters maximum)
+error.title.unknownOption = Other - This is a required field
+error.title.missing = Other - This is a required field
+error.title.tooLong = Other - The text must contain characters in A to Z format only.
+error.title.illegalCharacters = Other - The text must contain characters in A to Z format only.

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver
 import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
 object CompleteAndConfirmPage extends Page with WebBrowserDSL {
-  final val address = s"$applicationContext/complete-and-confirm"
+  final val address = buildAppUrl("complete-and-confirm")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Complete and confirm"
 

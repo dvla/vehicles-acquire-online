@@ -1,26 +1,26 @@
 package pages.acquire
 
-import helpers.webbrowser.{Element, EmailField, Page, SingleSel, TelField, TextField, WebBrowserDSL, WebDriverFactory}
-import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId}
-import models.PrivateKeeperDetailsFormModel.Form.{TitleId, PostcodeId}
+import helpers.webbrowser.{Element, EmailField, Page, TelField, TextField, WebBrowserDSL, WebDriverFactory}
+import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId, PostcodeId, TitleId}
 import org.openqa.selenium.WebDriver
+import org.scalatest.Matchers
+import play.api.i18n.Messages
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import TitlePickerString.{standardOptions, standardOptionsMessages}
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
-object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
-  final val address = s"$applicationContext/private-keeper-details"
+object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
+  final val address = buildAppUrl("private-keeper-details")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter keeper details"
 
-  final val TitleValid = "Mrs"
-  final val TitleInvalid = ""
-  final val OptionValid = "firstOption"
+  final val TitleInvalid = "&^%&%&"
   final val FirstNameValid = "TestFirstName"
   final val FirstNameInvalid = ""
   final val LastNameValid = "TestLastName"
   final val LastNameInvalid = ""
   final val EmailValid = "my@email.com"
   final val EmailInvalid = "no_at_symbol.com"
-  final val TitleInvalidError = "Please select a title from the drop down list."
   final val VehicleMakeValid = "Audi"
   final val ModelValid = "A6"
   final val DriverNumberValid = "ABCD9711215EFLGH"
@@ -36,7 +36,11 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
-  def titleDropDown(implicit driver: WebDriver): SingleSel = singleSel(id(TitleId))
+  def mr(implicit driver: WebDriver) = radioButton(id(s"${TitleId}_titleOption_titlePicker.mr"))
+  def miss(implicit driver: WebDriver) = radioButton(id(s"${TitleId}_titleOption_titlePicker.miss"))
+  def mrs(implicit driver: WebDriver) = radioButton(id(s"${TitleId}_titleOption_titlePicker.mrs"))
+  def other(implicit driver: WebDriver) = radioButton(id(s"${TitleId}_titleOption_titlePicker.other"))
+  def otherText(implicit driver: WebDriver) = textField(id(s"${TitleId}_titleText"))
 
   def emailTextBox(implicit driver: WebDriver): EmailField = emailField(id(EmailId))
 
@@ -54,7 +58,24 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def postcodeTextBox(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
 
-  def navigate(title: String = OptionValid,
+  private def titleRadioButtons(implicit driver: WebDriver) = Seq(mr, miss, mrs, other)
+
+  def selectTitle(title: String)(implicit driver: WebDriver): Unit =
+    if (!title.isEmpty && (standardOptions.contains(title) || standardOptionsMessages.contains(title)))
+      titleRadioButtons.find(_.value endsWith title).fold(throw new Exception)(click on _)
+
+  def assertTitleSelected(title: String)(implicit driver: WebDriver): Unit = {
+    titleRadioButtons.find(_.underlying.getAttribute("id") endsWith title)
+      .fold(throw new Exception) ( _.isSelected should equal(true))
+    titleRadioButtons.filterNot(_.underlying.getAttribute("id") endsWith title)
+      .map(_.isSelected should equal(false))
+  }
+
+  def assertNoTitleSelected()(implicit driver: WebDriver): Unit = {
+    titleRadioButtons.foreach(_.isSelected should equal(false))
+  }
+
+  def navigate(title: String = standardOptions(0),
                 firstName: String = FirstNameValid,
                 lastName: String = LastNameValid,
                 dayDateOfBirth: String = DayDateOfBirthValid,
@@ -65,7 +86,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL {
                 postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to PrivateKeeperDetailsPage
     
-    titleDropDown select title
+    selectTitle(title)
     firstNameTextBox enter firstName
     lastNameTextBox enter lastName
     dayDateOfBirthTextBox enter dayDateOfBirth

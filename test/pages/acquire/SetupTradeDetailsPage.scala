@@ -11,7 +11,7 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
   final val PostcodeValid = "QQ99QQ"
   final val TraderEmailValid = "example@example.co.uk"
 
-  final val address = s"$applicationContext/setup-trade-details"
+  final val address = buildAppUrl("setup-trade-details")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Provide trader details"
 

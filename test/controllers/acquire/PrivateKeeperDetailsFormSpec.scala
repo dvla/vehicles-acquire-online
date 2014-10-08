@@ -3,7 +3,6 @@ package controllers.acquire
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
 import org.joda.time.LocalDate
-import pages.acquire.PrivateKeeperDetailsPage.TitleValid
 import pages.acquire.PrivateKeeperDetailsPage.EmailValid
 import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
 import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
@@ -23,14 +22,17 @@ import models.PrivateKeeperDetailsFormModel.Form.LastNameId
 import models.PrivateKeeperDetailsFormModel.Form.LastNameMaxLength
 import models.PrivateKeeperDetailsFormModel.Form.LastNameMinLength
 import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
+import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{YearId, MonthId, DayId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import TitlePickerString.standardOptions
 
 class PrivateKeeperDetailsFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields correctly" in {
       val model = formWithValidDefaults().get
-      model.title should equal(TitleValid)
+      model.title should equal(Messages(standardOptions(0)))
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
       model.dateOfBirth should equal(Some(new LocalDate(
@@ -49,7 +51,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
         yearDateOfBirth = "",
         email = "",
         driverNumber = "").get
-      model.title should equal(TitleValid)
+      model.title should equal(Messages(standardOptions(0)))
       model.firstName should equal(FirstNameValid)
       model.lastName should equal(LastNameValid)
       model.dateOfBirth should equal(None)
@@ -61,19 +63,19 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     "reject if form has no fields completed" in {
       formWithValidDefaults(title = "", firstName = "", lastName = "", email = "").
         errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.required", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validLastName")
+        List("error.title.unknownOption", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validLastName")
     }
   }
 
   "title" should {
     "reject if no selection is made" in {
       formWithValidDefaults(title = "").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.required")
+        List("error.title.unknownOption")
     }
 
     "accept if title is selected" in {
-      val model = formWithValidDefaults(title = TitleValid).get
-      model.title should equal(TitleValid)
+      val model = formWithValidDefaults(title = Messages(standardOptions(0))).get
+      model.title should equal(Messages(standardOptions(0)))
     }
   }
 
@@ -354,7 +356,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
-  private def formWithValidDefaults(title: String = TitleValid,
+  private def formWithValidDefaults(title: String = Messages(standardOptions(0)),
                                     firstName: String = FirstNameValid,
                                     lastName: String = LastNameValid,
                                     dayDateOfBirth: String = DayDateOfBirthValid,
@@ -366,7 +368,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     injector.getInstance(classOf[PrivateKeeperDetails])
       .form.bind(
         Map(
-          TitleId -> title,
+          s"$TitleId.${TitlePickerString.TitleRadioKey}" -> title,
           FirstNameId -> firstName,
           LastNameId -> lastName,
           s"$DateOfBirthId.$DayId" -> dayDateOfBirth,

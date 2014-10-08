@@ -37,7 +37,6 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
           form.bindFromRequest.fold(
             invalidForm => {
               val formWithReplacedErrors = invalidForm.
-                replaceError(TitleId, FormError(key = TitleId, message = "error.titleInvalid", args = Seq.empty)).
                 replaceError(FirstNameId, FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)).
                 replaceError(LastNameId, FormError(key = LastNameId, message = "error.validLastName", args = Seq.empty)).
                 replaceError(DriverNumberId, FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)).

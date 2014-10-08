@@ -178,7 +178,7 @@ object Sandbox extends Plugin {
   lazy val runAsyncTask = runAsync := {
     System.setProperty("https.port", HttpsPort.toString)
     System.setProperty("http.port", "disabled")
-    System.setProperty("baseUrl", s"https://localhost:$HttpsPort/vrm-acquire")
+    System.setProperty("baseUrl", s"https://localhost:$HttpsPort")
     runProject(
       fullClasspath.in(Test).value,
       None,
