@@ -17,14 +17,15 @@ import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.EmailValid
 import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
 import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
-import pages.acquire.PrivateKeeperDetailsPage.TitleInvalidError
-import pages.acquire.PrivateKeeperDetailsPage.TitleValid
 import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
+import play.api.i18n.Messages
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import TitlePickerString.standardOptions
 import utils.helpers.Config
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
@@ -57,7 +58,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
-      content should include(TitleValid)
+      content should include(Messages(standardOptions(0)))
       content should include(FirstNameValid)
       content should include(LastNameValid)
       content should include(DayDateOfBirthValid)
@@ -81,7 +82,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
-      content should include(TitleValid)
+      content should include(Messages(standardOptions(0)))
       content should not include "selected"
     }
   }
@@ -107,7 +108,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
 
     "redirect to setup trade details when no cookie is present" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(title = TitleValid)
+      val request = buildCorrectlyPopulatedRequest(title = Messages(standardOptions(0)))
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -128,15 +129,6 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
       }
     }
 
-    "replace required error message for title with standard error message " in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(title = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-      val result = privateKeeperDetails.submit(request)
-      val count = TitleInvalidError.
-        r.findAllIn(contentAsString(result)).length
-      count should equal(2)
-    }
-
     "replace required error message for postcode with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(postcode = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
@@ -147,14 +139,14 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     }
   }
 
-  private def buildCorrectlyPopulatedRequest(title: String = TitleValid,
+  private def buildCorrectlyPopulatedRequest(title: String = Messages(standardOptions(0)),
                                              firstName: String = FirstNameValid,
                                              lastName: String = LastNameValid,
                                              email: String = EmailValid,
                                              driverNumber: String = DriverNumberValid,
                                              postcode: String = PostcodeValid) = {
     FakeRequest().withFormUrlEncodedBody(
-      TitleId -> title,
+      s"$TitleId.${TitlePickerString.TitleRadioKey}" -> title,
       FirstNameId -> firstName,
       LastNameId -> lastName,
       EmailId -> email,

@@ -4,7 +4,9 @@ import helpers.webbrowser.{Element, EmailField, Page, TelField, TextField, WebBr
 import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId, PostcodeId, TitleId}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
+import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import TitlePickerString.{standardOptions, standardOptionsMessages}
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
@@ -12,14 +14,13 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter keeper details"
 
-  final val TitleInvalid = ""
+  final val TitleInvalid = "&^%&%&"
   final val FirstNameValid = "TestFirstName"
   final val FirstNameInvalid = ""
   final val LastNameValid = "TestLastName"
   final val LastNameInvalid = ""
   final val EmailValid = "my@email.com"
   final val EmailInvalid = "no_at_symbol.com"
-  final val TitleInvalidError = "Please select a title from the drop down list."
   final val VehicleMakeValid = "Audi"
   final val ModelValid = "A6"
   final val DriverNumberValid = "ABCD9711215EFLGH"
@@ -59,9 +60,9 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
 
   private def titleRadioButtons(implicit driver: WebDriver) = Seq(mr, miss, mrs, other)
 
-  def selectTitle(title: String)(implicit driver: WebDriver): Unit = {
-    titleRadioButtons.find(_.underlying.getAttribute("id") endsWith title).fold(throw new Exception)(click on _)
-  }
+  def selectTitle(title: String)(implicit driver: WebDriver): Unit =
+    if (!title.isEmpty && (standardOptions.contains(title) || standardOptionsMessages.contains(title)))
+      titleRadioButtons.find(_.value endsWith title).fold(throw new Exception)(click on _)
 
   def assertTitleSelected(title: String)(implicit driver: WebDriver): Unit = {
     titleRadioButtons.find(_.underlying.getAttribute("id") endsWith title)
@@ -74,7 +75,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
     titleRadioButtons.foreach(_.isSelected should equal(false))
   }
 
-  def navigate(title: String = TitlePickerString.standardOptionsMessages(0),
+  def navigate(title: String = standardOptions(0),
                 firstName: String = FirstNameValid,
                 lastName: String = LastNameValid,
                 dayDateOfBirth: String = DayDateOfBirthValid,
