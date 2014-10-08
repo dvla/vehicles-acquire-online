@@ -12,6 +12,8 @@ import common.model.{TraderDetailsModel, AddressModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.enter_address_manually
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import scala.Some
 
 final class EnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -31,34 +33,28 @@ final class EnterAddressManually @Inject()()
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm =>
-        request.cookies.getModel[SetupTradeDetailsFormModel] match {
+      invalidForm => request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetails) =>
             BadRequest(enter_address_manually(formWithReplacedErrors(invalidForm), setupTradeDetails.traderPostcode))
           case None =>
             Logger.debug("Failed to find dealer name in cache, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
         },
-      validForm =>
-        request.cookies.getModel[SetupTradeDetailsFormModel] match {
-          case Some(setupTradeDetails) =>
-            val traderAddress = AddressModel.from(
-              validForm.addressAndPostcodeModel,
-              setupTradeDetails.traderPostcode
-            )
-            val traderDetailsModel = TraderDetailsModel(
-              traderName = setupTradeDetails.traderBusinessName,
-              traderAddress = traderAddress
-            )
-
-            // Redirect to the next screen in the workflow
-            Redirect(routes.VehicleLookup.present()).
-              withCookie(validForm).
-              withCookie(traderDetailsModel)
-          case None =>
-            Logger.error("Failed to find dealer name in cache on submit, redirecting to SetUpTradeDetails")
-            Redirect(routes.SetUpTradeDetails.present())
-        }
+      validForm => request.cookies.getModel[SetupTradeDetailsFormModel] match {
+        case Some(setupTradeDetails) =>
+          val traderAddress = AddressModel.from(validForm.addressAndPostcodeModel,setupTradeDetails.traderPostcode)
+          val traderDetailsModel = TraderDetailsModel(
+            traderName = setupTradeDetails.traderBusinessName,
+            traderAddress = traderAddress
+          )
+          Redirect(routes.VehicleLookup.present()).
+            discardingCookie(BusinessChooseYourAddressCacheKey).
+            withCookie(validForm).
+            withCookie(traderDetailsModel)
+        case None =>
+          Logger.error("Failed to find dealer name in cache on submit, redirecting to SetUpTradeDetails")
+          Redirect(routes.SetUpTradeDetails.present())
+      }
     )
   }
 
