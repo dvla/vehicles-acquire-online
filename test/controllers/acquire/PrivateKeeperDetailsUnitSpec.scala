@@ -21,6 +21,7 @@ import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.i18n.Messages
+import pages.acquire.{NewKeeperChooseYourAddressPage, CompleteAndConfirmPage, SetupTradeDetailsPage}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory

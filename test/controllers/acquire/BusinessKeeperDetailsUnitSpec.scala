@@ -1,6 +1,6 @@
 package controllers.acquire
 
-import pages.acquire.{NewKeeperChooseYourAddressPage, BusinessKeeperDetailsCompletePage, SetupTradeDetailsPage}
+import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.test.WithApplication
 import controllers.acquire.Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs

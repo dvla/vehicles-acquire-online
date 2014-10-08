@@ -44,24 +44,21 @@ GET     /private-keeper-details             @controllers.PrivateKeeperDetails.pr
 POST    /private-keeper-details             @controllers.PrivateKeeperDetails.submit
 
 # New keeper choose your address
-GET     /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.present
-POST    /new-keeper-choose-your-address     @controllers.NewKeeperChooseYourAddress.submit
+GET     /new-keeper-choose-your-address      @controllers.NewKeeperChooseYourAddress.present
+POST    /new-keeper-choose-your-address      @controllers.NewKeeperChooseYourAddress.submit
+GET     /new-keeper-choose-your-address/back @controllers.NewKeeperChooseYourAddress.back
 
 #[optional] - new keeper enter address manually
 GET     /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.present
 POST    /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.submit
 
 # Individual keeper details complete
-GET     /private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.present
-POST    /private-complete-and-confirm       @controllers.PrivateKeeperDetailsComplete.submit
+GET     /complete-and-confirm               @controllers.CompleteAndConfirm.present
+POST    /complete-and-confirm               @controllers.CompleteAndConfirm.submit
 
 # Business keeper details
 GET     /business-keeper-details            @controllers.BusinessKeeperDetails.present
 POST    /business-keeper-details            @controllers.BusinessKeeperDetails.submit
-
-# Business keeper details complete
-GET     /business-complete-and-confirm      @controllers.BusinessKeeperDetailsComplete.present
-POST    /business-complete-and-confirm      @controllers.BusinessKeeperDetailsComplete.submit
 
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 

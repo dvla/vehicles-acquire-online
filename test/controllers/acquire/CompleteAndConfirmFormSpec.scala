@@ -1,19 +1,19 @@
 package controllers.acquire
 
-import controllers.PrivateKeeperDetailsComplete
+import controllers.CompleteAndConfirm
 import helpers.UnitSpec
-import models.PrivateKeeperDetailsCompleteFormModel
-import models.PrivateKeeperDetailsCompleteFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.LocalDate
-import pages.acquire.PrivateKeeperDetailsCompletePage.DayDateOfSaleValid
-import pages.acquire.PrivateKeeperDetailsCompletePage.MonthDateOfSaleValid
-import pages.acquire.PrivateKeeperDetailsCompletePage.YearDateOfSaleValid
-import pages.acquire.PrivateKeeperDetailsCompletePage.MileageValid
-import pages.acquire.PrivateKeeperDetailsCompletePage.ConsentTrue
+import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.MileageValid
+import pages.acquire.CompleteAndConfirmPage.ConsentTrue
 import play.api.data.Form
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
-class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
+class CompleteAndConfirmFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields entered correctly" in {
@@ -152,8 +152,8 @@ class PrivateKeeperDetailsCompleteFormSpec extends UnitSpec {
                                     dayDateOfSale: String = DayDateOfSaleValid,
                                     monthDateOfSale: String = MonthDateOfSaleValid,
                                     yearDateOfSale: String = YearDateOfSaleValid,
-                                    consent: String = ConsentTrue): Form[PrivateKeeperDetailsCompleteFormModel] = {
-    injector.getInstance(classOf[PrivateKeeperDetailsComplete])
+                                    consent: String = ConsentTrue): Form[CompleteAndConfirmFormModel] = {
+    injector.getInstance(classOf[CompleteAndConfirm])
       .form.bind(
         Map(
           MileageId -> mileage,
