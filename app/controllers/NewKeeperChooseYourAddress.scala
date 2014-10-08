@@ -9,6 +9,7 @@ import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.BusinessKeeperDetailsFormModel
 import models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperDetailsViewModel
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
 import play.api.mvc.Result
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -139,7 +140,11 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     lookedUpAddress.map {
       case Some(addressViewModel) =>
           val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
-          Redirect(routes.CompleteAndConfirm.present()).withCookie(model).withCookie(newKeeperDetailsModel)
+          Redirect(routes.CompleteAndConfirm.present()).
+            discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
+            withCookie(model).
+            withCookie(newKeeperDetailsModel
+          )
       case None => Redirect(routes.UprnNotFound.present())
     }
   }
