@@ -22,7 +22,6 @@ import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
-import scala.Some
 import play.api.mvc.Result
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
@@ -62,18 +61,17 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         privateKeeperDetails.postcode,
         privateKeeperDetails.email,
         addresses
-      )
-    }
-  }, { businessKeeperDetails =>
-    val session = clientSideSessionFactory.getSession(request.cookies)
-    fetchAddresses(businessKeeperDetails.postcode)(session, request2lang).map { addresses =>
-      openView(businessKeeperDetails.businessName,
-        businessKeeperDetails.postcode,
-        businessKeeperDetails.email,
-        addresses
-      )
-    }
-  }, message => Future.successful(neither(message)))
+      )}
+    }, { businessKeeperDetails =>
+      val session = clientSideSessionFactory.getSession(request.cookies)
+      fetchAddresses(businessKeeperDetails.postcode)(session, request2lang).map { addresses =>
+        openView(businessKeeperDetails.businessName,
+          businessKeeperDetails.postcode,
+          businessKeeperDetails.email,
+          addresses
+        )
+      }
+    }, message => Future.successful(neither(message)))
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
@@ -81,12 +79,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     request.cookies.getModel[VehicleDetailsModel] match {
       case Some(vehicleDetails) =>
         Ok(views.html.acquire.new_keeper_choose_your_address(
-          NewKeeperChooseYourAddressViewModel(
-            form.fill(), vehicleDetails),
-            name,
-            postcode,
-            email.getOrElse("Not entered"),
-            addresses))
+          NewKeeperChooseYourAddressViewModel(form.fill(), vehicleDetails),
+          name,
+          postcode,
+          email.getOrElse("Not entered"),
+          addresses)
+        )
       case _ => neither(VehicleDetailsNotInCacheMessage)
     }
   }
@@ -95,12 +93,13 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                   name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                  (implicit request: Request[_]) = {
     val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
-    BadRequest(new_keeper_choose_your_address(NewKeeperChooseYourAddressViewModel(
-        formWithReplacedErrors(invalidForm), vehicleDetails.get),
-        name,
-        postcode,
-        email.getOrElse("Not entered"),
-        addresses))
+    BadRequest(new_keeper_choose_your_address(
+      NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleDetails.get),
+      name,
+      postcode,
+      email.getOrElse("Not entered"),
+      addresses)
+    )
   }
 
   def submit = Action.async { implicit request =>
