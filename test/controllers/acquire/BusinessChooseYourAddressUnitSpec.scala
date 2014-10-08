@@ -10,12 +10,13 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import CookieHelper.fetchCookiesFromHeaders
+import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import play.api.test.WithApplication
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
@@ -116,13 +117,21 @@ final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "write cookie when uprn found" in new WithApplication {
+    "write cookies and remove enter address manually cookie when uprn found" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails()).
+        withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
       val result = businessChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.map(_.name) should contain allOf(BusinessChooseYourAddressCacheKey, TraderDetailsCacheKey)
+        cookies.map(_.name) should contain allOf(
+          BusinessChooseYourAddressCacheKey,
+          EnterAddressManuallyCacheKey,
+          TraderDetailsCacheKey
+        )
+        verifyCookieHasBeenDiscarded(EnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(BusinessChooseYourAddressCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(TraderDetailsCacheKey, cookies)
       }
     }
 

@@ -323,6 +323,15 @@ acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the ve
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
+acquire_completeandconfirm.newkeeperDetails = New keeper details
+acquire_completeandconfirm.name = Name
+acquire_completeandconfirm.address = Address
+acquire_completeandconfirm.postcode = Postcode
+acquire_completeandconfirm.email = Email
+acquire_completeandconfirm.vehicleDetails = Vehicle details
+acquire_completeandconfirm.vehicleReg = Registration
+acquire_completeandconfirm.vehicleMake = Make
+acquire_completeandconfirm.vehicleModel = Model
 acquire_completeAndConfirm.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
 acquire_completeAndConfirm.mileage.label = Vehicle mileage
 acquire_completeAndConfirm.submitbutton = Add Keeper
