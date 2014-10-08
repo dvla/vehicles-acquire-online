@@ -1,7 +1,11 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{BusinessKeeperDetailsFormModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, PrivateKeeperDetailsFormModel}
+import models.BusinessKeeperDetailsFormModel
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmViewModel
+import models.NewKeeperDetailsViewModel
+import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import models.CompleteAndConfirmFormModel.Form.MileageId
 import play.api.data.{FormError, Form}
@@ -60,6 +64,15 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
             Redirect(routes.VehicleLookup.present())
         }
     )
+  }
+
+  def back = Action { implicit request =>
+    request.cookies.getModel[NewKeeperDetailsViewModel] match {
+      case Some(keeperDetails) =>
+        if (keeperDetails.address.uprn.isDefined) Redirect(routes.NewKeeperChooseYourAddress.present())
+        else Redirect(routes.NewKeeperEnterAddressManually.present())
+      case None => Redirect(routes.VehicleLookup.present())
+    }
   }
 
   private def formWithReplacedErrors(form: Form[CompleteAndConfirmFormModel]) = {

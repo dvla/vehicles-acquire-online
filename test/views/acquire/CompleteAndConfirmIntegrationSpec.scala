@@ -245,7 +245,8 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         setupTradeDetails().
         dealerDetails(addressWithUprn).
         vehicleDetails().
-        privateKeeperDetails()
+        privateKeeperDetails().
+        newKeeperDetails(addressWithUprn)
 
       go to CompleteAndConfirmPage
       click on back
@@ -258,7 +259,8 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         setupTradeDetails().
         dealerDetails(addressWithUprn).
         vehicleDetails().
-        businessKeeperDetails()
+        businessKeeperDetails().
+        newKeeperDetails(addressWithUprn)
 
       go to CompleteAndConfirmPage
       click on back

@@ -4,8 +4,10 @@ import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheK
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.{SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel}
 import models.{VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel}
+import models.NewKeeperDetailsViewModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import org.joda.time.LocalDate
@@ -177,5 +179,11 @@ object CookieFactoryForUISpecs {
     this
   }
 
+  def newKeeperDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
+    val key = NewKeeperDetailsCacheKey
+    val value = NewKeeperDetailsViewModel(name = TraderBusinessNameValid, address = address)
+    addCookie(key, value)
+    this
+  }
 
 }

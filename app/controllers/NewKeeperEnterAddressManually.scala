@@ -2,16 +2,16 @@ package controllers
 
 import com.google.inject.Inject
 import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel
 import models.PrivateKeeperDetailsFormModel
-import models.SetupTradeDetailsFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
-import common.model.{TraderDetailsModel, AddressModel}
+import common.model.AddressModel
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
@@ -53,26 +53,43 @@ final class NewKeeperEnterAddressManually @Inject()()
             Redirect(routes.VehicleLookup.present())
         }
       },
-      validForm =>
-        request.cookies.getModel[SetupTradeDetailsFormModel] match {
-          case Some(setupTradeDetails) =>
-            val traderAddress = AddressModel.from(
+      validForm => {
+        val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
+        val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
+        (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
+          case (Some(privateKeeperDetails), _) =>
+            val keeperAddress = AddressModel.from(
               validForm.addressAndPostcodeModel,
-              setupTradeDetails.traderPostcode
-            )
-            val traderDetailsModel = TraderDetailsModel(
-              traderName = setupTradeDetails.traderBusinessName,
-              traderAddress = traderAddress
+              privateKeeperDetails.postcode
             )
 
+            val keeperDetailsModel = NewKeeperDetailsViewModel(
+              name = privateKeeperDetails.firstName + privateKeeperDetails.firstName,
+              address = keeperAddress
+            )
             // Redirect to the next screen in the workflow
-            Redirect(routes.CompleteAndConfirm.present())//.
-//              withCookie(validForm).
-//              withCookie(traderDetailsModel)
-          case None =>
-            Logger.debug("Failed to find dealer name in cache on submit, redirecting")
-            Redirect(routes.SetUpTradeDetails.present())
+            Redirect(routes.CompleteAndConfirm.present()).
+              withCookie(validForm).
+              withCookie(keeperDetailsModel)
+          case (_, Some(businessKeeperDetails)) =>
+            val keeperAddress = AddressModel.from(
+              validForm.addressAndPostcodeModel,
+              businessKeeperDetails.postcode
+            )
+
+            val keeperDetailsModel = NewKeeperDetailsViewModel(
+              name = businessKeeperDetails.businessName,
+              address = keeperAddress
+            )
+
+            Redirect(routes.CompleteAndConfirm.present()).
+              withCookie(validForm).
+              withCookie(keeperDetailsModel)
+          case _ =>
+            Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
+            Redirect(routes.VehicleLookup.present())
         }
+      }
     )
   }
 

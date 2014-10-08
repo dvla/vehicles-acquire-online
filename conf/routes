@@ -54,6 +54,7 @@ POST    /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressMa
 
 # Individual keeper details complete
 GET     /complete-and-confirm               @controllers.CompleteAndConfirm.present
+GET     /complete-and-confirm/back          @controllers.CompleteAndConfirm.back
 POST    /complete-and-confirm               @controllers.CompleteAndConfirm.submit
 
 # Business keeper details
