@@ -157,7 +157,10 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
-          val newKeeperDetailsModel = NewKeeperDetailsViewModel(newKeeperName = newKeeperName, newKeeperAddress = addressViewModel)
+          val newKeeperDetailsModel = NewKeeperDetailsViewModel(
+            newKeeperName = newKeeperName,
+            newKeeperAddress = addressViewModel
+          )
           Redirect(routes.CompleteAndConfirm.present()).
             discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
             withCookie(model).

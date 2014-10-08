@@ -10,7 +10,7 @@ import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichForm, RichCookies}
+import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
 import common.model.{TraderDetailsModel, AddressModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
