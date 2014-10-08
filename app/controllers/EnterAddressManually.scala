@@ -56,7 +56,7 @@ final class EnterAddressManually @Inject()()
               withCookie(validForm).
               withCookie(traderDetailsModel)
           case None =>
-            Logger.debug("Failed to find dealer name in cache on submit, redirecting")
+            Logger.error("Failed to find dealer name in cache on submit, redirecting to SetUpTradeDetails")
             Redirect(routes.SetUpTradeDetails.present())
         }
     )

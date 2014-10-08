@@ -7,6 +7,7 @@ import play.api.i18n.Lang
 import play.api.mvc.{Action, Controller, Request}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.{BusinessChooseYourAddressFormModel, SetupTradeDetailsFormModel}
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -86,8 +87,8 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     lookedUpAddress.map {
       case Some(addressViewModel) =>
         val traderDetailsModel = TraderDetailsModel(traderName = traderName, traderAddress = addressViewModel)
-        Redirect(routes.VehicleLookup.present()). //ToDo replace redirect when next VehicleLookup is implemented
-          //discardingCookie(EnterAddressManuallyCacheKey).
+        Redirect(routes.VehicleLookup.present()).
+          discardingCookie(EnterAddressManuallyCacheKey).
           withCookie(model).
           withCookie(traderDetailsModel)
       case None => Redirect(routes.UprnNotFound.present())
