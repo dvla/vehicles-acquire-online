@@ -42,8 +42,6 @@ class CompleteAndConfirmFormSpec extends UnitSpec {
     }
   }
 
-
-
   "mileage" should {
     "not accept less than 0" in {
       formWithValidDefaults(mileage = "-1").errors.flatMap(_.messages) should contain theSameElementsAs

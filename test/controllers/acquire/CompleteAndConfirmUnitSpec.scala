@@ -51,7 +51,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
-
       content should include(MileageValid)
     }
 
@@ -60,7 +59,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
-
       content should include(MileageValid)
     }
 
@@ -81,17 +79,15 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   final val notImplementedUrl = buildAppUrl("not-implemented")
+  final val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
 
   "submit" should {
-
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$").
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
-      val count = "You must enter a valid mileage between 0 and 999999".
-        r.findAllIn(contentAsString(result)).length
-      count should equal(2)
+      replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
 
     "redirect to next page when mandatory fields are complete for private keeper" in new WithApplication {
