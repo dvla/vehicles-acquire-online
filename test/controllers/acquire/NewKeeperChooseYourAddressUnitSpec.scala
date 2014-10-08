@@ -3,7 +3,7 @@ package controllers.acquire
 import controllers.acquire.Common.PrototypeHtml
 import controllers.NewKeeperChooseYourAddress
 import helpers.common.CookieHelper
-import CookieHelper.fetchCookiesFromHeaders
+import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import helpers.UnitSpec
 import org.mockito.Mockito.when
 import pages.acquire.CompleteAndConfirmPage
@@ -15,6 +15,7 @@ import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
@@ -184,36 +185,54 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "write cookie when uprn found for private keeper" in new WithApplication {
+    "write cookies and remove enter address manually cookie when uprn found for private keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.map(_.name) should contain allOf(NewKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
+        cookies.map(_.name) should contain allOf(
+          NewKeeperEnterAddressManuallyCacheKey,
+          NewKeeperChooseYourAddressCacheKey,
+          NewKeeperDetailsCacheKey
+        )
+        verifyCookieHasBeenDiscarded(NewKeeperEnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(NewKeeperChooseYourAddressCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
       }
     }
 
-    "write cookie when uprn found for business keeper" in new WithApplication {
+    "write cookies and remove enter address manually cookie when uprn found for business keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.map(_.name) should contain allOf(NewKeeperChooseYourAddressCacheKey, NewKeeperDetailsCacheKey)
+        cookies.map(_.name) should contain allOf(
+          NewKeeperEnterAddressManuallyCacheKey,
+          NewKeeperChooseYourAddressCacheKey,
+          NewKeeperDetailsCacheKey
+        )
+        verifyCookieHasBeenDiscarded(NewKeeperEnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(NewKeeperChooseYourAddressCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
       }
     }
 
-    "does not write cookie when uprn not found" in new WithApplication {
+    "does not write cookies when uprn not found" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnNotFound.submit(request)
       whenReady(result) { r =>
         val cookies = r.header.headers.get(SET_COOKIE).toSeq.flatMap(Cookies.decode)
-        cookies.map(_.name) should contain noneOf(NewKeeperChooseYourAddressCacheKey, TraderDetailsCacheKey)
+        cookies.map(_.name) should contain noneOf(
+          NewKeeperEnterAddressManuallyCacheKey,
+          NewKeeperChooseYourAddressCacheKey,
+          TraderDetailsCacheKey
+        )
       }
     }
   }
