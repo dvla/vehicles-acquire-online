@@ -34,6 +34,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
   private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
     "This is an error condition. Now redirecting to vehicle lookup."
+  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. Now redirecting to vehicle lookup"
 
   private def switch[R](request: Request[AnyContent],
                      priv: PrivateKeeperDetailsFormModel => R,
@@ -86,8 +87,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             postcode,
             email.getOrElse("Not entered"),
             addresses))
-      case _ =>
-        Redirect(routes.VehicleLookup.present())
+      case _ => neither(VehicleDetailsNotInCacheMessage)
     }
   }
 
