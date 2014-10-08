@@ -315,6 +315,11 @@ acquire_newKeeperChooseYourAddress.manualAddressEntry = My address is not in the
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+acquire_newKeeperChooseYourAddress.vehicledetails = Vehicle details
+acquire_newKeeperChooseYourAddress.vehiclereg = Registration
+acquire_newKeeperChooseYourAddress.vehiclemake = Make
+acquire_newKeeperChooseYourAddress.vehiclemodel = Model
+acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm

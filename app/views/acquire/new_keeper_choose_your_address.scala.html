@@ -1,4 +1,4 @@
-@(newKeeperChooseYourAddressForm: models.NewKeeperChooseYourAddressViewModel,
+@(viewModel: models.NewKeeperChooseYourAddressViewModel,
         newKeeperName: String,
         newKeeperPostcode: String,
         newKeeperEmail: String,
@@ -19,8 +19,25 @@
 @main(
     progress = Some(Messages("acquire_progress_6")),
     title = Messages("acquire_newKeeperChooseYourAddress_title"),
-    currentForm = Some(newKeeperChooseYourAddressForm.form)
+    currentForm = Some(viewModel.form)
 ) {
+<div class="two-col clearfix">
+    <div class="first-col">
+        <h2>@Messages("acquire_newKeeperChooseYourAddress.vehicledetails")</h2>
+        <dl class="playback">
+            <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclereg")</dt>
+            <dd>@viewModel.vehicleDetails.registrationNumber</dd>
+            <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclemake")</dt>
+            <dd>@viewModel.vehicleDetails.vehicleMake</dd>
+            <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclemodel")</dt>
+            <dd>@viewModel.vehicleDetails.vehicleModel</dd>
+        </dl>
+        <div class="alert-warning print-message">
+            <p><strong>@Messages("acquire_newKeeperChooseYourAddress.p4")</strong></p>
+        </div>
+    </div>
+
+    <div class="second-col">
     @form(action = NewKeeperChooseYourAddress.submit()) {
         @csrfTokenHiddenField()
         <dl class="playback">
@@ -38,7 +55,7 @@
         <h2>@Messages("acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1")</h2>
         <h2>@Messages("acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2")</h2>
         } else {
-            @valtechSelect(newKeeperChooseYourAddressForm.form(AddressSelectId),
+            @valtechSelect(viewModel.form(AddressSelectId),
                 options = dropDownOptions.toSeq,
                 args = Map(
                     '_label -> Messages("acquire_newKeeperChooseYourAddress_addressSelect_label"),
@@ -68,4 +85,6 @@
             </a>
         </div>
     }
+        </div>
+</div>
 }
