@@ -7,7 +7,7 @@ import models.NewKeeperEnterAddressManuallyFormModel
 import models.PrivateKeeperDetailsFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
@@ -24,72 +24,89 @@ final class NewKeeperEnterAddressManually @Inject()()
     NewKeeperEnterAddressManuallyFormModel.Form.Mapping
   )
 
-  def present = Action { implicit request =>
+  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
+    "This is an error condition. Now redirecting to vehicle lookup."
+
+  private def switch[R](request: Request[AnyContent],
+                        priv: PrivateKeeperDetailsFormModel => R,
+                        business: BusinessKeeperDetailsFormModel => R,
+                        neither: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), _) =>
-        Ok(new_keeper_enter_address_manually(form.fill(), privateKeeperDetails.postcode))
-      case (_, Some(businessKeeperDetails)) =>
-        Ok(new_keeper_enter_address_manually(form.fill(), businessKeeperDetails.postcode))
-      case _ =>
-        Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
-        Redirect(routes.VehicleLookup.present())
+      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => neither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
+      case (Some(privateKeeperDetails), _) => priv(privateKeeperDetails)
+      case (_, Some(businessKeeperDetails)) => business(businessKeeperDetails)
+      case _ => neither(KeeperDetailsNotInCacheMessage)
     }
+  }
+
+  private def neither(message: String): Result = {
+    Logger.warn(message)
+    Redirect(routes.VehicleLookup.present())
+  }
+
+  def present = Action { implicit request =>
+    switch(request,
+      { privateKeeperDetails => Ok(new_keeper_enter_address_manually(form.fill(), privateKeeperDetails.postcode)) },
+      { businessKeeperDetails => Ok(new_keeper_enter_address_manually(form.fill(), businessKeeperDetails.postcode)) },
+      message => neither(message)
+    )
   }
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm => {
-        val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
-        val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
-        (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-          case (Some(privateKeeperDetails), _) =>
-            BadRequest(new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm), privateKeeperDetails.postcode))
-          case (_, Some(businessKeeperDetails)) =>
-            BadRequest(new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm), businessKeeperDetails.postcode))
-          case _ =>
-            Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
-            Redirect(routes.VehicleLookup.present())
+      invalidForm =>
+        switch(request,
+        { privateKeeperDetails => BadRequest(
+            new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm),
+            privateKeeperDetails.postcode)
+          )
+        },
+        { businessKeeperDetails => BadRequest(
+            new_keeper_enter_address_manually(formWithReplacedErrors(invalidForm),
+            businessKeeperDetails.postcode)
+          )
+        },
+        message => neither(message)
+        ),
+      validForm =>
+        switch(request,
+        { privateKeeperDetails => {
+          val keeperAddress = AddressModel.from(
+            validForm.addressAndPostcodeModel,
+            privateKeeperDetails.postcode
+          )
+
+          val keeperDetailsModel = NewKeeperDetailsViewModel(
+            name = s"${privateKeeperDetails.firstName} ${privateKeeperDetails.firstName}",
+            address = keeperAddress
+          )
+          // Redirect to the next screen in the workflow
+          Redirect(routes.CompleteAndConfirm.present()).
+            withCookie(validForm).
+            withCookie(keeperDetailsModel)
         }
-      },
-      validForm => {
-        val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
-        val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
-        (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-          case (Some(privateKeeperDetails), _) =>
-            val keeperAddress = AddressModel.from(
-              validForm.addressAndPostcodeModel,
-              privateKeeperDetails.postcode
-            )
+        },
+        { businessKeeperDetails => {
+          val keeperAddress = AddressModel.from(
+            validForm.addressAndPostcodeModel,
+            businessKeeperDetails.postcode
+          )
 
-            val keeperDetailsModel = NewKeeperDetailsViewModel(
-              name = privateKeeperDetails.firstName + privateKeeperDetails.firstName,
-              address = keeperAddress
-            )
-            // Redirect to the next screen in the workflow
-            Redirect(routes.CompleteAndConfirm.present()).
-              withCookie(validForm).
-              withCookie(keeperDetailsModel)
-          case (_, Some(businessKeeperDetails)) =>
-            val keeperAddress = AddressModel.from(
-              validForm.addressAndPostcodeModel,
-              businessKeeperDetails.postcode
-            )
+          val keeperDetailsModel = NewKeeperDetailsViewModel(
+            name = businessKeeperDetails.businessName,
+            address = keeperAddress
+          )
 
-            val keeperDetailsModel = NewKeeperDetailsViewModel(
-              name = businessKeeperDetails.businessName,
-              address = keeperAddress
-            )
-
-            Redirect(routes.CompleteAndConfirm.present()).
-              withCookie(validForm).
-              withCookie(keeperDetailsModel)
-          case _ =>
-            Logger.warn("Failed to find a cookie for the new keeper. Now redirecting to vehicle lookup.")
-            Redirect(routes.VehicleLookup.present())
+          Redirect(routes.CompleteAndConfirm.present()).
+            withCookie(validForm).
+            withCookie(keeperDetailsModel)
         }
-      }
+        },
+        message => neither(message)
+        )
     )
   }
 

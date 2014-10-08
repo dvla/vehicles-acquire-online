@@ -4,7 +4,7 @@ import javax.inject.Inject
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
-import play.api.mvc.{AnyContent, Action, Controller, Request}
+import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
 import models.BusinessKeeperDetailsFormModel
@@ -22,7 +22,6 @@ import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
-import play.api.mvc.Result
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
