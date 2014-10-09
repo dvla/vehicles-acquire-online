@@ -27,13 +27,14 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
     CompleteAndConfirmFormModel.Form.Mapping
   )
 
+  private final val NoNewKeeperCookieMessage = "Did not find a new keeper details cookie on submit. " +
+    "Now redirecting to Vehicle Lookup."
+
   def present = Action { implicit request =>
     request.cookies.getModel[NewKeeperDetailsViewModel] match {
       case Some(newKeeperDetails) =>
         Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
-      case _ =>
-        Logger.warn("Did not find a new keeper details cookie. Now redirecting to Vehicle Lookup.")
-        Redirect(routes.VehicleLookup.present())
+      case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
     }
   }
 
@@ -45,18 +46,19 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
             BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
               formWithReplacedErrors(invalidForm), null, null
             ), dateService))
-          case _ =>
-            Logger.warn("Did not find a new keeper details cookie on submit. Now redirecting to Vehicle Lookup.")
-            Redirect(routes.VehicleLookup.present())
+          case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
         },
       validForm =>
         request.cookies.getModel[NewKeeperDetailsViewModel] match {
           case Some(newKeeperDetails) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
-          case _ =>
-            Logger.warn("Did not find a new keeper details cookie on submit. Now redirecting to Vehicle Lookup.")
-            Redirect(routes.VehicleLookup.present())
+          case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
         }
     )
+  }
+
+  private def redirectToVehicleLookup(message: String) = {
+    Logger.warn(message)
+    Redirect(routes.VehicleLookup.present())
   }
 
   def back = Action { implicit request =>
