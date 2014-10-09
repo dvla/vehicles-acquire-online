@@ -4,6 +4,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, Vehic
 
 final case class AcquireSuccessViewModel(vehicleDetails: VehicleDetailsModel,
                                          traderDetails: TraderDetailsModel,
-                                         newKeeperDetails: NewKeeperDetailsViewModel) {
+                                         newKeeperDetails: NewKeeperDetailsViewModel,
+                                         completeAndConfirmDetails: CompleteAndConfirmFormModel) {
 
 }

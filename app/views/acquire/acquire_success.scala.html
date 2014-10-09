@@ -1,4 +1,4 @@
-@()(implicit lang: Lang,
+@(viewModel: models.AcquireSuccessViewModel)(implicit lang: Lang,
     token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
     config: utils.helpers.Config)
 
@@ -23,15 +23,15 @@
         <div class="playback">
             <h2>@Messages("acquire_success.trader_details.header")</h2>
             <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
-            <dd>Car Giant</dd>
+            <dd>@viewModel.traderDetails.traderName</dd>
             <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
-            <dd>1 The Road, Swansea</dd>
+            <dd>@viewModel.traderDetails.traderAddress.address</dd>
             <dt>@Messages("acquire_success.trader_details.trader_postcode")</dt>
-            <dd>SA99 1DD</dd>
+            <dd>@viewModel.traderDetails.traderAddress.address.last</dd>
             <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
-            <dd>testemail.com</dd>
+            <dd>@viewModel.traderDetails.traderEmail.getOrElse("Not entered")</dd>
             <dt>@Messages("acquire_success.date_of_sale.label")</dt>
-            <dd>09/10/2014</dd>
+            <dd>@viewModel.completeAndConfirmDetails.dateOfSale</dd>
 
         </div>
     </div>
