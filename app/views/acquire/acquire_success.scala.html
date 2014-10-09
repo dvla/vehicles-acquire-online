@@ -46,13 +46,13 @@
         <p>@Messages("acquire_success.vehicle_details.p1")</p>
         <ul style="list-style-type:none">
             <li><b>Registration</b></li>
-            <li></li>
+            <li>@viewModel.vehicleDetails.registrationNumber</li>
             <li><b>Make</b></li>
-            <li></li>
+            <li>@viewModel.vehicleDetails.vehicleMake</li>
             <li><b>Model</b></li>
-            <li></li>
+            <li>@viewModel.vehicleDetails.vehicleModel</li>
             <li><b>Mileage</b></li>
-            <li></li>
+            <li>@viewModel.completeAndConfirmDetails.mileage.getOrElse("Not entered")</li>
         </ul>
 
         <p>@Messages("acquire_success.new_keeper_details.p1")</p>
