@@ -12,7 +12,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("new-keeper-choose-your-address")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
-  final override val title = "Select keeper address"
+  final override val title = "Select new keeper address"
   //final val titleCy = "Dewiswch eich cyfeiriad masnach"
 
   def chooseAddress(implicit driver: WebDriver): SingleSel = singleSel(id(AddressSelectId))
