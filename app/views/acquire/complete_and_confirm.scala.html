@@ -37,11 +37,11 @@
             <h2>@Messages("acquire_completeandconfirm.vehicleDetails")</h2>
             <dl class="playback">
                 <dt>@Messages("acquire_completeandconfirm.vehicleReg")</dt>
-                <dd>reg@*@viewModel.vehicleDetails.registrationNumber*@</dd>
+                <dd>@data.vehicleDetails.registrationNumber</dd>
                 <dt>@Messages("acquire_completeandconfirm.vehicleMake")</dt>
-                <dd>make@*@viewModel.vehicleDetails.vehicleMake*@</dd>
+                <dd>@data.vehicleDetails.vehicleMake</dd>
                 <dt>@Messages("acquire_completeandconfirm.vehicleModel")</dt>
-                <dd>model@*@viewModel.vehicleDetails.vehicleModel*@</dd>
+                <dd>@data.vehicleDetails.vehicleModel</dd>
             </dl>
         </div>
 

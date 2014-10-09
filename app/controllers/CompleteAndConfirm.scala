@@ -14,6 +14,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
+import common.model.VehicleDetailsModel
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
@@ -28,24 +29,32 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
   private final val NoNewKeeperCookieMessage = "Did not find a new keeper details cookie in cache. " +
     "Now redirecting to Vehicle Lookup."
 
+  private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details in cache. " +
+    "Now redirecting to vehicle lookup"
+
   def present = Action { implicit request =>
-    request.cookies.getModel[NewKeeperDetailsViewModel] match {
-      case Some(newKeeperDetails) =>
-        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, newKeeperDetails), dateService))
-      case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
+    val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+    val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+    (newKeeperDetailsOpt, vehicleDetailsOpt) match {
+      case (Some(newKeeperDetails), Some(vehicleDetails)) =>
+        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails), dateService))
+      case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
     }
   }
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm =>
-        request.cookies.getModel[NewKeeperDetailsViewModel] match {
-          case Some(newKeeperDetails) =>
-            BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
-              formWithReplacedErrors(invalidForm), null, newKeeperDetails
-            ), dateService))
-          case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
-        },
+      invalidForm => {
+        val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+        val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+        (newKeeperDetailsOpt, vehicleDetailsOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleDetails)) =>
+            BadRequest(complete_and_confirm(
+              CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails), dateService)
+            )
+          case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
+        }
+      },
       validForm =>
         request.cookies.getModel[NewKeeperDetailsViewModel] match {
           case Some(newKeeperDetails) => Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
