@@ -81,7 +81,8 @@ final class NewKeeperEnterAddressManually @Inject()()
 
           val keeperDetailsModel = NewKeeperDetailsViewModel(
             name = s"${privateKeeperDetails.firstName} ${privateKeeperDetails.firstName}",
-            address = keeperAddress
+            address = keeperAddress,
+            email = privateKeeperDetails.email
           )
           // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).
@@ -97,7 +98,8 @@ final class NewKeeperEnterAddressManually @Inject()()
 
           val keeperDetailsModel = NewKeeperDetailsViewModel(
             name = businessKeeperDetails.businessName,
-            address = keeperAddress
+            address = keeperAddress,
+            email = businessKeeperDetails.email
           )
           // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).

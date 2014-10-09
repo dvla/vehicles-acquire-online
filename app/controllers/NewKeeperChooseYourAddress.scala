@@ -127,10 +127,18 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       validForm =>
         switch(request, { privateKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
-          lookupUprn(validForm, privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName, privateKeeper = true)
+          lookupUprn(
+            validForm,
+            s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
+            privateKeeperDetails.email
+          )
         }, { businessKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
-          lookupUprn(validForm, businessKeeperDetails.businessName, privateKeeper = false)
+          lookupUprn(
+            validForm,
+            businessKeeperDetails.businessName,
+            businessKeeperDetails.email
+          )
         }, message => Future.successful(neither(message)))
     )
   }
@@ -151,14 +159,15 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       FormError(key = AddressSelectId, message = "disposal_newKeeperChooseYourAddress.address.required", args = Seq.empty)).
       distinctErrors
 
-  private def lookupUprn(model: NewKeeperChooseYourAddressFormModel, newKeeperName: String, privateKeeper: Boolean)
+  private def lookupUprn(model: NewKeeperChooseYourAddressFormModel, newKeeperName: String, email: Option[String])
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
           val newKeeperDetailsModel = NewKeeperDetailsViewModel(
             name = newKeeperName,
-            address = addressViewModel
+            address = addressViewModel,
+            email = email
           )
           Redirect(routes.CompleteAndConfirm.present()).
             discardingCookie(NewKeeperEnterAddressManuallyCacheKey).

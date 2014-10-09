@@ -181,9 +181,10 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def newKeeperDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
+  def newKeeperDetails(address: AddressModel = addressWithoutUprn, email: Option[String] = Some("abd@def.com"))
+                      (implicit webDriver: WebDriver) = {
     val key = NewKeeperDetailsCacheKey
-    val value = NewKeeperDetailsViewModel(name = TraderBusinessNameValid, address = address)
+    val value = NewKeeperDetailsViewModel(name = TraderBusinessNameValid, address = address, email = email)
     addCookie(key, value)
     this
   }

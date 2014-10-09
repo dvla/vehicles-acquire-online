@@ -1,11 +1,9 @@
 package controllers
 
 import com.google.inject.Inject
-import models.BusinessKeeperDetailsFormModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmViewModel
 import models.NewKeeperDetailsViewModel
-import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.Form.ConsentId
 import models.CompleteAndConfirmFormModel.Form.MileageId
 import play.api.data.{FormError, Form}
