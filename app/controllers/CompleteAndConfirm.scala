@@ -50,7 +50,7 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
         },
       validForm =>
         request.cookies.getModel[NewKeeperDetailsViewModel] match {
-          case Some(newKeeperDetails) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
+          case Some(newKeeperDetails) => Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
           case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
         }
     )

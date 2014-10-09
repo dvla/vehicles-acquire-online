@@ -8,7 +8,7 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.{BeforeYouStartPage,CompleteAndConfirmPage,SetupTradeDetailsPage,NewKeeperChooseYourAddressPage}
+import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
@@ -59,14 +59,14 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal("Not implemented") //ToDo change title when next page is implemented
+      page.title should equal(AcquireSuccessPage.title)
     }
 
     "go to the appropriate next page when mandatory details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "")
-      page.title should equal("Not implemented") //ToDo change title when next page is implemented
+      page.title should equal(AcquireSuccessPage.title)
     }
 
     "display one validation error message when a mileage is entered greater than max length for a new keeper" taggedAs UiTag in new WebBrowser {

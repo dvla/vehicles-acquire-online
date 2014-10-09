@@ -61,6 +61,9 @@ POST    /complete-and-confirm               @controllers.CompleteAndConfirm.subm
 GET     /business-keeper-details            @controllers.BusinessKeeperDetails.present
 POST    /business-keeper-details            @controllers.BusinessKeeperDetails.submit
 
+# Success
+GET     /acquire-success                    @controllers.AcquireSuccess.present
+
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 
 GET     /not-implemented                    @controllers.NotImplemented.present

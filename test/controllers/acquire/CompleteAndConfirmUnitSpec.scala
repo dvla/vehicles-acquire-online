@@ -13,6 +13,7 @@ import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSale
 import utils.helpers.Config
 import org.mockito.Mockito.when
 import pages.acquire.VehicleLookupPage
+import pages.acquire.AcquireSuccessPage
 import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 
@@ -64,7 +65,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
   }
 
-  final val notImplementedUrl = buildAppUrl("not-implemented")
   final val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
 
   "submit" should {
@@ -82,7 +82,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(AcquireSuccessPage.address)) //ToDo - update when next section is implemented
       }
     }
 
@@ -92,7 +92,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(AcquireSuccessPage.address)) //ToDo - update when next section is implemented
       }
     }
 
