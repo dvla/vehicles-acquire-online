@@ -21,6 +21,7 @@ import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
@@ -200,6 +201,23 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def newKeeperChooseYourAddress(): Cookie = {
     val key = NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
     val value = NewKeeperChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
+    createCookie(key, value)
+  }
+
+  def newKeeperDetailsModel(uprn: Option[Long] = None,
+                            buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                            line2: String = Line2Valid,
+                            line3: String = Line3Valid,
+                            postTown: String = PostTownValid,
+                            postcode: String = PostcodeValid): Cookie = {
+    val key = NewKeeperDetailsCacheKey
+    val value = NewKeeperDetailsViewModel(
+      name = TraderBusinessNameValid,
+      address = AddressModel(
+      uprn = uprn,
+      address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)
+      )
+    )
     createCookie(key, value)
   }
 

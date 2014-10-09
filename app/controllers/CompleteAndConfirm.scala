@@ -28,10 +28,8 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
   )
 
   def present = Action { implicit request =>
-    (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
-      case (Some(privateKeeperDetails), _) =>
-        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
-      case (_, Some(businessKeeperDetails)) =>
+    request.cookies.getModel[NewKeeperDetailsViewModel] match {
+      case Some(newKeeperDetails) =>
         Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, null), dateService))
       case _ =>
         Logger.warn("Did not find a new keeper details cookie. Now redirecting to Vehicle Lookup.")
@@ -42,12 +40,8 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
-        (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
-          case (Some(privateKeeperDetails), _) =>
-            BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
-              formWithReplacedErrors(invalidForm), null, null
-            ), dateService))
-          case (_, Some(businessKeeperDetails)) =>
+        request.cookies.getModel[NewKeeperDetailsViewModel] match {
+          case Some(newKeeperDetails) =>
             BadRequest(complete_and_confirm(CompleteAndConfirmViewModel(
               formWithReplacedErrors(invalidForm), null, null
             ), dateService))
@@ -56,9 +50,8 @@ class CompleteAndConfirm @Inject()()(implicit clientSideSessionFactory: ClientSi
             Redirect(routes.VehicleLookup.present())
         },
       validForm =>
-        (request.cookies.getModel[PrivateKeeperDetailsFormModel], request.cookies.getModel[BusinessKeeperDetailsFormModel]) match {
-          case (Some(privateKeeperDetails), _) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
-          case (_, Some(businessKeeperDetails)) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
+        request.cookies.getModel[NewKeeperDetailsViewModel] match {
+          case Some(newKeeperDetails) => Redirect(routes.NotImplemented.present()).withCookie(validForm)
           case _ =>
             Logger.warn("Did not find a new keeper details cookie on submit. Now redirecting to Vehicle Lookup.")
             Redirect(routes.VehicleLookup.present())

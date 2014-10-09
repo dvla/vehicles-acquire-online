@@ -146,7 +146,9 @@ object CookieFactoryForUISpecs {
                            lastName: String = LastNameValid,
                            email: Option[String] = Some(EmailValid),
                            dateOfBirth: Option[LocalDate] = Some(new LocalDate(
-                             YearDateOfBirthValid.toInt, MonthDateOfBirthValid.toInt, DayDateOfBirthValid.toInt
+                             YearDateOfBirthValid.toInt,
+                             MonthDateOfBirthValid.toInt,
+                             DayDateOfBirthValid.toInt
                            )),
                            driverNumber: Option[String] = Some(DriverNumberValid),
                            postcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
@@ -185,5 +187,4 @@ object CookieFactoryForUISpecs {
     addCookie(key, value)
     this
   }
-
 }

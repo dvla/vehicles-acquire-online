@@ -19,20 +19,14 @@ import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, Mo
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   "present" should {
-    "display the page with new private keeper cached" in new WithApplication {
-      whenReady(presentWithNewPrivateKeeper) { r =>
-        r.header.status should equal(OK)
-      }
-    }
-
-    "display the page with new business keeper cached" in new WithApplication {
-      whenReady(presentWithNewBusinessKeeper) { r =>
+    "display the page with new keeper cached" in new WithApplication {
+      whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
     "display prototype message when config set to true" in new WithApplication {
-      contentAsString(presentWithNewPrivateKeeper) should include(PrototypeHtml)
+      contentAsString(present) should include(PrototypeHtml)
     }
 
     "not display prototype message when config set to false" in new WithApplication {
@@ -46,17 +40,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "present a full form when new keeper cookie is present for new private keeper" in new WithApplication {
+    "present a full form when new keeper cookie is present for new keeper" in new WithApplication {
       val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
-      val content = contentAsString(completeAndConfirm.present(request))
-      content should include(MileageValid)
-    }
-
-    "present a full form when new keeper cookie is present for new business keeper" in new WithApplication {
-      val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should include(MileageValid)
@@ -84,15 +70,15 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   "submit" should {
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$").
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
 
-    "redirect to next page when mandatory fields are complete for private keeper" in new WithApplication {
+    "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -100,30 +86,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to next page when mandatory fields are complete for business keeper" in new WithApplication {
+    "redirect to next page when all fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
-
-      val result = completeAndConfirm.submit(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
-      }
-    }
-
-
-    "redirect to next page when all fields are complete for private keeper" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-
-      val result = completeAndConfirm.submit(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some(notImplementedUrl)) //ToDo - update when next section is implemented
-      }
-    }
-
-    "redirect to next page when all fields are complete for business keeper" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -133,7 +98,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent="").
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -160,15 +125,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     injector.getInstance(classOf[CompleteAndConfirm])
   }
 
-  private lazy val presentWithNewPrivateKeeper = {
+  private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-    completeAndConfirm.present(request)
-  }
-
-  private lazy val presentWithNewBusinessKeeper = {
-    val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
     completeAndConfirm.present(request)
   }
 }
