@@ -24,16 +24,15 @@
             <h2>@Messages("acquire_completeandconfirm.newkeeperDetails")</h2>
             <dl class="playback">
                 <dt>@Messages("acquire_completeandconfirm.name")</dt>
-                <dd>name</dd>
-@*                <dd>@viewModel.vehicleDetails.registrationNumber</dd>*@
+                <dd>@data.keeperDetails.name</dd>
                 <dt>@Messages("acquire_completeandconfirm.address")</dt>
-@*                <dd>@viewModel.vehicleDetails.vehicleMake</dd>*@
-                <dd>address line 1</dd>
-                <dt>@Messages("acquire_completeandconfirm.postcode")</dt>
-                <dd>postcode</dd>
-@*                <dd>@viewModel.vehicleDetails.vehicleModel</dd>*@
+                <dd>@for(addr <- data.keeperDetails.address.address) {@addr<br/>}</dd>
                 <dt>@Messages("acquire_completeandconfirm.email")</dt>
-                <dd>email</dd>
+                @if(data.keeperDetails.email == None) {
+                <dd>@Messages("acquire_completeandconfirm.emailNotEntered")</dd>
+                } else {
+                <dd>data.keeperDetails.email.get</dd>
+                }
             </dl>
             <h2>@Messages("acquire_completeandconfirm.vehicleDetails")</h2>
             <dl class="playback">
