@@ -99,7 +99,7 @@ final class NewKeeperEnterAddressManually @Inject()()
             name = businessKeeperDetails.businessName,
             address = keeperAddress
           )
-
+          // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).
             withCookie(validForm).
             withCookie(keeperDetailsModel)
