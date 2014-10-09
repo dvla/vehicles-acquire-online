@@ -10,6 +10,70 @@
 @main(
     progress = Some(Messages("acquire_progress_1")),
     title = "Summary"
-) {
-    <p>Success</p>
+){
+<div class="two-col clearfix">
+    <div class="first-col">
+        <dl class="playback">
+            <h2>@Messages("acquire_success.transaction_details.header")</h2>
+            <dt>@Messages("acquire_success.transaction_details.transaction_id")</dt>
+            <dd>101</dd>
+            <dt>@Messages("acquire_success.transaction_details.transaction_date")</dt>
+            <dd>09/10/2014</dd>
+        </dl>
+        <div class="playback">
+            <h2>@Messages("acquire_success.trader_details.header")</h2>
+            <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
+            <dd>Car Giant</dd>
+            <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
+            <dd>1 The Road, Swansea</dd>
+            <dt>@Messages("acquire_success.trader_details.trader_postcode")</dt>
+            <dd>SA99 1DD</dd>
+            <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
+            <dd>testemail.com</dd>
+            <dt>@Messages("acquire_success.date_of_sale.label")</dt>
+            <dd>09/10/2014</dd>
+
+        </div>
+    </div>
+    <div class="second-col">
+        <div class="alert-complete">
+            <h2>@Messages("acquire_success.complete.header")</h2>
+            <p>@Messages("acquire_success.complete.p1")</p>
+            <p>@Messages("acquire_success.complete.p2")</p>
+        </div>
+
+        <h2>@Messages("acquire_success.vehicle_details.header")</h2>
+        <p>@Messages("acquire_success.vehicle_details.p1")</p>
+        <ul style="list-style-type:none">
+            <li><b>Registration</b></li>
+            <li></li>
+            <li><b>Make</b></li>
+            <li></li>
+            <li><b>Model</b></li>
+            <li></li>
+            <li><b>Mileage</b></li>
+            <li></li>
+        </ul>
+
+        <p>@Messages("acquire_success.new_keeper_details.p1")</p>
+        <ul style="list-style-type:none">
+            <li><b>Name</b></li>
+            <li></li>
+            <li><b>Address</b></li>
+            <li></li>
+            <li><b>Postcode</b></li>
+            <li></li>
+            <li><b>Contact email address</b></li>
+            <li></li>
+        </ul>
+
+        <h2>@Messages("acquire_success.further_information.header")</h2>
+        <p>@Messages("acquire_success.further_information.p1")</p>
+        <p>@Messages("acquire_success.further_information.p2")</p>
+
+        <div class="alert-warning">
+            <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
+        </div>
+    </div>
+</div>
 }
