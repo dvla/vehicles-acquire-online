@@ -7,12 +7,8 @@ import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
-import pages.common.ErrorPanel
 import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
-import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
 
 final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 

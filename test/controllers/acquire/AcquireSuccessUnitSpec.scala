@@ -1,23 +1,20 @@
 package controllers.acquire
 
 import controllers.acquire.Common.PrototypeHtml
-import controllers.{AcquireSuccess, PrivateKeeperDetails, CompleteAndConfirm}
+import controllers.AcquireSuccess
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import org.mockito.Mockito.when
-import pages.acquire.{SetupTradeDetailsPage, BeforeYouStartPage, AcquireSuccessPage, VehicleLookupPage}
-import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
+import pages.acquire.BeforeYouStartPage
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService._
-import pages.acquire.PrivateKeeperDetailsPage._
+import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, ModelValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
-import pages.acquire.SetupTradeDetailsPage._
+import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 
 class AcquireSuccessUnitSpec extends UnitSpec {
 

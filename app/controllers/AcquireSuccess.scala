@@ -7,8 +7,6 @@ import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.services.DateService
-import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
