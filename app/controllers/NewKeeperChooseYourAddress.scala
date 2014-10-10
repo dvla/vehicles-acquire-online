@@ -35,16 +35,16 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. Now redirecting to vehicle lookup"
 
   private def switch[R](request: Request[AnyContent],
-                     priv: PrivateKeeperDetailsFormModel => R,
-                     business: BusinessKeeperDetailsFormModel => R,
-                     neither: String => R): R = {
+                     onPrivate: PrivateKeeperDetailsFormModel => R,
+                     onBusiness: BusinessKeeperDetailsFormModel => R,
+                     onNeither: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => neither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
-      case (Some(privateKeeperDetails), _) => priv(privateKeeperDetails)
-      case (_, Some(businessKeeperDetails)) => business(businessKeeperDetails)
-      case _ => neither(KeeperDetailsNotInCacheMessage)
+      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => onNeither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
+      case (Some(privateKeeperDetails), _) => onPrivate(privateKeeperDetails)
+      case (_, Some(businessKeeperDetails)) => onBusiness(businessKeeperDetails)
+      case _ => onNeither(KeeperDetailsNotInCacheMessage)
     }
   }
 
@@ -53,15 +53,19 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     Redirect(routes.VehicleLookup.present())
   }
 
-  def present = Action.async { implicit request => switch(request, { privateKeeperDetails =>
-    val session = clientSideSessionFactory.getSession(request.cookies)
-    fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
-      openView(privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
-        privateKeeperDetails.postcode,
-        privateKeeperDetails.email,
-        addresses
-      )}
-    }, { businessKeeperDetails =>
+  def present = Action.async { implicit request => switch(
+    request = request,
+    onPrivate = { privateKeeperDetails =>
+      val session = clientSideSessionFactory.getSession(request.cookies)
+      fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
+        openView(privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+          privateKeeperDetails.postcode,
+          privateKeeperDetails.email,
+          addresses
+        )
+      }
+    },
+    onBusiness = { businessKeeperDetails =>
       val session = clientSideSessionFactory.getSession(request.cookies)
       fetchAddresses(businessKeeperDetails.postcode)(session, request2lang).map { addresses =>
         openView(businessKeeperDetails.businessName,
@@ -70,7 +74,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           addresses
         )
       }
-    }, message => Future.successful(neither(message)))
+    },
+    onNeither = message => Future.successful(neither(message)))
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
@@ -82,8 +87,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           name,
           postcode,
           email.getOrElse("Not entered"),
-          addresses)
-        )
+          addresses
+        ))
       case _ => neither(VehicleDetailsNotInCacheMessage)
     }
   }
@@ -103,29 +108,37 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   def submit = Action.async { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm =>
-        switch(request, { privateKeeperDetails =>
+      invalidForm => switch(
+        request = request,
+        onPrivate = { privateKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-            handleInvalidForm(invalidForm,
+            handleInvalidForm(
+              invalidForm,
               privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
               privateKeeperDetails.postcode,
               privateKeeperDetails.email,
-              addresses)
+              addresses
+            )
           }
-
-        }, { businessKeeperDetails =>
+        },
+        onBusiness = { businessKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-            handleInvalidForm(invalidForm,
+            handleInvalidForm(
+              invalidForm,
               businessKeeperDetails.businessName,
               businessKeeperDetails.postcode,
               businessKeeperDetails.email,
-              addresses)
+              addresses
+            )
           }
-        }, message => Future.successful(neither(message))),
-      validForm =>
-        switch(request, { privateKeeperDetails =>
+        },
+        onNeither = message => Future.successful(neither(message))
+      ),
+      validForm => switch(
+        request = request,
+        onPrivate = { privateKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(
             validForm,
@@ -134,7 +147,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             None,
             true
           )
-        }, { businessKeeperDetails =>
+        },
+        onBusiness = { businessKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(
             validForm,
@@ -143,25 +157,30 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.fleetNumber,
             false
           )
-        }, message => Future.successful(neither(message)))
+        },
+        onNeither = message => Future.successful(neither(message))
+      )
     )
   }
 
-  def back = Action { implicit request =>
-    switch(request, { privateKeeperDetails =>
+  def back = Action { implicit request => switch(
+    request = request,
+    onPrivate = { privateKeeperDetails =>
       Redirect(routes.PrivateKeeperDetails.present())
-    }, { businessKeeperDetails =>
+    },
+    onBusiness = { businessKeeperDetails =>
       Redirect(routes.BusinessKeeperDetails.present())
-    }, message => neither(message))
-  }
+    },
+    onNeither = message => neither(message)
+  )}
 
   private def fetchAddresses(postcode: String)(implicit session: ClientSideSession, lang: Lang) =
     addressLookupService.fetchAddressesForPostcode(postcode, session.trackingId)
 
   private def formWithReplacedErrors(form: Form[NewKeeperChooseYourAddressFormModel])(implicit request: Request[_]) =
     form.replaceError(AddressSelectId, "error.required",
-      FormError(key = AddressSelectId, message = "disposal_newKeeperChooseYourAddress.address.required", args = Seq.empty)).
-      distinctErrors
+      FormError(key = AddressSelectId, message = "disposal_newKeeperChooseYourAddress.address.required", args = Seq.empty))
+        .distinctErrors
 
   private def lookupUprn(model: NewKeeperChooseYourAddressFormModel,
                          newKeeperName: String,
@@ -179,11 +198,11 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             fleetNumber = fleetNumber,
             isPrivateKeeper = isPrivateKeeper
           )
-          Redirect(routes.CompleteAndConfirm.present()).
-            discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
-            withCookie(model).
-            withCookie(newKeeperDetailsModel
-          )
+          Redirect(routes.CompleteAndConfirm.present())
+            .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
+            .withCookie(model)
+            .withCookie(newKeeperDetailsModel)
+
       case None => Redirect(routes.UprnNotFound.present())
     }
   }
