@@ -1,21 +1,20 @@
 package controllers.acquire
 
+import controllers.acquire.Common.PrototypeHtml
 import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
-import play.api.test.{FakeRequest, WithApplication}
-import controllers.acquire.Common.PrototypeHtml
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import pages.acquire.buildAppUrl
+import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import org.mockito.Mockito.when
+import pages.acquire.AcquireSuccessPage
 import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-import utils.helpers.Config
-import org.mockito.Mockito.when
 import pages.acquire.VehicleLookupPage
-import pages.acquire.AcquireSuccessPage
-import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.{FakeRequest, WithApplication}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
+import utils.helpers.Config
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
@@ -41,10 +40,11 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "present a full form when new keeper cookie is present for new keeper" in new WithApplication {
-      val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+    "present a full form when new keeper and vehicle details cookies are present for new keeper" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should include(MileageValid)
     }
@@ -70,7 +70,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   "submit" should {
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$").
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
@@ -98,7 +99,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent="").
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -127,7 +129,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
     completeAndConfirm.present(request)
   }
 }
