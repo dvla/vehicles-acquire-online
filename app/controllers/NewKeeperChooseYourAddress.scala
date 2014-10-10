@@ -35,9 +35,9 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. Now redirecting to vehicle lookup"
 
   private def switch[R](request: Request[AnyContent],
-                     onPrivate: PrivateKeeperDetailsFormModel => R,
-                     onBusiness: BusinessKeeperDetailsFormModel => R,
-                     onNeither: String => R): R = {
+                        onPrivate: PrivateKeeperDetailsFormModel => R,
+                        onBusiness: BusinessKeeperDetailsFormModel => R,
+                        onNeither: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
@@ -94,8 +94,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   }
 
   private def handleInvalidForm(invalidForm: Form[NewKeeperChooseYourAddressFormModel],
-                  name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
-                 (implicit request: Request[_]) = {
+                                name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
+                               (implicit request: Request[_]) = {
     val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
     BadRequest(new_keeper_choose_your_address(
       NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleDetails.get),
@@ -145,7 +145,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
             privateKeeperDetails.email,
             None,
-            true
+            false
           )
         },
         onBusiness = { businessKeeperDetails =>
@@ -155,7 +155,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.businessName,
             businessKeeperDetails.email,
             businessKeeperDetails.fleetNumber,
-            false
+            true
           )
         },
         onNeither = message => Future.successful(neither(message))
@@ -165,8 +165,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   def back = Action { implicit request => switch(
     request = request,
-    onPrivate = privateKeeperDetails => Redirect(routes.PrivateKeeperDetails.present()),
-    onBusiness = businessKeeperDetails => Redirect(routes.BusinessKeeperDetails.present()),
+    onPrivate = { privateKeeperDetails =>
+      Redirect(routes.PrivateKeeperDetails.present())
+    },
+    onBusiness = { businessKeeperDetails =>
+      Redirect(routes.BusinessKeeperDetails.present())
+    },
     onNeither = message => neither(message)
   )}
 
@@ -176,26 +180,29 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private def formWithReplacedErrors(form: Form[NewKeeperChooseYourAddressFormModel])(implicit request: Request[_]) =
     form.replaceError(AddressSelectId, "error.required",
       FormError(key = AddressSelectId, message = "disposal_newKeeperChooseYourAddress.address.required", args = Seq.empty))
-        .distinctErrors
+      .distinctErrors
 
   private def lookupUprn(model: NewKeeperChooseYourAddressFormModel,
                          newKeeperName: String,
                          email: Option[String],
                          fleetNumber: Option[String],
-                         isPrivateKeeper: Boolean)
+                         isBusinessKeeper: Boolean)
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
-      case Some(addressViewModel) => Redirect(routes.CompleteAndConfirm.present())
-        .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
-        .withCookie(model)
-        .withCookie(NewKeeperDetailsViewModel(
+      case Some(addressViewModel) =>
+        val newKeeperDetailsModel = NewKeeperDetailsViewModel(
           name = newKeeperName,
           address = addressViewModel,
           email = email,
           fleetNumber = fleetNumber,
-          isPrivateKeeper = isPrivateKeeper
-        ))
+          isBusinessKeeper = isBusinessKeeper
+        )
+        Redirect(routes.CompleteAndConfirm.present())
+          .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
+          .withCookie(model)
+          .withCookie(newKeeperDetailsModel)
+
       case None => Redirect(routes.UprnNotFound.present())
     }
   }
