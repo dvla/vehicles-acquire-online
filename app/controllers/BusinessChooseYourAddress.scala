@@ -64,7 +64,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetailsModel) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            lookupUprn(validForm, setupTradeDetailsModel.traderBusinessName)
+            lookupUprn(validForm, setupTradeDetailsModel.traderBusinessName, setupTradeDetailsModel.traderEmail)
           case None => Future {
             Logger.error("Failed to find dealer details, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
@@ -81,12 +81,12 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       FormError(key = AddressSelectId, message = "disposal_businessChooseYourAddress.address.required", args = Seq.empty)).
       distinctErrors
 
-  private def lookupUprn(model: BusinessChooseYourAddressFormModel, traderName: String)
+  private def lookupUprn(model: BusinessChooseYourAddressFormModel, traderName: String, traderEmail: Option[String])
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
-        val traderDetailsModel = TraderDetailsModel(traderName = traderName, traderAddress = addressViewModel)
+        val traderDetailsModel = TraderDetailsModel(traderName = traderName, traderAddress = addressViewModel, traderEmail = traderEmail)
         Redirect(routes.VehicleLookup.present()).
           discardingCookie(EnterAddressManuallyCacheKey).
           withCookie(model).

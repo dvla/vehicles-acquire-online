@@ -25,7 +25,7 @@
             <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
             <dd>@viewModel.traderDetails.traderName</dd>
             <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
-            <dd>@viewModel.traderDetails.traderAddress.address.reverse.tail.reverse</dd>
+            <dd>@for(addr <- viewModel.traderDetails.traderAddress.address.dropRight(1)) {@addr<br/>}</dd>
             <dt>@Messages("acquire_success.trader_details.trader_postcode")</dt>
             <dd>@viewModel.traderDetails.traderAddress.address.last</dd>
             <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
@@ -60,7 +60,7 @@
             <li><b>Name</b></li>
             <li>@viewModel.newKeeperDetails.name</li>
             <li><b>Address</b></li>
-            <li>@viewModel.newKeeperDetails.address.address.reverse.tail.reverse</li>
+            <li>@for(kaddr <- viewModel.newKeeperDetails.address.address.dropRight(1)) {@kaddr<br/>}</li>
             <li><b>Postcode</b></li>
             <li>@viewModel.newKeeperDetails.address.address.last</li>
             <li><b>Contact email address</b></li>
