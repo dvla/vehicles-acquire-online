@@ -145,7 +145,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
             privateKeeperDetails.email,
             None,
-            false
+            true
           )
         },
         onBusiness = { businessKeeperDetails =>
@@ -155,7 +155,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.businessName,
             businessKeeperDetails.email,
             businessKeeperDetails.fleetNumber,
-            true
+            false
           )
         },
         onNeither = message => Future.successful(neither(message))
@@ -165,12 +165,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   def back = Action { implicit request => switch(
     request = request,
-    onPrivate = { privateKeeperDetails =>
-      Redirect(routes.PrivateKeeperDetails.present())
-    },
-    onBusiness = { businessKeeperDetails =>
-      Redirect(routes.BusinessKeeperDetails.present())
-    },
+    onPrivate = privateKeeperDetails => Redirect(routes.PrivateKeeperDetails.present()),
+    onBusiness = businessKeeperDetails => Redirect(routes.BusinessKeeperDetails.present()),
     onNeither = message => neither(message)
   )}
 
@@ -186,23 +182,20 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                          newKeeperName: String,
                          email: Option[String],
                          fleetNumber: Option[String],
-                         isBusinessKeeper: Boolean)
+                         isPrivateKeeper: Boolean)
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
-      case Some(addressViewModel) =>
-          val newKeeperDetailsModel = NewKeeperDetailsViewModel(
-            name = newKeeperName,
-            address = addressViewModel,
-            email = email,
-            fleetNumber = fleetNumber,
-            isBusinessKeeper = isBusinessKeeper
-          )
-          Redirect(routes.CompleteAndConfirm.present())
-            .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
-            .withCookie(model)
-            .withCookie(newKeeperDetailsModel)
-
+      case Some(addressViewModel) => Redirect(routes.CompleteAndConfirm.present())
+        .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
+        .withCookie(model)
+        .withCookie(NewKeeperDetailsViewModel(
+          name = newKeeperName,
+          address = addressViewModel,
+          email = email,
+          fleetNumber = fleetNumber,
+          isPrivateKeeper = isPrivateKeeper
+        ))
       case None => Redirect(routes.UprnNotFound.present())
     }
   }

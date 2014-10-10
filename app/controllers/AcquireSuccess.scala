@@ -14,22 +14,22 @@ import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, Trad
 final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
-  def present = Action { implicit request =>
-    (request.cookies.getModel[NewKeeperDetailsViewModel],
-     request.cookies.getModel[TraderDetailsModel],
-     request.cookies.getModel[VehicleDetailsModel],
-     request.cookies.getModel[CompleteAndConfirmFormModel]) match {
-      case (Some(newKeeperDetails), Some(traderDetails), Some(vehicleDetails), Some(completeAndConfirmDetails)) =>
-        val acquireSuccessDetails = AcquireSuccessViewModel(
-          vehicleDetails = vehicleDetails,
-          traderDetails = traderDetails,
-          newKeeperDetails = newKeeperDetails,
-          completeAndConfirmDetails = completeAndConfirmDetails
-        )
-        Ok(views.html.acquire.acquire_success(acquireSuccessDetails))
-      case _ =>
-        Logger.warn("missing cookies in cache. Acquire successful, however cannot display success page")
-        Redirect(routes.BeforeYouStart.present())
+  def present = Action { implicit request => {
+    (for {
+      newKeeperDetails <- request.cookies.getModel[NewKeeperDetailsViewModel]
+      traderDetails <- request.cookies.getModel[TraderDetailsModel]
+      vehicleDetails <- request.cookies.getModel[VehicleDetailsModel]
+      completeAndConfirmDetails <- request.cookies.getModel[CompleteAndConfirmFormModel]
+    } yield
+      Ok(views.html.acquire.acquire_success(AcquireSuccessViewModel(
+        vehicleDetails = vehicleDetails,
+        traderDetails = traderDetails,
+        newKeeperDetails = newKeeperDetails,
+        completeAndConfirmDetails = completeAndConfirmDetails
+      )))
+    ) getOrElse {
+      Logger.warn("missing cookies in cache. Acquire successful, however cannot display success page")
+      Redirect(routes.BeforeYouStart.present())
     }
-  }
+  }}
 }
