@@ -63,6 +63,7 @@ POST    /business-keeper-details            @controllers.BusinessKeeperDetails.s
 
 # Success
 GET     /acquire-success                    @controllers.AcquireSuccess.present
+GET     /acquie-another                     @controllers.AcquireSuccess.buyAnother
 
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 

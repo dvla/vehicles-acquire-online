@@ -5,6 +5,8 @@
 @import controllers.routes.SetUpTradeDetails
 @import views.acquire.BeforeYouStart.NextId
 @import uk.gov.dvla.vehicles.presentation.common
+@import views.html.helper.form
+@import views.acquire.AcquireSuccess.BuyAnotherId
 @import common.views.html.widgets.base.csrfTokenHiddenField
 
 @main(
@@ -73,6 +75,20 @@
 
         <div class="alert-warning">
             <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
+        </div>
+
+        <div class="form-steps">
+
+            <div class="step">
+                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button" autofocus="true">@Messages("acquire_success.buttonnavprint")</button>
+            </div>
+
+            <div class="step">
+                @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
+                @csrfTokenHiddenField()
+                <button id="@BuyAnotherId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_success.buyAnother")</button>
+                }
+            </div>
         </div>
     </div>
 </div>
