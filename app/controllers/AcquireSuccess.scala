@@ -29,7 +29,9 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
           completeAndConfirmDetails = completeAndConfirmDetails
         )
         Ok(views.html.acquire.acquire_success(acquireSuccessDetails))
-      case _ => Ok(views.html.acquire.error(""))
+      case _ =>
+        Logger.warn("missing cookies in cache. Acquire successful, however cannot display success page")
+        Redirect(routes.BeforeYouStart.present())
     }
   }
 }

@@ -213,7 +213,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                             email: Option[String] = Some("abc@def.com")): Cookie = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
-      name = TraderBusinessNameValid,
+      name = FirstNameValid,
       address = AddressModel(
       uprn = uprn,
       address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)

@@ -23,6 +23,7 @@ config: utils.helpers.Config)
     @form(action = SetUpTradeDetails.submit) {
         @csrfTokenHiddenField()
 
+        <div class="uppercase-input">
         @valtechInputText(traderLookupForm(TraderNameId),
             args = Map('_label -> Messages("acquire_setuptradedetails.tradernamelabel"),
                 '_showConstraints -> false,
@@ -30,6 +31,7 @@ config: utils.helpers.Config)
                 'maxLength -> BusinessName.MaxLength
             )
         )
+        </div>
 
         @valtechInputText(traderLookupForm(TraderEmailId),
             args = Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
