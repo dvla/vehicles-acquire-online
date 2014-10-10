@@ -33,7 +33,7 @@
                 } else {
                     <dd>@data.keeperDetails.email.get</dd>
                 }
-                @if(!data.keeperDetails.isPrivateKeeper) {
+                @if(data.keeperDetails.isBusinessKeeper) {
                     <dt>@Messages("acquire_completeandconfirm.fleetNumber")</dt>
                     @if(data.keeperDetails.fleetNumber == None) {
                         <dd>@Messages("acquire_completeandconfirm.fleetNumberNotEntered")</dd>

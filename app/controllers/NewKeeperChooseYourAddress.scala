@@ -145,7 +145,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
             privateKeeperDetails.email,
             None,
-            true
+            false
           )
         },
         onBusiness = { businessKeeperDetails =>
@@ -155,7 +155,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.businessName,
             businessKeeperDetails.email,
             businessKeeperDetails.fleetNumber,
-            false
+            true
           )
         },
         onNeither = message => Future.successful(neither(message))
@@ -186,7 +186,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                          newKeeperName: String,
                          email: Option[String],
                          fleetNumber: Option[String],
-                         isPrivateKeeper: Boolean)
+                         isBusinessKeeper: Boolean)
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
@@ -196,7 +196,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             address = addressViewModel,
             email = email,
             fleetNumber = fleetNumber,
-            isPrivateKeeper = isPrivateKeeper
+            isBusinessKeeper = isBusinessKeeper
           )
           Redirect(routes.CompleteAndConfirm.present())
             .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)

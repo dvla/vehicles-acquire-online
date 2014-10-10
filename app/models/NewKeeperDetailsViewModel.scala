@@ -8,7 +8,7 @@ final case class NewKeeperDetailsViewModel(name: String,
                                            address: AddressModel,
                                            email: Option[String],
                                            fleetNumber: Option[String] = None,
-                                           isPrivateKeeper: Boolean)
+                                           isBusinessKeeper: Boolean)
 
 object NewKeeperDetailsViewModel {
   implicit val JsonFormat = Json.format[NewKeeperDetailsViewModel]

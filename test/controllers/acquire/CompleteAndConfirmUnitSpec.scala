@@ -70,7 +70,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "play back business keeper details as expected" in new WithApplication() {
       val fleetNumber = "12345-"
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isPrivateKeeper = false, fleetNumber = Some(fleetNumber))).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isBusinessKeeper = true, fleetNumber = Some(fleetNumber))).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should include("<dt>Fleet number</dt>")
@@ -80,7 +80,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "play back private keeper details as expected" in new WithApplication() {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isPrivateKeeper = true)).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isBusinessKeeper = false)).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should not include "<dt>Fleet number</dt>"

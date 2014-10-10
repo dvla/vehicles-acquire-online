@@ -221,7 +221,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                             postcode: String = PostcodeValid,
                             email: Option[String] = Some(KeeperEmail),
                             fleetNumber: Option[String] = None,
-                            isPrivateKeeper: Boolean = true): Cookie = {
+                            isBusinessKeeper: Boolean = false): Cookie = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
       name = FirstNameValid,
@@ -231,7 +231,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       ),
       email = email,
       fleetNumber = fleetNumber,
-      isPrivateKeeper = isPrivateKeeper
+      isBusinessKeeper = isBusinessKeeper
     )
     createCookie(key, value)
   }

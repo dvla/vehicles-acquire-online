@@ -83,7 +83,7 @@ final class NewKeeperEnterAddressManually @Inject()()
             name = s"${privateKeeperDetails.firstName} ${privateKeeperDetails.firstName}",
             address = keeperAddress,
             email = privateKeeperDetails.email,
-            isPrivateKeeper = true
+            isBusinessKeeper = false
           )
           // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).
@@ -102,7 +102,7 @@ final class NewKeeperEnterAddressManually @Inject()()
             address = keeperAddress,
             email = businessKeeperDetails.email,
             fleetNumber = businessKeeperDetails.fleetNumber,
-            isPrivateKeeper = false
+            isBusinessKeeper = true
           )
           // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).
