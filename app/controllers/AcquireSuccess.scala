@@ -1,15 +1,14 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{CompleteAndConfirmFormModel, AcquireSuccessViewModel, NewKeeperDetailsViewModel}
-import play.api.mvc.{Action, Controller}
+import models.{AcquireSuccessViewModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel}
 import play.api.Logger
+import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.clientsidesession.CookieImplicits.RichCookies
+import common.model.{TraderDetailsModel, VehicleDetailsModel}
 import utils.helpers.Config
-
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
 
 final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
