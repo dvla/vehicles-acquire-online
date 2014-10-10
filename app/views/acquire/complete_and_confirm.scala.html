@@ -64,7 +64,8 @@
                     Map('_label -> Messages("acquire_completeAndConfirm.mileage.label"),
                         '_showConstraints -> false,
                         'typeTel -> true,
-                        'maxLength -> Mileage.MaxLength // Must be set independently of the pattern as the pattern is only checked when the user submits.
+                        'maxLength -> Mileage.MaxLength, // Must be set independently of the pattern as the pattern is only checked when the user submits.
+                        'autofocus -> true
                         //'title -> Messages("acquire_keeperdetailscomplete.mileage.validation")
                     ) ++
                     (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
