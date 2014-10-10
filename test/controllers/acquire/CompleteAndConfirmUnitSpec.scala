@@ -4,6 +4,7 @@ import controllers.acquire.Common.PrototypeHtml
 import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.acquire.CookieFactoryForUnitSpecs.KeeperEmail
 import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import org.mockito.Mockito.when
 import pages.acquire.AcquireSuccessPage
@@ -46,7 +47,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
-      content should include(MileageValid)
+      content should include(s"""value="$MileageValid"""")
+      content should include("""value="true"""") // Checkbox value
+      content should include(s"""value="$YearDateOfSaleValid"""")
     }
 
     "display empty fields when new keeper complete cookie does not exist" in new WithApplication {
@@ -56,16 +59,34 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       content should not include MileageValid
     }
 
-    "redirect to vehicle lookup when no new keeper details cookie are present" in new WithApplication {
+    "redirect to vehicle lookup when no new keeper details cookie is present" in new WithApplication {
       val request = FakeRequest()
       val result = completeAndConfirm.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
-  }
 
-  final val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
+    "play back business keeper details as expected" in new WithApplication() {
+      val fleetNumber = "12345-"
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isPrivateKeeper = false, fleetNumber = Some(fleetNumber))).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val content = contentAsString(completeAndConfirm.present(request))
+      content should include("<dt>Fleet number</dt>")
+      content should include(s"<dd>$fleetNumber</dd>")
+      content should include(s"<dd>$KeeperEmail</dd>")
+    }
+
+    "play back private keeper details as expected" in new WithApplication() {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isPrivateKeeper = true)).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val content = contentAsString(completeAndConfirm.present(request))
+      content should not include "<dt>Fleet number</dt>"
+      content should include(s"<dd>$KeeperEmail</dd>")
+    }
+  }
 
   "submit" should {
     "replace numeric mileage error message for with standard error message" in new WithApplication {
@@ -74,6 +95,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
+      val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
 
