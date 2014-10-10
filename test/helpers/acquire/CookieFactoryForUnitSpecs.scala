@@ -210,7 +210,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                             line3: String = Line3Valid,
                             postTown: String = PostTownValid,
                             postcode: String = PostcodeValid,
-                            email: Option[String] = Some("abc@def.com")): Cookie = {
+                            email: Option[String] = Some("abc@def.com"),
+                            isPrivateKeeper: Boolean = true): Cookie = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
       name = FirstNameValid,
@@ -218,7 +219,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       uprn = uprn,
       address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)
       ),
-      email = email
+      email = email,
+      isPrivateKeeper = isPrivateKeeper
     )
     createCookie(key, value)
   }

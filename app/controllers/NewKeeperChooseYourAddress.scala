@@ -130,14 +130,18 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           lookupUprn(
             validForm,
             s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
-            privateKeeperDetails.email
+            privateKeeperDetails.email,
+            None,
+            true
           )
         }, { businessKeeperDetails =>
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(
             validForm,
             businessKeeperDetails.businessName,
-            businessKeeperDetails.email
+            businessKeeperDetails.email,
+            businessKeeperDetails.fleetNumber,
+            false
           )
         }, message => Future.successful(neither(message)))
     )
@@ -159,7 +163,11 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       FormError(key = AddressSelectId, message = "disposal_newKeeperChooseYourAddress.address.required", args = Seq.empty)).
       distinctErrors
 
-  private def lookupUprn(model: NewKeeperChooseYourAddressFormModel, newKeeperName: String, email: Option[String])
+  private def lookupUprn(model: NewKeeperChooseYourAddressFormModel,
+                         newKeeperName: String,
+                         email: Option[String],
+                         fleetNumber: Option[String],
+                         isPrivateKeeper: Boolean)
                         (implicit request: Request[_], session: ClientSideSession) = {
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
@@ -167,7 +175,9 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           val newKeeperDetailsModel = NewKeeperDetailsViewModel(
             name = newKeeperName,
             address = addressViewModel,
-            email = email
+            email = email,
+            fleetNumber = fleetNumber,
+            isPrivateKeeper = isPrivateKeeper
           )
           Redirect(routes.CompleteAndConfirm.present()).
             discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
