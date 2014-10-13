@@ -1,8 +1,12 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{AcquireSuccessViewModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, VehicleLookupFormModel}
-import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.AcquireSuccessViewModel
+import models.CompleteAndConfirmFormModel
+import models.NewKeeperDetailsViewModel
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import play.api.Logger
@@ -43,7 +47,14 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       vehicleDetails <- request.cookies.getModel[VehicleDetailsModel]
       completeAndConfirmDetails <- request.cookies.getModel[CompleteAndConfirmFormModel]
     } yield Redirect(routes.VehicleLookup.present())
-        .discardingCookies(Set(NewKeeperDetailsCacheKey, VehicleLookupFormModelCacheKey, VehicleLookupDetailsCacheKey, CompleteAndConfirmCacheKey))
+      .discardingCookies(Set(
+        NewKeeperDetailsCacheKey,
+        VehicleLookupDetailsCacheKey,
+        VehicleLookupFormModelCacheKey,
+        CompleteAndConfirmCacheKey,
+        PrivateKeeperDetailsCacheKey,
+        BusinessKeeperDetailsCacheKey
+      ))
     result getOrElse {
       Logger.warn("missing cookies in cache.")
       Redirect(routes.BeforeYouStart.present())
