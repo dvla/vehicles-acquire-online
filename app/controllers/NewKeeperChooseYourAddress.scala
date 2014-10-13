@@ -30,10 +30,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private[controllers] val form = Form(NewKeeperChooseYourAddressFormModel.Form.Mapping)
 
-  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
-  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
-    "This is an error condition. Now redirecting to vehicle lookup."
-  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. Now redirecting to vehicle lookup"
+  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. " +
+    "Now redirecting to vehicle lookup."
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details " +
+    "found in cache. This is an error condition. Now redirecting to vehicle lookup."
+  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. " +
+    "Now redirecting to vehicle lookup"
 
   private def switch[R](request: Request[AnyContent],
                         onPrivate: PrivateKeeperDetailsFormModel => R,
@@ -81,9 +83,9 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private def getTitle(title: TitleType ): String = {
     title.titleType match {
-      case 1 => "MR"
-      case 2 => "MRS"
-      case 3 => "MISS"
+      case 1 => "Mr"
+      case 2 => "Mrs"
+      case 3 => "Miss"
       case _ => title.other
     }
   }
@@ -155,7 +157,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
             privateKeeperDetails.email,
             None,
-            false
+            isBusinessKeeper = false
           )
         },
         onBusiness = { businessKeeperDetails =>
@@ -165,7 +167,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.businessName,
             businessKeeperDetails.email,
             businessKeeperDetails.fleetNumber,
-            true
+            isBusinessKeeper = true
           )
         },
         onNeither = message => Future.successful(neither(message))
