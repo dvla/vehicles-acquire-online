@@ -22,6 +22,7 @@ import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -29,10 +30,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private[controllers] val form = Form(NewKeeperChooseYourAddressFormModel.Form.Mapping)
 
-  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
-  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
-    "This is an error condition. Now redirecting to vehicle lookup."
-  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. Now redirecting to vehicle lookup"
+  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. " +
+    "Now redirecting to vehicle lookup."
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details " +
+    "found in cache. This is an error condition. Now redirecting to vehicle lookup."
+  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. " +
+    "Now redirecting to vehicle lookup"
 
   private def switch[R](request: Request[AnyContent],
                         onPrivate: PrivateKeeperDetailsFormModel => R,
@@ -58,7 +61,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     onPrivate = { privateKeeperDetails =>
       val session = clientSideSessionFactory.getSession(request.cookies)
       fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
-        openView(privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+        openView(getTitle(privateKeeperDetails.title) + " " + privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
           privateKeeperDetails.postcode,
           privateKeeperDetails.email,
           addresses
@@ -76,6 +79,15 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       }
     },
     onNeither = message => Future.successful(neither(message)))
+  }
+
+  private def getTitle(title: TitleType ): String = {
+    title.titleType match {
+      case 1 => "Mr"
+      case 2 => "Mrs"
+      case 3 => "Miss"
+      case _ => title.other
+    }
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
@@ -115,7 +127,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
             handleInvalidForm(
               invalidForm,
-              privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+              getTitle(privateKeeperDetails.title) + " " + privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
               privateKeeperDetails.postcode,
               privateKeeperDetails.email,
               addresses
@@ -142,10 +154,10 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           implicit val session = clientSideSessionFactory.getSession(request.cookies)
           lookupUprn(
             validForm,
-            s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
+            s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
             privateKeeperDetails.email,
             None,
-            false
+            isBusinessKeeper = false
           )
         },
         onBusiness = { businessKeeperDetails =>
@@ -155,7 +167,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.businessName,
             businessKeeperDetails.email,
             businessKeeperDetails.fleetNumber,
-            true
+            isBusinessKeeper = true
           )
         },
         onNeither = message => Future.successful(neither(message))
@@ -192,7 +204,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     lookedUpAddress.map {
       case Some(addressViewModel) =>
         val newKeeperDetailsModel = NewKeeperDetailsViewModel(
-          name = newKeeperName,
+          name = newKeeperName.toUpperCase,
           address = addressViewModel,
           email = email,
           fleetNumber = fleetNumber,

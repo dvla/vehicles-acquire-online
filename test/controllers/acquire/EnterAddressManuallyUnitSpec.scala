@@ -22,8 +22,12 @@ import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
-import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid}
-import helpers.common.CookieHelper._
+import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
+import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
+import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
+import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
+import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 
 import scala.concurrent.Future
 

@@ -23,13 +23,13 @@ import org.mockito.Mockito.when
 import play.api.libs.json.{JsValue, Json}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import utils.helpers.Config
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeVehicleLookupWebService.ConsentValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.vehicleDetailsResponseSuccess
 import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
-import utils.helpers.Config
-import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
 final class VehicleLookupFormSpec extends UnitSpec {
 

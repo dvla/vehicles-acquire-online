@@ -13,7 +13,6 @@ import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.enter_address_manually
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import scala.Some
 
 final class EnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,

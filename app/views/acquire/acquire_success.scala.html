@@ -33,7 +33,7 @@
             <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
             <dd>@viewModel.traderDetails.traderEmail.getOrElse("Not entered")</dd>
             <dt>@Messages("acquire_success.date_of_sale.label")</dt>
-            <dd>@viewModel.completeAndConfirmDetails.dateOfSale</dd>
+            <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
 
         </div>
     </div>
@@ -80,7 +80,7 @@
         <div class="form-steps">
 
             <div class="step">
-                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button" autofocus="true">@Messages("acquire_success.buttonnavprint")</button>
+                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">@Messages("acquire_success.buttonnavprint")</button>
             </div>
 
             <div class="step">
