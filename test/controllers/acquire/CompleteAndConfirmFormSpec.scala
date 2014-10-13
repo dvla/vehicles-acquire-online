@@ -17,12 +17,14 @@ class CompleteAndConfirmFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields entered correctly" in {
+
       val model = formWithValidDefaults().get
       model.mileage should equal(Some("1000".toInt))
       model.dateOfSale should equal(new LocalDate(
         YearDateOfSaleValid.toInt,
         MonthDateOfSaleValid.toInt,
         DayDateOfSaleValid.toInt))
+      model.consent should equal ("true")
     }
 
     "accept if form is completed with mandatory fields only" in {

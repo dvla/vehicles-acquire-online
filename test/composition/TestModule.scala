@@ -2,9 +2,11 @@ package composition
 
 import com.google.inject.name.Names
 import com.tzavellas.sse.guice.ScalaModule
+import composition.DevModule._
 import org.scalatest.mock.MockitoSugar
 import play.api.{LoggerLike, Logger}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
+import webserviceclients.acquire.{AcquireServiceImpl, AcquireService, AcquireWebServiceImpl, AcquireWebService}
 import webserviceclients.fakes.{FakeDateServiceImpl, FakeVehicleLookupWebService, FakeAddressLookupWebServiceImpl}
 import uk.gov.dvla.vehicles.presentation.common
 import common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebService}
@@ -28,6 +30,9 @@ class TestModule() extends ScalaModule with MockitoSugar {
     ordnanceSurveyAddressLookup()
     bind[VehicleLookupWebService].to[FakeVehicleLookupWebService].asEagerSingleton()
     bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
+
+    bind[AcquireWebService].to[AcquireWebServiceImpl].asEagerSingleton()
+    bind[AcquireService].to[AcquireServiceImpl].asEagerSingleton()
 
     bind[DateService].to[FakeDateServiceImpl].asEagerSingleton()
     bind[CookieFlags].to[NoCookieFlags].asEagerSingleton()
