@@ -29,10 +29,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private[controllers] val form = Form(NewKeeperChooseYourAddressFormModel.Form.Mapping)
 
-  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
-  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
-    "This is an error condition. Now redirecting to vehicle lookup."
-  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. Now redirecting to vehicle lookup"
+  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. " +
+    "Now redirecting to vehicle lookup."
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details " +
+    "found in cache. This is an error condition. Now redirecting to vehicle lookup."
+  private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. " +
+    "Now redirecting to vehicle lookup"
 
   private def switch[R](request: Request[AnyContent],
                         onPrivate: PrivateKeeperDetailsFormModel => R,

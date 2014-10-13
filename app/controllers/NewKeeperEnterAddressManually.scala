@@ -24,9 +24,10 @@ final class NewKeeperEnterAddressManually @Inject()()
     NewKeeperEnterAddressManuallyFormModel.Form.Mapping
   )
 
-  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
-  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
-    "This is an error condition. Now redirecting to vehicle lookup."
+  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. " +
+    "Now redirecting to vehicle lookup."
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details " +
+    "found in cache. This is an error condition. Now redirecting to vehicle lookup."
 
   private def switch[R](request: Request[AnyContent],
                         onPrivate: PrivateKeeperDetailsFormModel => R,

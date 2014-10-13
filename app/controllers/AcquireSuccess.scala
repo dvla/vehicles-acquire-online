@@ -4,8 +4,6 @@ import com.google.inject.Inject
 import models.{AcquireSuccessViewModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, VehicleLookupFormModel}
 import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
-import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
@@ -13,6 +11,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.model.{TraderDetailsModel, VehicleDetailsModel}
+import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
 
 final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
