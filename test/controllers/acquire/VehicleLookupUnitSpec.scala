@@ -2,9 +2,11 @@ package controllers.acquire
 
 import controllers.VehicleLookup
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
 import helpers.WithApplication
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
+import models.{BusinessKeeperDetailsCacheKeys, PrivateKeeperDetailsCacheKeys}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
@@ -180,6 +182,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))
@@ -191,6 +194,32 @@ final class VehicleLookupUnitSpec extends UnitSpec {
 
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(MicroServiceErrorPage.address))
+      }
+    }
+
+    "remove all business keeper cookies when private keeper is selected" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid))).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
+
+      val result = vehicleLookupResponseGenerator().submit(request)
+      whenReady(result) { r =>
+        val cookies = fetchCookiesFromHeaders(r)
+        BusinessKeeperDetailsCacheKeys.foreach(verifyCookieHasBeenDiscarded(_, cookies))
+      }
+    }
+
+    "remove all private keeper cookies when business keeper is selected" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(soldTo = VehicleSoldTo_Business).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid))).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
+
+      val result = vehicleLookupResponseGenerator().submit(request)
+      whenReady(result) { r =>
+        val cookies = fetchCookiesFromHeaders(r)
+        PrivateKeeperDetailsCacheKeys.foreach(verifyCookieHasBeenDiscarded(_, cookies))
       }
     }
   }
