@@ -145,7 +145,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
             privateKeeperDetails.email,
             None,
-            false
+            isBusinessKeeper = false
           )
         },
         onBusiness = { businessKeeperDetails =>
@@ -155,7 +155,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             businessKeeperDetails.businessName,
             businessKeeperDetails.email,
             businessKeeperDetails.fleetNumber,
-            true
+            isBusinessKeeper = true
           )
         },
         onNeither = message => Future.successful(neither(message))
