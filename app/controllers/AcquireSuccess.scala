@@ -1,7 +1,8 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{AcquireSuccessViewModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel}
+import models.{AcquireSuccessViewModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, VehicleLookupFormModel}
+import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
 import VehicleDetailsModel.VehicleLookupDetailsCacheKey
@@ -43,7 +44,7 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       vehicleDetails <- request.cookies.getModel[VehicleDetailsModel]
       completeAndConfirmDetails <- request.cookies.getModel[CompleteAndConfirmFormModel]
     } yield Redirect(routes.VehicleLookup.present())
-        .discardingCookies(Set(NewKeeperDetailsCacheKey, VehicleLookupDetailsCacheKey, CompleteAndConfirmCacheKey))
+        .discardingCookies(Set(NewKeeperDetailsCacheKey, VehicleLookupFormModelCacheKey, VehicleLookupDetailsCacheKey, CompleteAndConfirmCacheKey))
     result getOrElse {
       Logger.warn("missing cookies in cache.")
       Redirect(routes.BeforeYouStart.present())
