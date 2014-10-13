@@ -53,7 +53,8 @@
                         Map('_label -> Messages("acquire_businesskeeperdetails.fleetnumber"),
                             'maxLength -> FleetNumber.MaxLength,
                             'typeFleetNumber -> true,
-                            '_showConstraints -> false
+                            '_showConstraints -> false,
+                            'autofocus -> true
                         ) ++
                         (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
                     )
@@ -62,8 +63,7 @@
                         @valtechInputText(viewModel.form(BusinessNameId), args =
                             Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
                                 'maxLength -> BusinessName.MaxLength,
-                                '_showConstraints -> false,
-                                'autofocus -> true
+                                '_showConstraints -> false
                             )
                         )
                     </div>
