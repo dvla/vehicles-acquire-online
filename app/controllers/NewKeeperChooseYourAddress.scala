@@ -58,7 +58,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     onPrivate = { privateKeeperDetails =>
       val session = clientSideSessionFactory.getSession(request.cookies)
       fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
-        openView(privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+        openView(s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
           privateKeeperDetails.postcode,
           privateKeeperDetails.email,
           addresses
@@ -115,7 +115,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
             handleInvalidForm(
               invalidForm,
-              privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+              s"${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
               privateKeeperDetails.postcode,
               privateKeeperDetails.email,
               addresses
