@@ -13,23 +13,23 @@
 
 @main(
     progress = Some(Messages("acquire_progress_3")),
-    title = Messages("acquire_newkeeperenteraddressmanually.title"),
+    title = Messages("acquire_newKeeperEnterAddressManually.title"),
     currentForm = Some(viewModel.form)
 ) {
 
 <div class="two-col clearfix">
     <div class="first-col">
-        <h2>@Messages("acquire_newkeeperenteraddressmanually.vehicleDetails")</h2>
+        <h2>@Messages("acquire_newKeeperEnterAddressManually.vehicleDetails")</h2>
         <dl class="playback">
-            <dt>@Messages("acquire_newkeeperenteraddressmanually.vehicleReg")</dt>
+            <dt>@Messages("acquire_newKeeperEnterAddressManually.vehicleReg")</dt>
             <dd>@viewModel.vehicleDetails.registrationNumber</dd>
-            <dt>@Messages("acquire_newkeeperenteraddressmanually.vehicleMake")</dt>
+            <dt>@Messages("acquire_newKeeperEnterAddressManually.vehicleMake")</dt>
             <dd>@viewModel.vehicleDetails.vehicleMake</dd>
-            <dt>@Messages("acquire_newkeeperenteraddressmanually.vehicleModel")</dt>
+            <dt>@Messages("acquire_newKeeperEnterAddressManually.vehicleModel")</dt>
             <dd>@viewModel.vehicleDetails.vehicleModel</dd>
         </dl>
         <div class="alert-warning print-message">
-            <p><strong>@Messages("acquire_newkeeperenteraddressmanually.p4")</strong></p>
+            <p><strong>@Messages("acquire_newKeeperEnterAddressManually.p4")</strong></p>
         </div>
     </div>
 
@@ -44,10 +44,10 @@
             <div class="read-only-input">@newKeeperPostcode</div>
             <div class="form-steps">
                 <button id="@NextId" type="submit" name="action" class="button">
-                    @Messages("acquire_newkeeperenteraddressmanually.submitbutton")
+                    @Messages("acquire_newKeeperEnterAddressManually.submitbutton")
                 </button>
                 <a id="@BackId" class="button-secondary" href="@controllers.routes.NewKeeperChooseYourAddress.present()">
-                    @Messages("acquire_newkeeperenteraddressmanually.backbutton")
+                    @Messages("acquire_newKeeperEnterAddressManually.backbutton")
                 </a>
             </div>
             }
