@@ -1,23 +1,23 @@
 package controllers.acquire
 
-import play.api.test.WithApplication
-import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
-import controllers.acquire.Common._
-import pages.acquire.BusinessChooseYourAddressPage
-import helpers.acquire.CookieFactoryForUnitSpecs
+import controllers.acquire.Common.PrototypeHtml
 import controllers.SetUpTradeDetails
+import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.JsonUtils.deserializeJsonToModel
 import helpers.common.CookieHelper
-import helpers.UnitSpec
 import CookieHelper.fetchCookiesFromHeaders
-import org.mockito.Mockito.when
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import utils.helpers.Config
+import helpers.UnitSpec
 import models.SetupTradeDetailsFormModel
 import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import org.mockito.Mockito.when
+import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
+import play.api.test.FakeRequest
+import play.api.test.WithApplication
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
+import utils.helpers.Config
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {
 

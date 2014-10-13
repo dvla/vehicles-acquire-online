@@ -59,12 +59,14 @@
                         (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
                     )
 
-                    @valtechInputText(viewModel.form(BusinessNameId), args =
-                        Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
-                            'maxLength -> BusinessName.MaxLength,
-                            '_showConstraints -> false
+                    <div class="uppercase-input">
+                        @valtechInputText(viewModel.form(BusinessNameId), args =
+                            Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
+                                'maxLength -> BusinessName.MaxLength,
+                                '_showConstraints -> false
+                            )
                         )
-                    )
+                    </div>
 
                     @valtechInputText(viewModel.form(EmailId), args =
                         Map('_label -> Messages("acquire_businesskeeperdetails.email"),

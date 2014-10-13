@@ -1,15 +1,95 @@
-@()(implicit lang: Lang,
+@(viewModel: models.AcquireSuccessViewModel)(implicit lang: Lang,
     token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
     config: utils.helpers.Config)
 
 @import controllers.routes.SetUpTradeDetails
 @import views.acquire.BeforeYouStart.NextId
 @import uk.gov.dvla.vehicles.presentation.common
+@import views.html.helper.form
+@import views.acquire.AcquireSuccess.BuyAnotherId
 @import common.views.html.widgets.base.csrfTokenHiddenField
 
 @main(
     progress = Some(Messages("acquire_progress_1")),
     title = "Summary"
-) {
-    <p>Success</p>
+){
+<div class="two-col clearfix">
+    <div class="first-col">
+        <dl class="playback">
+            <h2>@Messages("acquire_success.transaction_details.header")</h2>
+            <dt>@Messages("acquire_success.transaction_details.transaction_id")</dt>
+            <dd>101</dd>
+            <dt>@Messages("acquire_success.transaction_details.transaction_date")</dt>
+            <dd>09/10/2014</dd>
+        </dl>
+        <div class="playback">
+            <h2>@Messages("acquire_success.trader_details.header")</h2>
+            <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
+            <dd>@viewModel.traderDetails.traderName</dd>
+            <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
+            <dd>@for(addr <- viewModel.traderDetails.traderAddress.address.dropRight(1)) {@addr<br/>}</dd>
+            <dt>@Messages("acquire_success.trader_details.trader_postcode")</dt>
+            <dd>@viewModel.traderDetails.traderAddress.address.last</dd>
+            <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
+            <dd>@viewModel.traderDetails.traderEmail.getOrElse("Not entered")</dd>
+            <dt>@Messages("acquire_success.date_of_sale.label")</dt>
+            <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
+
+        </div>
+    </div>
+    <div class="second-col">
+        <div class="alert-complete">
+            <h2>@Messages("acquire_success.complete.header")</h2>
+            <p>@Messages("acquire_success.complete.p1")</p>
+            <p>@Messages("acquire_success.complete.p2")</p>
+        </div>
+
+        <h2>@Messages("acquire_success.vehicle_details.header")</h2>
+        <p>@Messages("acquire_success.vehicle_details.p1")</p>
+        <ul style="list-style-type:none">
+            <li><b>Registration</b></li>
+            <li>@viewModel.vehicleDetails.registrationNumber</li>
+            <li><b>Make</b></li>
+            <li>@viewModel.vehicleDetails.vehicleMake</li>
+            <li><b>Model</b></li>
+            <li>@viewModel.vehicleDetails.vehicleModel</li>
+            <li><b>Mileage</b></li>
+            <li>@viewModel.completeAndConfirmDetails.mileage.getOrElse("Not entered")</li>
+        </ul>
+
+        <p>@Messages("acquire_success.new_keeper_details.p1")</p>
+        <ul style="list-style-type:none">
+            <li><b>Name</b></li>
+            <li>@viewModel.newKeeperDetails.name</li>
+            <li><b>Address</b></li>
+            <li>@for(kaddr <- viewModel.newKeeperDetails.address.address.dropRight(1)) {@kaddr<br/>}</li>
+            <li><b>Postcode</b></li>
+            <li>@viewModel.newKeeperDetails.address.address.last</li>
+            <li><b>Contact email address</b></li>
+            <li>@viewModel.newKeeperDetails.email.getOrElse("Not entered")</li>
+        </ul>
+
+        <h2>@Messages("acquire_success.further_information.header")</h2>
+        <p>@Messages("acquire_success.further_information.p1")</p>
+        <p>@Messages("acquire_success.further_information.p2")</p>
+
+        <div class="alert-warning">
+            <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
+        </div>
+
+        <div class="form-steps">
+
+            <div class="step">
+                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">@Messages("acquire_success.buttonnavprint")</button>
+            </div>
+
+            <div class="step">
+                @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
+                @csrfTokenHiddenField()
+                <button id="@BuyAnotherId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_success.buyAnother")</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 }

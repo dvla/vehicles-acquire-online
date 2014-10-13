@@ -52,28 +52,28 @@
 
                 <div class="uppercase-input">
                     @titlePicker(field = privateKeeperDetailsForm(TitleId))
-
+                </div>
+                <div class="uppercase-input">
                     @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
                         Map('_label -> Messages("acquire_privatekeeperdetails.firstnamelabel"),
                             '_showConstraints -> false,
                             'maxLength -> FirstNameMaxLength
                         )
                     )
-
+                </div>
+                <div class="uppercase-input">
                     @valtechInputText(privateKeeperDetailsForm(LastNameId), args =
                         Map('_label -> Messages("acquire_privatekeeperdetails.lastnamelabel"),
                             '_showConstraints -> false,
                             'maxLength -> LastNameMaxLength
                         )
                     )
-
+                </div>
                     @valtechDate(
                         privateKeeperDetailsForm(DateOfBirthId),
                         Messages("privatekeeper_dateofbirth"),
                         Some(Messages("acquire_privatekeeperdetails.dateofbirth.hint")
                     ))
-
-                </div>
 
                 <div class="uppercase-input">
                     @valtechInputText(privateKeeperDetailsForm(DriverNumberId),

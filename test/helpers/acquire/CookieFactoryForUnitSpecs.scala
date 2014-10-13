@@ -4,29 +4,35 @@ import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import org.joda.time.LocalDate
 import pages.acquire.VehicleLookupPage
-import play.api.i18n.Messages
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleDetailsModel}
 import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models._
+import models.SeenCookieMessageCacheKey
+import models.SetupTradeDetailsFormModel
+import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.BusinessKeeperDetailsFormModel
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.CompleteAndConfirmFormModel
+import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.NewKeeperChooseYourAddressFormModel
+import models.NewKeeperDetailsViewModel
+import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
-import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
+import play.api.mvc.Cookie
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid,  FirstNameValid, LastNameValid, DriverNumberValid}
 import pages.acquire.CompleteAndConfirmPage.MileageValid
@@ -34,12 +40,15 @@ import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBi
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
-import play.api.mvc.Cookie
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
+import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
   implicit private val cookieFlags = injector.getInstance(classOf[CookieFlags])
   final val TrackingIdValue = "trackingId"
+  final val KeeperEmail = "abc@def.com"
   private val session = new ClearTextClientSideSession(TrackingIdValue)
 
   private def createCookie[A](key: String, value: A)(implicit tjs: Writes[A]): Cookie = {
@@ -210,15 +219,19 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                             line3: String = Line3Valid,
                             postTown: String = PostTownValid,
                             postcode: String = PostcodeValid,
-                            email: Option[String] = Some("abc@def.com")): Cookie = {
+                            email: Option[String] = Some(KeeperEmail),
+                            fleetNumber: Option[String] = None,
+                            isBusinessKeeper: Boolean = false): Cookie = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
-      name = TraderBusinessNameValid,
+      name = FirstNameValid,
       address = AddressModel(
-      uprn = uprn,
-      address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)
+        uprn = uprn,
+        address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)
       ),
-      email = email
+      email = email,
+      fleetNumber = fleetNumber,
+      isBusinessKeeper = isBusinessKeeper
     )
     createCookie(key, value)
   }

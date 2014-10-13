@@ -26,8 +26,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                               dateService: DateService,
-                                               config: Config) extends Controller {
+                                                               dateService: DateService,
+                                                               config: Config) extends Controller {
 
   val formatter = ISODateTimeFormat.dateTime()
 
@@ -38,11 +38,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   private final val NoNewKeeperCookieMessage = "Did not find a new keeper details cookie in cache. " +
     "Now redirecting to Vehicle Lookup."
 
+  private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details in cache. " +
+    "Now redirecting to vehicle lookup"
+
   def present = Action { implicit request =>
-    request.cookies.getModel[NewKeeperDetailsViewModel] match {
-      case Some(newKeeperDetails) =>
-        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), null, newKeeperDetails), dateService))
-      case _ => redirectToVehicleLookup(NoNewKeeperCookieMessage)
+    val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+    val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+    (newKeeperDetailsOpt, vehicleDetailsOpt) match {
+      case (Some(newKeeperDetails), Some(vehicleDetails)) =>
+        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails), dateService))
+      case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
     }
   }
 
@@ -68,18 +73,18 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         // TODO : should probably be a bad request or failure on error
         request.cookies.getModel[NewKeeperDetailsViewModel] match {
           case Some(_) =>
-        acquireAction(webService,
-        validForm,
-        request.cookies.getModel[BusinessKeeperDetailsFormModel],
-        request.cookies.getModel[PrivateKeeperDetailsFormModel],
-        request.cookies.getModel[NewKeeperDetailsViewModel].get,
-        request.cookies.trackingId())
+            acquireAction(webService,
+              validForm,
+              request.cookies.getModel[BusinessKeeperDetailsFormModel],
+              request.cookies.getModel[PrivateKeeperDetailsFormModel],
+              request.cookies.getModel[NewKeeperDetailsViewModel].get,
+              request.cookies.trackingId())
           case _ => Future.successful {Redirect(routes.VehicleLookup.present())}
         }
       }
     )
   }
-    private def redirectToVehicleLookup(message: String) = {
+  private def redirectToVehicleLookup(message: String) = {
     Logger.warn(message)
     Redirect(routes.VehicleLookup.present())
   }
@@ -128,142 +133,142 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
-    def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
-      response match {
-        case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
-        case _ => handleHttpStatusCode(httpResponseCode)
-      }
+  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
+    response match {
+      case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
+      case _ => handleHttpStatusCode(httpResponseCode)
+    }
 
-    def callMicroService(vehicleLookup: VehicleLookupFormModel,
-                         completeAndConfirmForm: CompleteAndConfirmFormModel,
-                         businessKeeperDetailsFormModel: Option[BusinessKeeperDetailsFormModel],
+  def callMicroService(vehicleLookup: VehicleLookupFormModel,
+                       completeAndConfirmForm: CompleteAndConfirmFormModel,
+                       businessKeeperDetailsFormModel: Option[BusinessKeeperDetailsFormModel],
+                       privateKeeperDetailsFormModel: Option[PrivateKeeperDetailsFormModel],
+                       newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
+                       traderDetails: TraderDetailsModel,
+                       trackingId: String): Future[Result] = {
+
+    val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm, businessKeeperDetailsFormModel,
+      privateKeeperDetailsFormModel, newKeeperDetailsViewModel, traderDetails)
+
+    webService.invoke(disposeRequest, trackingId).map {
+      case (httpResponseCode, response) => {
+        Some(Redirect(nextPage(httpResponseCode, response))).
+          //            map(_.withCookie(completeAndConfirmForm)).
+          //            map(storeResponseInCache(response, _)).
+          get
+      }
+    }.recover {
+      case e: Throwable =>
+        Logger.warn(s"Dispose micro-service call failed.", e)
+        Redirect(routes.MicroServiceError.present())
+    }
+  }
+
+  //    def storeResponseInCache(response: Option[AcquireResponseDto], nextPage: Result): Result =
+  //      response match {
+  //        case Some(o) =>
+  //          val nextPageWithTransactionId =
+  //            if (!o.transactionId.isEmpty) nextPage.withCookie(CompleteAndConfirmCacheTransactionIdCacheKey, o.transactionId)
+  //            else nextPage
+  //
+  //          if (!o.registrationNumber.isEmpty)
+  //            nextPageWithTransactionId.withCookie(CompleteAndConfirmCacheTransactionIdCacheKey, o.registrationNumber)
+  //          else nextPageWithTransactionId
+  //        case None => nextPage
+  //      }
+
+  def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
+                               completeAndConfirmFormModel: CompleteAndConfirmFormModel,
+                               businessKeeperDetailsFormModel: Option[BusinessKeeperDetailsFormModel],
+                               privateKeeperDetailsFormModel: Option[PrivateKeeperDetailsFormModel],
+                               newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
+                               traderDetailsModel: TraderDetailsModel): AcquireRequestDto = {
+
+    // TODO: This ...
+    // Get the title from one of the
+    val titleType = TitleType(titleType = Some(1), other = Some(""))
+
+    val keeperDetails = buildKeeperDetails(businessKeeperDetailsFormModel,
+      privateKeeperDetailsFormModel,
+      newKeeperDetailsViewModel,
+      titleType)
+
+    val traderAddress = traderDetailsModel.traderAddress.address
+    val traderDetails = TraderDetails(traderOrganisationName = traderDetailsModel.traderName,
+      traderAddressLines = getAddressLines(traderAddress, 4),
+      traderPostTown = getPostTownFromAddress(traderAddress).getOrElse(""),
+      traderPostCode = getPostCodeFromAddress(traderAddress).getOrElse(""),
+      traderEmailAddress = traderDetailsModel.traderEmail)
+
+    AcquireRequestDto(referenceNumber = vehicleLookup.referenceNumber,
+      registrationNumber = vehicleLookup.registrationNumber,
+      keeperDetails,
+      traderDetails,
+      fleetNumber = (businessKeeperDetailsFormModel map (kd => kd.fleetNumber)).flatten,
+      //        dateOfTransfer = formatter.print(completeAndConfirmFormModel.dateOfSale),
+      dateOfTransfer = "2014-03-04T00:00:00.000Z",
+      mileage = completeAndConfirmFormModel.mileage,
+      keeperConsent = consentToBoolean(completeAndConfirmFormModel.consent),
+      //                        transactionTimestamp = formatter.print(dateService.now.toDateTime)
+      transactionTimestamp = "2014-03-04T00:00:00.000Z"
+    )
+
+  }
+
+  // TODO : throw an error or something if we don't match the test below
+  def buildKeeperDetails(businessKeeperDetailsFormModel: Option[BusinessKeeperDetailsFormModel],
                          privateKeeperDetailsFormModel: Option[PrivateKeeperDetailsFormModel],
                          newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                         traderDetails: TraderDetailsModel,
-                         trackingId: String): Future[Result] = {
-
-      val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm, businessKeeperDetailsFormModel,
-        privateKeeperDetailsFormModel, newKeeperDetailsViewModel, traderDetails)
-
-      webService.invoke(disposeRequest, trackingId).map {
-        case (httpResponseCode, response) => {
-          Some(Redirect(nextPage(httpResponseCode, response))).
-//            map(_.withCookie(completeAndConfirmForm)).
-//            map(storeResponseInCache(response, _)).
-            get
-        }
-      }.recover {
-        case e: Throwable =>
-          Logger.warn(s"Dispose micro-service call failed.", e)
-          Redirect(routes.MicroServiceError.present())
-      }
+                         titleType: TitleType) :KeeperDetails = {
+    (businessKeeperDetailsFormModel, privateKeeperDetailsFormModel) match {
+      case (Some(keeperDetailsModel), None) => buildBusinessKeeperDetails(keeperDetailsModel, newKeeperDetailsViewModel, titleType)
+      case (None, Some(keeperDetailsModel)) => buildPrivateKeeperDetails(keeperDetailsModel, newKeeperDetailsViewModel, titleType)
     }
+  }
 
-//    def storeResponseInCache(response: Option[AcquireResponseDto], nextPage: Result): Result =
-//      response match {
-//        case Some(o) =>
-//          val nextPageWithTransactionId =
-//            if (!o.transactionId.isEmpty) nextPage.withCookie(CompleteAndConfirmCacheTransactionIdCacheKey, o.transactionId)
-//            else nextPage
-//
-//          if (!o.registrationNumber.isEmpty)
-//            nextPageWithTransactionId.withCookie(CompleteAndConfirmCacheTransactionIdCacheKey, o.registrationNumber)
-//          else nextPageWithTransactionId
-//        case None => nextPage
-//      }
-
-    def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
-                                 completeAndConfirmFormModel: CompleteAndConfirmFormModel,
-                                 businessKeeperDetailsFormModel: Option[BusinessKeeperDetailsFormModel],
-                                 privateKeeperDetailsFormModel: Option[PrivateKeeperDetailsFormModel],
+  def buildBusinessKeeperDetails(businessKeeperDetailsFormModel: BusinessKeeperDetailsFormModel,
                                  newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                                 traderDetailsModel: TraderDetailsModel): AcquireRequestDto = {
+                                 titleType: TitleType) :KeeperDetails = {
 
-      // TODO: This ...
-      // Get the title from one of the
-      val titleType = TitleType(titleType = Some(1), other = Some(""))
+    val keeperAddress = newKeeperDetailsViewModel.address.address
 
-      val keeperDetails = buildKeeperDetails(businessKeeperDetailsFormModel,
-        privateKeeperDetailsFormModel,
-        newKeeperDetailsViewModel,
-        titleType)
+    KeeperDetails(keeperTitle = titleType,
+      KeeperBusinessName = Option(businessKeeperDetailsFormModel.businessName),
+      keeperForename = None,
+      keeperSurname = None,
+      keeperDateOfBirth = None,
+      keeperAddressLines = getAddressLines(keeperAddress, 4),
+      keeperPostTown = getPostTownFromAddress(keeperAddress).getOrElse(""),
+      keeperPostCode = getPostCodeFromAddress(keeperAddress).getOrElse(""),
+      keeperEmailAddress = businessKeeperDetailsFormModel.email,
+      keeperDriverNumber = None)
+  }
 
-      val traderAddress = traderDetailsModel.traderAddress.address
-      val traderDetails = TraderDetails(traderOrganisationName = traderDetailsModel.traderName,
-        traderAddressLines = getAddressLines(traderAddress, 4),
-        traderPostTown = getPostTownFromAddress(traderAddress).getOrElse(""),
-        traderPostCode = getPostCodeFromAddress(traderAddress).getOrElse(""),
-        traderEmailAddress = traderDetailsModel.traderEmail)
+  def buildPrivateKeeperDetails(privateKeeperDetailsFormModel: PrivateKeeperDetailsFormModel,
+                                newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
+                                titleType: TitleType) :KeeperDetails = {
 
-      AcquireRequestDto(referenceNumber = vehicleLookup.referenceNumber,
-        registrationNumber = vehicleLookup.registrationNumber,
-        keeperDetails,
-        traderDetails,
-        fleetNumber = (businessKeeperDetailsFormModel map (kd => kd.fleetNumber)).flatten,
-        //        dateOfTransfer = formatter.print(completeAndConfirmFormModel.dateOfSale),
-        dateOfTransfer = "2014-03-04T00:00:00.000Z",
-        mileage = completeAndConfirmFormModel.mileage,
-        keeperConsent = consentToBoolean(completeAndConfirmFormModel.consent),
-        //                        transactionTimestamp = formatter.print(dateService.now.toDateTime)
-        transactionTimestamp = "2014-03-04T00:00:00.000Z"
-      )
-
+    val dateOfBirth = privateKeeperDetailsFormModel.dateOfBirth match {
+      case Some(dob) => Some(formatter.print(dob))
+      case _ => None
     }
 
-    // TODO : throw an error or something if we don't match the test below
-    def buildKeeperDetails(businessKeeperDetailsFormModel: Option[BusinessKeeperDetailsFormModel],
-                           privateKeeperDetailsFormModel: Option[PrivateKeeperDetailsFormModel],
-                           newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                           titleType: TitleType) :KeeperDetails = {
-      (businessKeeperDetailsFormModel, privateKeeperDetailsFormModel) match {
-        case (Some(keeperDetailsModel), None) => buildBusinessKeeperDetails(keeperDetailsModel, newKeeperDetailsViewModel, titleType)
-        case (None, Some(keeperDetailsModel)) => buildPrivateKeeperDetails(keeperDetailsModel, newKeeperDetailsViewModel, titleType)
-      }
-    }
+    val keeperAddress = newKeeperDetailsViewModel.address.address
 
-    def buildBusinessKeeperDetails(businessKeeperDetailsFormModel: BusinessKeeperDetailsFormModel,
-                                   newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                                   titleType: TitleType) :KeeperDetails = {
+    // TODO : Sort out date mappings
+    KeeperDetails(keeperTitle = titleType,
+      KeeperBusinessName = None,
+      keeperForename = Some(privateKeeperDetailsFormModel.firstName),
+      keeperSurname = Some(privateKeeperDetailsFormModel.lastName),
+      keeperDateOfBirth = Some("2014-03-04T00:00:00.000Z"), //dateOfBirth,
+      keeperAddressLines = getAddressLines(keeperAddress, 4),
+      keeperPostTown = getPostTownFromAddress(keeperAddress).getOrElse(""),
+      keeperPostCode = getPostCodeFromAddress(keeperAddress).getOrElse(""),
+      keeperEmailAddress = privateKeeperDetailsFormModel.email,
+      keeperDriverNumber = privateKeeperDetailsFormModel.driverNumber)
+  }
 
-      val keeperAddress = newKeeperDetailsViewModel.address.address
-
-      KeeperDetails(keeperTitle = titleType,
-        KeeperBusinessName = Option(businessKeeperDetailsFormModel.businessName),
-        keeperForename = None,
-        keeperSurname = None,
-        keeperDateOfBirth = None,
-        keeperAddressLines = getAddressLines(keeperAddress, 4),
-        keeperPostTown = getPostTownFromAddress(keeperAddress).getOrElse(""),
-        keeperPostCode = getPostCodeFromAddress(keeperAddress).getOrElse(""),
-        keeperEmailAddress = businessKeeperDetailsFormModel.email,
-        keeperDriverNumber = None)
-    }
-
-    def buildPrivateKeeperDetails(privateKeeperDetailsFormModel: PrivateKeeperDetailsFormModel,
-                                  newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                                  titleType: TitleType) :KeeperDetails = {
-
-      val dateOfBirth = privateKeeperDetailsFormModel.dateOfBirth match {
-        case Some(dob) => Some(formatter.print(dob))
-        case _ => None
-      }
-
-      val keeperAddress = newKeeperDetailsViewModel.address.address
-
-      // TODO : Sort out date mappings
-      KeeperDetails(keeperTitle = titleType,
-        KeeperBusinessName = None,
-        keeperForename = Some(privateKeeperDetailsFormModel.firstName),
-        keeperSurname = Some(privateKeeperDetailsFormModel.lastName),
-        keeperDateOfBirth = Some("2014-03-04T00:00:00.000Z"), //dateOfBirth,
-        keeperAddressLines = getAddressLines(keeperAddress, 4),
-        keeperPostTown = getPostTownFromAddress(keeperAddress).getOrElse(""),
-        keeperPostCode = getPostCodeFromAddress(keeperAddress).getOrElse(""),
-        keeperEmailAddress = privateKeeperDetailsFormModel.email,
-        keeperDriverNumber = privateKeeperDetailsFormModel.driverNumber)
-    }
-
-    def handleResponseCode(acquireResponseCode: String): Call =
+  def handleResponseCode(acquireResponseCode: String): Call =
     acquireResponseCode match {
       case "ms.vehiclesService.response.unableToProcessApplication" =>
         Logger.warn("Acquire soap endpoint redirecting to acquire failure page")

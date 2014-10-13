@@ -1,21 +1,21 @@
 package controllers.acquire
 
+import controllers.acquire.Common.PrototypeHtml
 import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
-import play.api.test.{FakeRequest, WithApplication}
-import controllers.acquire.Common.PrototypeHtml
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import pages.acquire.buildAppUrl
+import helpers.acquire.CookieFactoryForUnitSpecs.KeeperEmail
+import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import org.mockito.Mockito.when
+import pages.acquire.AcquireSuccessPage
 import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-import utils.helpers.Config
-import org.mockito.Mockito.when
 import pages.acquire.VehicleLookupPage
-import pages.acquire.AcquireSuccessPage
-import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.{FakeRequest, WithApplication}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
+import utils.helpers.Config
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
@@ -41,12 +41,15 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "present a full form when new keeper cookie is present for new keeper" in new WithApplication {
-      val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+    "present a full form when new keeper and vehicle details cookies are present for new keeper" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
-      content should include(MileageValid)
+      content should include(s"""value="$MileageValid"""")
+      content should include("""value="true"""") // Checkbox value
+      content should include(s"""value="$YearDateOfSaleValid"""")
     }
 
     "display empty fields when new keeper complete cookie does not exist" in new WithApplication {
@@ -56,23 +59,43 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       content should not include MileageValid
     }
 
-    "redirect to vehicle lookup when no new keeper details cookie are present" in new WithApplication {
+    "redirect to vehicle lookup when no new keeper details cookie is present" in new WithApplication {
       val request = FakeRequest()
       val result = completeAndConfirm.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
-  }
 
-  final val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
+    "play back business keeper details as expected" in new WithApplication() {
+      val fleetNumber = "12345-"
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isBusinessKeeper = true, fleetNumber = Some(fleetNumber))).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val content = contentAsString(completeAndConfirm.present(request))
+      content should include("<dt>Fleet number</dt>")
+      content should include(s"<dd>$fleetNumber</dd>")
+      content should include(s"<dd>$KeeperEmail</dd>")
+    }
+
+    "play back private keeper details as expected" in new WithApplication() {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isBusinessKeeper = false)).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val content = contentAsString(completeAndConfirm.present(request))
+      content should not include "<dt>Fleet number</dt>"
+      content should include(s"<dd>$KeeperEmail</dd>")
+    }
+  }
 
   "submit" should {
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$").
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
+      val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
 
@@ -98,7 +121,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent="").
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -127,7 +151,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
     completeAndConfirm.present(request)
   }
 }

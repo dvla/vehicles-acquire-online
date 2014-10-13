@@ -2,40 +2,47 @@ package helpers.acquire
 
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import models.{SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel}
-import models.{VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel}
-import models.NewKeeperDetailsViewModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.SetupTradeDetailsFormModel
+import models.BusinessChooseYourAddressFormModel
+import models.EnterAddressManuallyFormModel
+import models.VehicleLookupFormModel
+import models.PrivateKeeperDetailsFormModel
+import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperDetailsViewModel
+import models.CompleteAndConfirmFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import org.joda.time.LocalDate
-import org.openqa.selenium.{Cookie, WebDriver}
+import org.openqa.selenium.Cookie
+import org.openqa.selenium.WebDriver
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
+import pages.acquire.CompleteAndConfirmPage.{MileageValid,DayDateOfSaleValid,MonthDateOfSaleValid,YearDateOfSaleValid}
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
-import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import uk.gov.dvla.vehicles.presentation.common
 import common.controllers.AlternateLanguages.{CyId, EnId}
+import common.mappings.TitleType
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import common.model.{BruteForcePreventionModel, VehicleDetailsModel, TraderDetailsModel, AddressModel}
 import TraderDetailsModel.TraderDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
+import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
-import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
-import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
-import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -181,10 +188,32 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def newKeeperDetails(address: AddressModel = addressWithoutUprn, email: Option[String] = Some("abd@def.com"))
+  def newKeeperDetails(address: AddressModel = addressWithoutUprn,
+                       email: Option[String] = Some("abd@def.com"),
+                       isBusinessKeeper: Boolean = false)
                       (implicit webDriver: WebDriver) = {
     val key = NewKeeperDetailsCacheKey
-    val value = NewKeeperDetailsViewModel(name = TraderBusinessNameValid, address = address, email = email)
+    val value = NewKeeperDetailsViewModel(
+      name = TraderBusinessNameValid,
+      address = address,
+      email = email,
+      isBusinessKeeper = isBusinessKeeper
+    )
+    addCookie(key, value)
+    this
+  }
+
+  def completeAndConfirmDetails(mileage: Option[Int] = Some(MileageValid.toInt),
+                              dateOfSale: LocalDate = new LocalDate(
+                                YearDateOfSaleValid.toInt,
+                                MonthDateOfSaleValid.toInt,
+                                DayDateOfSaleValid.toInt))(implicit webDriver: WebDriver) = {
+    val key = CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
+    val value = CompleteAndConfirmFormModel(
+      mileage,
+      dateOfSale,
+      ""
+    )
     addCookie(key, value)
     this
   }

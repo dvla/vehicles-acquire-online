@@ -327,21 +327,47 @@ acquire_completeandconfirm.name = Name
 acquire_completeandconfirm.address = Address
 acquire_completeandconfirm.email = Email
 acquire_completeandconfirm.emailNotEntered = Not entered
+acquire_completeandconfirm.fleetNumber = Fleet number
+acquire_completeandconfirm.fleetNumberNotEntered = Not entered
 acquire_completeandconfirm.vehicleDetails = Vehicle details
 acquire_completeandconfirm.vehicleReg = Registration
 acquire_completeandconfirm.vehicleMake = Make
 acquire_completeandconfirm.vehicleModel = Model
 acquire_completeAndConfirm.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
 acquire_completeAndConfirm.mileage.label = Vehicle mileage
-acquire_completeAndConfirm.submitbutton = Add Keeper
+acquire_completeAndConfirm.submitbutton = Confirm new keeper
 acquire_completeAndConfirm.backbutton = Back
 acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
-acquire_completeAndConfirm_dateofsale.label = Date of sale
+acquire_completeAndConfirm.dateofsale.label = Date of sale
+acquire_completeandconfirm.dateofsale.hint = For example, 20 3 1976
 dateofsale = Date of sale
 privatekeeper_mileage = Mileage
 
 acquire_keeperdetailscomplete.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
+
+#acquire success
+acquire_success.complete.header = Thank You
+acquire_success.complete.p1 = The application is being processed
+acquire_success.complete.p2 = Please print this page and pass it to the customer along with the V5c/2 slip from the vehicle registration certificate (V5C)
+acquire_success.transaction_details.header = Transaction details
+acquire_success.transaction_details.transaction_id = Transaction ID
+acquire_success.transaction_details.transaction_date = Transaction date
+acquire_success.trader_details.header = Vehicle will be sold by
+acquire_success.trader_details.trader_name = Trader name
+acquire_success.trader_details.trader_address = Trader address
+acquire_success.trader_details.trader_postcode = Postcode
+acquire_success.trader_details.trader_email = Email
+acquire_success.date_of_sale.label = Date of sale
+acquire_success.vehicle_details.header = Vehicle sale details
+acquire_success.vehicle_details.p1 = Details of the vehicle being purchased
+acquire_success.new_keeper_details.p1 = Details of the new keeper DVLA has put on record for this vehicle
+acquire_success.further_information.header = What happens next?
+acquire_success.further_information.p1 = Within 4 weeks a new vehicle registration certificate (V5C) will be sent to the new keeper.
+acquire_success.further_information.p2 = If they do not receive a new V5C in 4 weeks they must contact DVLA Customer Enquiries on 0300 790 6802
+acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the vehicle registration certificate (V5C)
+acquire_success.buttonnavprint = Print
+acquire_success.buyAnother = Buy another vehicle
 
 #micro-service error page
 micro_service_error.title=We are sorry

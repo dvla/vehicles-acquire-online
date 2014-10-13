@@ -24,21 +24,22 @@ final class NewKeeperEnterAddressManually @Inject()()
     NewKeeperEnterAddressManuallyFormModel.Form.Mapping
   )
 
-  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. Now redirecting to vehicle lookup."
-  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details found in cache. " +
-    "This is an error condition. Now redirecting to vehicle lookup."
+  private final val KeeperDetailsNotInCacheMessage = "Failed to find keeper details in cache. " +
+    "Now redirecting to vehicle lookup."
+  private final val PrivateAndBusinessKeeperDetailsBothInCacheMessage = "Both private and business keeper details " +
+    "found in cache. This is an error condition. Now redirecting to vehicle lookup."
 
   private def switch[R](request: Request[AnyContent],
-                        priv: PrivateKeeperDetailsFormModel => R,
-                        business: BusinessKeeperDetailsFormModel => R,
-                        neither: String => R): R = {
+                        onPrivate: PrivateKeeperDetailsFormModel => R,
+                        onBusiness: BusinessKeeperDetailsFormModel => R,
+                        onNeither: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => neither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
-      case (Some(privateKeeperDetails), _) => priv(privateKeeperDetails)
-      case (_, Some(businessKeeperDetails)) => business(businessKeeperDetails)
-      case _ => neither(KeeperDetailsNotInCacheMessage)
+      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => onNeither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
+      case (Some(privateKeeperDetails), _) => onPrivate(privateKeeperDetails)
+      case (_, Some(businessKeeperDetails)) => onBusiness(businessKeeperDetails)
+      case _ => onNeither(KeeperDetailsNotInCacheMessage)
     }
   }
 
@@ -82,7 +83,8 @@ final class NewKeeperEnterAddressManually @Inject()()
           val keeperDetailsModel = NewKeeperDetailsViewModel(
             name = s"${privateKeeperDetails.firstName} ${privateKeeperDetails.firstName}",
             address = keeperAddress,
-            email = privateKeeperDetails.email
+            email = privateKeeperDetails.email,
+            isBusinessKeeper = false
           )
           // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).
@@ -99,7 +101,9 @@ final class NewKeeperEnterAddressManually @Inject()()
           val keeperDetailsModel = NewKeeperDetailsViewModel(
             name = businessKeeperDetails.businessName,
             address = keeperAddress,
-            email = businessKeeperDetails.email
+            email = businessKeeperDetails.email,
+            fleetNumber = businessKeeperDetails.fleetNumber,
+            isBusinessKeeper = true
           )
           // Redirect to the next screen in the workflow
           Redirect(routes.CompleteAndConfirm.present()).
