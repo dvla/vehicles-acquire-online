@@ -88,6 +88,18 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
     }
   }
 
+  "Pressing buy another vehicles" should {
+    "Should go to VehicleLookupPage on buy another" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to AcquireSuccessPage
+
+      click on AcquireSuccessPage.buyAnother
+
+      page.title should equal(VehicleLookupPage.title)
+    }
+  }
+
   private def cacheSetup()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs
       .dealerDetails()
