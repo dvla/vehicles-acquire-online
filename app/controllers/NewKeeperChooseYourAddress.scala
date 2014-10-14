@@ -40,19 +40,19 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private def switch[R](request: Request[AnyContent],
                         onPrivate: PrivateKeeperDetailsFormModel => R,
                         onBusiness: BusinessKeeperDetailsFormModel => R,
-                        onNeither: String => R): R = {
+                        onError: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => onNeither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
+      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => onError(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
       case (Some(privateKeeperDetails), _) => onPrivate(privateKeeperDetails)
       case (_, Some(businessKeeperDetails)) => onBusiness(businessKeeperDetails)
-      case _ => onNeither(KeeperDetailsNotInCacheMessage)
+      case _ => onError(KeeperDetailsNotInCacheMessage)
     }
   }
 
-  private def neither(message: String): Result = {
-    Logger.warn(message)
+  private def error(message: String): Result = {
+    Logger.error(message)
     Redirect(routes.VehicleLookup.present())
   }
 
@@ -78,7 +78,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         )
       }
     },
-    onNeither = message => Future.successful(neither(message)))
+    onError = message => Future.successful(error(message)))
   }
 
   private def getTitle(title: TitleType ): String = {
@@ -101,21 +101,24 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           email.getOrElse("Not entered"),
           addresses
         ))
-      case _ => neither(VehicleDetailsNotInCacheMessage)
+      case _ => error(VehicleDetailsNotInCacheMessage)
     }
   }
 
   private def handleInvalidForm(invalidForm: Form[NewKeeperChooseYourAddressFormModel],
                                 name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                                (implicit request: Request[_]) = {
-    val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
-    BadRequest(new_keeper_choose_your_address(
-      NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleDetails.get),
-      name,
-      postcode,
-      email.getOrElse("Not entered"),
-      addresses)
-    )
+    request.cookies.getModel[VehicleDetailsModel] match {
+      case Some(vehicleDetails) =>
+        BadRequest(new_keeper_choose_your_address(
+          NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleDetails),
+          name,
+          postcode,
+          email.getOrElse("Not entered"),
+          addresses)
+        )
+      case _ => error(VehicleDetailsNotInCacheMessage)
+    }
   }
 
   def submit = Action.async { implicit request =>
@@ -146,7 +149,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             )
           }
         },
-        onNeither = message => Future.successful(neither(message))
+        onError = message => Future.successful(error(message))
       ),
       validForm => switch(
         request = request,
@@ -170,20 +173,16 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
             isBusinessKeeper = true
           )
         },
-        onNeither = message => Future.successful(neither(message))
+        onError = message => Future.successful(error(message))
       )
     )
   }
 
   def back = Action { implicit request => switch(
     request = request,
-    onPrivate = { privateKeeperDetails =>
-      Redirect(routes.PrivateKeeperDetails.present())
-    },
-    onBusiness = { businessKeeperDetails =>
-      Redirect(routes.BusinessKeeperDetails.present())
-    },
-    onNeither = message => neither(message)
+    onPrivate = { privateKeeperDetails => Redirect(routes.PrivateKeeperDetails.present()) },
+    onBusiness = { businessKeeperDetails => Redirect(routes.BusinessKeeperDetails.present()) },
+    onError = message => error(message)
   )}
 
   private def fetchAddresses(postcode: String)(implicit session: ClientSideSession, lang: Lang) =

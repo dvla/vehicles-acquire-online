@@ -316,9 +316,14 @@ acquire_newKeeperChooseYourAddress.vehiclemodel = Model
 acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 
 #[optional] - new keeper manual address entry
-acquire_newkeeperenteraddressmanually.title = Enter keeper address
-acquire_newkeeperenteraddressmanually.submitbutton = Next
-acquire_newkeeperenteraddressmanually.backbutton = Back
+acquire_newKeeperEnterAddressManually.title = Enter keeper address
+acquire_newKeeperEnterAddressManually.submitbutton = Next
+acquire_newKeeperEnterAddressManually.backbutton = Back
+acquire_newKeeperEnterAddressManually.vehicleDetails = Vehicle details
+acquire_newKeeperEnterAddressManually.vehicleReg = Registration
+acquire_newKeeperEnterAddressManually.vehicleMake = Make
+acquire_newKeeperEnterAddressManually.vehicleModel = Model
+acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
