@@ -24,7 +24,7 @@ class CompleteAndConfirmFormSpec extends UnitSpec {
         YearDateOfSaleValid.toInt,
         MonthDateOfSaleValid.toInt,
         DayDateOfSaleValid.toInt))
-      model.consent should equal ("true")
+      model.consent should equal ("consent")
     }
 
     "accept if form is completed with mandatory fields only" in {
