@@ -100,16 +100,15 @@ final class NewKeeperEnterAddressManually @Inject()()
             privateKeeperDetails.postcode
           )
 
-          val keeperDetailsModel = NewKeeperDetailsViewModel(
-            name = s"${privateKeeperDetails.firstName} ${privateKeeperDetails.firstName}",
-            address = keeperAddress,
-            email = privateKeeperDetails.email,
-            isBusinessKeeper = false
-          )
-          // Redirect to the next screen in the workflow
-          Redirect(routes.CompleteAndConfirm.present()).
-            withCookie(validForm).
-            withCookie(keeperDetailsModel)
+          createNewKeeper(keeperAddress) match {
+            case Some(keeperDetails) => {
+              Redirect(routes.CompleteAndConfirm.present()).
+                withCookie(validForm).
+                withCookie(keeperDetails)
+            }
+            case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
+          }
+
         }
         },
         { businessKeeperDetails => {
@@ -118,22 +117,59 @@ final class NewKeeperEnterAddressManually @Inject()()
             businessKeeperDetails.postcode
           )
 
-          val keeperDetailsModel = NewKeeperDetailsViewModel(
-            name = businessKeeperDetails.businessName,
-            address = keeperAddress,
-            email = businessKeeperDetails.email,
-            fleetNumber = businessKeeperDetails.fleetNumber,
-            isBusinessKeeper = true
-          )
-          // Redirect to the next screen in the workflow
-          Redirect(routes.CompleteAndConfirm.present()).
-            withCookie(validForm).
-            withCookie(keeperDetailsModel)
+            createNewKeeper(keeperAddress) match {
+            case Some(keeperDetails) => {
+              Redirect(routes.CompleteAndConfirm.present()).
+                withCookie(validForm).
+                withCookie(keeperDetails)
+            }
+            case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
+          }
+
         }
         },
         message => error(message)
         )
     )
+  }
+
+  private def createNewKeeper(address: AddressModel)(implicit request: Request[_]): Option[NewKeeperDetailsViewModel] = {
+    val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
+    val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
+
+    (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
+      case (Some(privateKeeperDetails), _) => {
+        Some(NewKeeperDetailsViewModel(
+          title = Some(privateKeeperDetails.title),
+          firstName = Some(privateKeeperDetails.firstName),
+          lastName = Some(privateKeeperDetails.lastName),
+          dateOfBirth = privateKeeperDetails.dateOfBirth,
+          driverNumber = privateKeeperDetails.driverNumber,
+          email = privateKeeperDetails.email,
+          address = address,
+          businessName = None,
+          fleetNumber = None,
+          isBusinessKeeper = false,
+          displayName = Some(privateKeeperDetails.title) + " " +  Some(privateKeeperDetails.firstName) + " " + Some(privateKeeperDetails.lastName)
+        ))
+      }
+      case (_, Some(businessKeeperDetails))  => {
+        Some(NewKeeperDetailsViewModel(
+          title = None,
+          firstName = None,
+          lastName = None,
+          dateOfBirth = None,
+          driverNumber = None,
+          email = businessKeeperDetails.email,
+          address = address,
+          businessName = Some(businessKeeperDetails.businessName),
+          fleetNumber = businessKeeperDetails.fleetNumber,
+          isBusinessKeeper = true,
+          displayName = businessKeeperDetails.businessName
+        ))
+      }
+      case _ => None
+    }
   }
 
   private def formWithReplacedErrors(form: Form[NewKeeperEnterAddressManuallyFormModel]) =

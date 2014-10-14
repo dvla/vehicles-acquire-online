@@ -60,7 +60,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     "redirect to before you start when no vehicle details cookie is present" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val result = acquireSuccess.present(request)
       whenReady(result) { r =>
@@ -71,7 +71,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     "redirect to before you start when no trader details cookie is present" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val result = acquireSuccess.present(request)
       whenReady(result) { r =>
@@ -94,7 +94,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel())
       val result = acquireSuccess.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
@@ -105,14 +105,13 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
 
       val content = contentAsString(acquireSuccess.present(request))
       content should include(RegistrationNumberValid)
       content should include(VehicleMakeValid)
       content should include(ModelValid)
-      content should include(TraderBusinessNameValid)
       content should include(FirstNameValid)
       content should include(YearDateOfSaleValid)
       content should include(MonthDateOfSaleValid)
@@ -125,7 +124,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
 
       val result = acquireSuccess.buyAnother(request)
@@ -147,7 +146,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
 
       val result = acquireSuccess.buyAnother(request)
@@ -165,7 +164,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     val request = FakeRequest().
       withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
     acquireSuccess.present(request)
   }
