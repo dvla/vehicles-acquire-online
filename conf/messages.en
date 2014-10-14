@@ -144,6 +144,7 @@ acquire_businessChooseYourAddress_businessName_label = Trader name
 acquire_businessChooseYourAddress_businessName = {0}
 acquire_businessChooseYourAddress_businessEmail_label = Trader email address
 acquire_businessChooseYourAddress_businessEmail = {0}
+acquire_businessChooseYourAddress.emailNotEntered = Not entered
 acquire_businessChooseYourAddress_postcode_label = Postcode
 acquire_businessChooseYourAddress_businessAddress_label = Trader address
 acquire_businessChooseYourAddress_addressSelect = Choose your address

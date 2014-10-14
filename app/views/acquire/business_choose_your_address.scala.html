@@ -1,7 +1,7 @@
 @(businessChooseYourAddressForm: Form[models.BusinessChooseYourAddressFormModel],
         traderBusinessName: String,
         traderPostcode: String,
-        traderEmail: String,
+        traderEmail: Option[String],
         dropDownOptions: Seq[(String, String)])(implicit lang: Lang,
         token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
         config: utils.helpers.Config)
@@ -27,7 +27,11 @@
             <dt>@Messages("acquire_businessChooseYourAddress_businessName_label")</dt>
             <dd>@Messages("acquire_businessChooseYourAddress_businessName", traderBusinessName)</dd>
             <dt>@Messages("acquire_businessChooseYourAddress_businessEmail_label")</dt>
-            <dd>@Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail)</dd>
+            @if(traderEmail == None) {
+            <dd>@Messages("acquire_businessChooseYourAddress.emailNotEntered")</dd>
+            } else {
+            <dd>@Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail.get)</dd>
+            }
             <dt>@Messages("acquire_businessChooseYourAddress_postcode_label")</dt>
             <dd>@traderPostcode</dd>
         </dl>
