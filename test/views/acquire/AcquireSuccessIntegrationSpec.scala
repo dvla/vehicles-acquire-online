@@ -43,7 +43,7 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       go to CompleteAndConfirmPage
       CookieFactoryForUISpecs
         .vehicleDetails()
-        .newPrivateKeeperDetails()
+        .newKeeperDetails()
         .completeAndConfirmDetails()
 
       page.title should equal(SetupTradeDetailsPage.title)
@@ -53,7 +53,7 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       go to CompleteAndConfirmPage
       CookieFactoryForUISpecs
         .dealerDetails()
-        .newPrivateKeeperDetails()
+        .newKeeperDetails()
         .completeAndConfirmDetails()
 
       page.title should equal(SetupTradeDetailsPage.title)
@@ -74,7 +74,7 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       CookieFactoryForUISpecs
         .dealerDetails()
         .vehicleDetails()
-        .newPrivateKeeperDetails()
+        .newKeeperDetails()
 
       page.title should equal(SetupTradeDetailsPage.title)
     }
@@ -104,6 +104,6 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
     CookieFactoryForUISpecs
       .dealerDetails()
       .vehicleDetails()
-      .newPrivateKeeperDetails()
+      .newKeeperDetails()
       .completeAndConfirmDetails()
 }

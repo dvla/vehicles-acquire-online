@@ -43,7 +43,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "present a full form when new keeper and vehicle details cookies are present for new keeper" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
       val content = contentAsString(completeAndConfirm.present(request))
@@ -80,7 +80,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "play back private keeper details as expected" in new WithApplication() {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel(isBusinessKeeper = false)).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isBusinessKeeper = false)).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should not include "<dt>Fleet number</dt>"
@@ -91,7 +91,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   "submit" should {
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$").
-        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
@@ -101,7 +101,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -111,7 +111,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "redirect to next page when all fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -121,7 +121,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent="").
-        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
 
       val result = completeAndConfirm.submit(request)
@@ -151,7 +151,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
     completeAndConfirm.present(request)
   }

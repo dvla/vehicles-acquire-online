@@ -188,7 +188,7 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def newPrivateKeeperDetails(address: AddressModel = addressWithoutUprn,
+  def newKeeperDetails(address: AddressModel = addressWithoutUprn,
                        email: Option[String] = Some("abd@def.com"),
                        isBusinessKeeper: Boolean = false)
                       (implicit webDriver: WebDriver) = {
