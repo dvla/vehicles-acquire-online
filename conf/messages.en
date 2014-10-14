@@ -299,6 +299,7 @@ acquire_newKeeperChooseYourAddress_newKeeperName_label = Name
 acquire_newKeeperChooseYourAddress_newKeeperName = {0}
 acquire_newKeeperChooseYourAddress_newKeeperEmail_label = Email
 acquire_newKeeperChooseYourAddress_newKeeperEmail = {0}
+acquire_newKeeperChooseYourAddress.emailNotEntered = Not entered
 acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Postcode
 acquire_newKeeperChooseYourAddress_newKeeperAddress_label = New keeper address
 acquire_newKeeperChooseYourAddress_addressSelect = Choose the new keeper's address

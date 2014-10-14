@@ -1,7 +1,7 @@
 @(viewModel: models.NewKeeperChooseYourAddressViewModel,
         newKeeperName: String,
         newKeeperPostcode: String,
-        newKeeperEmail: String,
+        newKeeperEmail: Option[String],
         dropDownOptions: Seq[(String, String)])(implicit lang: Lang,
         token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
         config: utils.helpers.Config)
@@ -44,7 +44,11 @@
             <dt>@Messages("acquire_newKeeperChooseYourAddress_newKeeperName_label")</dt>
             <dd>@Messages("acquire_newKeeperChooseYourAddress_newKeeperName", newKeeperName)</dd>
             <dt>@Messages("acquire_newKeeperChooseYourAddress_newKeeperEmail_label")</dt>
-            <dd>@Messages("acquire_newKeeperChooseYourAddress_newKeeperEmail", newKeeperEmail)</dd>
+            @if(newKeeperEmail == None) {
+            <dd>@Messages("acquire_newKeeperChooseYourAddress.emailNotEntered")</dd>
+            } else {
+            <dd>@newKeeperEmail.get</dd>
+            }
             <dt>@Messages("acquire_newKeeperChooseYourAddress_newKeeperpostcode_label")</dt>
             <dd>@newKeeperPostcode</dd>
         </dl>

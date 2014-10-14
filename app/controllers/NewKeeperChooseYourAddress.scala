@@ -98,7 +98,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           NewKeeperChooseYourAddressViewModel(form.fill(), vehicleDetails),
           name,
           postcode,
-          email.getOrElse("Not entered"),
+          email,
           addresses
         ))
       case _ => error(VehicleDetailsNotInCacheMessage)
@@ -114,7 +114,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleDetails),
           name,
           postcode,
-          email.getOrElse("Not entered"),
+          email,
           addresses)
         )
       case _ => error(VehicleDetailsNotInCacheMessage)
