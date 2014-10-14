@@ -35,19 +35,19 @@ final class NewKeeperEnterAddressManually @Inject()()
   private def switch[R](request: Request[AnyContent],
                         onPrivate: PrivateKeeperDetailsFormModel => R,
                         onBusiness: BusinessKeeperDetailsFormModel => R,
-                        onNeither: String => R): R = {
+                        onError: String => R): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => onNeither(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
+      case (Some(privateKeeperDetails), Some(businessKeeperDetails)) => onError(PrivateAndBusinessKeeperDetailsBothInCacheMessage)
       case (Some(privateKeeperDetails), _) => onPrivate(privateKeeperDetails)
       case (_, Some(businessKeeperDetails)) => onBusiness(businessKeeperDetails)
-      case _ => onNeither(KeeperDetailsNotInCacheMessage)
+      case _ => onError(KeeperDetailsNotInCacheMessage)
     }
   }
 
-  private def neither(message: String): Result = {
-    Logger.warn(message)
+  private def error(message: String): Result = {
+    Logger.error(message)
     Redirect(routes.VehicleLookup.present())
   }
 
@@ -55,7 +55,7 @@ final class NewKeeperEnterAddressManually @Inject()()
     switch(request,
       { privateKeeperDetails => openView(privateKeeperDetails.postcode) },
       { businessKeeperDetails => openView(businessKeeperDetails.postcode) },
-      message => neither(message)
+      message => error(message)
     )
   }
 
@@ -67,35 +67,30 @@ final class NewKeeperEnterAddressManually @Inject()()
           NewKeeperEnterAddressManuallyViewModel(form.fill(), vehicleDetails),
           postcode
         ))
-      case _ => neither(VehicleDetailsNotInCacheMessage)
+      case _ => error(VehicleDetailsNotInCacheMessage)
     }
   }
 
   private def handleInvalidForm(invalidForm: Form[NewKeeperEnterAddressManuallyFormModel],
                                 postcode: String)
                                (implicit request: Request[_]) = {
-    val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
-    BadRequest(new_keeper_enter_address_manually(
-      NewKeeperEnterAddressManuallyViewModel(formWithReplacedErrors(invalidForm), vehicleDetails.get),
-      postcode)
-    )
+    request.cookies.getModel[VehicleDetailsModel] match {
+      case Some(vehicleDetails) =>
+        BadRequest(new_keeper_enter_address_manually(
+          NewKeeperEnterAddressManuallyViewModel(formWithReplacedErrors(invalidForm), vehicleDetails),
+          postcode)
+        )
+      case _ => error(VehicleDetailsNotInCacheMessage)
+    }
   }
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
         switch(request,
-        { privateKeeperDetails => handleInvalidForm(
-            invalidForm,
-            privateKeeperDetails.postcode
-          )
-        },
-        { businessKeeperDetails => handleInvalidForm(
-            invalidForm,
-            businessKeeperDetails.postcode
-          )
-        },
-        message => neither(message)
+          { privateKeeperDetails => handleInvalidForm(invalidForm, privateKeeperDetails.postcode) },
+          { businessKeeperDetails => handleInvalidForm(invalidForm, businessKeeperDetails.postcode) },
+          message => error(message)
         ),
       validForm =>
         switch(request,
@@ -136,7 +131,7 @@ final class NewKeeperEnterAddressManually @Inject()()
             withCookie(keeperDetailsModel)
         }
         },
-        message => neither(message)
+        message => error(message)
         )
     )
   }
