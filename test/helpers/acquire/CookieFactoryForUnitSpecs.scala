@@ -24,6 +24,8 @@ import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperDetailsViewModel
+import models.NewKeeperEnterAddressManuallyFormModel
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
@@ -95,6 +97,22 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     )
     createCookie(key, value)
   }
+
+  def newKeeperEnterAddressManually(): Cookie = {
+    val key = NewKeeperEnterAddressManuallyCacheKey
+    val value = NewKeeperEnterAddressManuallyFormModel(
+      addressAndPostcodeModel = AddressAndPostcodeViewModel(
+        addressLinesModel = AddressLinesViewModel(
+          buildingNameOrNumber = BuildingNameOrNumberValid,
+          line2 = Some(Line2Valid),
+          line3 = Some(Line3Valid),
+          postTown = PostTownValid
+        )
+      )
+    )
+    createCookie(key, value)
+  }
+
 
   def traderDetailsModel(uprn: Option[Long] = None,
                          buildingNameOrNumber: String = BuildingNameOrNumberValid,
