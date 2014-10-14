@@ -33,7 +33,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
           Ok(views.html.acquire.business_choose_your_address(form.fill(),
             setupTradeDetailsModel.traderBusinessName,
             setupTradeDetailsModel.traderPostcode,
-            setupTradeDetailsModel.traderEmail.getOrElse("Not entered"),
+            setupTradeDetailsModel.traderEmail,
             addresses))
         }
       case None => Future {
@@ -52,7 +52,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
               BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
                 setupTradeDetails.traderBusinessName,
                 setupTradeDetails.traderPostcode,
-                setupTradeDetails.traderEmail.getOrElse(""),
+                setupTradeDetails.traderEmail,
                 addresses))
             }
           case None => Future {
