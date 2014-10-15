@@ -169,7 +169,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       dateOfTransfer = dateTimeFormatter.print(completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay),
       mileage = completeAndConfirmFormModel.mileage,
       keeperConsent = consentToBoolean(completeAndConfirmFormModel.consent),
-      transactionTimestamp = dateTimeFormatter.print(dateService.now.toDateTime)
+      transactionTimestamp = dateTimeFormatter.print(dateService.now.toDateTime),
+      requiresSorn = false
     )
 
   }

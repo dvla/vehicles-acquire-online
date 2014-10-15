@@ -40,7 +40,8 @@ final case class AcquireRequestDto(referenceNumber: String,
                                    dateOfTransfer: String,
                                    mileage: Option[Int],
                                    keeperConsent: Boolean,
-                                   transactionTimestamp: String)
+                                   transactionTimestamp: String,
+                                   requiresSorn: Boolean = false)
 
 object AcquireRequestDto {
   implicit val JsonFormat = Json.writes[AcquireRequestDto]
