@@ -62,17 +62,36 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         }
       },
       validForm => {
-        request.cookies.getModel[NewKeeperDetailsViewModel] match {
-          case Some(_) =>
-            acquireAction(webService,
-              validForm,
-              request.cookies.getModel[NewKeeperDetailsViewModel].get,
-              request.cookies.trackingId())
-          case _ => Future.successful {Redirect(routes.VehicleLookup.present())}
+        val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+        val vehicleDetailsOpt = request.cookies.getModel[VehicleLookupFormModel]
+        val traderDetails = request.cookies.getModel[TraderDetailsModel]
+        (newKeeperDetailsOpt, vehicleDetailsOpt, traderDetails) match {
+          case (Some(newKeeperDetails), Some(vehicleDetails), Some(traderDetails)) =>
+            if (config.isMicroserviceIntegrationEnabled){
+            acquireAction (validForm,
+                           newKeeperDetails,
+                           vehicleDetails,
+                           traderDetails,
+                           request.cookies.trackingId())}
+            else {
+              Future.successful {
+                Logger.error("Microservice integration is disabled")
+                Redirect(routes.AcquireSuccess.present())
+              }
+            }
+          case (_, _, None) => Future.successful {
+            Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
+            Redirect(routes.SetUpTradeDetails.present())
+          }
+          case _ => Future.successful {
+            Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")
+            Redirect(routes.VehicleLookup.present())
+          }
         }
       }
     )
   }
+
   private def redirectToVehicleLookup(message: String) = {
     Logger.warn(message)
     Redirect(routes.VehicleLookup.present())
@@ -99,39 +118,14 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       ).distinctErrors
   }
 
-  private def acquireAction(webService: AcquireService,
-                            completeAndConfirmFormModel: CompleteAndConfirmFormModel,
-                            newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
+  private def acquireAction(completeAndConfirmForm: CompleteAndConfirmFormModel,
+                            newKeeperDetailsView: NewKeeperDetailsViewModel,
+                            vehicleLookup: VehicleLookupFormModel,
+                            traderDetails: TraderDetailsModel,
                             trackingId: String)
                            (implicit request: Request[AnyContent]): Future[Result] = {
-
-    (request.cookies.getModel[TraderDetailsModel], request.cookies.getModel[VehicleLookupFormModel]) match {
-      case (Some(traderDetails), Some(vehicleLookup)) =>
-        callMicroService(vehicleLookup,
-          completeAndConfirmFormModel,
-          newKeeperDetailsViewModel,
-          traderDetails,
-          trackingId)
-      case _ =>
-        Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
-        Future(Redirect(routes.SetUpTradeDetails.present()))
-    }
-  }
-
-  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
-    response match {
-      case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
-      case _ => handleHttpStatusCode(httpResponseCode)
-    }
-
-  def callMicroService(vehicleLookup: VehicleLookupFormModel,
-                       completeAndConfirmForm: CompleteAndConfirmFormModel,
-                       newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                       traderDetails: TraderDetailsModel,
-                       trackingId: String)(implicit request: Request[AnyContent]): Future[Result] = {
-
     val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
-                                                  newKeeperDetailsViewModel, traderDetails)
+      newKeeperDetailsView, traderDetails)
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) => {
         Some(Redirect(nextPage(httpResponseCode, response))).
@@ -144,6 +138,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         Redirect(routes.MicroServiceError.present())
     }
   }
+
+  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
+    response match {
+      case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
+      case _ => handleHttpStatusCode(httpResponseCode)
+    }
 
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
                                completeAndConfirmFormModel: CompleteAndConfirmFormModel,

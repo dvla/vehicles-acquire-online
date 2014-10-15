@@ -19,4 +19,6 @@ class Config {
   val startUrl: String = getProperty("start.page", default = "NOT FOUND")
 
   val acquire = new AcquireConfig()
+
+  val isMicroserviceIntegrationEnabled: Boolean = getProperty("microservice.integration.enabled", default = false)
 }

@@ -12,10 +12,6 @@ final class AcquireWebServiceImpl @Inject()(config: AcquireConfig)  extends Acqu
   private val requestTimeout: Int = config.requestTimeout
 
   override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = {
-
-
-    println(">>>>>>>>>>>>>> " + Json.toJson(request))
-
     WS.url(endPoint)
       .withHeaders(HttpHeaders.TrackingId -> trackingId)
       .withRequestTimeout(requestTimeout)
