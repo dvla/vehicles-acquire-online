@@ -211,7 +211,7 @@ object CookieFactoryForUISpecs {
       address = address,
       email = email,
       isBusinessKeeper = isBusinessKeeper,
-      displayName = businessName.getOrElse(title + " " + firstName + " " + lastName)
+      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
     )
     addCookie(key, value)
     this

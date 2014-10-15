@@ -4,7 +4,8 @@ import controllers.acquire.Common.PrototypeHtml
 import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.acquire.CookieFactoryForUnitSpecs.KeeperEmail
+import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import org.mockito.Mockito.when
 import pages.acquire.AcquireSuccessPage
@@ -16,6 +17,7 @@ import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import utils.helpers.Config
+import org.joda.time.{LocalDate, LocalTime}
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
@@ -67,24 +69,35 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-//    "play back business keeper details as expected" in new WithApplication() {
-//      val fleetNumber = "12345-"
-//      val request = FakeRequest().
-//        withCookies(CookieFactoryForUnitSpecs.newPrivateKeeperDetailsModel(isBusinessKeeper = true, fleetNumber = Some(fleetNumber))).
-//        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
-//      val content = contentAsString(completeAndConfirm.present(request))
-//      content should include("<dt>Fleet number</dt>")
-//      content should include(s"<dd>$fleetNumber</dd>")
-//      content should include(s"<dd>$KeeperEmail</dd>")
-//    }
+    "play back business keeper details as expected" in new WithApplication() {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+          businessName = Some(BusinessNameValid),
+          fleetNumber = Some(FleetNumberValid),
+          email = Some(EmailValid),
+          isBusinessKeeper = true
+      )).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val content = contentAsString(completeAndConfirm.present(request))
+      content should include("<dt>Fleet number</dt>")
+      content should include(s"$BusinessNameValid")
+      content should include(s"$FleetNumberValid")
+      content should include(s"$EmailValid")
+    }
 
     "play back private keeper details as expected" in new WithApplication() {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(isBusinessKeeper = false)).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+          firstName = Some(FirstNameValid),
+          lastName = Some(LastNameValid),
+          email = Some(EmailValid),
+          isBusinessKeeper = false
+      )).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
       val content = contentAsString(completeAndConfirm.present(request))
-      content should not include "<dt>Fleet number</dt>"
-      content should include(s"<dd>$KeeperEmail</dd>")
+      content should include(s"$FirstNameValid")
+      content should include(s"$LastNameValid")
+      content should include(s"$EmailValid")
     }
   }
 
