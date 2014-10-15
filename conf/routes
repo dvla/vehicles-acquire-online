@@ -59,7 +59,6 @@ POST    /vehicle-tax-or-sorn                @controllers.VehicleTaxOrSorn.submit
 
 # Complete and confirm
 GET     /complete-and-confirm               @controllers.CompleteAndConfirm.present
-GET     /complete-and-confirm/back          @controllers.CompleteAndConfirm.back
 POST    /complete-and-confirm               @controllers.CompleteAndConfirm.submit
 
 # Business keeper details

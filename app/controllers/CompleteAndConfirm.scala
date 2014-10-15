@@ -1,11 +1,6 @@
 package controllers
 
 import com.google.inject.Inject
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.services.DateService
-import common.views.helpers.FormExtensions.formBinding
 import models.{CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel}
 import models.VehicleLookupFormModel
 import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
@@ -13,10 +8,15 @@ import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import play.api.Logger
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.services.DateService
+import common.views.helpers.FormExtensions.formBinding
+import common.mappings.TitleType
+import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 import webserviceclients.acquire.{TitleTypeDto, TraderDetailsDto, AcquireRequestDto, AcquireResponseDto, KeeperDetailsDto, AcquireService}
@@ -29,9 +29,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   private[controllers] val form = Form(
     CompleteAndConfirmFormModel.Form.Mapping
   )
-
-  private final val NoNewKeeperCookieMessage = "Did not find a new keeper details cookie in cache. " +
-    "Now redirecting to Vehicle Lookup."
 
   private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details in cache. " +
     "Now redirecting to vehicle lookup"
@@ -64,8 +61,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       validForm => {
         val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
         val vehicleDetailsOpt = request.cookies.getModel[VehicleLookupFormModel]
-        val traderDetails = request.cookies.getModel[TraderDetailsModel]
-        (newKeeperDetailsOpt, vehicleDetailsOpt, traderDetails) match {
+        val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
+        (newKeeperDetailsOpt, vehicleDetailsOpt, traderDetailsOpt) match {
           case (Some(newKeeperDetails), Some(vehicleDetails), Some(traderDetails)) =>
             if (config.isMicroserviceIntegrationEnabled){
             acquireAction (validForm,
@@ -97,15 +94,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     Redirect(routes.VehicleLookup.present())
   }
 
-    def back = Action { implicit request =>
-    request.cookies.getModel[NewKeeperDetailsViewModel] match {
-      case Some(keeperDetails) =>
-        if (keeperDetails.address.uprn.isDefined) Redirect(routes.NewKeeperChooseYourAddress.present())
-        else Redirect(routes.NewKeeperEnterAddressManually.present())
-      case None => Redirect(routes.VehicleLookup.present())
-    }
-  }
-
   private def formWithReplacedErrors(form: Form[CompleteAndConfirmFormModel]) = {
     form.replaceError(
       ConsentId,
@@ -127,11 +115,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
       newKeeperDetailsView, traderDetails)
     webService.invoke(disposeRequest, trackingId).map {
-      case (httpResponseCode, response) => {
+      case (httpResponseCode, response) =>
         Some(Redirect(nextPage(httpResponseCode, response))).
           map(_.withCookie(completeAndConfirmForm)).
           get
-      }
     }.recover {
       case e: Throwable =>
         Logger.warn(s"Dispose micro-service call failed.", e)

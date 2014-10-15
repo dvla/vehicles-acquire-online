@@ -12,7 +12,6 @@ import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
-import models.CompleteAndConfirmFormModel.Form.TodaysDateId
 import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 
@@ -164,7 +163,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
       go to CompleteAndConfirmPage
       click on back
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      page.title should equal(VehicleTaxOrSornPage.title)
     }
   }
 
