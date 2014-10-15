@@ -76,7 +76,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
             else {
               Future.successful {
                 Logger.error("Microservice integration is disabled")
-                Redirect(routes.AcquireSuccess.present())
+                Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
               }
             }
           case (_, _, None) => Future.successful {
