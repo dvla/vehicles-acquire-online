@@ -48,6 +48,7 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseFirstAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseSecondAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.VrmThrows
+import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 
 final class VehicleLookupUnitSpec extends UnitSpec {
 
@@ -85,6 +86,15 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       content should include(Line3Valid)
       content should include(PostTownValid)
       content should include(webserviceclients.fakes.FakeAddressLookupService.PostcodeValid)
+    }
+
+    "display trader email captured in previous pages" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val result = vehicleLookupResponseGenerator().present(request)
+      val content = contentAsString(result)
+
+      content should include(EmailValid)
     }
 
     "display empty fields when cookie does not exist" in new WithApplication {

@@ -119,14 +119,16 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                          line2: String = Line2Valid,
                          line3: String = Line3Valid,
                          postTown: String = PostTownValid,
-                         traderPostcode: String = PostcodeValid): Cookie = {
+                         traderPostcode: String = PostcodeValid,
+                         traderEmail: String = EmailValid): Cookie = {
     val key = TraderDetailsCacheKey
     val value = TraderDetailsModel(
       traderName = TraderBusinessNameValid,
       traderAddress = AddressModel(
         uprn = uprn,
         address = Seq(buildingNameOrNumber, line2, line3, postTown, traderPostcode)
-      )
+      ),
+      traderEmail = Some(traderEmail)
     )
     createCookie(key, value)
   }

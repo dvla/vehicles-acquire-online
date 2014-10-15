@@ -49,7 +49,8 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
           VehicleLookupViewModel(
             form.fill(),
             traderDetails.traderName,
-            traderDetails.traderAddress.address
+            traderDetails.traderAddress.address,
+            traderDetails.traderEmail
           )))
       case None =>
         Redirect(routes.SetUpTradeDetails.present())
@@ -81,7 +82,8 @@ final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionS
                 VehicleLookupViewModel(
                   formWithReplacedErrors,
                   traderDetails.traderName,
-                  traderDetails.traderAddress.address
+                  traderDetails.traderAddress.address,
+                  traderDetails.traderEmail
               )))
             case None => Redirect(routes.SetUpTradeDetails.present())
           }

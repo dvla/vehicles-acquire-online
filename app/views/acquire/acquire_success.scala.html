@@ -31,7 +31,7 @@
             <dt>@Messages("acquire_success.trader_details.trader_postcode")</dt>
             <dd>@viewModel.traderDetails.traderAddress.address.last</dd>
             <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
-            <dd>@viewModel.traderDetails.traderEmail.getOrElse("Not entered")</dd>
+            <dd>@viewModel.traderDetails.traderEmail.getOrElse(Messages("acquire_email_not_entered"))</dd>
             <dt>@Messages("acquire_success.date_of_sale.label")</dt>
             <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
 
@@ -71,7 +71,7 @@
             <li><b>@Messages("acquire_success.vehicle_details.postcode")</b></li>
             <li>@viewModel.newKeeperDetails.address.address.last</li>
             <li><b>@Messages("acquire_success.vehicle_details.email")</b></li>
-            <li>@viewModel.newKeeperDetails.email.getOrElse("Not entered")</li>
+            <li>@viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))</li>
         </ul>
 
         <h2>@Messages("acquire_success.further_information.header")</h2>
