@@ -11,7 +11,11 @@ final class AcquireWebServiceImpl @Inject()(config: AcquireConfig)  extends Acqu
   private val endPoint: String = s"${config.baseUrl}/vehicles/acquire/v1"
   private val requestTimeout: Int = config.requestTimeout
 
-  override def callDisposeService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = {
+  override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = {
+
+
+    println(">>>>>>>>>>>>>> " + Json.toJson(request))
+
     WS.url(endPoint)
       .withHeaders(HttpHeaders.TrackingId -> trackingId)
       .withRequestTimeout(requestTimeout)

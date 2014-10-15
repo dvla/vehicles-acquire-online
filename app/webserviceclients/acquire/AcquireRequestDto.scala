@@ -1,15 +1,14 @@
 package webserviceclients.acquire
 
-import org.joda.time.DateTime
 import play.api.libs.json.Json
 
-case class TitleType(titleType: Option[Int], other: Option[String])
+case class TitleTypeDto(titleType: Option[Int], other: Option[String])
 
-object TitleType{
-  implicit val JsonFormat = Json.writes[TitleType]
+object TitleTypeDto{
+  implicit val JsonFormat = Json.writes[TitleTypeDto]
 }
 
-final case class KeeperDetails(keeperTitle: TitleType,
+final case class KeeperDetailsDto(keeperTitle: TitleTypeDto,
                                KeeperBusinessName: Option[String],
                                keeperForename: Option[String],
                                keeperSurname: Option[String],
@@ -20,23 +19,23 @@ final case class KeeperDetails(keeperTitle: TitleType,
                                keeperEmailAddress: Option[String],
                                keeperDriverNumber: Option[String])
 
-object KeeperDetails{
-  implicit val JsonFormat = Json.writes[KeeperDetails]
+object KeeperDetailsDto{
+  implicit val JsonFormat = Json.writes[KeeperDetailsDto]
 }
 
-final case class TraderDetails(traderOrganisationName: String,
+final case class TraderDetailsDto(traderOrganisationName: String,
                                traderAddressLines: Seq[String],
                                traderPostTown: String,
                                traderPostCode: String,
                                traderEmailAddress: Option[String])
 
-object TraderDetails{
-  implicit val JsonFormat = Json.writes[TraderDetails]
+object TraderDetailsDto{
+  implicit val JsonFormat = Json.writes[TraderDetailsDto]
 }
 final case class AcquireRequestDto(referenceNumber: String,
                                    registrationNumber: String,
-                                   keeperDetails: KeeperDetails,
-                                   traderDetails: TraderDetails,
+                                   keeperDetails: KeeperDetailsDto,
+                                   traderDetails: TraderDetailsDto,
                                    fleetNumber: Option[String] = None,
                                    dateOfTransfer: String,
                                    mileage: Option[Int],

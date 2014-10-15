@@ -172,6 +172,9 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
+
+
+
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)

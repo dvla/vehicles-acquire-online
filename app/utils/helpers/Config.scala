@@ -1,6 +1,7 @@
 package utils.helpers
 
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
+import webserviceclients.acquire.AcquireConfig
 
 class Config {
 
@@ -16,4 +17,6 @@ class Config {
   val isHtml5ValidationEnabled: Boolean = getProperty("html5Validation.enabled", default = false)
 
   val startUrl: String = getProperty("start.page", default = "NOT FOUND")
+
+  val acquire = new AcquireConfig()
 }
