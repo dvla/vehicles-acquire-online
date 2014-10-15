@@ -330,7 +330,7 @@ acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
 acquire_completeandconfirm.newkeeperDetails = New keeper details
-acquire_completeandconfirm.name = Name
+acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address
 acquire_completeandconfirm.email = Email
 acquire_completeandconfirm.emailNotEntered = Not entered
@@ -367,6 +367,16 @@ acquire_success.trader_details.trader_postcode = Postcode
 acquire_success.trader_details.trader_email = Email
 acquire_success.date_of_sale.label = Date of sale
 acquire_success.vehicle_details.header = Vehicle sale details
+acquire_success.vehicle_details.registration_number = Registration number
+acquire_success.vehicle_details.make = Make
+acquire_success.vehicle_details.model = Model
+acquire_success.vehicle_details.mileage = Mileage
+acquire_success.vehicle_details.mileage_not_entered = Not entered
+acquire_success.vehicle_details.name = Name
+acquire_success.vehicle_details.address = Address
+acquire_success.vehicle_details.postcode = Postcode
+acquire_success.vehicle_details.email = Contact email address
+
 acquire_success.vehicle_details.p1 = Details of the vehicle being purchased
 acquire_success.new_keeper_details.p1 = Details of the new keeper DVLA has put on record for this vehicle
 acquire_success.further_information.header = What happens next?

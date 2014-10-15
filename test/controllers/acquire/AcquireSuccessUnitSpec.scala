@@ -5,7 +5,8 @@ import controllers.AcquireSuccess
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
-import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel, VehicleLookupFormModel, CompleteAndConfirmFormModel}
+import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
+import models.{VehicleLookupFormModel, CompleteAndConfirmFormModel}
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, BeforeYouStartPage}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
@@ -16,9 +17,9 @@ import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderD
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, ModelValid}
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid, ModelValid}
+import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
-import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
@@ -101,19 +102,48 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "present a full page with cached details when all cookies are present for new keeper success" in new WithApplication {
+    "present a full page with private keeper cached details when all cookies are present for new keeper success" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+          firstName = Some(FirstNameValid),
+          lastName = Some(LastNameValid),
+          email = Some(EmailValid)
+        )).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
 
       val content = contentAsString(acquireSuccess.present(request))
       content should include(RegistrationNumberValid)
       content should include(VehicleMakeValid)
       content should include(ModelValid)
-      content should include(TraderBusinessNameValid)
       content should include(FirstNameValid)
+      content should include(LastNameValid)
+      content should include(EmailValid)
+      content should include(YearDateOfSaleValid)
+      content should include(MonthDateOfSaleValid)
+      content should include(DayDateOfSaleValid)
+    }
+
+    "present a full page with business keeper cached details when all cookies are present for new keeper success" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+        businessName = Some(BusinessNameValid),
+        fleetNumber = Some(FleetNumberValid),
+        email = Some(EmailValid)
+
+      )).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+
+      val content = contentAsString(acquireSuccess.present(request))
+      content should include(RegistrationNumberValid)
+      content should include(VehicleMakeValid)
+      content should include(ModelValid)
+      content should include(BusinessNameValid)
+      content should include(FleetNumberValid)
+      content should include(EmailValid)
       content should include(YearDateOfSaleValid)
       content should include(MonthDateOfSaleValid)
       content should include(DayDateOfSaleValid)

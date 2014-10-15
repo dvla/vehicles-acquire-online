@@ -24,6 +24,8 @@ import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperDetailsViewModel
+import models.NewKeeperEnterAddressManuallyFormModel
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
@@ -95,6 +97,22 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     )
     createCookie(key, value)
   }
+
+  def newKeeperEnterAddressManually(): Cookie = {
+    val key = NewKeeperEnterAddressManuallyCacheKey
+    val value = NewKeeperEnterAddressManuallyFormModel(
+      addressAndPostcodeModel = AddressAndPostcodeViewModel(
+        addressLinesModel = AddressLinesViewModel(
+          buildingNameOrNumber = BuildingNameOrNumberValid,
+          line2 = Some(Line2Valid),
+          line3 = Some(Line3Valid),
+          postTown = PostTownValid
+        )
+      )
+    )
+    createCookie(key, value)
+  }
+
 
   def traderDetailsModel(uprn: Option[Long] = None,
                          buildingNameOrNumber: String = BuildingNameOrNumberValid,
@@ -213,28 +231,34 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def newKeeperDetailsModel(uprn: Option[Long] = None,
-                                   buildingNameOrNumber: String = BuildingNameOrNumberValid,
-                                   line2: String = Line2Valid,
-                                   line3: String = Line3Valid,
-                                   postTown: String = PostTownValid,
-                                  postcode: String = PostcodeValid,
-                                  email: Option[String] = Some(KeeperEmail),
-                                  fleetNumber: Option[String] = None,
-                                  isBusinessKeeper: Boolean = false): Cookie = {
+  def newKeeperDetailsModel(title: Option[TitleType] = None,
+                            firstName: Option[String] = None,
+                            lastName: Option[String] = None,
+                            dateOfBirth: Option[LocalDate] = None,
+                            driverNumber: Option[String] = None,
+                            businessName: Option[String] = None,
+                            fleetNumber: Option[String] = None,
+                            email: Option[String] = None,
+                            isBusinessKeeper: Boolean = false,
+                            uprn: Option[Long] = None,
+                            buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                            line2: String = Line2Valid,
+                            line3: String = Line3Valid,
+                            postTown: String = PostTownValid,
+                            postcode: String = PostcodeValid): Cookie = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
-      title = Some(TitleType(1,"")),
-      firstName = Some(FirstNameValid),
-      lastName = Some(LastNameValid),
-      dateOfBirth = None,
-      driverNumber = None,
-      businessName = None,
+      title = title,
+      firstName = firstName,
+      lastName = lastName,
+      dateOfBirth = dateOfBirth,
+      driverNumber = driverNumber,
+      businessName = businessName,
       fleetNumber = fleetNumber,
       address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
       email = email,
       isBusinessKeeper = isBusinessKeeper,
-      displayName = FirstNameValid + " " + LastNameValid
+      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
     )
     createCookie(key, value)
   }

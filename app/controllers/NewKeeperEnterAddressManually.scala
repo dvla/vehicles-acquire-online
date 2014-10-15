@@ -16,6 +16,7 @@ import common.model.VehicleDetailsModel
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 
 final class NewKeeperEnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -150,7 +151,7 @@ final class NewKeeperEnterAddressManually @Inject()()
           businessName = None,
           fleetNumber = None,
           isBusinessKeeper = false,
-          displayName = Some(privateKeeperDetails.title) + " " +  Some(privateKeeperDetails.firstName) + " " + Some(privateKeeperDetails.lastName)
+          displayName = getTitle(privateKeeperDetails.title) + " " +  privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName
         ))
       }
       case (_, Some(businessKeeperDetails))  => {
@@ -169,6 +170,15 @@ final class NewKeeperEnterAddressManually @Inject()()
         ))
       }
       case _ => None
+    }
+  }
+
+  private def getTitle(title: TitleType ): String = {
+    title.titleType match {
+      case 1 => "Mr"
+      case 2 => "Mrs"
+      case 3 => "Miss"
+      case _ => title.other
     }
   }
 

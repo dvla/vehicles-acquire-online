@@ -14,6 +14,7 @@ import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
 import models.CompleteAndConfirmFormModel.Form.TodaysDateId
 import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -156,7 +157,10 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         dealerDetails(addressWithUprn).
         vehicleDetails().
         privateKeeperDetails().
-        newPrivateKeeperDetails(addressWithUprn)
+        newKeeperDetails(
+          title = Some(TitleType(1,"")),
+          address = addressWithUprn
+        )
 
       go to CompleteAndConfirmPage
       click on back
@@ -169,6 +173,6 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       setupTradeDetails()
       .dealerDetails()
       .vehicleDetails()
-      .newPrivateKeeperDetails()
+      .newKeeperDetails()
 
 }
