@@ -21,7 +21,7 @@ import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import uk.gov.dvla.vehicles.presentation.common.model.{AddressModel, VehicleDetailsModel}
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
@@ -61,7 +61,8 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     onPrivate = { privateKeeperDetails =>
       val session = clientSideSessionFactory.getSession(request.cookies)
       fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
-        openView(getTitle(privateKeeperDetails.title) + " " + privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+        openView(
+          s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
           privateKeeperDetails.postcode,
           privateKeeperDetails.email,
           addresses
@@ -130,7 +131,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
             handleInvalidForm(
               invalidForm,
-              getTitle(privateKeeperDetails.title) + " " + privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName,
+              s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
               privateKeeperDetails.postcode,
               privateKeeperDetails.email,
               addresses
@@ -202,19 +203,55 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
-        val newKeeperDetailsModel = NewKeeperDetailsViewModel(
-          name = newKeeperName.toUpperCase,
-          address = addressViewModel,
-          email = email,
-          fleetNumber = fleetNumber,
-          isBusinessKeeper = isBusinessKeeper
-        )
-        Redirect(routes.CompleteAndConfirm.present())
-          .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
-          .withCookie(model)
-          .withCookie(newKeeperDetailsModel)
-
+          createNewKeeper(addressViewModel) match {
+          case Some(newKeeperDetails) => {
+            Redirect(routes.CompleteAndConfirm.present())
+              .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
+              .withCookie(model)
+              .withCookie(newKeeperDetails)
+          }
+          case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
+        }
       case None => Redirect(routes.UprnNotFound.present())
+    }
+  }
+
+  private def createNewKeeper(address: AddressModel)(implicit request: Request[_]): Option[NewKeeperDetailsViewModel] = {
+    val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
+    val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
+
+      (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
+      case (Some(privateKeeperDetails), _) => {
+        Some(NewKeeperDetailsViewModel(
+          title = Some(privateKeeperDetails.title),
+          firstName = Some(privateKeeperDetails.firstName),
+          lastName = Some(privateKeeperDetails.lastName),
+          dateOfBirth = privateKeeperDetails.dateOfBirth,
+          driverNumber = privateKeeperDetails.driverNumber,
+          email = privateKeeperDetails.email,
+          address = address,
+          businessName = None,
+          fleetNumber = None,
+          isBusinessKeeper = false,
+          displayName = Some(privateKeeperDetails.title) + " " +  Some(privateKeeperDetails.firstName) + " " + Some(privateKeeperDetails.lastName)
+        ))
+      }
+      case (_, Some(businessKeeperDetails))  => {
+        Some(NewKeeperDetailsViewModel(
+          title = None,
+          firstName = None,
+          lastName = None,
+          dateOfBirth = None,
+          driverNumber = None,
+          email = businessKeeperDetails.email,
+          address = address,
+          businessName = Some(businessKeeperDetails.businessName),
+          fleetNumber = businessKeeperDetails.fleetNumber,
+          isBusinessKeeper = true,
+          displayName = businessKeeperDetails.businessName
+        ))
+      }
+      case _ => None
     }
   }
 }

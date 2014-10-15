@@ -213,25 +213,28 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def newKeeperDetailsModel(uprn: Option[Long] = None,
-                            buildingNameOrNumber: String = BuildingNameOrNumberValid,
-                            line2: String = Line2Valid,
-                            line3: String = Line3Valid,
-                            postTown: String = PostTownValid,
-                            postcode: String = PostcodeValid,
-                            email: Option[String] = Some(KeeperEmail),
-                            fleetNumber: Option[String] = None,
-                            isBusinessKeeper: Boolean = false): Cookie = {
+  def newPrivateKeeperDetailsModel(uprn: Option[Long] = None,
+                                   buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                                   line2: String = Line2Valid,
+                                   line3: String = Line3Valid,
+                                   postTown: String = PostTownValid,
+                                  postcode: String = PostcodeValid,
+                                  email: Option[String] = Some(KeeperEmail),
+                                  fleetNumber: Option[String] = None,
+                                  isBusinessKeeper: Boolean = false): Cookie = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
-      name = FirstNameValid,
-      address = AddressModel(
-        uprn = uprn,
-        address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)
-      ),
+      title = Some(TitleType(1,"")),
+      firstName = Some(FirstNameValid),
+      lastName = Some(LastNameValid),
+      dateOfBirth = None,
+      driverNumber = None,
+      businessName = None,
+      fleetNumber = None,
+      address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
       email = email,
-      fleetNumber = fleetNumber,
-      isBusinessKeeper = isBusinessKeeper
+      isBusinessKeeper = isBusinessKeeper,
+      displayName = FirstNameValid + " " + LastNameValid
     )
     createCookie(key, value)
   }

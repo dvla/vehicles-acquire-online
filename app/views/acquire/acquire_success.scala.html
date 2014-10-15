@@ -60,7 +60,7 @@
         <p>@Messages("acquire_success.new_keeper_details.p1")</p>
         <ul style="list-style-type:none">
             <li><b>Name</b></li>
-            <li>@viewModel.newKeeperDetails.name</li>
+            <li>@viewModel.newKeeperDetails.displayName</li>
             <li><b>Address</b></li>
             <li>@for(kaddr <- viewModel.newKeeperDetails.address.address.dropRight(1)) {@kaddr<br/>}</li>
             <li><b>Postcode</b></li>
