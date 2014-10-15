@@ -330,6 +330,22 @@ acquire_newKeeperEnterAddressManually.vehicleMake = Make
 acquire_newKeeperEnterAddressManually.vehicleModel = Model
 acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 
+#vehicle tax or sorn
+acquire_vehicleTaxOrSorn_title = Vehicle tax or SORN
+acquire_vehicleTaxOrSorn.newkeeperDetails = New keeper details
+acquire_vehicleTaxOrSorn.displayName = Name
+acquire_vehicleTaxOrSorn.address = Address
+acquire_vehicleTaxOrSorn.email = Email
+acquire_vehicleTaxOrSorn.emailNotEntered = Not entered
+acquire_vehicleTaxOrSorn.fleetNumber = Fleet Number
+acquire_vehicleTaxOrSorn.fleetNumberNotEntered = Not entered
+acquire_vehicleTaxOrSorn.vehicleDetails = Vehicle details
+acquire_vehicleTaxOrSorn.vehicleReg = Registration
+acquire_vehicleTaxOrSorn.vehicleMake = Make
+acquire_vehicleTaxOrSorn.vehicleModel = Model
+acquire_vehicleTaxOrSorn.submitbutton = Next
+acquire_vehicleTaxOrSorn.backbutton = Back
+
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
 acquire_completeandconfirm.newkeeperDetails = New keeper details

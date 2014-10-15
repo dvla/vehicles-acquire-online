@@ -103,7 +103,7 @@ final class NewKeeperEnterAddressManually @Inject()()
 
           createNewKeeper(keeperAddress) match {
             case Some(keeperDetails) => {
-              Redirect(routes.CompleteAndConfirm.present()).
+              Redirect(routes.VehicleTaxOrSorn.present()).
                 withCookie(validForm).
                 withCookie(keeperDetails)
             }
@@ -120,7 +120,7 @@ final class NewKeeperEnterAddressManually @Inject()()
 
             createNewKeeper(keeperAddress) match {
             case Some(keeperDetails) => {
-              Redirect(routes.CompleteAndConfirm.present()).
+              Redirect(routes.VehicleTaxOrSorn.present()).
                 withCookie(validForm).
                 withCookie(keeperDetails)
             }

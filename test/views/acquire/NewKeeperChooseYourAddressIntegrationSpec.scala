@@ -14,6 +14,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.NewKeeperChooseYourAddressPage
 import pages.acquire.NewKeeperEnterAddressManuallyPage
 import pages.acquire.VehicleLookupPage
+import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.NewKeeperChooseYourAddressPage.{back, manualAddress, sadPath, happyPath}
 import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
@@ -226,9 +227,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       click on back
-
       page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
@@ -236,9 +235,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-
       click on back
-
       page.title should equal(BusinessKeeperDetailsPage.title)
     }
   }
@@ -247,27 +244,21 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
-
       happyPath
-
-        page.title should equal(CompleteAndConfirmPage.title)
-      }
+      page.title should equal(VehicleTaxOrSornPage.title)
+    }
 
     "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
-
       happyPath
-
-      page.title should equal(CompleteAndConfirmPage.title)
+      page.title should equal(VehicleTaxOrSornPage.title)
       }
 
     "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
-
       sadPath
-
       ErrorPanel.numberOfErrors should equal(1)
     }
 
@@ -275,9 +266,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
-
       sadPath
-
       ErrorPanel.numberOfErrors should equal(1)
     }
   }
