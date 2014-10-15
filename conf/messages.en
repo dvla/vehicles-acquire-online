@@ -330,7 +330,7 @@ acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
 acquire_completeandconfirm.newkeeperDetails = New keeper details
-acquire_completeandconfirm.name = Name
+acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address
 acquire_completeandconfirm.email = Email
 acquire_completeandconfirm.emailNotEntered = Not entered

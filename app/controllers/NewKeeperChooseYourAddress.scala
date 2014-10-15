@@ -233,7 +233,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           businessName = None,
           fleetNumber = None,
           isBusinessKeeper = false,
-          displayName = Some(privateKeeperDetails.title) + " " +  Some(privateKeeperDetails.firstName) + " " + Some(privateKeeperDetails.lastName)
+          displayName = getTitle(privateKeeperDetails.title) + " " +  privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName
         ))
       }
       case (_, Some(businessKeeperDetails))  => {
