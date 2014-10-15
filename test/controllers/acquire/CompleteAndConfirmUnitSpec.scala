@@ -17,7 +17,6 @@ import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import utils.helpers.Config
-import org.joda.time.{LocalDate, LocalTime}
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
@@ -118,7 +117,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some(AcquireSuccessPage.address)) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(AcquireSuccessPage.address))
       }
     }
 
@@ -128,7 +127,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal (Some(AcquireSuccessPage.address)) //ToDo - update when next section is implemented
+        r.header.headers.get(LOCATION) should equal (Some(AcquireSuccessPage.address))
       }
     }
 

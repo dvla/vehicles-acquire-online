@@ -5,7 +5,8 @@ import controllers.AcquireSuccess
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
-import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel, VehicleLookupFormModel, CompleteAndConfirmFormModel}
+import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
+import models.{VehicleLookupFormModel, CompleteAndConfirmFormModel}
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, BeforeYouStartPage}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
