@@ -11,13 +11,13 @@ final class FeedbackIntegrationSpec extends UiSpec with TestHarness {
     "contain feedback email facility with appropriate subject on before you start page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
 
-      page.source.contains(EmailFeedback) should equal(true)
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "contain feedback email facility with appropriate subject on setup trade details page" taggedAs UiTag in new WebBrowser {
       go to SetupTradeDetailsPage
 
-      page.source.contains(EmailFeedback) should equal(true)
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "contain feedback email facility with appropriate subject on vehicle lookup page" taggedAs UiTag in new ProgressBarTrue {
@@ -26,10 +26,10 @@ final class FeedbackIntegrationSpec extends UiSpec with TestHarness {
         dealerDetails()
       go to VehicleLookupPage
 
-      page.source.contains(EmailFeedback) should equal(true)
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
   }
 
-  private final val EmailFeedback = "<a id=\"feedback\" href=\"mailto:vm.feedback@digital.dvla.gov.uk?Subject=" +
-    "Buy%20from%20the%20Trade%20feedback\">"
+  private final val AcquireEmailFeedbackLink = "<a id=\"feedback\" href=\"mailto:vm.feedback@digital.dvla.gov.uk?" +
+    "Subject=Buy%20from%20the%20trade%20feedback\">"
 }
