@@ -422,3 +422,9 @@ acquire.help.p2.2 = send an email
 acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
 acquire.help.exit_button = Exit
 acquire.help.back_button = Back
+
+# closed
+acquire.closed.title = Service Closed
+acquire.closed.p1 = The supporting systems for this service are currently unavailable.
+acquire.closed.p2 = The normal hours of operation are Monday to Saturday - 08:00 to 18:00. Please complete your transaction during these hours.
+acquire.closed.exit_button = Exit
