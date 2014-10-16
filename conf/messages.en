@@ -109,7 +109,7 @@ acquire_beforeyoustart.listitem2 = If you need to change any vehicle details on 
 acquire_beforeyoustart.listitem3.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
 acquire_beforeyoustart.listitem3.link = Apply to retain a vehicle registration number (V317)
 acquire_beforeyoustart.listitem3.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
+acquire_beforeyoustart.listitem4 = This vehicle must be taxed before it can be driven on the road.  If you wish to keep this vehicle off the road you can declare SORN. You can tax or SORN your vehicle as part of this service.
 acquire_beforeyoustart.button = Start now
 
 #page 2 - Setup trade details
