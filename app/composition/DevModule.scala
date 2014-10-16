@@ -27,6 +27,7 @@ import common.webserviceclients.vehiclelookup.VehicleLookupWebService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
+import uk.gov.dvla.vehicles.presentation.common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import webserviceclients.acquire.{AcquireWebService, AcquireService, AcquireServiceImpl, AcquireWebServiceImpl}
 
 /**
@@ -64,5 +65,6 @@ object DevModule extends ScalaModule {
     bind[BruteForcePreventionService].to[BruteForcePreventionServiceImpl].asEagerSingleton()
 
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
+    bind[DateTimeZoneService].toInstance(new DateTimeZoneServiceImpl)
   }
 }
