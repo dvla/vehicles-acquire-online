@@ -1,8 +1,9 @@
 package pages.acquire
 
-import helpers.webbrowser._
+import helpers.webbrowser.{Checkbox, Element, Page, WebBrowserDSL, WebDriverFactory}
+import models.VehicleTaxOrSornFormModel.Form.SornVehicleId
 import org.openqa.selenium.WebDriver
-import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
+import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
 
 object VehicleTaxOrSornPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("vehicle-tax-or-sorn")
@@ -13,9 +14,11 @@ object VehicleTaxOrSornPage extends Page with WebBrowserDSL {
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
+  def sornVehicle(implicit driver: WebDriver): Checkbox = checkbox(id(SornVehicleId))
+
   def navigate()(implicit driver: WebDriver) = {
     go to VehicleTaxOrSornPage
+    click on sornVehicle
     click on next
   }
 }
-
