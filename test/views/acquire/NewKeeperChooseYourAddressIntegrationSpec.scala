@@ -19,6 +19,7 @@ import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "new keeper choose your address page" should {
@@ -27,6 +28,14 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
       page.title should equal(NewKeeperChooseYourAddressPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupPrivateKeeper
+      go to NewKeeperChooseYourAddressPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the page for a new business keeper" taggedAs UiTag in new WebBrowser {

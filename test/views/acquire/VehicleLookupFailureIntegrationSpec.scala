@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver
 import pages.acquire.VehicleLookupFailurePage.{beforeYouStart, vehicleLookup}
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage, VehicleLookupFailurePage}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -19,6 +20,14 @@ final class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness 
       cacheSetup()
       go to VehicleLookupFailurePage
       page.title should equal(VehicleLookupFailurePage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to VehicleLookupFailurePage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "not display any progress indicator when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {

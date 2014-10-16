@@ -13,6 +13,7 @@ import pages.acquire._
 import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "business choose your address page" should {
@@ -21,6 +22,14 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
       cacheSetup()
       go to BusinessChooseYourAddressPage
       page.title should equal(BusinessChooseYourAddressPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to BusinessChooseYourAddressPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {

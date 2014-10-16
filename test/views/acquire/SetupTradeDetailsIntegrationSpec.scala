@@ -8,6 +8,7 @@ import pages.common.{Accessibility, ErrorPanel}
 import pages.acquire.SetupTradeDetailsPage._
 import pages.acquire.SetupTradeDetailsPage
 import models.SetupTradeDetailsFormModel
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -15,6 +16,12 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
       go to SetupTradeDetailsPage
 
       page.title should equal(SetupTradeDetailsPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to SetupTradeDetailsPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
