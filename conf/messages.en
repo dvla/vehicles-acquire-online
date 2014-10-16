@@ -89,15 +89,6 @@ acquire_progress_5 = Step 5 of 7
 acquire_progress_6 = Step 6 of 7
 acquire_progress_7 = Step 7 of 7
 
-# help
-#disposal.help.title = Help
-#disposal.help.p1 = This service is in Private Beta phase
-#disposal.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
-#disposal.help.p2.2 = send an email
-#disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
-#disposal.help.exit_button = Exit
-#disposal.help.back_button = Back
-
 # 404 onHandlerNotFound
 onHandlerNotFound.title=This page cannot be found
 onHandlerNotFound.header=This page cannot be found
@@ -428,6 +419,6 @@ acquire.help.title = Help
 acquire.help.p1 = This service is in Private Beta phase
 acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
 acquire.help.p2.2 = send an email
-acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
+acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
 acquire.help.exit_button = Exit
 acquire.help.back_button = Back
