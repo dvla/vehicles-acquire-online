@@ -44,7 +44,8 @@ final class EnterAddressManually @Inject()()
           val traderAddress = AddressModel.from(validForm.addressAndPostcodeModel,setupTradeDetails.traderPostcode)
           val traderDetailsModel = TraderDetailsModel(
             traderName = setupTradeDetails.traderBusinessName,
-            traderAddress = traderAddress
+            traderAddress = traderAddress,
+            traderEmail = setupTradeDetails.traderEmail
           )
           Redirect(routes.VehicleLookup.present()).
             discardingCookie(BusinessChooseYourAddressCacheKey).
