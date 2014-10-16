@@ -5,7 +5,7 @@ import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
 
-final case class VehicleTaxOrSornFormModel(temp: Option[String])
+final case class VehicleTaxOrSornFormModel(sornVehicle: Option[String])
 
 object VehicleTaxOrSornFormModel {
   implicit val JsonFormat = Json.format[VehicleTaxOrSornFormModel]
@@ -13,10 +13,10 @@ object VehicleTaxOrSornFormModel {
   implicit val Key = CacheKey[VehicleTaxOrSornFormModel](VehicleTaxOrSornCacheKey)
 
   object Form {
-    final val TempId = "temp"
+    final val SornVehicleId = "sornVehicle"
 
     final val Mapping = mapping(
-      TempId -> optional(text)
+      SornVehicleId -> optional(text)
     )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply)
   }
 }

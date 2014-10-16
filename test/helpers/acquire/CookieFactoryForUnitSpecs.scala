@@ -24,6 +24,7 @@ import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperDetailsViewModel
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
@@ -31,7 +32,8 @@ import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
-import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import models.VehicleTaxOrSornFormModel
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import TraderDetailsModel.TraderDetailsCacheKey
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import play.api.mvc.Cookie
@@ -272,6 +274,12 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def microServiceError(origin: String = VehicleLookupPage.address): Cookie = {
     val key = MicroServiceErrorRefererCacheKey
     val value = origin
+    createCookie(key, value)
+  }
+
+  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None): Cookie = {
+    val key = VehicleTaxOrSornCacheKey
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
     createCookie(key, value)
   }
 }

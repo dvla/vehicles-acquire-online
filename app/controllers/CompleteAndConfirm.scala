@@ -3,6 +3,7 @@ package controllers
 import com.google.inject.Inject
 import models.{CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel}
 import models.VehicleLookupFormModel
+import models.VehicleTaxOrSornFormModel
 import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
@@ -30,15 +31,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     CompleteAndConfirmFormModel.Form.Mapping
   )
 
-  private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details in cache. " +
-    "Now redirecting to vehicle lookup"
+  private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details and or " +
+    "vehicle sorn details in cache. Now redirecting to vehicle lookup"
 
   def present = Action { implicit request =>
     val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
     val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-    (newKeeperDetailsOpt, vehicleDetailsOpt) match {
-      case (Some(newKeeperDetails), Some(vehicleDetails)) =>
-        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails), dateService))
+    val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+    (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+      case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
+        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails, vehicleSorn), dateService))
       case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
     }
   }
@@ -48,10 +50,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       invalidForm => Future.successful {
         val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
         val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-        (newKeeperDetailsOpt, vehicleDetailsOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleDetails)) =>
+        val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+        (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
             BadRequest(complete_and_confirm(
-              CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails), dateService)
+              CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
             )
           case _ =>
             Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")

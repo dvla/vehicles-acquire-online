@@ -23,7 +23,12 @@ import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import uk.gov.dvla.vehicles.presentation.common.views.models.DayMonthYear
 import scala.concurrent.Future
 import utils.helpers.Config
-import webserviceclients.acquire.{AcquireRequestDto, AcquireResponseDto, AcquireConfig, AcquireServiceImpl, AcquireService, AcquireWebService}
+import webserviceclients.acquire.AcquireRequestDto
+import webserviceclients.acquire.AcquireResponseDto
+import webserviceclients.acquire.AcquireConfig
+import webserviceclients.acquire.AcquireServiceImpl
+import webserviceclients.acquire.AcquireService
+import webserviceclients.acquire.AcquireWebService
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseSuccess, acquireResponseApplicationBeingProcessed}
 
@@ -51,12 +56,13 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "present a full form when new keeper and vehicle details cookies are present for new keeper" in new WithApplication {
+    "present a full form when new keeper, vehicle details and vehicle sorn cookies are present for new keeper" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should include( s"""value="$MileageValid"""")
       content should include( """value="true"""") // Checkbox value
@@ -86,7 +92,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         email = Some(EmailValid),
         isBusinessKeeper = true
       )).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should include("<dt>Fleet number</dt>")
       content should include(s"$BusinessNameValid")
@@ -102,7 +109,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         email = Some(EmailValid),
         isBusinessKeeper = false
       )).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(completeAndConfirm.present(request))
       content should include(s"$FirstNameValid")
       content should include(s"$LastNameValid")
@@ -116,7 +124,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
       val result = completeAndConfirm.submit(request)
       val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
@@ -158,7 +167,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent = "").
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
       val result = completeAndConfirm.submit(request)
       whenReady(result) { r =>
@@ -264,7 +274,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   private lazy val present = {
     val request = FakeRequest().
       withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
     completeAndConfirm.present(request)
   }
 }

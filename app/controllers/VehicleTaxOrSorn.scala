@@ -7,7 +7,7 @@ import play.api.data.Form
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichCookies, RichForm}
+import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
@@ -47,6 +47,17 @@ final class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: Clie
   }
 
   def submit = Action { implicit request =>
-    Redirect(routes.CompleteAndConfirm.present())
+    form.bindFromRequest.fold(
+      invalidForm => { // Note this code should never get executed as only an optional checkbox is posted
+        val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+        val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+        (newKeeperDetailsOpt, vehicleDetailsOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleDetails)) =>
+            BadRequest(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleDetails, newKeeperDetails)))
+          case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
+        }
+      },
+      validForm => Redirect(routes.CompleteAndConfirm.present()).withCookie(validForm)
+    )
   }
 }

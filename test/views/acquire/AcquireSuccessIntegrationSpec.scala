@@ -105,5 +105,6 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       .dealerDetails()
       .vehicleDetails()
       .newKeeperDetails()
+      .vehicleTaxOrSornFormModel()
       .completeAndConfirmDetails()
 }

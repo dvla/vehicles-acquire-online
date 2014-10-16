@@ -159,7 +159,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         newKeeperDetails(
           title = Some(TitleType(1,"")),
           address = addressWithUprn
-        )
+        ).vehicleTaxOrSornFormModel()
 
       go to CompleteAndConfirmPage
       click on back
@@ -174,5 +174,5 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       .vehicleDetails()
       .newKeeperDetails()
       .vehicleLookupFormModel()
-
+      .vehicleTaxOrSornFormModel()
 }

@@ -343,11 +343,20 @@ acquire_vehicleTaxOrSorn.vehicleDetails = Vehicle details
 acquire_vehicleTaxOrSorn.vehicleReg = Registration
 acquire_vehicleTaxOrSorn.vehicleMake = Make
 acquire_vehicleTaxOrSorn.vehicleModel = Model
+acquire_vehicleTaxOrSorn.p1 = A vehicle needs to be either taxed or you need to make a Statutory Off Road Notification (SORN) when a vehicle is purchased.
+acquire_vehicleTaxOrSorn.link = Tax the vehicle now
+acquire_vehicleTaxOrSorn.p2 = Or
+acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off Road Notification (SORN) now as part of this service?
+acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
 acquire_vehicleTaxOrSorn.submitbutton = Next
 acquire_vehicleTaxOrSorn.backbutton = Back
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
+acquire_completeandconfirm.taxOrSorn = SORN
+acquire_completeandconfirm.sorn = Make a SORN?
+acquire_completeandconfirm.sornEntered = Yes
+acquire_completeandconfirm.sornNotEntered = Not entered
 acquire_completeandconfirm.newkeeperDetails = New keeper details
 acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address

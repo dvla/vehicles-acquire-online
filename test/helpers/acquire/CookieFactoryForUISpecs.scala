@@ -15,6 +15,8 @@ import models.BusinessKeeperDetailsFormModel
 import models.NewKeeperDetailsViewModel
 import models.CompleteAndConfirmFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import models.VehicleTaxOrSornFormModel
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.LocalDate
 import org.openqa.selenium.Cookie
 import org.openqa.selenium.WebDriver
@@ -213,6 +215,14 @@ object CookieFactoryForUISpecs {
       isBusinessKeeper = isBusinessKeeper,
       displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
     )
+    addCookie(key, value)
+    this
+  }
+
+  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)
+                            (implicit webDriver: WebDriver) = {
+    val key = VehicleTaxOrSornCacheKey
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
     addCookie(key, value)
     this
   }
