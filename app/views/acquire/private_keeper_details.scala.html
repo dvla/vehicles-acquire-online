@@ -51,7 +51,10 @@
                 <p>@Messages("acquire_privatekeeperdetails.p3")</p>
 
                 <div class="uppercase-input">
-                    @titlePicker(field = privateKeeperDetailsForm(TitleId))
+                    @titlePicker(
+                       field = privateKeeperDetailsForm(TitleId),
+                       args = Map('autofocus -> true)
+                    )
                 </div>
                 <div class="uppercase-input">
                     @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =

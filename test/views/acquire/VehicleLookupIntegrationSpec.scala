@@ -17,10 +17,12 @@ import pages.acquire.VehicleLookupPage.{happyPath, back}
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.KeeperStillOnRecordPage
 import pages.acquire.BusinessKeeperDetailsPage
-import play.api.test.FakeApplication
 import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import pages.common.Feedback.AcquireEmailFeedbackLink
+import scala.Some
+import play.api.test.FakeApplication
 
 final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
@@ -32,6 +34,14 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       go to VehicleLookupPage
 
       page.title should equal(VehicleLookupPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to VehicleLookupPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {

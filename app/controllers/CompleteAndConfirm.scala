@@ -76,7 +76,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
             else {
               Future.successful {
                 Logger.error("Microservice integration is disabled")
-                Redirect(routes.AcquireSuccess.present())
+                Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
               }
             }
           case (_, _, None) => Future.successful {
@@ -159,7 +159,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       dateOfTransfer = dateTimeFormatter.print(completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay),
       mileage = completeAndConfirmFormModel.mileage,
       keeperConsent = consentToBoolean(completeAndConfirmFormModel.consent),
-      transactionTimestamp = dateTimeFormatter.print(dateService.now.toDateTime)
+      transactionTimestamp = dateTimeFormatter.print(dateService.now.toDateTime),
+      requiresSorn = false
     )
 
   }

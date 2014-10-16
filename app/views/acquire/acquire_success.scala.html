@@ -34,7 +34,6 @@
             <dd>@viewModel.traderDetails.traderEmail.getOrElse(Messages("acquire_email_not_entered"))</dd>
             <dt>@Messages("acquire_success.date_of_sale.label")</dt>
             <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
-
         </div>
     </div>
     <div class="second-col">
@@ -48,30 +47,30 @@
         <p>@Messages("acquire_success.vehicle_details.p1")</p>
 
         <ul style="list-style-type:none">
-            <li><b>@Messages("acquire_success.vehicle_details.registration_number")</b></li>
-            <li>@viewModel.vehicleDetails.registrationNumber</li>
-            <li><b>@Messages("acquire_success.vehicle_details.make")</b></li>
-            <li>@viewModel.vehicleDetails.vehicleMake</li>
-            <li><b>@Messages("acquire_success.vehicle_details.model")</b></li>
-            <li>@viewModel.vehicleDetails.vehicleModel</li>
-            <li><b>@Messages("acquire_success.vehicle_details.mileage")</b></li>
+            <li>@Messages("acquire_success.vehicle_details.registration_number")</li>
+            <li><b>@viewModel.vehicleDetails.registrationNumber</b></li>
+            <li>@Messages("acquire_success.vehicle_details.make")</li>
+            <li><b>@viewModel.vehicleDetails.vehicleMake</b></li>
+            <li>@Messages("acquire_success.vehicle_details.model")</li>
+            <li><b>@viewModel.vehicleDetails.vehicleModel</b></li>
+            <li>@Messages("acquire_success.vehicle_details.mileage")</li>
             @if(viewModel.completeAndConfirmDetails.mileage == None) {
-            <li>@Messages("acquire_success.vehicle_details.mileage_not_entered")</li>
+            <li><b>@Messages("acquire_success.vehicle_details.mileage_not_entered")</b></li>
             } else {
-            <li>@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</li>
+            <li><b>@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</b></li>
             }
         </ul>
 
         <p>@Messages("acquire_success.new_keeper_details.p1")</p>
         <ul style="list-style-type:none">
-            <li><b>@Messages("acquire_success.vehicle_details.name")</b></li>
-            <li>@viewModel.newKeeperDetails.displayName</li>
-            <li><b>@Messages("acquire_success.vehicle_details.address")</b></li>
-            <li>@for(kaddr <- viewModel.newKeeperDetails.address.address.dropRight(1)) {@kaddr<br/>}</li>
-            <li><b>@Messages("acquire_success.vehicle_details.postcode")</b></li>
-            <li>@viewModel.newKeeperDetails.address.address.last</li>
-            <li><b>@Messages("acquire_success.vehicle_details.email")</b></li>
-            <li>@viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))</li>
+            <li>@Messages("acquire_success.vehicle_details.name")</li>
+            <li><b>@viewModel.newKeeperDetails.displayName</b></li>
+            <li>@Messages("acquire_success.vehicle_details.address")</li>
+            <li><b>@for(kaddr <- viewModel.newKeeperDetails.address.address.dropRight(1)) {@kaddr<br/>}</b></li>
+            <li>@Messages("acquire_success.vehicle_details.postcode")</li>
+            <li><b>@viewModel.newKeeperDetails.address.address.last</b></li>
+            <li>@Messages("acquire_success.vehicle_details.email")</li>
+            <li><b>@viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))</b></li>
         </ul>
 
         <h2>@Messages("acquire_success.further_information.header")</h2>

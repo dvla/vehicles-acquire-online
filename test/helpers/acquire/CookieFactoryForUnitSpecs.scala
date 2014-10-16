@@ -3,7 +3,7 @@ package helpers.acquire
 import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import org.joda.time.LocalDate
-import pages.acquire.VehicleLookupPage
+import pages.acquire.{HelpPage, VehicleLookupPage}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
@@ -47,6 +47,7 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
+import models.HelpCacheKey
 
 object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
 
@@ -280,6 +281,12 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None): Cookie = {
     val key = VehicleTaxOrSornCacheKey
     val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
+    createCookie(key, value)
+  }
+
+  def help(origin: String = HelpPage.address): Cookie = {
+    val key = HelpCacheKey
+    val value = origin
     createCookie(key, value)
   }
 }

@@ -53,7 +53,8 @@ class AcquireWebServiceImplSpec extends UnitSpec with WireMockFixture {
     dateOfTransfer = new DateTime().toString,
     mileage = None,
     keeperConsent = true,
-    transactionTimestamp = new DateTime().toString)
+    transactionTimestamp = new DateTime().toString,
+    requiresSorn = false)
 
   "callAcquireService" should {
     "send the serialised json request" in new WithApplication {

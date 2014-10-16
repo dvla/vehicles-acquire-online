@@ -2,7 +2,7 @@
 main.banner = Buy a vehicle from the motor trade
 main.banner.help = Help
 main.banner.feedback = Feedback
-main.banner.feedback.link = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Sell%20to%20the%20Trade%20feedback
+main.banner.feedback.link = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Buy%20from%20the%20trade%20feedback
 
 global.cookiemessage = GOV.UK uses cookies to make the site simpler.
 global.cookiefindoutmore = Find out more about cookies
@@ -89,15 +89,6 @@ acquire_progress_5 = Step 5 of 7
 acquire_progress_6 = Step 6 of 7
 acquire_progress_7 = Step 7 of 7
 
-# help
-#disposal.help.title = Help
-#disposal.help.p1 = This service is in Private Beta phase
-#disposal.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
-#disposal.help.p2.2 = send an email
-#disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
-#disposal.help.exit_button = Exit
-#disposal.help.back_button = Back
-
 # 404 onHandlerNotFound
 onHandlerNotFound.title=This page cannot be found
 onHandlerNotFound.header=This page cannot be found
@@ -142,7 +133,7 @@ acquire_businessChooseYourAddress_title = Select trader address
 acquire_businessChooseYourAddress_legend = Set up trade details
 acquire_businessChooseYourAddress_businessName_label = Trader name
 acquire_businessChooseYourAddress_businessName = {0}
-acquire_businessChooseYourAddress_businessEmail_label = Trader email address
+acquire_businessChooseYourAddress_businessEmail_label = Email
 acquire_businessChooseYourAddress_businessEmail = {0}
 acquire_businessChooseYourAddress.emailNotEntered = Not entered
 acquire_businessChooseYourAddress_postcode_label = Postcode
@@ -447,3 +438,12 @@ error.title.unknownOption = Other - This is a required field
 error.title.missing = Other - This is a required field
 error.title.tooLong = Other - The text must contain characters in A to Z format only.
 error.title.illegalCharacters = Other - The text must contain characters in A to Z format only.
+
+# help
+acquire.help.title = Help
+acquire.help.p1 = This service is in Private Beta phase
+acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
+acquire.help.p2.2 = send an email
+acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
+acquire.help.exit_button = Exit
+acquire.help.back_button = Back

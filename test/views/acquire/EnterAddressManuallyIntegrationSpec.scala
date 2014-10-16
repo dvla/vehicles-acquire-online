@@ -10,6 +10,7 @@ import pages.common.ErrorPanel
 import pages.acquire.EnterAddressManuallyPage.{happyPath, happyPathMandatoryFieldsOnly, sadPath}
 import pages.acquire.{BeforeYouStartPage, EnterAddressManuallyPage, VehicleLookupPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class EnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -20,6 +21,14 @@ final class EnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness 
       go to EnterAddressManuallyPage
 
       page.title should equal(EnterAddressManuallyPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to EnterAddressManuallyPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
