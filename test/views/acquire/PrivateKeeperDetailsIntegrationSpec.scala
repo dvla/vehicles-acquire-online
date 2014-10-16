@@ -14,6 +14,7 @@ import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
 import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, LastNameInvalid, TitleInvalid}
 import pages.acquire.PrivateKeeperDetailsPage.{DriverNumberInvalid, PostcodeInvalid}
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -28,6 +29,14 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       PrivateKeeperDetailsPage.yearDateOfBirthTextBox.text should equal("")
       PrivateKeeperDetailsPage.monthDateOfBirthTextBox.text should equal("")
       PrivateKeeperDetailsPage.dayDateOfBirthTextBox.text should equal("")
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to PrivateKeeperDetailsPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
