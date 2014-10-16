@@ -85,4 +85,7 @@ POST    /vrm-locked/exit                    @controllers.VrmLocked.exit
 GET     /error/:exceptionDigest             @controllers.Error.present(exceptionDigest)
 POST    /error/:exceptionDigest             @controllers.Error.submit(exceptionDigest)
 
+GET     /help                               @controllers.Help.present
+GET     /help/back                          @controllers.Help.back
+
 GET     /healthcheck                        @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
