@@ -422,3 +422,12 @@ error.title.unknownOption = Other - This is a required field
 error.title.missing = Other - This is a required field
 error.title.tooLong = Other - The text must contain characters in A to Z format only.
 error.title.illegalCharacters = Other - The text must contain characters in A to Z format only.
+
+# help
+acquire.help.title = Help
+acquire.help.p1 = This service is in Private Beta phase
+acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
+acquire.help.p2.2 = send an email
+acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
+acquire.help.exit_button = Exit
+acquire.help.back_button = Back
