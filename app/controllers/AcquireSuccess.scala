@@ -37,10 +37,7 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
 
   def buyAnother = Action { implicit request =>
     val result = for {
-      newKeeperDetails <- request.cookies.getModel[NewKeeperDetailsViewModel]
-      traderDetails <- request.cookies.getModel[TraderDetailsModel]
-      vehicleDetails <- request.cookies.getModel[VehicleDetailsModel]
-      completeAndConfirmDetails <- request.cookies.getModel[CompleteAndConfirmFormModel]
+      acquireCompletionViewModel <- request.cookies.getModel[AcquireCompletionViewModel]
     } yield Redirect(routes.VehicleLookup.present())
       .discardingCookies(Set(
         NewKeeperDetailsCacheKey,

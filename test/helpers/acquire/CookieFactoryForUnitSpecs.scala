@@ -216,7 +216,21 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def acquireCompletionViewModel(): Cookie = {
+  def acquireCompletionViewModel(title: Option[TitleType] = None,
+                                 firstName: Option[String] = None,
+                                 lastName: Option[String] = None,
+                                 dateOfBirth: Option[LocalDate] = None,
+                                 driverNumber: Option[String] = None,
+                                 businessName: Option[String] = None,
+                                 fleetNumber: Option[String] = None,
+                                 email: Option[String] = None,
+                                 isBusinessKeeper: Boolean = false,
+                                 uprn: Option[Long] = None,
+                                 buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                                 line2: String = Line2Valid,
+                                 line3: String = Line3Valid,
+                                 postTown: String = PostTownValid,
+                                 postcode: String = PostcodeValid): Cookie = {
 
     val key = AcquireCompletionViewModel.AcquireCompletionCacheKey
 
@@ -231,9 +245,19 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       traderEmail = Some(EmailValid)
     )
 
-    val newKeeperDetailsView = NewKeeperDetailsViewModel(None, Some(FirstNameValid), Some(LastNameValid), None, None, None, None, Some(EmailValid),
-      AddressModel(None, Seq(BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid)),
-        false, FirstNameValid + " " + LastNameValid)
+    val newKeeperDetailsView = NewKeeperDetailsViewModel(
+      title = title,
+      firstName = firstName,
+      lastName = lastName,
+      dateOfBirth = dateOfBirth,
+      driverNumber = driverNumber,
+      businessName = businessName,
+      fleetNumber = fleetNumber,
+      address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
+      email = email,
+      isBusinessKeeper = isBusinessKeeper,
+      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
+    )
 
     val completeAndConfirmForm = CompleteAndConfirmFormModel(None, new LocalDate(
       YearDateOfSaleValid.toInt,
