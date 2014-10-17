@@ -37,8 +37,8 @@ object FakeVehicleLookupWebService {
   final val KeeperNameValid = "Keeper Name"
   final val KeeperUprnValid = 10123456789L
   final val ConsentValid = "true"
-  final val transactionIdValid = "A1-100"
-  final val transactionTimestampValid = new DateTime()
+  final val TransactionIdValid = "A1-100"
+  final val TransactionTimestampValid = new DateTime()
 
   private def vehicleDetails(disposeFlag: Boolean = true) = VehicleDetailsDto(registrationNumber = RegistrationNumberValid,
     vehicleMake = VehicleMakeValid,

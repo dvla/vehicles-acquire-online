@@ -12,6 +12,8 @@ import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import org.joda.time.format.DateTimeFormat
+import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, LastNameValid, FirstNameValid}
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{BeforeYouStartPage, VehicleLookupPage}
@@ -20,6 +22,7 @@ import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionIdValid, TransactionTimestampValid}
 
 final class AcquireFailureUnitSpec extends UnitSpec {
   "present" should {
@@ -46,6 +49,21 @@ final class AcquireFailureUnitSpec extends UnitSpec {
 
       val result = AcquireFailurePrototypeNotVisible.present(request)
       contentAsString(result) should not include PrototypeHtml
+    }
+
+    "present a full page when all cookies are present for failure" in new WithApplication {
+      val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
+
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
+        firstName = Some(FirstNameValid),
+        lastName = Some(LastNameValid),
+        email = Some(EmailValid)
+      ))
+
+      val content = contentAsString(acquireFailure.present(request))
+      content should include(fmt.print(TransactionTimestampValid))
+      content should include(TransactionIdValid)
     }
   }
 

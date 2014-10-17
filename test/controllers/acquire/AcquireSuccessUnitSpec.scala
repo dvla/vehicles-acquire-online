@@ -7,6 +7,7 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
 import models.{VehicleLookupFormModel, CompleteAndConfirmFormModel}
+import org.joda.time.format.DateTimeFormat
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, BeforeYouStartPage}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
@@ -16,7 +17,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{RegistrationNumberValid, TransactionTimestampValid, TransactionIdValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid, ModelValid}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
@@ -61,6 +62,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     }
 
     "present a full page with private keeper cached details when all cookies are present for new keeper success" in new WithApplication {
+      val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
+
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
           firstName = Some(FirstNameValid),
@@ -78,9 +81,13 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       content should include(YearDateOfSaleValid)
       content should include(MonthDateOfSaleValid)
       content should include(DayDateOfSaleValid)
+      content should include(fmt.print(TransactionTimestampValid))
+      content should include(TransactionIdValid)
     }
 
     "present a full page with business keeper cached details when all cookies are present for new keeper success" in new WithApplication {
+      val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
+
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
           businessName = Some(BusinessNameValid),
@@ -98,6 +105,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       content should include(YearDateOfSaleValid)
       content should include(MonthDateOfSaleValid)
       content should include(DayDateOfSaleValid)
+      content should include(fmt.print(TransactionTimestampValid))
+      content should include(TransactionIdValid)
     }
 }
 

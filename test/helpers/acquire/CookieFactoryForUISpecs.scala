@@ -36,7 +36,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import webserviceclients.fakes.FakeVehicleLookupWebService.{transactionIdValid, transactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionIdValid, TransactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -236,8 +236,8 @@ object CookieFactoryForUISpecs {
       traderDetails,
       newKeeperDetailsView,
       completeAndConfirmForm,
-      transactionIdValid,
-      transactionTimestampValid
+      TransactionIdValid,
+      TransactionTimestampValid
     )
     addCookie(key, value)
     this

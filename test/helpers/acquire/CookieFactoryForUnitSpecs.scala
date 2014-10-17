@@ -45,7 +45,7 @@ import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSale
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.{transactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid, transactionIdValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid, TransactionIdValid}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import models.HelpCacheKey
 
@@ -269,8 +269,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
         traderDetails,
         newKeeperDetailsView,
         completeAndConfirmForm,
-        transactionIdValid,
-        transactionTimestampValid
+        TransactionIdValid,
+        TransactionTimestampValid
     )
     createCookie(key, value)
   }
