@@ -17,9 +17,9 @@ import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderD
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid, ModelValid}
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
-import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{VehicleMakeValid, VehicleModelValid}
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
@@ -71,7 +71,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val content = contentAsString(acquireSuccess.present(request))
       content should include(RegistrationNumberValid)
       content should include(VehicleMakeValid)
-      content should include(ModelValid)
+      content should include(VehicleModelValid)
       content should include(FirstNameValid)
       content should include(LastNameValid)
       content should include(EmailValid)
@@ -91,7 +91,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val content = contentAsString(acquireSuccess.present(request))
       content should include(RegistrationNumberValid)
       content should include(VehicleMakeValid)
-      content should include(ModelValid)
+      content should include(VehicleModelValid)
       content should include(BusinessNameValid)
       content should include(FleetNumberValid)
       content should include(EmailValid)
