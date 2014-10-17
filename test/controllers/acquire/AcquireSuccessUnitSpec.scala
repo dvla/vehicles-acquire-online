@@ -29,7 +29,6 @@ import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
-import scala.Some
 
 class AcquireSuccessUnitSpec extends UnitSpec {
 

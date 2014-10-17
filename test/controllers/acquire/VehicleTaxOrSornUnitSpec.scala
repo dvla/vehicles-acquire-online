@@ -3,7 +3,7 @@ package controllers.acquire
 import controllers.VehicleTaxOrSorn
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.acquire.VehicleLookupPage
+import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
 import play.api.test.{FakeRequest, WithApplication}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
@@ -34,7 +34,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
-      content should not include("checked") // Sorn checkbox value
+      content should not include "checked" // Sorn checkbox value
     }
 
     "redirect to vehicle lookup when no new keeper details cookie is in cache" in new WithApplication {
@@ -95,6 +95,30 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       content should include(s"<dd>$RegistrationNumberValid</dd>")
       content should include(s"<dd>$VehicleMakeValid</dd>")
       content should include(s"<dd>$VehicleModelValid</dd>")
+    }
+  }
+
+  "submit" should {
+    "redirect to next page without sorning the vehicle" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+      val result = vehicleTaxOrSorn.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
+      }
+    }
+
+    "redirect to next page with sorning the vehicle" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel(sornVehicle = Some("true")))
+      val result = vehicleTaxOrSorn.submit(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
+      }
     }
   }
 
