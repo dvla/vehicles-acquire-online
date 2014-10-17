@@ -90,7 +90,6 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       click on back
       page.title should equal(NewKeeperEnterAddressManuallyPage.title)
     }
-
   }
 
   private def cacheSetup()(implicit webDriver: WebDriver) =

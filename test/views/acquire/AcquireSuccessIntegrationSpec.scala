@@ -7,7 +7,7 @@ import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
-import pages.acquire._
+import pages.acquire.{AcquireSuccessPage, BeforeYouStartPage, VehicleLookupPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import pages.common.Feedback.AcquireEmailFeedbackLink
 
@@ -21,14 +21,26 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(AcquireSuccessPage.title)
     }
 
+    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to AcquireSuccessPage
+      page.source.contains(progressStep(9)) should equal(true)
+    }
+
+    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to AcquireSuccessPage
+      page.source.contains(progressStep(9)) should equal(false)
+    }
+
     "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-
       page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
-
 
     "redirect when the cache is missing acquire complete details" taggedAs UiTag in new WebBrowser {
       go to AcquireSuccessPage
@@ -46,14 +58,12 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
     }
   }
 
-  "Pressing buy another vehicle" should {
-    "Should go to VehicleLookupPage on buy another" taggedAs UiTag in new WebBrowser {
+  "Clicking buy another vehicle button" should {
+    "go to VehicleLookupPage" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-
       click on AcquireSuccessPage.buyAnother
-
       page.title should equal(VehicleLookupPage.title)
     }
   }

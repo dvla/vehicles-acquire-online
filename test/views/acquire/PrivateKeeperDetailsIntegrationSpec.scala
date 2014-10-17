@@ -8,7 +8,11 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
+import pages.acquire.BeforeYouStartPage
+import pages.acquire.NewKeeperChooseYourAddressPage
+import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.VehicleLookupPage
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
@@ -35,7 +39,6 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       cacheSetup()
       go to PrivateKeeperDetailsPage
-
       page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 

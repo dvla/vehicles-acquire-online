@@ -14,25 +14,21 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to SetupTradeDetailsPage
-
       page.title should equal(SetupTradeDetailsPage.title)
     }
 
     "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
       go to SetupTradeDetailsPage
-
       page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to SetupTradeDetailsPage
-
       page.source.contains(progressStep(2)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to SetupTradeDetailsPage
-
       page.source.contains(progressStep(2)) should equal(false)
     }
   }
@@ -40,7 +36,6 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "lookup button" should {
     "go to the next page when correct data is entered" taggedAs UiTag in new WebBrowser {
       happyPath()
-
       page.title should equal("Select trader address")
     }
 
@@ -63,7 +58,6 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
       happyPath(traderBusinessEmail = "email_with_no_at_symbol")
       ErrorPanel.numberOfErrors should equal(1)
     }
-
 
     "add aria required attribute to trader name field when required field not input" taggedAs UiTag in new WebBrowser {
       happyPath(traderBusinessName = "")

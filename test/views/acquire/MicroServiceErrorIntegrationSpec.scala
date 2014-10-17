@@ -19,7 +19,6 @@ final class MicroServiceErrorIntegrationSpec extends UiSpec with TestHarness {
 
     "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
       go to MicroServiceErrorPage
-
       page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 

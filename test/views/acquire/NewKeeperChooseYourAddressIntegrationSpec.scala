@@ -9,7 +9,6 @@ import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.BusinessKeeperDetailsPage
-import pages.acquire.CompleteAndConfirmPage
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.NewKeeperChooseYourAddressPage
 import pages.acquire.NewKeeperEnterAddressManuallyPage
@@ -35,7 +34,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
@@ -50,7 +48,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(progressStep(6)) should equal(true)
     }
 
@@ -58,7 +55,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(progressStep(6)) should equal(false)
     }
 
@@ -104,7 +100,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
       page.source should include( """<a id="enterAddressManuallyButton" href""")
     }
@@ -113,7 +108,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
       page.source should include( """<a id="enterAddressManuallyButton" href""")
     }
@@ -122,7 +116,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
@@ -130,7 +123,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
@@ -176,7 +168,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         .vehicleDetails()
       go to PrivateKeeperDetailsPage
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
-
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
@@ -188,7 +179,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         .vehicleDetails()
       go to BusinessKeeperDetailsPage
       BusinessKeeperDetailsPage.submitPostcodeWithoutAddresses
-
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
