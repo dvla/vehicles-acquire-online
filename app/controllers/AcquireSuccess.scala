@@ -53,4 +53,17 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       Redirect(routes.BeforeYouStart.present())
     }
   }
+
+  def finish = Action { implicit request =>
+    Redirect(routes.BeforeYouStart.present())
+      .discardingCookies(Set(
+      NewKeeperDetailsCacheKey,
+      VehicleLookupDetailsCacheKey,
+      VehicleLookupFormModelCacheKey,
+      CompleteAndConfirmCacheKey,
+      PrivateKeeperDetailsCacheKey,
+      BusinessKeeperDetailsCacheKey,
+      AcquireCompletionCacheKey
+    ))
+  }
 }

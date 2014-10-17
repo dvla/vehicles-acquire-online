@@ -140,6 +140,45 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     }
   }
 
+  "finish" should {
+    "discard the vehicle, new keeper and confirm cookies" in {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+
+      val result = acquireSuccess.finish(request)
+      whenReady(result) { r =>
+        val cookies = fetchCookiesFromHeaders(r)
+
+        verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
+
+        cookies.find(_.name == TraderDetailsCacheKey) should be(None)
+      }
+    }
+
+    "redirect to the before you start page" in {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+
+      val result = acquireSuccess.finish(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
+      }
+    }
+  }
+
   private val acquireSuccess = {
     injector.getInstance(classOf[AcquireSuccess])
   }

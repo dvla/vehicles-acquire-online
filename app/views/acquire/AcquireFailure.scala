@@ -5,4 +5,5 @@ package views.acquire
  */
 object AcquireFailure {
   final val BuyAnotherId = "buyAnother"
+  final val FinishId = "finish"
 }

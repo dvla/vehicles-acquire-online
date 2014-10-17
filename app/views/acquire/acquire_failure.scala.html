@@ -2,7 +2,7 @@
 token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
 config: utils.helpers.Config)
 
-@import views.acquire.AcquireFailure.BuyAnotherId
+@import views.acquire.AcquireFailure.{BuyAnotherId, FinishId}
 @import views.html.acquire.main
 @import views.html.helper.form
 @import uk.gov.dvla.vehicles.presentation.common
@@ -36,13 +36,20 @@ title = Messages("acquire_acquirefailure.title")
 
     <div class="form-steps">
         <div class="step">
-            <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">@Messages("acquire_success.buttonnavprint")</button>
+            <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">@Messages("acquire_failure.buttonnavprint")</button>
         </div>
 
         <div class="step">
             @form(action = controllers.routes.AcquireFailure.buyAnother()) {
             @csrfTokenHiddenField()
-            <button id="@BuyAnotherId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_success.buyAnother")</button>
+            <button id="@BuyAnotherId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_failure.buyAnother")</button>
+            }
+        </div>
+
+        <div class="step">
+            @form(action = controllers.routes.AcquireFailure.finish()) {
+            @csrfTokenHiddenField()
+            <button id="@FinishId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_failure.finish")</button>
             }
         </div>
 
