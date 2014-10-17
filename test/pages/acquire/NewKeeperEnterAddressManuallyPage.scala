@@ -6,7 +6,7 @@ import EnterAddressManually.{BackId, NextId}
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel
 import org.openqa.selenium.WebDriver
 import AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
-import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
+import models.NewKeeperEnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 
 object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {
@@ -35,7 +35,7 @@ object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {
                 line3: String = Line3Valid,
                 postTown: String = PostTownValid)
                (implicit driver: WebDriver) = {
-    go to EnterAddressManuallyPage
+    go to NewKeeperEnterAddressManuallyPage
     addressBuildingNameOrNumber.value = buildingNameOrNumber
     addressLine2.value = line2
     addressLine3.value = line3
@@ -46,14 +46,14 @@ object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {
   def happyPathMandatoryFieldsOnly(buildingNameOrNumber: String = BuildingNameOrNumberValid,
                                    postTown: String = PostTownValid)
                                   (implicit driver: WebDriver) = {
-    go to EnterAddressManuallyPage
+    go to NewKeeperEnterAddressManuallyPage
     addressBuildingNameOrNumber.value = buildingNameOrNumber
     addressPostTown.value = postTown
     click on next
   }
 
   def sadPath(implicit driver: WebDriver) = {
-    go to EnterAddressManuallyPage
+    go to NewKeeperEnterAddressManuallyPage
     click on next
   }
 }
