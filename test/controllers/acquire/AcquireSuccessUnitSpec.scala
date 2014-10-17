@@ -25,6 +25,8 @@ import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
+import scala.Some
 
 class AcquireSuccessUnitSpec extends UnitSpec {
 
@@ -50,52 +52,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "redirect to before you start when no cookies are present" in new WithApplication {
+    "redirect to before you start when no completion cookie is present" in new WithApplication {
       val request = FakeRequest()
-      val result = acquireSuccess.present(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
-      }
-    }
-
-    "redirect to before you start when no vehicle details cookie is present" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
-      val result = acquireSuccess.present(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
-      }
-    }
-
-    "redirect to before you start when no trader details cookie is present" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
-      val result = acquireSuccess.present(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
-      }
-    }
-
-    "redirect to before you start when no new keeper details cookie is present" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
-      val result = acquireSuccess.present(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
-      }
-    }
-
-    "redirect to before you start when no complete and confirm details cookie is present" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
       val result = acquireSuccess.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
@@ -104,15 +62,11 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 
     "present a full page with private keeper cached details when all cookies are present for new keeper success" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
           firstName = Some(FirstNameValid),
           lastName = Some(LastNameValid),
           email = Some(EmailValid)
-        )).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+        ))
 
       val content = contentAsString(acquireSuccess.present(request))
       content should include(RegistrationNumberValid)
@@ -126,39 +80,38 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       content should include(DayDateOfSaleValid)
     }
 
-//    "present a full page with business keeper cached details when all cookies are present for new keeper success" in new WithApplication {
-//      val request = FakeRequest().
-//        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-//        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-//        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
-//        businessName = Some(BusinessNameValid),
-//        fleetNumber = Some(FleetNumberValid),
-//        email = Some(EmailValid)
-//
-//      )).
-//        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-//        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
-//
-//      val content = contentAsString(acquireSuccess.present(request))
-//      content should include(RegistrationNumberValid)
-//      content should include(VehicleMakeValid)
-//      content should include(ModelValid)
-//      content should include(BusinessNameValid)
-//      content should include(FleetNumberValid)
-//      content should include(EmailValid)
-//      content should include(YearDateOfSaleValid)
-//      content should include(MonthDateOfSaleValid)
-//      content should include(DayDateOfSaleValid)
-//    }
-  }
+    "present a full page with business keeper cached details when all cookies are present for new keeper success" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
+          businessName = Some(BusinessNameValid),
+          fleetNumber = Some(FleetNumberValid),
+          email = Some(EmailValid)
+        ))
+
+      val content = contentAsString(acquireSuccess.present(request))
+      content should include(RegistrationNumberValid)
+      content should include(VehicleMakeValid)
+      content should include(ModelValid)
+      content should include(BusinessNameValid)
+      content should include(FleetNumberValid)
+      content should include(EmailValid)
+      content should include(YearDateOfSaleValid)
+      content should include(MonthDateOfSaleValid)
+      content should include(DayDateOfSaleValid)
+    }
+}
 
   "buyAnother" should {
-    "discard the vehicle, new keeper nd confirm cookies" in {
+    "discard the vehicle, new keeper and confirm cookies" in {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireSuccess.buyAnother(request)
       whenReady(result) { r =>
@@ -170,6 +123,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
 
         cookies.find(_.name == TraderDetailsCacheKey) should be(None)
       }
@@ -177,10 +131,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 
     "redirect to the vehicle lookup page" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
 
       val result = acquireSuccess.buyAnother(request)
       whenReady(result) { r =>
