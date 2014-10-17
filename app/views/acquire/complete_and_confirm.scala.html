@@ -105,9 +105,14 @@
                 )
 
                 <div class="form-steps">
-                    <button id="@SubmitId" type="submit" name="action" class="button">
+                    <button id="@SubmitId"
+                        type="submit"
+                        name="action"
+                        class="button"
+                        onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();" >
                         @Messages("acquire_completeAndConfirm.submitbutton")
                     </button>
+
                     <a id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.present()" class="button-secondary">
                         @Messages("acquire_completeAndConfirm.backbutton")
                     </a>

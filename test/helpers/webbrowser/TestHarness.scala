@@ -37,9 +37,8 @@ trait TestHarness {
   abstract class ProgressBarTrue extends WebBrowser(app = fakeApplicationWithProgressBarTrue)
   abstract class ProgressBarFalse extends WebBrowser(app = fakeApplicationWithProgressBarFalse)
 
-  abstract class HtmlUnitWithJs extends WebBrowser(webDriver = WebDriverFactory.webDriver(
-    targetBrowser = "htmlUnit",
-    javascriptEnabled = true)
+  abstract class WebBrowserWithJs extends WebBrowser(
+    webDriver = WebDriverFactory.webDriver(javascriptEnabled = true)
   )
 
   object WebBrowser {

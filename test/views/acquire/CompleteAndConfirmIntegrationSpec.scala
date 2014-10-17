@@ -8,16 +8,21 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire.{CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
+import pages.acquire.{AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.navigate
+import pages.acquire.CompleteAndConfirmPage.next
 import pages.acquire.CompleteAndConfirmPage.back
 import pages.acquire.CompleteAndConfirmPage.useTodaysDate
 import pages.acquire.CompleteAndConfirmPage.dayDateOfSaleTextBox
 import pages.acquire.CompleteAndConfirmPage.monthDateOfSaleTextBox
+import pages.acquire.CompleteAndConfirmPage.mileageTextBox
+import pages.acquire.CompleteAndConfirmPage.consent
 import pages.acquire.CompleteAndConfirmPage.yearDateOfSaleTextBox
-import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
+import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionDayValid
+import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
+import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 
@@ -68,19 +73,36 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "submit button" should {
-//    "go to the appropriate next page when all details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
-//      go to BeforeYouStartPage
-//      cacheSetup()
-//      navigate()
-//      page.title should equal(AcquireSuccessPage.title)
-//    }
+    "go to the appropriate next page when all details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate()
+      page.title should equal(AcquireSuccessPage.title)
+    }
 
-//    "go to the appropriate next page when mandatory details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
-//      go to BeforeYouStartPage
-//      cacheSetup()
-//      navigate(mileage = "")
-//      page.title should equal(AcquireSuccessPage.title)
-//    }
+    "go to the appropriate next page when mandatory details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(mileage = "")
+      page.title should equal(AcquireSuccessPage.title)
+    }
+
+    "be disabled after click" taggedAs UiTag in new WebBrowserWithJs {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to CompleteAndConfirmPage
+
+      mileageTextBox enter CompleteAndConfirmPage.MileageValid
+      dayDateOfSaleTextBox enter CompleteAndConfirmPage.DayDateOfSaleValid
+      monthDateOfSaleTextBox enter CompleteAndConfirmPage.MonthDateOfSaleValid
+      yearDateOfSaleTextBox enter CompleteAndConfirmPage.YearDateOfSaleValid
+      click on consent
+
+      next.isEnabled should be(true)
+      CompleteAndConfirmPage.singleClickSubmit
+      next.isEnabled should be(false)
+      page.title should equal(AcquireSuccessPage.title)
+    }
 
     "display one validation error message when a mileage is entered greater than max length for a new keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
@@ -148,7 +170,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "use todays date" should {
-    "input todays date into date of sale for a new keeper" taggedAs UiTag in new HtmlUnitWithJs {
+    "input todays date into date of sale for a new keeper" taggedAs UiTag in new WebBrowserWithJs {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage

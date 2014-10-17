@@ -15,8 +15,10 @@ import java.util.concurrent.TimeUnit
 object WebDriverFactory {
   private val systemProperties = System.getProperties
 
+  def browserType = getProperty("browser.type", "htmlunit")
+
   def webDriver: WebDriver = {
-    val targetBrowser = getProperty("browser.type", "htmlunit")
+    val targetBrowser = browserType
     webDriver(
       targetBrowser = targetBrowser,
       javascriptEnabled = false // Default to off.
@@ -40,6 +42,10 @@ object WebDriverFactory {
     val implicitlyWait = getProperty("browser.implicitlyWait", 5000)
     selectedDriver.manage().timeouts().implicitlyWait(implicitlyWait, TimeUnit.MILLISECONDS)
     selectedDriver
+  }
+
+  def webDriver(javascriptEnabled: Boolean): WebDriver = {
+    webDriver(browserType, javascriptEnabled)
   }
 
   def testRemote: Boolean = {

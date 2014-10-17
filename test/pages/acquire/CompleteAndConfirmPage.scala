@@ -3,6 +3,7 @@ package pages.acquire
 import helpers.webbrowser._
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId, TodaysDateId}
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.interactions.Actions
 import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
 object CompleteAndConfirmPage extends Page with WebBrowserDSL {
@@ -31,6 +32,13 @@ object CompleteAndConfirmPage extends Page with WebBrowserDSL {
   def yearDateOfSaleTextBox(implicit driver: WebDriver): TelField = telField(id(s"$DateOfSaleId" + "_year"))
 
   def consent(implicit driver: WebDriver): Checkbox = checkbox(id(ConsentId))
+
+  /**
+   * Clicks on the submit button but doesn't wait for the page to be resubmitted
+   */
+  def singleClickSubmit(implicit driver: WebDriver): Unit = {
+    new Actions(driver).click(next.underlying)
+  }
 
   def navigate(mileage: String = MileageValid,
                dayDateOfSale: String = DayDateOfSaleValid,
