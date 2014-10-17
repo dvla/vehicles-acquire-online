@@ -467,8 +467,8 @@ error.title.illegalCharacters = Other - The text must contain characters in A to
 
 # micro-service response codes
 ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful
-ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to DVLA, Swansea, SA99 1BA
-ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Longview Road, Morriston, Swansea, SA6 7JL
+ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to\
+ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
 # help
 acquire.help.title = Help
