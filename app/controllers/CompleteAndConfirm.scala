@@ -1,33 +1,35 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{AcquireCompletionViewModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel, VehicleLookupFormModel, VehicleTaxOrSornFormModel}
-import org.joda.time.DateTime
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.services.DateService
-import common.views.helpers.FormExtensions.formBinding
-import models.{AcquireCompletionViewModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel, VehicleLookupFormModel}
+import models.AcquireCompletionViewModel
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmViewModel
+import models.NewKeeperDetailsViewModel
+import models.VehicleLookupFormModel
+import models.VehicleTaxOrSornFormModel
 import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
+import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import play.api.Logger
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.services.DateService
-import common.views.helpers.FormExtensions.formBinding
 import common.mappings.TitleType
 import common.model.{VehicleDetailsModel, TraderDetailsModel}
+import common.services.DateService
+import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
-import webserviceclients.acquire.{TitleTypeDto, TraderDetailsDto, AcquireRequestDto, AcquireResponseDto, KeeperDetailsDto, AcquireService}
-
+import webserviceclients.acquire.AcquireRequestDto
+import webserviceclients.acquire.AcquireResponseDto
+import webserviceclients.acquire.AcquireService
+import webserviceclients.acquire.KeeperDetailsDto
+import webserviceclients.acquire.TitleTypeDto
+import webserviceclients.acquire.TraderDetailsDto
 
 class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,
@@ -242,10 +244,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
 
   def consentToBoolean (consent: String): Boolean = {
-    consent match {
-      case "true" => true
-      case _ => false
-    }
+    consent == "true"
   }
 
   def getPostCodeFromAddress (address: Seq[String]): Option[String] = {
@@ -261,5 +260,4 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     val getLines = if (lines <= address.length - excludeLines) lines else address.length - excludeLines
     address.take(getLines)
   }
-
 }
