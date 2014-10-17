@@ -7,7 +7,7 @@ import helpers.tags.UiTag
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.WebDriver
 import pages.acquire.AcquireFailurePage.buyAnother
-import pages.acquire.{AcquireFailurePage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
+import pages.acquire.{AcquireFailurePage, BeforeYouStartPage, VehicleLookupPage}
 
 final class AcquireFailureIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -45,18 +45,6 @@ final class AcquireFailureIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(VehicleLookupPage.title)
     }
   }
-
-//  "setuptradedetails button" should {
-//    "redirect to setuptradedetails" taggedAs UiTag in new WebBrowser {
-//      go to BeforeYouStartPage
-//      cacheSetup()
-//      go to AcquireFailurePage
-//
-//      click on setuptradedetails
-//
-//      page.title should equal(SetupTradeDetailsPage.title)
-//    }
-//  }
 
   private def cacheSetup()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs.
