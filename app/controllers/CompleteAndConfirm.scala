@@ -1,13 +1,13 @@
 package controllers
 
 import com.google.inject.Inject
+import org.joda.time.DateTime
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
-import models.{CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel}
-import models.VehicleLookupFormModel
+import models.{AcquireCompletionViewModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel, VehicleLookupFormModel}
 import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
@@ -63,13 +63,15 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       },
       validForm => {
         val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-        val vehicleDetailsOpt = request.cookies.getModel[VehicleLookupFormModel]
+        val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
+        val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
         val traderDetails = request.cookies.getModel[TraderDetailsModel]
-        (newKeeperDetailsOpt, vehicleDetailsOpt, traderDetails) match {
-          case (Some(newKeeperDetails), Some(vehicleDetails), Some(traderDetails)) =>
+        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetails, traderDetails) match {
+          case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
             if (config.isMicroserviceIntegrationEnabled){
             acquireAction (validForm,
                            newKeeperDetails,
+                           vehicleLookup,
                            vehicleDetails,
                            traderDetails,
                            request.cookies.trackingId())}
@@ -79,7 +81,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
               }
             }
-          case (_, _, None) => Future.successful {
+          case (_, _, _, None) => Future.successful {
             Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
             Redirect(routes.SetUpTradeDetails.present())
           }
@@ -121,15 +123,25 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   private def acquireAction(completeAndConfirmForm: CompleteAndConfirmFormModel,
                             newKeeperDetailsView: NewKeeperDetailsViewModel,
                             vehicleLookup: VehicleLookupFormModel,
+                            vehicleDetails: VehicleDetailsModel,
                             traderDetails: TraderDetailsModel,
                             trackingId: String)
                            (implicit request: Request[AnyContent]): Future[Result] = {
+
+    val transactionTimestamp = dateService.now.toDateTime
+
     val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
-      newKeeperDetailsView, traderDetails)
+      newKeeperDetailsView, traderDetails, transactionTimestamp)
+
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) => {
-        Some(Redirect(nextPage(httpResponseCode, response))).
-          map(_.withCookie(completeAndConfirmForm)).
+          Some(Redirect(nextPage(httpResponseCode, response))).
+          map(_.withCookie(AcquireCompletionViewModel(vehicleDetails,
+                                                      traderDetails,
+                                                      newKeeperDetailsView,
+                                                      completeAndConfirmForm,
+                                                      response.get.transactionId,
+                                                      transactionTimestamp))).
           get
       }
     }.recover {
@@ -148,7 +160,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
                                completeAndConfirmFormModel: CompleteAndConfirmFormModel,
                                newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                               traderDetailsModel: TraderDetailsModel): AcquireRequestDto = {
+                               traderDetailsModel: TraderDetailsModel, timestamp: DateTime): AcquireRequestDto = {
 
     val keeperDetails = buildKeeperDetails(newKeeperDetailsViewModel)
 
@@ -169,7 +181,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       dateOfTransfer = dateTimeFormatter.print(completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay),
       mileage = completeAndConfirmFormModel.mileage,
       keeperConsent = consentToBoolean(completeAndConfirmFormModel.consent),
-      transactionTimestamp = dateTimeFormatter.print(dateService.now.toDateTime),
+      transactionTimestamp = dateTimeFormatter.print(timestamp),
       requiresSorn = false
     )
 
@@ -207,10 +219,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
   def handleResponseCode(acquireResponseCode: String): Call =
     acquireResponseCode match {
-      case "ms.vehiclesService.response.unableToProcessApplication" =>
+      case "ms.vehiclesService.error.generalError" =>
         Logger.warn("Acquire soap endpoint redirecting to acquire failure page")
-        // TODO : Redirect to error page
-        routes.NotImplemented.present()
+        routes.AcquireFailure.present()
       case _ =>
         Logger.warn(s"Acquire micro-service failed so now redirecting to micro service error page. " +
           s"Code returned from ms was $acquireResponseCode")

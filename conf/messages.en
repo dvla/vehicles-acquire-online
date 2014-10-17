@@ -389,6 +389,19 @@ acquire_success.further_information.alert = Please print this page and pass it t
 acquire_success.buttonnavprint = Print
 acquire_success.buyAnother = Buy another vehicle
 
+#page 7 - acquire failure
+acquire_acquirefailure.title = Buy a vehicle from the motor trade: failure
+acquire_acquirefailure.name = Failure
+acquire_acquirefailure.p1 = It has not been possible to complete your transaction. Please call 0300 790 6802
+acquire_acquirefailure.button = Buy another vehicle
+acquire_acquirefailure.button2 = Finish
+acquire_acquirefailure.button3 = Print
+acquire_acquirefailure.transactiontext = Your transaction ID is:
+acquire_acquirefailure.transactionid = {0}
+acquire_failure.transaction_details.header = Transaction details
+acquire_failure.transaction_details.transaction_id = Transaction ID
+acquire_failure.transaction_details.transaction_date = Transaction date
+
 #micro-service error page
 micro_service_error.title=We are sorry
 micro_service_error.text=The service is temporarily unavailable.
@@ -422,3 +435,8 @@ error.title.unknownOption = Other - This is a required field
 error.title.missing = Other - This is a required field
 error.title.tooLong = Other - The text must contain characters in A to Z format only.
 error.title.illegalCharacters = Other - The text must contain characters in A to Z format only.
+
+# micro-service response codes
+ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful
+ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to DVLA, Swansea, SA99 1BA
+ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Longview Road, Morriston, Swansea, SA6 7JL

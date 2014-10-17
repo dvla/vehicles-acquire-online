@@ -1,5 +1,6 @@
 package webserviceclients.fakes
 
+import org.joda.time.DateTime
 import play.api.http.Status.{OK, SERVICE_UNAVAILABLE}
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.{VehicleDetailsDto, VehicleDetailsRequestDto, VehicleDetailsResponseDto, VehicleLookupWebService}
@@ -36,6 +37,8 @@ object FakeVehicleLookupWebService {
   final val KeeperNameValid = "Keeper Name"
   final val KeeperUprnValid = 10123456789L
   final val ConsentValid = "true"
+  final val transactionIdValid = "A1-100"
+  final val transactionTimestampValid = new DateTime()
 
   private def vehicleDetails(disposeFlag: Boolean = true) = VehicleDetailsDto(registrationNumber = RegistrationNumberValid,
     vehicleMake = VehicleMakeValid,

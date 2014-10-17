@@ -6,14 +6,7 @@ import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.SetupTradeDetailsFormModel
-import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyFormModel
-import models.VehicleLookupFormModel
-import models.PrivateKeeperDetailsFormModel
-import models.BusinessKeeperDetailsFormModel
-import models.NewKeeperDetailsViewModel
-import models.CompleteAndConfirmFormModel
+import models.{AcquireCompletionViewModel, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import org.joda.time.LocalDate
 import org.openqa.selenium.Cookie
@@ -41,8 +34,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
-import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{transactionIdValid, transactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -212,6 +204,38 @@ object CookieFactoryForUISpecs {
       email = email,
       isBusinessKeeper = isBusinessKeeper,
       displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
+    )
+    addCookie(key, value)
+    this
+  }
+
+  def acquireCompletionViewModel()(implicit webDriver: WebDriver) = {
+
+    val key = AcquireCompletionViewModel.AcquireCompletionCacheKey
+
+    val vehicleDetails = VehicleDetailsModel(RegistrationNumberValid, VehicleMakeValid, ModelValid, false)
+
+    val traderDetails = TraderDetailsModel(
+      traderName = TraderBusinessNameValid,
+      traderAddress = AddressModel(
+        uprn = None,
+        address = Seq(BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid)
+      ),
+      None
+    )
+
+    val newKeeperDetailsView = NewKeeperDetailsViewModel(None, None, None, None, None, None, None, None,
+      AddressModel(None, Seq(BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid)),
+      false, "")
+
+    val completeAndConfirmForm = CompleteAndConfirmFormModel(None, new LocalDate(), "")
+
+    val value = AcquireCompletionViewModel(vehicleDetails,
+      traderDetails,
+      newKeeperDetailsView,
+      completeAndConfirmForm,
+      transactionIdValid,
+      transactionTimestampValid
     )
     addCookie(key, value)
     this
