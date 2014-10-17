@@ -72,6 +72,7 @@ GET     /acquire-another                    @controllers.AcquireSuccess.buyAnoth
 # Failure
 GET     /buy-from-the-trade-failure         @controllers.AcquireFailure.present
 GET     /failure-acquire-another            @controllers.AcquireFailure.buyAnother
+GET     /failure-acquire-finish             @controllers.AcquireFailure.finish
 
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 

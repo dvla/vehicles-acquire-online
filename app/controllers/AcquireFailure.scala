@@ -29,7 +29,7 @@ final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: Client
       Ok(views.html.acquire.acquire_failure(acquireCompletionViewModel))
 
     result getOrElse {
-      Logger.warn("missing cookies in cache. Acquire failed, however cannot display success page")
+      Logger.warn("missing cookies in cache. Acquire failed, however cannot display failure page")
       Redirect(routes.BeforeYouStart.present())
     }
   }
@@ -51,5 +51,18 @@ final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: Client
       Logger.warn("missing cookies in cache.")
       Redirect(routes.BeforeYouStart.present())
     }
+  }
+
+  def finish = Action { implicit request =>
+    Redirect(routes.BeforeYouStart.present())
+        .discardingCookies(Set(
+        NewKeeperDetailsCacheKey,
+        VehicleLookupDetailsCacheKey,
+        VehicleLookupFormModelCacheKey,
+        CompleteAndConfirmCacheKey,
+        PrivateKeeperDetailsCacheKey,
+        BusinessKeeperDetailsCacheKey,
+        AcquireCompletionCacheKey
+      ))
   }
 }
