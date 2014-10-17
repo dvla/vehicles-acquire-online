@@ -8,14 +8,18 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
+import pages.acquire.{CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
+import pages.acquire.CompleteAndConfirmPage.navigate
+import pages.acquire.CompleteAndConfirmPage.back
+import pages.acquire.CompleteAndConfirmPage.useTodaysDate
+import pages.acquire.CompleteAndConfirmPage.dayDateOfSaleTextBox
+import pages.acquire.CompleteAndConfirmPage.monthDateOfSaleTextBox
+import pages.acquire.CompleteAndConfirmPage.yearDateOfSaleTextBox
 import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import scala.Some
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -39,14 +43,14 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
-      page.source.contains(progressStep(7)) should equal(true)
+      page.source.contains(progressStep(8)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
-      page.source.contains(progressStep(7)) should equal(false)
+      page.source.contains(progressStep(8)) should equal(false)
     }
 
     "Redirect when no new keeper details are cached" taggedAs UiTag in new WebBrowser {
