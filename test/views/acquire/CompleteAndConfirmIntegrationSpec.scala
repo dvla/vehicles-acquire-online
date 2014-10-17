@@ -7,6 +7,7 @@ import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.concurrent.Eventually
 import pages.common.ErrorPanel
 import pages.acquire.{AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
@@ -98,10 +99,10 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       yearDateOfSaleTextBox enter CompleteAndConfirmPage.YearDateOfSaleValid
       click on consent
 
-      next.isEnabled should be(true)
+      next.underlying.getAttribute("class") should not include "disabled"
       CompleteAndConfirmPage.singleClickSubmit
-      next.isEnabled should be(false)
-      page.title should equal(AcquireSuccessPage.title)
+      Eventually.eventually(next.underlying.getAttribute("class").contains("disabled"))
+      Eventually.eventually(page.title == AcquireSuccessPage.title)
     }
 
     "display one validation error message when a mileage is entered greater than max length for a new keeper" taggedAs UiTag in new WebBrowser {
@@ -110,7 +111,6 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       navigate(mileage = "1000000")
       ErrorPanel.numberOfErrors should equal(1)
     }
-
 
     "display one validation error message when a mileage is entered less than min length for a new keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
