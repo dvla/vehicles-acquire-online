@@ -8,6 +8,8 @@ import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.{AcquireCompletionViewModel, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import models.VehicleTaxOrSornFormModel
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.LocalDate
 import org.openqa.selenium.Cookie
 import org.openqa.selenium.WebDriver
@@ -237,6 +239,14 @@ object CookieFactoryForUISpecs {
       transactionIdValid,
       transactionTimestampValid
     )
+    addCookie(key, value)
+    this
+  }
+
+  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)
+                            (implicit webDriver: WebDriver) = {
+    val key = VehicleTaxOrSornCacheKey
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
     addCookie(key, value)
     this
   }

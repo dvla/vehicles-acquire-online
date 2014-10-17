@@ -9,6 +9,7 @@ import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 
@@ -18,6 +19,14 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       go to AcquireSuccessPage
       page.title should equal(AcquireSuccessPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to AcquireSuccessPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
@@ -105,6 +114,7 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       .dealerDetails()
       .vehicleDetails()
       .newKeeperDetails()
+      .vehicleTaxOrSornFormModel()
       .completeAndConfirmDetails()
       .acquireCompletionViewModel()
 }

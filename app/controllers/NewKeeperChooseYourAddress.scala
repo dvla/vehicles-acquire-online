@@ -205,7 +205,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       case Some(addressViewModel) =>
           createNewKeeper(addressViewModel) match {
           case Some(newKeeperDetails) => {
-            Redirect(routes.CompleteAndConfirm.present())
+            Redirect(routes.VehicleTaxOrSorn.present())
               .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
               .withCookie(model)
               .withCookie(newKeeperDetails)

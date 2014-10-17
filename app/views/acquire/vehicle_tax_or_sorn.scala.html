@@ -1,0 +1,85 @@
+@(viewModel: models.VehicleTaxOrSornViewModel
+)(implicit lang: Lang,
+  token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
+  config: utils.helpers.Config
+)
+
+@import controllers.routes.VehicleTaxOrSorn
+@import models.VehicleTaxOrSornFormModel.Form.SornVehicleId
+@import uk.gov.dvla.vehicles.presentation.common
+@import common.views.helpers.BaseTemplate.fieldConstructor
+@import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.base.valtechDeclareCheck
+@import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
+@import views.html.acquire.main
+@import views.html.helper.form
+
+@main(
+    progress = Some(Messages("acquire_progress_6")),
+    title = Messages("acquire_vehicleTaxOrSorn_title"),
+    currentForm = Some(viewModel.form)
+) {
+<div class="two-col clearfix" xmlns="http://www.w3.org/1999/html">
+    <div class="first-col">
+        <h2>@Messages("acquire_vehicleTaxOrSorn.newkeeperDetails")</h2>
+        <dl class="playback">
+            <dt>@Messages("acquire_vehicleTaxOrSorn.displayName")</dt>
+            <dd>@viewModel.keeperDetails.displayName</dd>
+            <dt>@Messages("acquire_vehicleTaxOrSorn.address")</dt>
+            <dd>@for(addr <- viewModel.keeperDetails.address.address) {@addr<br/>}</dd>
+            <dt>@Messages("acquire_vehicleTaxOrSorn.email")</dt>
+            @if(viewModel.keeperDetails.email == None) {
+                <dd>@Messages("acquire_vehicleTaxOrSorn.emailNotEntered")</dd>
+            } else {
+                <dd>@viewModel.keeperDetails.email.get</dd>
+            }
+            @if(viewModel.keeperDetails.isBusinessKeeper) {
+                <dt>@Messages("acquire_vehicleTaxOrSorn.fleetNumber")</dt>
+                @if(viewModel.keeperDetails.fleetNumber == None) {
+                    <dd>@Messages("acquire_vehicleTaxOrSorn.fleetNumberNotEntered")</dd>
+                } else {
+                    <dd>@viewModel.keeperDetails.fleetNumber.get</dd>
+                }
+            }
+        </dl>
+        <h2>@Messages("acquire_vehicleTaxOrSorn.vehicleDetails")</h2>
+        <dl class="playback">
+            <dt>@Messages("acquire_vehicleTaxOrSorn.vehicleReg")</dt>
+            <dd>@viewModel.vehicleDetails.registrationNumber</dd>
+            <dt>@Messages("acquire_vehicleTaxOrSorn.vehicleMake")</dt>
+            <dd>@viewModel.vehicleDetails.vehicleMake</dd>
+            <dt>@Messages("acquire_vehicleTaxOrSorn.vehicleModel")</dt>
+            <dd>@viewModel.vehicleDetails.vehicleModel</dd>
+        </dl>
+    </div>
+
+    <div class="second-col">
+        <p>@Messages("acquire_vehicleTaxOrSorn.p1")</p>
+        <a href="https://www.gov.uk/tax-disc" target="_blank">
+            @Messages("acquire_vehicleTaxOrSorn.link")
+        </a>
+        <p>@Messages("acquire_vehicleTaxOrSorn.p2")</p>
+        @form(action = VehicleTaxOrSorn.submit()) {
+            @csrfTokenHiddenField()
+            <p>@Messages("acquire_vehicleTaxOrSorn.sornVehicleText")</p>
+            @valtechDeclareCheck(viewModel.form(SornVehicleId),
+                args = Map(
+                    '_showConstraints -> false,
+                    'autofocus -> true,
+                    'title -> "dsdsdsdsdsdsdsdsdsdsds",
+                    '_label -> Messages("acquire_vehicleTaxOrSorn.sornVehicle")
+                )
+            )
+
+            <div class="form-steps">
+                <button id="@SubmitId" type="submit" name="action" class="button">
+                    @Messages("acquire_vehicleTaxOrSorn.submitbutton")
+                </button>
+                <a id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.back()" class="button-secondary">
+                    @Messages("acquire_vehicleTaxOrSorn.backbutton")
+                </a>
+            </div>
+        }
+    </div>
+</div>
+}

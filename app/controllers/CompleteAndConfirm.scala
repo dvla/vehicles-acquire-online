@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.{AcquireCompletionViewModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, NewKeeperDetailsViewModel, VehicleLookupFormModel, VehicleTaxOrSornFormModel}
 import org.joda.time.DateTime
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -16,7 +17,13 @@ import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.services.DateService
+import common.views.helpers.FormExtensions.formBinding
+import common.mappings.TitleType
+import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 import webserviceclients.acquire.{TitleTypeDto, TraderDetailsDto, AcquireRequestDto, AcquireResponseDto, KeeperDetailsDto, AcquireService}
@@ -30,18 +37,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     CompleteAndConfirmFormModel.Form.Mapping
   )
 
-  private final val NoNewKeeperCookieMessage = "Did not find a new keeper details cookie in cache. " +
-    "Now redirecting to Vehicle Lookup."
-
-  private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details in cache. " +
-    "Now redirecting to vehicle lookup"
+  private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details and or " +
+    "vehicle sorn details in cache. Now redirecting to vehicle lookup"
 
   def present = Action { implicit request =>
     val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
     val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-    (newKeeperDetailsOpt, vehicleDetailsOpt) match {
-      case (Some(newKeeperDetails), Some(vehicleDetails)) =>
-        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails), dateService))
+    val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+    (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+      case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
+        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails, vehicleSorn), dateService))
       case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
     }
   }
@@ -51,10 +56,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       invalidForm => Future.successful {
         val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
         val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-        (newKeeperDetailsOpt, vehicleDetailsOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleDetails)) =>
+        val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+        (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
             BadRequest(complete_and_confirm(
-              CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails), dateService)
+              CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
             )
           case _ =>
             Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")
@@ -64,9 +70,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       validForm => {
         val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
         val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
-        val vehicleDetails = request.cookies.getModel[VehicleDetailsModel]
-        val traderDetails = request.cookies.getModel[TraderDetailsModel]
-        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetails, traderDetails) match {
+        val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+        val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
+        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt) match {
           case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
             if (config.isMicroserviceIntegrationEnabled){
             acquireAction (validForm,
@@ -134,7 +140,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       newKeeperDetailsView, traderDetails, transactionTimestamp)
 
     webService.invoke(disposeRequest, trackingId).map {
-      case (httpResponseCode, response) => {
+      case (httpResponseCode, response) =>
           Some(Redirect(nextPage(httpResponseCode, response))).
           map(_.withCookie(AcquireCompletionViewModel(vehicleDetails,
                                                       traderDetails,
@@ -143,7 +149,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                                                       response.get.transactionId,
                                                       transactionTimestamp))).
           get
-      }
     }.recover {
       case e: Throwable =>
         Logger.warn(s"Dispose micro-service call failed.", e)

@@ -12,9 +12,10 @@ import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.{navigate, back, useTodaysDate, dayDateOfSaleTextBox, monthDateOfSaleTextBox, yearDateOfSaleTextBox}
-import models.CompleteAndConfirmFormModel.Form.TodaysDateId
 import webserviceclients.fakes.FakeDateServiceImpl.{DateOfAcquisitionDayValid, DateOfAcquisitionMonthValid, DateOfAcquisitionYearValid}
+import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import scala.Some
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -26,6 +27,13 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(CompleteAndConfirmPage.title)
     }
 
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to CompleteAndConfirmPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+    }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
@@ -160,11 +168,11 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         newKeeperDetails(
           title = Some(TitleType(1,"")),
           address = addressWithUprn
-        )
+        ).vehicleTaxOrSornFormModel()
 
       go to CompleteAndConfirmPage
       click on back
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      page.title should equal(VehicleTaxOrSornPage.title)
     }
   }
 
@@ -175,5 +183,5 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       .vehicleDetails()
       .newKeeperDetails()
       .vehicleLookupFormModel()
-
+      .vehicleTaxOrSornFormModel()
 }

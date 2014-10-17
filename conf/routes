@@ -52,9 +52,13 @@ GET     /new-keeper-choose-your-address/back @controllers.NewKeeperChooseYourAdd
 GET     /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.present
 POST    /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.submit
 
-# Individual keeper details complete
+# Vehicle tax or sorn
+GET     /vehicle-tax-or-sorn                @controllers.VehicleTaxOrSorn.present
+GET     /vehicle-tax-or-sorn/back           @controllers.VehicleTaxOrSorn.back
+POST    /vehicle-tax-or-sorn                @controllers.VehicleTaxOrSorn.submit
+
+# Complete and confirm
 GET     /complete-and-confirm               @controllers.CompleteAndConfirm.present
-GET     /complete-and-confirm/back          @controllers.CompleteAndConfirm.back
 POST    /complete-and-confirm               @controllers.CompleteAndConfirm.submit
 
 # Business keeper details
@@ -88,5 +92,8 @@ POST    /vrm-locked/exit                    @controllers.VrmLocked.exit
 
 GET     /error/:exceptionDigest             @controllers.Error.present(exceptionDigest)
 POST    /error/:exceptionDigest             @controllers.Error.submit(exceptionDigest)
+
+GET     /help                               @controllers.Help.present
+GET     /help/back                          @controllers.Help.back
 
 GET     /healthcheck                        @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond

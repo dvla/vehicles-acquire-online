@@ -2,7 +2,7 @@
 main.banner = Buy a vehicle from the motor trade
 main.banner.help = Help
 main.banner.feedback = Feedback
-main.banner.feedback.link = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Sell%20to%20the%20Trade%20feedback
+main.banner.feedback.link = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Buy%20from%20the%20trade%20feedback
 
 global.cookiemessage = GOV.UK uses cookies to make the site simpler.
 global.cookiefindoutmore = Find out more about cookies
@@ -118,7 +118,7 @@ acquire_beforeyoustart.listitem2 = If you need to change any vehicle details on 
 acquire_beforeyoustart.listitem3.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
 acquire_beforeyoustart.listitem3.link = Apply to retain a vehicle registration number (V317)
 acquire_beforeyoustart.listitem3.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-acquire_beforeyoustart.listitem4 = The vehicle will need to be taxed/SORN immediately if it is to be kept or driven on the road.
+acquire_beforeyoustart.listitem4 = This vehicle must be taxed before it can be driven on the road.  If you wish to keep this vehicle off the road you can declare SORN. You can tax or SORN your vehicle as part of this service.
 acquire_beforeyoustart.button = Start now
 
 #page 2 - Setup trade details
@@ -330,8 +330,33 @@ acquire_newKeeperEnterAddressManually.vehicleMake = Make
 acquire_newKeeperEnterAddressManually.vehicleModel = Model
 acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 
+#vehicle tax or sorn
+acquire_vehicleTaxOrSorn_title = Vehicle tax or SORN
+acquire_vehicleTaxOrSorn.newkeeperDetails = New keeper details
+acquire_vehicleTaxOrSorn.displayName = Name
+acquire_vehicleTaxOrSorn.address = Address
+acquire_vehicleTaxOrSorn.email = Email
+acquire_vehicleTaxOrSorn.emailNotEntered = Not entered
+acquire_vehicleTaxOrSorn.fleetNumber = Fleet Number
+acquire_vehicleTaxOrSorn.fleetNumberNotEntered = Not entered
+acquire_vehicleTaxOrSorn.vehicleDetails = Vehicle details
+acquire_vehicleTaxOrSorn.vehicleReg = Registration
+acquire_vehicleTaxOrSorn.vehicleMake = Make
+acquire_vehicleTaxOrSorn.vehicleModel = Model
+acquire_vehicleTaxOrSorn.p1 = A vehicle needs to be either taxed or you need to make a Statutory Off Road Notification (SORN) when a vehicle is purchased.
+acquire_vehicleTaxOrSorn.link = Tax the vehicle now
+acquire_vehicleTaxOrSorn.p2 = Or
+acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off Road Notification (SORN) now as part of this service?
+acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
+acquire_vehicleTaxOrSorn.submitbutton = Next
+acquire_vehicleTaxOrSorn.backbutton = Back
+
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
+acquire_completeandconfirm.taxOrSorn = SORN
+acquire_completeandconfirm.sorn = Make a SORN?
+acquire_completeandconfirm.sornEntered = Yes
+acquire_completeandconfirm.sornNotEntered = Not entered
 acquire_completeandconfirm.newkeeperDetails = New keeper details
 acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address
@@ -440,3 +465,18 @@ error.title.illegalCharacters = Other - The text must contain characters in A to
 ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful
 ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to DVLA, Swansea, SA99 1BA
 ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Longview Road, Morriston, Swansea, SA6 7JL
+
+# help
+acquire.help.title = Help
+acquire.help.p1 = This service is in Private Beta phase
+acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
+acquire.help.p2.2 = send an email
+acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
+acquire.help.exit_button = Exit
+acquire.help.back_button = Back
+
+# closed
+acquire.closed.title = Service Closed
+acquire.closed.p1 = The supporting systems for this service are currently unavailable.
+acquire.closed.p2 = The normal hours of operation are Monday to Saturday - 08:00 to 18:00. Please complete your transaction during these hours.
+acquire.closed.exit_button = Exit
