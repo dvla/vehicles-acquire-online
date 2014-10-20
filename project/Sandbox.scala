@@ -19,6 +19,7 @@ object CommonResolvers {
 object Sandbox extends Plugin {
   final val VersionOsAddressLookup = "0.3-SNAPSHOT"
   final val VersionVehiclesLookup = "0.3-SNAPSHOT"
+  final val VersionVehiclesAcquireFulfil = "0.1-SNAPSHOT"
   final val VersionVehicleAndKeeperLookup = "0.2-SNAPSHOT"
   final val VersionVrmRetentionEligibility = "0.3-SNAPSHOT"
   final val VersionVrmRetentionRetain = "0.2-SNAPSHOT"
@@ -33,6 +34,7 @@ object Sandbox extends Plugin {
   final val OsAddressLookupPort = 19801
   final val VehicleLookupPort = 19802
   final val LegacyServicesStubsPort = 19086
+  final val AcquireFulfilPort = 19807
 
   val secretProperty = "DECRYPT_PASSWORD"
   val secretProperty2 = "GIT_SECRET_PASSPHRASE"
@@ -63,6 +65,8 @@ object Sandbox extends Plugin {
     sandProject("os-address-lookup","dvla" %% "os-address-lookup" % VersionOsAddressLookup)
   lazy val (vehiclesLookup, scopeVehiclesLookup) =
     sandProject("vehicles-lookup", "dvla" %% "vehicles-lookup" % VersionVehiclesLookup)
+  lazy val (vehiclesAcquireFulfil, scopeVehiclesAcquireFulfil) =
+    sandProject("vehicles-acquire-fulfil", "dvla" %% "vehicles-acquire-fulfil" % VersionVehiclesAcquireFulfil)
 //  lazy val (vehicleAndKeeperLookup, scopeVehicleAndKeeperLookup) =
 //    sandProject("vehicle-and-keeper-lookup", "dvla" %% "vehicle-and-keeper-lookup" % VersionVehicleAndKeeperLookup)
 //  lazy val (vrmRetentionEligibility, scopeVrmRetentionEligibility) =
@@ -85,7 +89,7 @@ object Sandbox extends Plugin {
   )
 
 //  lazy val sandboxedProjects = Seq(osAddressLookup, vehiclesLookup, vehicleAndKeeperLookup, legacyStubs)
-  lazy val sandboxedProjects = Seq(osAddressLookup, vehiclesLookup, legacyStubs)
+  lazy val sandboxedProjects = Seq(osAddressLookup, vehiclesLookup, vehiclesAcquireFulfil, legacyStubs)
 
   lazy val vehiclesOnline = ScopeFilter(inProjects(ThisProject), inConfigurations(Runtime))
 
@@ -120,6 +124,17 @@ object Sandbox extends Plugin {
       ))
     )
     runProject(
+      fullClasspath.all(scopeVehiclesAcquireFulfil).value.flatten,
+      Some(ConfigDetails(
+        secretRepoFolder,
+        "ms/dev/vehicles-acquire-fulfil.conf.enc",
+        Some(ConfigOutput(
+          new File(classDirectory.all(scopeVehiclesAcquireFulfil).value.head, s"${vehiclesAcquireFulfil.id}.conf"),
+          setServicePortAndLegacyServicesPort(AcquireFulfilPort, "vss.baseurl", LegacyServicesStubsPort)
+        ))
+      ))
+    )
+    runProject(
       fullClasspath.all(scopeLegacyStubs).value.flatten,
       None,
       runJavaMain("service.LegacyServicesRunner", Array(LegacyServicesStubsPort.toString))
@@ -130,6 +145,7 @@ object Sandbox extends Plugin {
   lazy val sandboxTask = sandbox <<= (runMicroServices, (run in Runtime).toTask("")) { (body, stop) =>
     System.setProperty("ordnancesurvey.baseUrl", s"http://localhost:$OsAddressLookupPort")
     System.setProperty("vehicleLookup.baseUrl", s"http://localhost:$VehicleLookupPort")
+    System.setProperty("acquireVehicle.baseUrl", s"http://localhost:$AcquireFulfilPort")
 //    System.setProperty("disposeVehicle.baseUrl", s"http://localhost:$VehicleDisposePort")
     body.flatMap(t => stop)
   }
