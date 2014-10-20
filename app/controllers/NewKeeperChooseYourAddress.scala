@@ -9,7 +9,6 @@ import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
 import models.BusinessKeeperDetailsFormModel
 import models.NewKeeperChooseYourAddressFormModel
-import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,8 +20,8 @@ import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
-import uk.gov.dvla.vehicles.presentation.common.model.{AddressModel, VehicleDetailsModel}
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -80,15 +79,6 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       }
     },
     onError = message => Future.successful(error(message)))
-  }
-
-  private def getTitle(title: TitleType ): String = {
-    title.titleType match {
-      case 1 => "Mr"
-      case 2 => "Mrs"
-      case 3 => "Miss"
-      case _ => title.other
-    }
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
@@ -213,45 +203,6 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
         }
       case None => Redirect(routes.UprnNotFound.present())
-    }
-  }
-
-  private def createNewKeeper(address: AddressModel)(implicit request: Request[_]): Option[NewKeeperDetailsViewModel] = {
-    val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
-    val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
-
-      (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), _) => {
-        Some(NewKeeperDetailsViewModel(
-          title = Some(privateKeeperDetails.title),
-          firstName = Some(privateKeeperDetails.firstName),
-          lastName = Some(privateKeeperDetails.lastName),
-          dateOfBirth = privateKeeperDetails.dateOfBirth,
-          driverNumber = privateKeeperDetails.driverNumber,
-          email = privateKeeperDetails.email,
-          address = address,
-          businessName = None,
-          fleetNumber = None,
-          isBusinessKeeper = false,
-          displayName = getTitle(privateKeeperDetails.title) + " " +  privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName
-        ))
-      }
-      case (_, Some(businessKeeperDetails))  => {
-        Some(NewKeeperDetailsViewModel(
-          title = None,
-          firstName = None,
-          lastName = None,
-          dateOfBirth = None,
-          driverNumber = None,
-          email = businessKeeperDetails.email,
-          address = address,
-          businessName = Some(businessKeeperDetails.businessName),
-          fleetNumber = businessKeeperDetails.fleetNumber,
-          isBusinessKeeper = true,
-          displayName = businessKeeperDetails.businessName
-        ))
-      }
-      case _ => None
     }
   }
 }
