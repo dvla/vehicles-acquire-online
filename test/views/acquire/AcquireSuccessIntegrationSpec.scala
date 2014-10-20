@@ -7,8 +7,9 @@ import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
-import pages.acquire._
+import pages.acquire.{AcquireSuccessPage, BeforeYouStartPage, VehicleLookupPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 
@@ -23,64 +24,33 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
-      go to CompleteAndConfirmPage
-      page.source.contains(progressStep(7)) should equal(true)
+      go to AcquireSuccessPage
+      page.source.contains(progressStep(9)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
-      go to CompleteAndConfirmPage
-      page.source.contains(progressStep(7)) should equal(false)
+      go to AcquireSuccessPage
+      page.source.contains(progressStep(9)) should equal(false)
     }
 
-    "redirect when the cache is empty" taggedAs UiTag in new WebBrowser {
-      go to CompleteAndConfirmPage
-      page.title should equal(SetupTradeDetailsPage.title)
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to AcquireSuccessPage
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
-    "redirect when the cache is missing dealer details" taggedAs UiTag in new WebBrowser {
-      go to CompleteAndConfirmPage
-      CookieFactoryForUISpecs
-        .vehicleDetails()
-        .newKeeperDetails()
-        .completeAndConfirmDetails()
-
-      page.title should equal(SetupTradeDetailsPage.title)
-    }
-
-    "redirect when the cache is missing vehicle details" taggedAs UiTag in new WebBrowser {
-      go to CompleteAndConfirmPage
-      CookieFactoryForUISpecs
-        .dealerDetails()
-        .newKeeperDetails()
-        .completeAndConfirmDetails()
-
-      page.title should equal(SetupTradeDetailsPage.title)
-    }
-
-    "redirect when the cache is missing new keeper details" taggedAs UiTag in new WebBrowser {
-      go to CompleteAndConfirmPage
-      CookieFactoryForUISpecs
-        .dealerDetails()
-        .vehicleDetails()
-        .completeAndConfirmDetails()
-
-      page.title should equal(SetupTradeDetailsPage.title)
-    }
-
-    "redirect when the cache is missing complete and confirm  details" taggedAs UiTag in new WebBrowser {
-      go to CompleteAndConfirmPage
-      CookieFactoryForUISpecs
-        .dealerDetails()
-        .vehicleDetails()
-        .newKeeperDetails()
-
-      page.title should equal(SetupTradeDetailsPage.title)
+    "redirect when the cache is missing acquire complete details" taggedAs UiTag in new WebBrowser {
+      go to AcquireSuccessPage
+      page.title should equal(BeforeYouStartPage.title)
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
-      go to CompleteAndConfirmPage
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to AcquireSuccessPage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
@@ -88,14 +58,12 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
     }
   }
 
-  "Pressing buy another vehicles" should {
-    "Should go to VehicleLookupPage on buy another" taggedAs UiTag in new WebBrowser {
+  "Clicking buy another vehicle button" should {
+    "go to VehicleLookupPage" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-
       click on AcquireSuccessPage.buyAnother
-
       page.title should equal(VehicleLookupPage.title)
     }
   }
@@ -103,7 +71,5 @@ final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
   private def cacheSetup()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs
       .dealerDetails()
-      .vehicleDetails()
-      .newKeeperDetails()
-      .completeAndConfirmDetails()
+      .acquireCompletionViewModel()
 }

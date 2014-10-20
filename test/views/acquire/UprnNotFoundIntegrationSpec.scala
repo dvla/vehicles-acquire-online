@@ -7,18 +7,22 @@ import helpers.webbrowser.TestHarness
 import pages.acquire.SetupTradeDetailsPage
 import pages.common.UprnNotFoundPage
 import pages.common.UprnNotFoundPage.setupTradeDetails
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class UprnNotFoundIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to UprnNotFoundPage
-
       page.title should equal(UprnNotFoundPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to UprnNotFoundPage
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "not display any progress indicator when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to UprnNotFoundPage
-
       page.source should not contain ProgressBar.div
     }
   }
@@ -26,9 +30,7 @@ final class UprnNotFoundIntegrationSpec extends UiSpec with TestHarness {
   "setupTradeDetails button" should {
     "go to setuptradedetails page" taggedAs UiTag in new WebBrowser {
       go to UprnNotFoundPage
-
       click on setupTradeDetails
-
       page.title should equal(SetupTradeDetailsPage.title)
     }
   }

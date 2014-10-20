@@ -8,10 +8,11 @@ import helpers.UiSpec
 import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
+import pages.acquire.{BeforeYouStartPage, BusinessKeeperDetailsPage, NewKeeperChooseYourAddressPage, VehicleLookupPage}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, navigate, back}
+import pages.acquire.BusinessKeeperDetailsPage.{navigate, back}
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -21,6 +22,14 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
       cacheSetup()
       go to BusinessKeeperDetailsPage
       page.title should equal(BusinessKeeperDetailsPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to BusinessKeeperDetailsPage
+
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {

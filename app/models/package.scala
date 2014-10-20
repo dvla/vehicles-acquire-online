@@ -12,6 +12,9 @@ import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
+import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 
 package object models {
   final val HelpCacheKey = "help"
@@ -48,10 +51,18 @@ package object models {
     NewKeeperEnterAddressManuallyCacheKey
   )
 
+  final val CompletionCacheKeys = Set (
+    VehicleTaxOrSornCacheKey,
+    NewKeeperDetailsCacheKey,
+    CompleteAndConfirmCacheKey,
+    AcquireCompletionCacheKey
+  )
+
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page
   final val AllCacheKeys = AcquireCacheKeys
     .++(VehicleLookupCacheKeys)
     .++(PrivateKeeperDetailsCacheKeys)
     .++(BusinessKeeperDetailsCacheKeys)
+    .++(CompletionCacheKeys)
     .++(Set(HelpCacheKey))
 }

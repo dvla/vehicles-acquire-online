@@ -9,10 +9,15 @@ import helpers.webbrowser.TestHarness
 import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
-import pages.acquire._
+import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.BeforeYouStartPage
+import pages.acquire.EnterAddressManuallyPage
+import pages.acquire.VehicleLookupPage
+import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "business choose your address page" should {
@@ -23,11 +28,17 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
       page.title should equal(BusinessChooseYourAddressPage.title)
     }
 
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to BusinessChooseYourAddressPage
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+    }
+
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
       go to BusinessChooseYourAddressPage
-
       page.source.contains(progressStep(3)) should equal(true)
     }
 
@@ -35,13 +46,11 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
       go to BeforeYouStartPage
       cacheSetup()
       go to BusinessChooseYourAddressPage
-
       page.source.contains(progressStep(3)) should equal(false)
     }
 
     "redirect when no traderBusinessName is cached" taggedAs UiTag in new WebBrowser {
       go to BusinessChooseYourAddressPage
-
       page.title should equal(SetupTradeDetailsPage.title)
     }
 
@@ -82,9 +91,7 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
         go to BeforeYouStartPage
         cacheSetup()
         go to BusinessChooseYourAddressPage
-
         click on manualAddress
-
         page.title should equal(EnterAddressManuallyPage.title)
       }
     }
@@ -92,9 +99,7 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
     "manualAddress button that is displayed when no addresses have been found" should {
       "go to the manual address entry page" taggedAs UiTag in new WebBrowser {
         SetupTradeDetailsPage.submitPostcodeWithoutAddresses
-
         click on manualAddress
-
         page.title should equal(EnterAddressManuallyPage.title)
       }
     }
@@ -113,9 +118,7 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
         go to BeforeYouStartPage
         cacheSetup()
         go to BusinessChooseYourAddressPage
-
         click on back
-
         page.title should equal(SetupTradeDetailsPage.title)
       }
     }
@@ -125,7 +128,6 @@ final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHar
         go to BeforeYouStartPage
         cacheSetup()
         happyPath
-
         page.title should equal(VehicleLookupPage.title)
       }
 

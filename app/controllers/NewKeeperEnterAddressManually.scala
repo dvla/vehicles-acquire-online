@@ -2,7 +2,6 @@ package controllers
 
 import com.google.inject.Inject
 import models.BusinessKeeperDetailsFormModel
-import models.NewKeeperDetailsViewModel
 import models.{NewKeeperEnterAddressManuallyViewModel, NewKeeperEnterAddressManuallyFormModel}
 import models.PrivateKeeperDetailsFormModel
 import play.api.Logger
@@ -16,7 +15,7 @@ import common.model.VehicleDetailsModel
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import models.NewKeeperDetailsViewModel.createNewKeeper
 
 final class NewKeeperEnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -103,7 +102,7 @@ final class NewKeeperEnterAddressManually @Inject()()
 
           createNewKeeper(keeperAddress) match {
             case Some(keeperDetails) => {
-              Redirect(routes.CompleteAndConfirm.present()).
+              Redirect(routes.VehicleTaxOrSorn.present()).
                 withCookie(validForm).
                 withCookie(keeperDetails)
             }
@@ -120,7 +119,7 @@ final class NewKeeperEnterAddressManually @Inject()()
 
             createNewKeeper(keeperAddress) match {
             case Some(keeperDetails) => {
-              Redirect(routes.CompleteAndConfirm.present()).
+              Redirect(routes.VehicleTaxOrSorn.present()).
                 withCookie(validForm).
                 withCookie(keeperDetails)
             }
@@ -132,54 +131,6 @@ final class NewKeeperEnterAddressManually @Inject()()
         message => error(message)
         )
     )
-  }
-
-  private def createNewKeeper(address: AddressModel)(implicit request: Request[_]): Option[NewKeeperDetailsViewModel] = {
-    val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
-    val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
-
-    (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), _) => {
-        Some(NewKeeperDetailsViewModel(
-          title = Some(privateKeeperDetails.title),
-          firstName = Some(privateKeeperDetails.firstName),
-          lastName = Some(privateKeeperDetails.lastName),
-          dateOfBirth = privateKeeperDetails.dateOfBirth,
-          driverNumber = privateKeeperDetails.driverNumber,
-          email = privateKeeperDetails.email,
-          address = address,
-          businessName = None,
-          fleetNumber = None,
-          isBusinessKeeper = false,
-          displayName = getTitle(privateKeeperDetails.title) + " " +  privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName
-        ))
-      }
-      case (_, Some(businessKeeperDetails))  => {
-        Some(NewKeeperDetailsViewModel(
-          title = None,
-          firstName = None,
-          lastName = None,
-          dateOfBirth = None,
-          driverNumber = None,
-          email = businessKeeperDetails.email,
-          address = address,
-          businessName = Some(businessKeeperDetails.businessName),
-          fleetNumber = businessKeeperDetails.fleetNumber,
-          isBusinessKeeper = true,
-          displayName = businessKeeperDetails.businessName
-        ))
-      }
-      case _ => None
-    }
-  }
-
-  private def getTitle(title: TitleType ): String = {
-    title.titleType match {
-      case 1 => "Mr"
-      case 2 => "Mrs"
-      case 3 => "Miss"
-      case _ => title.other
-    }
   }
 
   private def formWithReplacedErrors(form: Form[NewKeeperEnterAddressManuallyFormModel]) =

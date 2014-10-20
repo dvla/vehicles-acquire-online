@@ -39,31 +39,41 @@ GET     /keeper-still-on-record             @controllers.KeeperStillOnRecord.pre
 GET     /keeper-still-on-record/buy-another @controllers.KeeperStillOnRecord.buyAnotherVehicle
 GET     /keeper-still-on-record/finish      @controllers.KeeperStillOnRecord.finish
 
-# Individual keeper details
+#page 5 - Private keeper details
 GET     /private-keeper-details             @controllers.PrivateKeeperDetails.present
 POST    /private-keeper-details             @controllers.PrivateKeeperDetails.submit
 
-# New keeper choose your address
+#page 5 - Business keeper details
+GET     /business-keeper-details            @controllers.BusinessKeeperDetails.present
+POST    /business-keeper-details            @controllers.BusinessKeeperDetails.submit
+
+#page 6 -  New keeper choose your address
 GET     /new-keeper-choose-your-address      @controllers.NewKeeperChooseYourAddress.present
 POST    /new-keeper-choose-your-address      @controllers.NewKeeperChooseYourAddress.submit
 GET     /new-keeper-choose-your-address/back @controllers.NewKeeperChooseYourAddress.back
 
-#[optional] - new keeper enter address manually
+#page 6 [optional] - new keeper enter address manually
 GET     /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.present
 POST    /new-keeper-enter-address-manually  @controllers.NewKeeperEnterAddressManually.submit
 
-# Individual keeper details complete
+#page 7 - Vehicle tax or sorn
+GET     /vehicle-tax-or-sorn                @controllers.VehicleTaxOrSorn.present
+GET     /vehicle-tax-or-sorn/back           @controllers.VehicleTaxOrSorn.back
+POST    /vehicle-tax-or-sorn                @controllers.VehicleTaxOrSorn.submit
+
+#page 8 - Complete and confirm
 GET     /complete-and-confirm               @controllers.CompleteAndConfirm.present
-GET     /complete-and-confirm/back          @controllers.CompleteAndConfirm.back
 POST    /complete-and-confirm               @controllers.CompleteAndConfirm.submit
 
-# Business keeper details
-GET     /business-keeper-details            @controllers.BusinessKeeperDetails.present
-POST    /business-keeper-details            @controllers.BusinessKeeperDetails.submit
-
-# Success
+#page 9 - Success
 GET     /acquire-success                    @controllers.AcquireSuccess.present
-GET     /acquie-another                     @controllers.AcquireSuccess.buyAnother
+GET     /acquire-another                    @controllers.AcquireSuccess.buyAnother
+GET     /acquire-finish                     @controllers.AcquireSuccess.finish
+
+# Failure
+GET     /buy-from-the-trade-failure         @controllers.AcquireFailure.present
+GET     /failure-acquire-another            @controllers.AcquireFailure.buyAnother
+GET     /failure-acquire-finish             @controllers.AcquireFailure.finish
 
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 
@@ -84,5 +94,8 @@ POST    /vrm-locked/exit                    @controllers.VrmLocked.exit
 
 GET     /error/:exceptionDigest             @controllers.Error.present(exceptionDigest)
 POST    /error/:exceptionDigest             @controllers.Error.submit(exceptionDigest)
+
+GET     /help                               @controllers.Help.present
+GET     /help/back                          @controllers.Help.back
 
 GET     /healthcheck                        @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond

@@ -9,16 +9,17 @@ import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.BusinessKeeperDetailsPage
-import pages.acquire.CompleteAndConfirmPage
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.NewKeeperChooseYourAddressPage
 import pages.acquire.NewKeeperEnterAddressManuallyPage
 import pages.acquire.VehicleLookupPage
+import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.NewKeeperChooseYourAddressPage.{back, manualAddress, sadPath, happyPath}
 import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "new keeper choose your address page" should {
@@ -27,6 +28,13 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
       page.title should equal(NewKeeperChooseYourAddressPage.title)
+    }
+
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetupPrivateKeeper
+      go to NewKeeperChooseYourAddressPage
+      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the page for a new business keeper" taggedAs UiTag in new WebBrowser {
@@ -40,7 +48,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(progressStep(6)) should equal(true)
     }
 
@@ -48,7 +55,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(progressStep(6)) should equal(false)
     }
 
@@ -94,7 +100,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
       page.source should include( """<a id="enterAddressManuallyButton" href""")
     }
@@ -103,7 +108,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
       page.source should include( """<a id="enterAddressManuallyButton" href""")
     }
@@ -112,7 +116,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
@@ -120,7 +123,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-
       page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
@@ -166,7 +168,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         .vehicleDetails()
       go to PrivateKeeperDetailsPage
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
-
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
@@ -178,7 +179,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         .vehicleDetails()
       go to BusinessKeeperDetailsPage
       BusinessKeeperDetailsPage.submitPostcodeWithoutAddresses
-
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
@@ -226,9 +226,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-
       click on back
-
       page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
@@ -236,9 +234,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-
       click on back
-
       page.title should equal(BusinessKeeperDetailsPage.title)
     }
   }
@@ -247,27 +243,21 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
-
       happyPath
-
-        page.title should equal(CompleteAndConfirmPage.title)
-      }
+      page.title should equal(VehicleTaxOrSornPage.title)
+    }
 
     "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
-
       happyPath
-
-      page.title should equal(CompleteAndConfirmPage.title)
+      page.title should equal(VehicleTaxOrSornPage.title)
       }
 
     "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
-
       sadPath
-
       ErrorPanel.numberOfErrors should equal(1)
     }
 
@@ -275,9 +265,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
-
       sadPath
-
       ErrorPanel.numberOfErrors should equal(1)
     }
   }
