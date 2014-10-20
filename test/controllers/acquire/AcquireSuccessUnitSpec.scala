@@ -29,6 +29,7 @@ import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 
 class AcquireSuccessUnitSpec extends UnitSpec {
 
@@ -160,6 +161,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
         withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireSuccess.finish(request)
@@ -172,9 +174,10 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleTaxOrSornCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
 
-        cookies.find(_.name == TraderDetailsCacheKey) should be(None)
+        cookies.find(_.name == TraderDetailsCacheKey) should not be(None)
       }
     }
 

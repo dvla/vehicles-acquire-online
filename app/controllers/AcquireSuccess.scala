@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import models.AcquireCompletionViewModel
 import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
 import models.CompleteAndConfirmFormModel
@@ -15,9 +16,10 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import common.model.{TraderDetailsModel, VehicleDetailsModel}
+import common.model.VehicleDetailsModel
 import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
+import models.AllCacheKeys
 
 final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -46,7 +48,8 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
         CompleteAndConfirmCacheKey,
         PrivateKeeperDetailsCacheKey,
         BusinessKeeperDetailsCacheKey,
-        AcquireCompletionCacheKey
+        AcquireCompletionCacheKey,
+        VehicleTaxOrSornCacheKey
       ))
     result getOrElse {
       Logger.warn("missing cookies in cache.")
@@ -56,14 +59,6 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
 
   def finish = Action { implicit request =>
     Redirect(routes.BeforeYouStart.present())
-      .discardingCookies(Set(
-      NewKeeperDetailsCacheKey,
-      VehicleLookupDetailsCacheKey,
-      VehicleLookupFormModelCacheKey,
-      CompleteAndConfirmCacheKey,
-      PrivateKeeperDetailsCacheKey,
-      BusinessKeeperDetailsCacheKey,
-      AcquireCompletionCacheKey
-    ))
+      .discardingCookies(AllCacheKeys)
   }
 }
