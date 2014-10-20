@@ -76,28 +76,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
         (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt) match {
           case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
-            if (config.isMicroserviceIntegrationEnabled){
             acquireAction (validForm,
                            newKeeperDetails,
                            vehicleLookup,
                            vehicleDetails,
                            traderDetails,
-                           request.cookies.trackingId())}
-            else {
-              Future.successful {
-                Logger.debug("Microservice integration is disabled")
-                val transactionTimestamp = dateService.now.toDateTime
-
-                val acquireModel = AcquireCompletionViewModel(vehicleDetails,
-                  traderDetails,
-                  newKeeperDetails,
-                  validForm,
-                  "12345",
-                  transactionTimestamp)
-
-                Redirect(routes.AcquireSuccess.present()).withCookie(acquireModel)
-              }
-            }
+                           request.cookies.trackingId())
           case (_, _, _, None) => Future.successful {
             Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
             Redirect(routes.SetUpTradeDetails.present())
