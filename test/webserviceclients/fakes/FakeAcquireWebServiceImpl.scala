@@ -9,7 +9,7 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberVal
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class FakeAcquireWebServiceImpl extends AcquireWebService {
+class FakeAcquireWebServiceImpl extends AcquireWebService {
   import FakeAcquireWebServiceImpl._
 
   override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = Future.successful {

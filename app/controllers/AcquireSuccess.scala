@@ -5,7 +5,7 @@ import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
-import models.{AcquireCompletionViewModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AllCacheKeys}
+import models.{VehicleTaxOrSornFormModel, AcquireCompletionViewModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AllCacheKeys}
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
@@ -26,12 +26,13 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
       request.cookies.getModel[CompleteAndConfirmFormModel],
+      request.cookies.getModel[VehicleTaxOrSornFormModel],
       request.cookies.getModel[CompleteAndConfirmResponseModel]
       ) match {
       case (Some(vehicleDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
-      Some(completeAndConfirmModel), Some(responseModel)) =>
+      Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleDetailsModel,
-          traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, responseModel)))
+          traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
       case _ => {
         Logger.warn("Missing cookies in cache. Acquire was successful, however cannot display success page. " +
           "Redirecting to BeforeYouStart")

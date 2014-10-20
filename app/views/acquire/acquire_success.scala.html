@@ -53,6 +53,16 @@
             <li><b>@viewModel.vehicleDetails.vehicleMake</b></li>
             <li>@Messages("acquire_success.vehicle_details.model")</li>
             <li><b>@viewModel.vehicleDetails.vehicleModel</b></li>
+            <li>@Messages("acquire_success.vehicle_details.taxOrSorn")</li>
+
+            @if(viewModel.vehicleSorn.sornVehicle == None) {
+            <li><b>@Messages("acquire_success.vehicle_details.sornNotEntered")</b></li>
+            } else {
+            <li>
+                <b>@Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))</b>
+                <p>@Messages("acquire_success.vehicle_details.sornEntered.p1")</p>
+            </li>
+            }
             <li>@Messages("acquire_success.vehicle_details.mileage")</li>
             @if(viewModel.completeAndConfirmDetails.mileage == None) {
             <li><b>@Messages("acquire_success.vehicle_details.mileage_not_entered")</b></li>

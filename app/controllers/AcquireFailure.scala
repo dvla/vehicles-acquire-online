@@ -17,7 +17,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicit
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
-import models.{CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AcquireCompletionViewModel}
+import models.{VehicleTaxOrSornFormModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AcquireCompletionViewModel}
 
 final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -27,17 +27,16 @@ final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: Client
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
       request.cookies.getModel[CompleteAndConfirmFormModel],
-      request.cookies.getModel[CompleteAndConfirmResponseModel]) match {
+      request.cookies.getModel[VehicleTaxOrSornFormModel],
+      request.cookies.getModel[CompleteAndConfirmResponseModel]
+      ) match {
       case (Some(vehicleDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
-      Some(completeAndConfirmModel), Some(responseModel)) =>
-        Ok(views.html.acquire.acquire_failure(AcquireCompletionViewModel(vehicleDetailsModel, traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, responseModel)))
+      Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
+        Ok(views.html.acquire.acquire_failure(AcquireCompletionViewModel(vehicleDetailsModel,
+          traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
       case _ => {
-        Logger.warn("missing cookies in cache. Acquire failed, however cannot display failure page")
-        println(request.cookies.getModel[VehicleDetailsModel])
-          println(request.cookies.getModel[TraderDetailsModel])
-          println(request.cookies.getModel[NewKeeperDetailsViewModel])
-          println(request.cookies.getModel[CompleteAndConfirmFormModel])
-          println(request.cookies.getModel[CompleteAndConfirmResponseModel])
+        Logger.warn("Missing cookies in cache. Acquire was failed, however cannot display failure page. " +
+          "Redirecting to BeforeYouStart")
         Redirect(routes.BeforeYouStart.present())
       }
     }

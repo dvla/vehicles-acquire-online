@@ -137,7 +137,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
       val acquireSuccess = acquireController(acquireWebService =
         acquireWebService(acquireServiceResponse = Some(acquireResponseApplicationBeingProcessed)))
@@ -153,7 +154,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
       val acquireSuccess = acquireController(acquireWebService =
         acquireWebService(acquireServiceResponse = Some(acquireResponseApplicationBeingProcessed)))

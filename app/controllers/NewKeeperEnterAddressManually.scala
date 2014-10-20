@@ -17,7 +17,7 @@ import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
 import models.NewKeeperDetailsViewModel.createNewKeeper
 
-final class NewKeeperEnterAddressManually @Inject()()
+class NewKeeperEnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends Controller {
 
@@ -32,10 +32,39 @@ final class NewKeeperEnterAddressManually @Inject()()
   private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. " +
     "Now redirecting to vehicle lookup"
 
-  private def switch[R](request: Request[AnyContent],
-                        onPrivate: PrivateKeeperDetailsFormModel => R,
+  def present = Action { implicit request =>
+    switch(
+      privateKeeperDetails => openView(privateKeeperDetails.postcode),
+      businessKeeperDetails => openView(businessKeeperDetails.postcode),
+      message => error(message)
+    )
+  }
+
+  def submit = Action { implicit request =>
+    form.bindFromRequest.fold(
+      invalidForm =>
+        switch(
+          privateKeeperDetails =>
+            handleInvalidForm(invalidForm, privateKeeperDetails.postcode),
+          businessKeeperDetails =>
+            handleInvalidForm(invalidForm, businessKeeperDetails.postcode),
+          message => error(message)
+        ),
+      validForm =>
+        switch(
+          privateKeeperDetails =>
+            handleValidForm(validForm, privateKeeperDetails.postcode),
+          businessKeeperDetails =>
+            handleValidForm(validForm, businessKeeperDetails.postcode),
+          message => error(message)
+        )
+    )
+  }
+
+  private def switch[R](onPrivate: PrivateKeeperDetailsFormModel => R,
                         onBusiness: BusinessKeeperDetailsFormModel => R,
-                        onError: String => R): R = {
+                        onError: String => R)
+                       (implicit request: Request[AnyContent]): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
@@ -44,19 +73,6 @@ final class NewKeeperEnterAddressManually @Inject()()
       case (_, Some(businessKeeperDetails)) => onBusiness(businessKeeperDetails)
       case _ => onError(KeeperDetailsNotInCacheMessage)
     }
-  }
-
-  private def error(message: String): Result = {
-    Logger.error(message)
-    Redirect(routes.VehicleLookup.present())
-  }
-
-  def present = Action { implicit request =>
-    switch(request,
-      { privateKeeperDetails => openView(privateKeeperDetails.postcode) },
-      { businessKeeperDetails => openView(businessKeeperDetails.postcode) },
-      message => error(message)
-    )
   }
 
   private def openView(postcode: String)
@@ -69,6 +85,11 @@ final class NewKeeperEnterAddressManually @Inject()()
         ))
       case _ => error(VehicleDetailsNotInCacheMessage)
     }
+  }
+
+  private def error(message: String): Result = {
+    Logger.error(message)
+    Redirect(routes.VehicleLookup.present())
   }
 
   private def handleInvalidForm(invalidForm: Form[NewKeeperEnterAddressManuallyFormModel],
@@ -84,35 +105,18 @@ final class NewKeeperEnterAddressManually @Inject()()
     }
   }
 
-  def submit = Action { implicit request =>
-    form.bindFromRequest.fold(
-      invalidForm =>
-        switch(request,
-          { privateKeeperDetails => handleInvalidForm(invalidForm, privateKeeperDetails.postcode) },
-          { businessKeeperDetails => handleInvalidForm(invalidForm, businessKeeperDetails.postcode) },
-          message => error(message)
-        ),
-      validForm =>
-        switch(request,
-        { privateKeeperDetails => {
-          val keeperAddress = AddressModel.from(validForm.addressAndPostcodeModel, privateKeeperDetails.postcode)
-          createNewKeeper(keeperAddress) match {
-            case Some(keeperDetails) => Redirect(routes.VehicleTaxOrSorn.present()).withCookie(validForm).withCookie(keeperDetails)
-            case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
-          }
-        }
-        },
-        { businessKeeperDetails => {
-          val keeperAddress = AddressModel.from(validForm.addressAndPostcodeModel, businessKeeperDetails.postcode)
-            createNewKeeper(keeperAddress) match {
-            case Some(keeperDetails) => Redirect(routes.VehicleTaxOrSorn.present()).withCookie(validForm).withCookie(keeperDetails)
-            case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
-          }
-        }
-        },
-        message => error(message)
-        )
-    )
+  private def handleValidForm(validForm: NewKeeperEnterAddressManuallyFormModel, postcode: String)
+                             (implicit request: Request[_]): Result = {
+    createNewKeeper(AddressModel.from(
+      validForm.addressAndPostcodeModel,
+      postcode
+    )) match {
+      case Some(keeperDetails) =>
+        Redirect(routes.VehicleTaxOrSorn.present()).
+          withCookie(validForm).
+          withCookie(keeperDetails)
+      case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
+    }
   }
 
   private def formWithReplacedErrors(form: Form[NewKeeperEnterAddressManuallyFormModel]) =
