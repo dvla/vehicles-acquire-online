@@ -15,6 +15,7 @@ case class CompleteAndConfirmFormModel(mileage: Option[Int],
 object CompleteAndConfirmFormModel {
   implicit val JsonFormat = Json.format[CompleteAndConfirmFormModel]
   final val CompleteAndConfirmCacheKey = "completeAndConfirm"
+  final val CompleteAndConfirmCacheTransactionIdCacheKey = "completeAndConfirmTransactionId"
   implicit val Key = CacheKey[CompleteAndConfirmFormModel](CompleteAndConfirmCacheKey)
 
   object Form {

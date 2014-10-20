@@ -6,9 +6,8 @@ import helpers.common.CookieHelper
 import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import helpers.UnitSpec
 import org.mockito.Mockito.when
-import pages.acquire.CompleteAndConfirmPage
+import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
 import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.acquire.VehicleLookupPage
 import pages.common.UprnNotFoundPage
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
@@ -108,23 +107,23 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to complete and confirm page after a valid submit for private keeper" in new WithApplication {
+    "redirect to vehicle tax or sorn page after a valid submit for private keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-          r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
+          r.header.headers.get(LOCATION) should equal(Some(VehicleTaxOrSornPage.address))
       }
     }
 
-    "redirect to complete and confirm page after a valid submit for business keeper" in new WithApplication {
+    "redirect to vehicle tax or sorn page after a valid submit for business keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperChooseYourAddressWithUprnFound.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleTaxOrSornPage.address))
       }
     }
 

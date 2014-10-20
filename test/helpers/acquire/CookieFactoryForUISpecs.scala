@@ -6,16 +6,12 @@ import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.SetupTradeDetailsFormModel
-import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyFormModel
-import models.VehicleLookupFormModel
-import models.PrivateKeeperDetailsFormModel
-import models.BusinessKeeperDetailsFormModel
-import models.NewKeeperDetailsViewModel
-import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.{CompleteAndConfirmResponseModel, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
-import org.joda.time.LocalDate
+import models.VehicleTaxOrSornFormModel
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
+import org.joda.time.{DateTime, LocalDate}
 import org.openqa.selenium.Cookie
 import org.openqa.selenium.WebDriver
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
@@ -41,8 +37,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
-import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionIdValid, TransactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -211,8 +206,25 @@ object CookieFactoryForUISpecs {
       address = address,
       email = email,
       isBusinessKeeper = isBusinessKeeper,
-      displayName = businessName.getOrElse(title + " " + firstName + " " + lastName)
+      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
     )
+    addCookie(key, value)
+    this
+  }
+
+  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)
+                               (implicit webDriver: WebDriver) = {
+    val key = VehicleTaxOrSornCacheKey
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
+    addCookie(key, value)
+    this
+  }
+
+  def completeAndConfirmResponseModelModel(id: String = TransactionIdValid,
+                                            timestamp: DateTime = TransactionTimestampValid)
+                                           (implicit webDriver: WebDriver) = {
+    val key = AcquireCompletionResponseCacheKey
+    val value = CompleteAndConfirmResponseModel(id, timestamp)
     addCookie(key, value)
     this
   }

@@ -27,6 +27,8 @@ import common.webserviceclients.vehiclelookup.VehicleLookupWebService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
+import uk.gov.dvla.vehicles.presentation.common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
+import webserviceclients.acquire.{AcquireWebService, AcquireService, AcquireServiceImpl, AcquireWebServiceImpl}
 
 /**
  * Provides real implementations of traits
@@ -56,9 +58,13 @@ object DevModule extends ScalaModule {
     bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
     bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
 
+    bind[AcquireWebService].to[AcquireWebServiceImpl].asEagerSingleton()
+    bind[AcquireService].to[AcquireServiceImpl].asEagerSingleton()
+
     bind[BruteForcePreventionWebService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.WebServiceImpl].asEagerSingleton()
     bind[BruteForcePreventionService].to[BruteForcePreventionServiceImpl].asEagerSingleton()
 
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))
+    bind[DateTimeZoneService].toInstance(new DateTimeZoneServiceImpl)
   }
 }

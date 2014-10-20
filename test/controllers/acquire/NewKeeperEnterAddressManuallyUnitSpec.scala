@@ -7,7 +7,7 @@ import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.{UnitSpec, WithApplication}
 import org.mockito.Mockito.when
-import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
+import pages.acquire.{VehicleTaxOrSornPage, CompleteAndConfirmPage, VehicleLookupPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
@@ -98,7 +98,7 @@ final class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to complete and confirm after a valid submission of mandatory fields" in new WithApplication {
+    "redirect to vehicle tax or sorn after a valid submission of mandatory fields" in new WithApplication {
       val request = FakeRequest().withFormUrlEncodedBody(
         s"$AddressAndPostcodeId.$AddressLinesId.$BuildingNameOrNumberId" -> BuildingNameOrNumberValid,
         s"$AddressAndPostcodeId.$AddressLinesId.$PostTownId" -> PostTownValid,
@@ -107,11 +107,11 @@ final class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperEnterAddressManually.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleTaxOrSornPage.address))
       }
     }
 
-    "redirect to complete and confirm after a valid submission of all fields" in new WithApplication {
+    "redirect to vehicle tax or sorn after a valid submission of all fields" in new WithApplication {
       val request = FakeRequest().withFormUrlEncodedBody(
         s"$AddressAndPostcodeId.$AddressLinesId.$BuildingNameOrNumberId" -> BuildingNameOrNumberValid,
         s"$AddressAndPostcodeId.$AddressLinesId.$Line2Id" -> Line2Valid,
@@ -122,7 +122,7 @@ final class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = newKeeperEnterAddressManually.submit(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(CompleteAndConfirmPage.address))
+        r.header.headers.get(LOCATION) should equal(Some(VehicleTaxOrSornPage.address))
       }
     }
 

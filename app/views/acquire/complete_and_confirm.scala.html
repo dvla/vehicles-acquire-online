@@ -15,12 +15,21 @@
 @import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
 @main(
-    progress = Some(Messages("acquire_progress_7")),
+    progress = Some(Messages("acquire_progress_8")),
     title = Messages("acquire_completeAndConfirm.title"),
     currentForm = Some(data.form)
 ) {
     <div class="two-col clearfix">
         <div class="first-col">
+            <h2>@Messages("acquire_completeandconfirm.taxOrSorn")</h2>
+            <dl class="playback">
+                <dt>@Messages("acquire_completeandconfirm.sorn")</dt>
+                @if(data.vehicleSorn.sornVehicle == None) {
+                    <dd>@Messages("acquire_completeandconfirm.sornNotEntered")</dd>
+                } else {
+                    <dd>@Messages("acquire_completeandconfirm.sornEntered")</dd>
+                }
+            </dl>
             <h2>@Messages("acquire_completeandconfirm.newkeeperDetails")</h2>
             <dl class="playback">
                 <dt>@Messages("acquire_completeandconfirm.displayName")</dt>
@@ -96,10 +105,14 @@
                 )
 
                 <div class="form-steps">
-                    <button id="@SubmitId" type="submit" name="action" class="button">
+                    <button id="@SubmitId"
+                        type="submit"
+                        name="action"
+                        class="button">
                         @Messages("acquire_completeAndConfirm.submitbutton")
                     </button>
-                    <a id="@BackId" href="@controllers.routes.CompleteAndConfirm.back()" class="button-secondary">
+
+                    <a id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.present()" class="button-secondary">
                         @Messages("acquire_completeAndConfirm.backbutton")
                     </a>
                 </div>
