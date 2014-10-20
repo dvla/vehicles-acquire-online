@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
@@ -17,20 +17,29 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicit
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
-import models.{CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AcquireCompletionViewModel}
+import models.{CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AcquireCompletionViewModel}
 
 final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
-    val result = for {
-      acquireCompletionViewModel <- request.cookies.getModel[AcquireCompletionViewModel]
-    } yield
-      Ok(views.html.acquire.acquire_failure(acquireCompletionViewModel))
-
-    result getOrElse {
-      Logger.warn("missing cookies in cache. Acquire failed, however cannot display failure page")
-      Redirect(routes.BeforeYouStart.present())
+    (request.cookies.getModel[VehicleDetailsModel],
+      request.cookies.getModel[TraderDetailsModel],
+      request.cookies.getModel[NewKeeperDetailsViewModel],
+      request.cookies.getModel[CompleteAndConfirmFormModel],
+      request.cookies.getModel[CompleteAndConfirmResponseModel]) match {
+      case (Some(vehicleDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
+      Some(completeAndConfirmModel), Some(responseModel)) =>
+        Ok(views.html.acquire.acquire_failure(AcquireCompletionViewModel(vehicleDetailsModel, traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, responseModel)))
+      case _ => {
+        Logger.warn("missing cookies in cache. Acquire failed, however cannot display failure page")
+        println(request.cookies.getModel[VehicleDetailsModel])
+          println(request.cookies.getModel[TraderDetailsModel])
+          println(request.cookies.getModel[NewKeeperDetailsViewModel])
+          println(request.cookies.getModel[CompleteAndConfirmFormModel])
+          println(request.cookies.getModel[CompleteAndConfirmResponseModel])
+        Redirect(routes.BeforeYouStart.present())
+      }
     }
   }
 
@@ -45,7 +54,7 @@ final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: Client
         CompleteAndConfirmCacheKey,
         PrivateKeeperDetailsCacheKey,
         BusinessKeeperDetailsCacheKey,
-        AcquireCompletionCacheKey
+        AcquireCompletionResponseCacheKey
       ))
     result getOrElse {
       Logger.warn("missing cookies in cache.")
@@ -62,7 +71,7 @@ final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: Client
         CompleteAndConfirmCacheKey,
         PrivateKeeperDetailsCacheKey,
         BusinessKeeperDetailsCacheKey,
-        AcquireCompletionCacheKey
+      AcquireCompletionResponseCacheKey
       ))
   }
 }

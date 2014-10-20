@@ -12,7 +12,6 @@ import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
-import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 
@@ -55,7 +54,7 @@ package object models {
     VehicleTaxOrSornCacheKey,
     NewKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
-    AcquireCompletionCacheKey
+    VehicleLookupResponseCodeCacheKey
   )
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page

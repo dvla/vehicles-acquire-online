@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.AcquireCompletionViewModel
+import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmViewModel
 import models.NewKeeperDetailsViewModel
@@ -137,12 +137,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
           Some(Redirect(nextPage(httpResponseCode, response))).
-          map(_.withCookie(AcquireCompletionViewModel(vehicleDetails,
-                                                      traderDetails,
-                                                      newKeeperDetailsView,
-                                                      completeAndConfirmForm,
-                                                      response.get.transactionId,
-                                                      transactionTimestamp))).
+            map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp))).
+            map(_.withCookie(completeAndConfirmForm)).
           get
     }.recover {
       case e: Throwable =>
