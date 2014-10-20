@@ -263,11 +263,13 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       MonthDateOfSaleValid.toInt,
       DayDateOfSaleValid.toInt), "")
 
+    val vehicleSorn = VehicleTaxOrSornFormModel(sornVehicle = Some("true"))
 
     val value = AcquireCompletionViewModel(vehicleDetails,
         traderDetails,
         newKeeperDetailsView,
         completeAndConfirmForm,
+        vehicleSorn,
         TransactionIdValid,
         TransactionTimestampValid
     )

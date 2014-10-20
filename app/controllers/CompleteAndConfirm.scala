@@ -74,15 +74,17 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
         val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
         val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
-        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
+        val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt, vehicleSornOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(vehicleSorn)) =>
             acquireAction (validForm,
                            newKeeperDetails,
                            vehicleLookup,
                            vehicleDetails,
                            traderDetails,
+                           vehicleSorn,
                            request.cookies.trackingId())
-          case (_, _, _, None) => Future.successful {
+          case (_, _, _, _, None) => Future.successful {
             Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
             Redirect(routes.SetUpTradeDetails.present())
           }
@@ -126,6 +128,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                             vehicleLookup: VehicleLookupFormModel,
                             vehicleDetails: VehicleDetailsModel,
                             traderDetails: TraderDetailsModel,
+                            vehicleSorn: VehicleTaxOrSornFormModel,
                             trackingId: String)
                            (implicit request: Request[AnyContent]): Future[Result] = {
 
@@ -141,6 +144,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                                                       traderDetails,
                                                       newKeeperDetailsView,
                                                       completeAndConfirmForm,
+                                                      vehicleSorn,
                                                       response.get.transactionId,
                                                       transactionTimestamp))).
           get

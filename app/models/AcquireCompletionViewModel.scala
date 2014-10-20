@@ -9,6 +9,7 @@ final case class AcquireCompletionViewModel(vehicleDetails: VehicleDetailsModel,
                                             traderDetails: TraderDetailsModel,
                                             newKeeperDetails: NewKeeperDetailsViewModel,
                                             completeAndConfirmDetails: CompleteAndConfirmFormModel,
+                                            vehicleSorn: VehicleTaxOrSornFormModel,
                                             transactionId: String,
                                             transactionTimestamp: DateTime)
 

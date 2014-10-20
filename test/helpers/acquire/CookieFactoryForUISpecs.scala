@@ -232,10 +232,13 @@ object CookieFactoryForUISpecs {
 
     val completeAndConfirmForm = CompleteAndConfirmFormModel(None, new LocalDate(), "")
 
+    val vehicleSorn = VehicleTaxOrSornFormModel(sornVehicle = Some("true"))
+
     val value = AcquireCompletionViewModel(vehicleDetails,
       traderDetails,
       newKeeperDetailsView,
       completeAndConfirmForm,
+      vehicleSorn,
       TransactionIdValid,
       TransactionTimestampValid
     )
