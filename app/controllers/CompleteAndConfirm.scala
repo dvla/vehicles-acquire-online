@@ -65,7 +65,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
               CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
             )
           case _ =>
-            Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")
+            Logger.error("Could not find expected data in cache on dispose submit - now redirecting...")
             Redirect(routes.VehicleLookup.present())
         }
       },
@@ -85,8 +85,17 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                            request.cookies.trackingId())}
             else {
               Future.successful {
-                Logger.error("Microservice integration is disabled")
-                Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
+                Logger.debug("Microservice integration is disabled")
+                val transactionTimestamp = dateService.now.toDateTime
+
+                val acquireModel = AcquireCompletionViewModel(vehicleDetails,
+                  traderDetails,
+                  newKeeperDetails,
+                  validForm,
+                  "12345",
+                  transactionTimestamp)
+
+                Redirect(routes.AcquireSuccess.present()).withCookie(acquireModel)
               }
             }
           case (_, _, _, None) => Future.successful {
@@ -94,7 +103,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
             Redirect(routes.SetUpTradeDetails.present())
           }
           case _ => Future.successful {
-            Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")
+            Logger.error("Could not find expected data in cache on dispose submit - now redirecting...")
             Redirect(routes.VehicleLookup.present())
           }
         }
