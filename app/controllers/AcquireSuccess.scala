@@ -32,7 +32,8 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       Ok(views.html.acquire.acquire_success(acquireCompletionViewModel))
 
     result getOrElse {
-      Logger.warn("missing cookies in cache. Acquire successful, however cannot display success page")
+      Logger.warn("Missing cookies in cache. Acquire was successful, however cannot display success page. " +
+        "Redirecting to BeforeYouStart")
       Redirect(routes.BeforeYouStart.present())
     }
   }
@@ -52,7 +53,7 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
         VehicleTaxOrSornCacheKey
       ))
     result getOrElse {
-      Logger.warn("missing cookies in cache.")
+      Logger.warn("Missing cookies in cache. Redirecting to BeforeYouStart")
       Redirect(routes.BeforeYouStart.present())
     }
   }
