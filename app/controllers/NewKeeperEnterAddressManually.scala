@@ -95,37 +95,19 @@ final class NewKeeperEnterAddressManually @Inject()()
       validForm =>
         switch(request,
         { privateKeeperDetails => {
-          val keeperAddress = AddressModel.from(
-            validForm.addressAndPostcodeModel,
-            privateKeeperDetails.postcode
-          )
-
+          val keeperAddress = AddressModel.from(validForm.addressAndPostcodeModel, privateKeeperDetails.postcode)
           createNewKeeper(keeperAddress) match {
-            case Some(keeperDetails) => {
-              Redirect(routes.VehicleTaxOrSorn.present()).
-                withCookie(validForm).
-                withCookie(keeperDetails)
-            }
+            case Some(keeperDetails) => Redirect(routes.VehicleTaxOrSorn.present()).withCookie(validForm).withCookie(keeperDetails)
             case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
           }
-
         }
         },
         { businessKeeperDetails => {
-          val keeperAddress = AddressModel.from(
-            validForm.addressAndPostcodeModel,
-            businessKeeperDetails.postcode
-          )
-
+          val keeperAddress = AddressModel.from(validForm.addressAndPostcodeModel, businessKeeperDetails.postcode)
             createNewKeeper(keeperAddress) match {
-            case Some(keeperDetails) => {
-              Redirect(routes.VehicleTaxOrSorn.present()).
-                withCookie(validForm).
-                withCookie(keeperDetails)
-            }
+            case Some(keeperDetails) => Redirect(routes.VehicleTaxOrSorn.present()).withCookie(validForm).withCookie(keeperDetails)
             case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
           }
-
         }
         },
         message => error(message)
