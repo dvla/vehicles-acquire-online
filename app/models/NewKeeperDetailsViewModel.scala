@@ -1,17 +1,14 @@
 package models
 
-import controllers.routes
-import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.AddressModel
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
 import org.joda.time.LocalDate
-import play.api.mvc.{Result, Request}
-import play.api.mvc.Results.Redirect
-
+import play.api.i18n.Messages
+import play.api.libs.json.Json
+import play.api.mvc.Request
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.{CacheKey, ClientSideSessionFactory}
+import common.clientsidesession.CookieImplicits.RichCookies
+import common.model.AddressModel
+import common.mappings.{TitlePickerString, TitleType}
 
 final case class NewKeeperDetailsViewModel(title: Option[TitleType],
                                            firstName: Option[String],
@@ -37,7 +34,7 @@ object NewKeeperDetailsViewModel {
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
 
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
-      case (Some(privateKeeperDetails), _) => {
+      case (Some(privateKeeperDetails), _) =>
         Some(NewKeeperDetailsViewModel(
           title = Some(privateKeeperDetails.title),
           firstName = Some(privateKeeperDetails.firstName),
@@ -49,10 +46,9 @@ object NewKeeperDetailsViewModel {
           businessName = None,
           fleetNumber = None,
           isBusinessKeeper = false,
-          displayName = getTitle(privateKeeperDetails.title) + " " +  privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName
+          displayName = s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}"
         ))
-      }
-      case (_, Some(businessKeeperDetails))  => {
+      case (_, Some(businessKeeperDetails))  =>
         Some(NewKeeperDetailsViewModel(
           title = None,
           firstName = None,
@@ -66,17 +62,12 @@ object NewKeeperDetailsViewModel {
           isBusinessKeeper = true,
           displayName = businessKeeperDetails.businessName
         ))
-      }
       case _ => None
     }
   }
 
   def getTitle(title: TitleType ): String = {
-    title.titleType match {
-      case 1 => "Mr"
-      case 2 => "Mrs"
-      case 3 => "Miss"
-      case _ => title.other
-    }
+    if (title.titleType > 0 && title.titleType < 4) Messages(TitlePickerString.standardOptions(title.titleType - 1))
+    else title.other
   }
 }

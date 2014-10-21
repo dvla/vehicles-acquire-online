@@ -63,13 +63,6 @@ object PrivateKeeperDetailsFormModel {
       name = "constraint.validLastName",
       error = "error.validLastName")
 
-    val titleOptions = Seq(
-      ("firstOption", "Mr"),
-      ("secondOption", "Mrs"),
-      ("thirdOption", "Miss"),
-      ("fourthOption", "Other")
-    )
-
     final val Mapping = mapping(
       TitleId -> TitlePickerString.mapping,
       FirstNameId -> firstNameMapping,

@@ -5,7 +5,7 @@ import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 
 final case class CompleteAndConfirmResponseModel(transactionId: String,
-                                                transactionTimestamp: DateTime)
+                                                 transactionTimestamp: DateTime)
 
 object CompleteAndConfirmResponseModel {
   implicit val JsonFormat = Json.format[CompleteAndConfirmResponseModel]

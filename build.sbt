@@ -1,6 +1,5 @@
 import de.johoop.jacoco4sbt.JacocoPlugin._
 import org.scalastyle.sbt.ScalastylePlugin
-import templemore.sbt.cucumber.CucumberPlugin
 import Sandbox.runMicroServicesTask
 import Sandbox.sandboxTask
 import Sandbox.runAsyncTask
@@ -35,6 +34,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala, SassPlugin, SbtW
 lazy val acceptanceTestsProject = Project("acceptance-tests", file("acceptance-tests"))
   .dependsOn(root % "test->test")
   .disablePlugins(PlayScala, SassPlugin, SbtWeb)
+  .settings(net.virtualvoid.sbt.graph.Plugin.graphSettings:_*)
 
 libraryDependencies ++= Seq(
   cache,
@@ -51,21 +51,12 @@ libraryDependencies ++= Seq(
   "com.tzavellas" % "sse-guice" % "0.7.1" withSources() withJavadoc(), // Scala DSL for Guice
   "commons-codec" % "commons-codec" % "1.9" withSources() withJavadoc(),
   "org.apache.httpcomponents" % "httpclient" % "4.3.4" withSources() withJavadoc(),
-  "org.webjars" % "requirejs" % "2.1.14-1")
+  "org.webjars" % "requirejs" % "2.1.14-1",
+  "junit" % "junit" % "4.11",
+  "junit" % "junit-dep" % "4.11"
+)
 
 pipelineStages := Seq(rjs, digest, gzip)
-
-CucumberPlugin.cucumberSettings ++
-  Seq (
-    CucumberPlugin.cucumberFeaturesLocation := "./test/acceptance/acquire/",
-    CucumberPlugin.cucumberStepsBasePackage := "helpers.steps",
-    CucumberPlugin.cucumberJunitReport := false,
-    CucumberPlugin.cucumberHtmlReport := false,
-    CucumberPlugin.cucumberPrettyReport := false,
-    CucumberPlugin.cucumberJsonReport := false,
-    CucumberPlugin.cucumberStrict := true,
-    CucumberPlugin.cucumberMonochrome := false
-  )
 
 val myTestOptions =
   if (System.getProperty("include") != null ) {

@@ -32,32 +32,28 @@ class NewKeeperEnterAddressManually @Inject()()
   private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. " +
     "Now redirecting to vehicle lookup"
 
-  def present = Action { implicit request =>
-    switch(
-      privateKeeperDetails => openView(privateKeeperDetails.postcode),
-      businessKeeperDetails => openView(businessKeeperDetails.postcode),
-      message => error(message)
-    )
-  }
+  def present = Action { implicit request => switch(
+    privateKeeperDetails => openView(privateKeeperDetails.postcode),
+    businessKeeperDetails => openView(businessKeeperDetails.postcode),
+    message => error(message)
+  )}
 
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm =>
-        switch(
-          privateKeeperDetails =>
-            handleInvalidForm(invalidForm, privateKeeperDetails.postcode),
-          businessKeeperDetails =>
-            handleInvalidForm(invalidForm, businessKeeperDetails.postcode),
-          message => error(message)
-        ),
-      validForm =>
-        switch(
-          privateKeeperDetails =>
-            handleValidForm(validForm, privateKeeperDetails.postcode),
-          businessKeeperDetails =>
-            handleValidForm(validForm, businessKeeperDetails.postcode),
-          message => error(message)
-        )
+      invalidForm => switch(
+        privateKeeperDetails =>
+          handleInvalidForm(invalidForm, privateKeeperDetails.postcode),
+        businessKeeperDetails =>
+          handleInvalidForm(invalidForm, businessKeeperDetails.postcode),
+        message => error(message)
+      ),
+      validForm => switch(
+        privateKeeperDetails =>
+          handleValidForm(validForm, privateKeeperDetails.postcode),
+        businessKeeperDetails =>
+          handleValidForm(validForm, businessKeeperDetails.postcode),
+        message => error(message)
+      )
     )
   }
 
@@ -88,7 +84,7 @@ class NewKeeperEnterAddressManually @Inject()()
   }
 
   private def error(message: String): Result = {
-    Logger.error(message)
+    Logger.warn(message)
     Redirect(routes.VehicleLookup.present())
   }
 

@@ -9,8 +9,8 @@ import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notI
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 
 case class CompleteAndConfirmFormModel(mileage: Option[Int],
-                                                 dateOfSale: LocalDate,
-                                                 consent: String)
+                                       dateOfSale: LocalDate,
+                                       consent: String)
 
 object CompleteAndConfirmFormModel {
   implicit val JsonFormat = Json.format[CompleteAndConfirmFormModel]

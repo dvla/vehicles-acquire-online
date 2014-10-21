@@ -52,7 +52,7 @@ class EnterAddressManually @Inject()()
             withCookie(validForm).
             withCookie(traderDetailsModel)
         case None =>
-          Logger.error("Failed to find dealer name in cache on submit, redirecting to SetUpTradeDetails")
+          Logger.warn("Failed to find dealer name in cache on submit, redirecting to SetUpTradeDetails")
           Redirect(routes.SetUpTradeDetails.present())
       }
     )
