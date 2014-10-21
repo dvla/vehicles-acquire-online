@@ -4,12 +4,12 @@ import controllers.acquire.Common.PrototypeHtml
 import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import org.joda.time.Instant
-import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import org.joda.time.Instant
 import org.mockito.Mockito.when
 import org.mockito.Matchers.any
+import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.AcquireSuccessPage
 import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
@@ -17,11 +17,11 @@ import pages.acquire.VehicleLookupPage
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 import play.api.libs.json.Json
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import uk.gov.dvla.vehicles.presentation.common.views.models.DayMonthYear
-import scala.concurrent.Future
 import utils.helpers.Config
 import webserviceclients.acquire.AcquireRequestDto
 import webserviceclients.acquire.AcquireResponseDto

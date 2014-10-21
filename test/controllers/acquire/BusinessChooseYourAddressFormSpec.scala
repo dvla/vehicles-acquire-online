@@ -2,6 +2,7 @@ package controllers.acquire
 
 import controllers.BusinessChooseYourAddress
 import helpers.UnitSpec
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
@@ -9,7 +10,6 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
-import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import utils.helpers.Config
 

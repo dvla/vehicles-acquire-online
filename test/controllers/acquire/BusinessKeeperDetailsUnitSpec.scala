@@ -1,18 +1,18 @@
 package controllers.acquire
 
-import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
-import play.api.test.WithApplication
 import controllers.acquire.Common.PrototypeHtml
-import helpers.acquire.CookieFactoryForUnitSpecs
 import controllers.BusinessKeeperDetails
+import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import org.mockito.Mockito.when
-import play.api.test.FakeRequest
+import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
+import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.FakeRequest
+import play.api.test.WithApplication
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
-import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 
 class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 

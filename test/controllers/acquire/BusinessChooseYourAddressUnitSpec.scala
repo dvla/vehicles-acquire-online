@@ -1,33 +1,33 @@
 package controllers.acquire
 
 import controllers.BusinessChooseYourAddress
+import controllers.acquire.Common.PrototypeHtml
 import helpers.common.CookieHelper
+import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
+import helpers.UnitSpec
+import org.mockito.Mockito.when
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
+import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
+import pages.common.UprnNotFoundPage
+import play.api.test.WithApplication
+import play.api.mvc.Cookies
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
+import helpers.acquire.CookieFactoryForUnitSpecs
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
+import TraderDetailsModel.TraderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
+import utils.helpers.Config
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
-import controllers.acquire.Common.PrototypeHtml
-import helpers.UnitSpec
-import play.api.test.WithApplication
-import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import TraderDetailsModel.TraderDetailsCacheKey
-import org.mockito.Mockito.when
-import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
-import play.api.mvc.Cookies
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
-import utils.helpers.Config
-import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
-import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.common.UprnNotFoundPage
 
 final class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   "present" should {

@@ -1,11 +1,11 @@
 package controllers.acquire
 
 import controllers.EnterAddressManually
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel
-import AddressLinesViewModel.Form.LineMaxLength
 import helpers.UnitSpec
 import models.EnterAddressManuallyFormModel
 import EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel
+import AddressLinesViewModel.Form.LineMaxLength
 import AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 
