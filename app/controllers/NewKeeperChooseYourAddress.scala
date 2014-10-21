@@ -36,10 +36,10 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private final val VehicleDetailsNotInCacheMessage = "Failed to find vehicle details in cache. " +
     "Now redirecting to vehicle lookup"
 
-  private def switch[R](request: Request[AnyContent],
-                        onPrivate: PrivateKeeperDetailsFormModel => R,
+  private def switch[R](onPrivate: PrivateKeeperDetailsFormModel => R,
                         onBusiness: BusinessKeeperDetailsFormModel => R,
-                        onError: String => R): R = {
+                        onError: String => R)
+                       (implicit request: Request[AnyContent]): R = {
     val privateKeeperDetailsOpt = request.cookies.getModel[PrivateKeeperDetailsFormModel]
     val businessKeeperDetailsOpt = request.cookies.getModel[BusinessKeeperDetailsFormModel]
     (privateKeeperDetailsOpt, businessKeeperDetailsOpt) match {
@@ -55,30 +55,31 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     Redirect(routes.VehicleLookup.present())
   }
 
-  def present = Action.async { implicit request => switch(
-    request = request,
-    onPrivate = { privateKeeperDetails =>
-      val session = clientSideSessionFactory.getSession(request.cookies)
-      fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
-        openView(
-          s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
-          privateKeeperDetails.postcode,
-          privateKeeperDetails.email,
-          addresses
-        )
-      }
-    },
-    onBusiness = { businessKeeperDetails =>
-      val session = clientSideSessionFactory.getSession(request.cookies)
-      fetchAddresses(businessKeeperDetails.postcode)(session, request2lang).map { addresses =>
-        openView(businessKeeperDetails.businessName,
-          businessKeeperDetails.postcode,
-          businessKeeperDetails.email,
-          addresses
-        )
-      }
-    },
-    onError = message => Future.successful(error(message)))
+  def present = Action.async { implicit request =>
+    switch(
+      privateKeeperDetails => {
+        val session = clientSideSessionFactory.getSession(request.cookies)
+        fetchAddresses(privateKeeperDetails.postcode)(session, request2lang).map { addresses =>
+          openView(
+            constructPrivateKeeperName(privateKeeperDetails),
+            privateKeeperDetails.postcode,
+            privateKeeperDetails.email,
+            addresses
+          )
+        }
+      },
+      businessKeeperDetails => {
+        val session = clientSideSessionFactory.getSession(request.cookies)
+        fetchAddresses(businessKeeperDetails.postcode)(session, request2lang).map { addresses =>
+          openView(businessKeeperDetails.businessName,
+            businessKeeperDetails.postcode,
+            businessKeeperDetails.email,
+            addresses
+          )
+        }
+      },
+      message => Future.successful(error(message))
+    )
   }
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
@@ -114,67 +115,71 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   def submit = Action.async { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm => switch(
-        request = request,
-        onPrivate = { privateKeeperDetails =>
-          implicit val session = clientSideSessionFactory.getSession(request.cookies)
-          fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-            handleInvalidForm(
-              invalidForm,
-              s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
-              privateKeeperDetails.postcode,
+      invalidForm =>
+        switch(
+          privateKeeperDetails => {
+            implicit val session = clientSideSessionFactory.getSession(request.cookies)
+            fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
+              handleInvalidForm(
+                invalidForm,
+                constructPrivateKeeperName(privateKeeperDetails),
+                privateKeeperDetails.postcode,
+                privateKeeperDetails.email,
+                addresses
+              )
+            }
+          },
+          businessKeeperDetails => {
+            implicit val session = clientSideSessionFactory.getSession(request.cookies)
+            fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
+              handleInvalidForm(
+                invalidForm,
+                businessKeeperDetails.businessName,
+                businessKeeperDetails.postcode,
+                businessKeeperDetails.email,
+                addresses
+              )
+            }
+          },
+          message => Future.successful(error(message))
+        ),
+      validForm =>
+        switch(
+          privateKeeperDetails => {
+            implicit val session = clientSideSessionFactory.getSession(request.cookies)
+            lookupUprn(
+              validForm,
+              constructPrivateKeeperName(privateKeeperDetails),
               privateKeeperDetails.email,
-              addresses
+              None,
+              isBusinessKeeper = false
             )
-          }
-        },
-        onBusiness = { businessKeeperDetails =>
-          implicit val session = clientSideSessionFactory.getSession(request.cookies)
-          fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-            handleInvalidForm(
-              invalidForm,
+          },
+          businessKeeperDetails => {
+            implicit val session = clientSideSessionFactory.getSession(request.cookies)
+            lookupUprn(
+              validForm,
               businessKeeperDetails.businessName,
-              businessKeeperDetails.postcode,
               businessKeeperDetails.email,
-              addresses
+              businessKeeperDetails.fleetNumber,
+              isBusinessKeeper = true
             )
-          }
-        },
-        onError = message => Future.successful(error(message))
-      ),
-      validForm => switch(
-        request = request,
-        onPrivate = { privateKeeperDetails =>
-          implicit val session = clientSideSessionFactory.getSession(request.cookies)
-          lookupUprn(
-            validForm,
-            s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}",
-            privateKeeperDetails.email,
-            None,
-            isBusinessKeeper = false
-          )
-        },
-        onBusiness = { businessKeeperDetails =>
-          implicit val session = clientSideSessionFactory.getSession(request.cookies)
-          lookupUprn(
-            validForm,
-            businessKeeperDetails.businessName,
-            businessKeeperDetails.email,
-            businessKeeperDetails.fleetNumber,
-            isBusinessKeeper = true
-          )
-        },
-        onError = message => Future.successful(error(message))
-      )
+          },
+          message => Future.successful(error(message))
+        )
     )
   }
 
-  def back = Action { implicit request => switch(
-    request = request,
-    onPrivate = { privateKeeperDetails => Redirect(routes.PrivateKeeperDetails.present()) },
-    onBusiness = { businessKeeperDetails => Redirect(routes.BusinessKeeperDetails.present()) },
-    onError = message => error(message)
-  )}
+  def back = Action { implicit request =>
+    switch(
+      privateKeeperDetails => Redirect(routes.PrivateKeeperDetails.present()),
+      businessKeeperDetails => Redirect(routes.BusinessKeeperDetails.present()),
+      message => error(message)
+    )
+  }
+
+  private def constructPrivateKeeperName(privateKeeperDetails: PrivateKeeperDetailsFormModel): String =
+    s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}"
 
   private def fetchAddresses(postcode: String)(implicit session: ClientSideSession, lang: Lang) =
     addressLookupService.fetchAddressesForPostcode(postcode, session.trackingId)
