@@ -47,7 +47,7 @@ object NewKeeperDetailsViewModel {
           businessName = None,
           fleetNumber = None,
           isBusinessKeeper = false,
-          displayName = getTitle(privateKeeperDetails.title) + " " +  privateKeeperDetails.firstName + " " + privateKeeperDetails.lastName
+          displayName = s"${getTitle(privateKeeperDetails.title)} ${privateKeeperDetails.firstName} ${privateKeeperDetails.lastName}"
         ))
       case (_, Some(businessKeeperDetails))  =>
         Some(NewKeeperDetailsViewModel(
