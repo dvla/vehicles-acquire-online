@@ -6,8 +6,8 @@ import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel
 import models.NewKeeperDetailsViewModel
 import models.VehicleTaxOrSornFormModel
-import play.api.Logger
 import models.{AllCacheKeys, VehicleNewKeeperCompletionCacheKeys}
+import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory

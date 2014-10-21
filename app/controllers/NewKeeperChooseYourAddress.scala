@@ -1,10 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-import play.api.Logger
-import play.api.data.{Form, FormError}
-import play.api.i18n.Lang
-import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
 import models.BusinessKeeperDetailsFormModel
@@ -12,11 +8,14 @@ import models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 import models.PrivateKeeperDetailsFormModel
+import play.api.Logger
+import play.api.data.{Form, FormError}
+import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
+import common.clientsidesession.ClientSideSessionFactory
 import common.model.VehicleDetailsModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
