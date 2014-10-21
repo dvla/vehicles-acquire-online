@@ -30,9 +30,7 @@
                 <dt>@Messages("acquire_vehiclelookup.tradernamelabel")</dt>
                 <dd>@viewModel.traderName</dd>
                 <dt>@Messages("acquire_vehiclelookup.traderaddresslabel")</dt>
-                <dd>@for(addr <- viewModel.address.dropRight(1)) {@addr<br/>}</dd>
-                <dt>@Messages("acquire_vehiclelookup.traderpostcodelabel")</dt>
-                <dd>@viewModel.address.takeRight(1)</dd>
+                <dd>@for(addr <- viewModel.address) {@addr<br/>}</dd>
                 <dt>@Messages("acquire_vehiclelookup.traderemaillabel")</dt>
                 <dd>@viewModel.email.getOrElse(Messages("acquire_email_not_entered"))</dd>
             </dl>

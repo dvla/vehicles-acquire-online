@@ -11,7 +11,7 @@ import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.model.{TraderDetailsModel, BruteForcePreventionModel}
 import utils.helpers.Config
 
-final class VrmLocked @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class VrmLocked @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                   config: Config) extends Controller {
 
   def present = Action { implicit request =>

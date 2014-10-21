@@ -1,19 +1,21 @@
 package controllers
 
 import com.google.inject.Inject
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
+import models.AcquireCompletionViewModel
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmResponseModel
+import models.NewKeeperDetailsViewModel
+import models.VehicleTaxOrSornFormModel
 import play.api.Logger
 import models.{AllCacheKeys, VehicleNewKeeperCompletionCacheKeys}
 import play.api.mvc.{Action, Controller}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleDetailsModel, TraderDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
+import common.model.{VehicleDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
-import models.{VehicleTaxOrSornFormModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AcquireCompletionViewModel}
 
-final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
@@ -28,11 +30,10 @@ final class AcquireFailure @Inject()()(implicit clientSideSessionFactory: Client
       Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_failure(AcquireCompletionViewModel(vehicleDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
-      case _ => {
+      case _ =>
         Logger.warn("Missing cookies in cache. Acquire was failed, however cannot display failure page. " +
           "Redirecting to BeforeYouStart")
         Redirect(routes.BeforeYouStart.present())
-      }
     }
   }
 

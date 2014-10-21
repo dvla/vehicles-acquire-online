@@ -2,6 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperDetailsViewModel.createNewKeeper
 import models.{NewKeeperEnterAddressManuallyViewModel, NewKeeperEnterAddressManuallyFormModel}
 import models.PrivateKeeperDetailsFormModel
 import play.api.Logger
@@ -15,7 +16,6 @@ import common.model.VehicleDetailsModel
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
-import models.NewKeeperDetailsViewModel.createNewKeeper
 
 class NewKeeperEnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,

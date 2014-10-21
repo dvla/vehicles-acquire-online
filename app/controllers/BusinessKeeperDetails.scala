@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormModel}
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
@@ -9,10 +10,9 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import models.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormModel}
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import common.views.helpers.FormExtensions.formBinding
 
-final class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(

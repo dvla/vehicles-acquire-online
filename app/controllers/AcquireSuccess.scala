@@ -1,21 +1,22 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{AllCacheKeys, VehicleNewKeeperCompletionCacheKeys}
+import models.VehicleNewKeeperCompletionCacheKeys
 import models.AcquireCompletionViewModel
-import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmResponseModel
 import models.NewKeeperDetailsViewModel
 import models.VehicleTaxOrSornFormModel
+import models.AllCacheKeys
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel}
+import common.model.{TraderDetailsModel, VehicleDetailsModel}
 import utils.helpers.Config
 
-final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
@@ -30,11 +31,10 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
-      case _ => {
+      case _ =>
         Logger.warn("Missing cookies in cache. Acquire was successful, however cannot display success page. " +
           "Redirecting to BeforeYouStart")
         Redirect(routes.BeforeYouStart.present())
-      }
     }
   }
 
