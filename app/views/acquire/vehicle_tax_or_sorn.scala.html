@@ -55,7 +55,7 @@
 
     <div class="second-col">
         <p>@Messages("acquire_vehicleTaxOrSorn.p1")</p>
-        <a href="https://www.gov.uk/tax-disc" target="_blank">
+        <a class="large" href="https://www.gov.uk/tax-disc" target="_blank">
             @Messages("acquire_vehicleTaxOrSorn.link")
         </a>
         <p>@Messages("acquire_vehicleTaxOrSorn.p2")</p>
@@ -75,7 +75,7 @@
                 <button id="@SubmitId" type="submit" name="action" class="button">
                     @Messages("acquire_vehicleTaxOrSorn.submitbutton")
                 </button>
-                <a id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.back()" class="button-secondary">
+                <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.back()">
                     @Messages("acquire_vehicleTaxOrSorn.backbutton")
                 </a>
             </div>
