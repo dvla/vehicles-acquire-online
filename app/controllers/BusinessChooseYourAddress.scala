@@ -56,7 +56,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
                 addresses))
             }
           case None => Future {
-            Logger.error("Failed to find dealer details, redirecting")
+            Logger.warn("Failed to find dealer details, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
           }
         },
@@ -66,7 +66,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
             lookupUprn(validForm, setupTradeDetailsModel.traderBusinessName, setupTradeDetailsModel.traderEmail)
           case None => Future {
-            Logger.error("Failed to find dealer details, redirecting")
+            Logger.warn("Failed to find dealer details, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
           }
         }

@@ -1,15 +1,14 @@
 package models
 
+import org.joda.time.LocalDate
 import play.api.i18n.Messages
 import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.AddressModel
-import uk.gov.dvla.vehicles.presentation.common.mappings.{TitlePickerString, TitleType}
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.RichCookies
-import org.joda.time.LocalDate
 import play.api.mvc.Request
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.{CacheKey, ClientSideSessionFactory}
+import common.clientsidesession.CookieImplicits.RichCookies
+import common.model.AddressModel
+import common.mappings.{TitlePickerString, TitleType}
 
 final case class NewKeeperDetailsViewModel(title: Option[TitleType],
                                            firstName: Option[String],

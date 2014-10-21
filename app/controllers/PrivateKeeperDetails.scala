@@ -9,7 +9,6 @@ import models.PrivateKeeperDetailsFormModel.Form.EmailId
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
 import models.PrivateKeeperDetailsFormModel.Form.LastNameId
 import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
-import models.PrivateKeeperDetailsFormModel.Form.titleOptions
 import play.api.data.{FormError, Form}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -29,7 +28,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleDetailsModel] match {
       case Some(vehicleDetails) =>
-        Ok(views.html.acquire.private_keeper_details(vehicleDetails, form.fill(), titleOptions))
+        Ok(views.html.acquire.private_keeper_details(vehicleDetails, form.fill()))
       case _ =>
         Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
@@ -64,7 +63,7 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                   PostcodeId,
                   FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
                 ).distinctErrors
-              BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors, titleOptions))
+              BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors))
             },
             validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm))
         case _ =>
