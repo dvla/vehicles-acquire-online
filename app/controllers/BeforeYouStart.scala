@@ -7,7 +7,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicit
 import utils.helpers.Config
 import models.AllCacheKeys
 
-final class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>

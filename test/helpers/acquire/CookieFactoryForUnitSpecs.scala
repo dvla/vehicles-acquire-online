@@ -2,7 +2,9 @@ package helpers.acquire
 
 import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
-import org.joda.time.LocalDate
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import org.joda.time.{DateTime, LocalDate}
+import org.openqa.selenium.WebDriver
 import pages.acquire.{HelpPage, VehicleLookupPage}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
@@ -13,7 +15,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, Addre
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import models.{AcquireCompletionViewModel, SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
+import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessKeeperDetailsFormModel
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
@@ -215,62 +217,10 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def acquireCompletionViewModel(title: Option[TitleType] = None,
-                                 firstName: Option[String] = None,
-                                 lastName: Option[String] = None,
-                                 dateOfBirth: Option[LocalDate] = None,
-                                 driverNumber: Option[String] = None,
-                                 businessName: Option[String] = None,
-                                 fleetNumber: Option[String] = None,
-                                 email: Option[String] = None,
-                                 isBusinessKeeper: Boolean = false,
-                                 uprn: Option[Long] = None,
-                                 buildingNameOrNumber: String = BuildingNameOrNumberValid,
-                                 line2: String = Line2Valid,
-                                 line3: String = Line3Valid,
-                                 postTown: String = PostTownValid,
-                                 postcode: String = PostcodeValid): Cookie = {
-
-    val key = AcquireCompletionViewModel.AcquireCompletionCacheKey
-
-    val vehicleDetails = VehicleDetailsModel(RegistrationNumberValid, VehicleMakeValid, VehicleModelValid, disposeFlag = false)
-
-    val traderDetails = TraderDetailsModel(
-      traderName = TraderBusinessNameValid,
-      traderAddress = AddressModel(
-        uprn = None,
-        address = Seq(BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid)
-      ),
-      traderEmail = Some(EmailValid)
-    )
-
-    val newKeeperDetailsView = NewKeeperDetailsViewModel(
-      title = title,
-      firstName = firstName,
-      lastName = lastName,
-      dateOfBirth = dateOfBirth,
-      driverNumber = driverNumber,
-      businessName = businessName,
-      fleetNumber = fleetNumber,
-      address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
-      email = email,
-      isBusinessKeeper = isBusinessKeeper,
-      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
-    )
-
-    val completeAndConfirmForm = CompleteAndConfirmFormModel(None, new LocalDate(
-      YearDateOfSaleValid.toInt,
-      MonthDateOfSaleValid.toInt,
-      DayDateOfSaleValid.toInt), "")
-
-
-    val value = AcquireCompletionViewModel(vehicleDetails,
-        traderDetails,
-        newKeeperDetailsView,
-        completeAndConfirmForm,
-        TransactionIdValid,
-        TransactionTimestampValid
-    )
+  def completeAndConfirmResponseModelModel(id: String = TransactionIdValid,
+                                           timestamp: DateTime = TransactionTimestampValid): Cookie = {
+    val key = AcquireCompletionResponseCacheKey
+    val value = CompleteAndConfirmResponseModel(id, timestamp)
     createCookie(key, value)
   }
 

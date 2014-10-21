@@ -3,7 +3,6 @@
         config: utils.helpers.Config)
 
 @import views.common.UprnNotFound.{ManualaddressbuttonId, SetuptradedetailsbuttonId}
-@import controllers.routes.NotImplemented
 @import views.html.acquire.main
 
 @main(
@@ -13,7 +12,7 @@
 
     <div class="form-steps">
         @* Note the reverse routing syntax for the hyperlink *@
-        <a class="button" id="@ManualaddressbuttonId" href="@controllers.routes.NotImplemented.present()">@Messages("acquire_uprnnotfound.setuptradedetailsbutton")</a>
+        <a class="button" id="@ManualaddressbuttonId" href="@controllers.routes.EnterAddressManually.present()">@Messages("acquire_uprnnotfound.setuptradedetailsbutton")</a>
         <a class="button-secondary" id="@SetuptradedetailsbuttonId" href="@controllers.routes.SetUpTradeDetails.present()">@Messages("acquire_uprnnotfound.manualaddressbutton")</a>
     </div>
 }

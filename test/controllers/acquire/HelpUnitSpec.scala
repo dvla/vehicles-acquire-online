@@ -7,15 +7,12 @@ import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.{UnitSpec, WithApplication}
 import org.mockito.Mockito.when
-import pages.acquire.BeforeYouStartPage
-import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, REFERER, contentAsString, defaultAwaitTimeout, status}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 import models.HelpCacheKey
-import controllers.acquire.Common._
 import scala.Some
 
 final class HelpUnitSpec extends UnitSpec {

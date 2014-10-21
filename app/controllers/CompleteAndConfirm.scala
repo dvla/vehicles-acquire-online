@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.AcquireCompletionViewModel
+import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmViewModel
 import models.NewKeeperDetailsViewModel
@@ -65,7 +65,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
               CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
             )
           case _ =>
-            Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")
+            Logger.error("Could not find expected data in cache on dispose submit - now redirecting...")
             Redirect(routes.VehicleLookup.present())
         }
       },
@@ -76,25 +76,18 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
         (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt) match {
           case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
-            if (config.isMicroserviceIntegrationEnabled){
             acquireAction (validForm,
                            newKeeperDetails,
                            vehicleLookup,
                            vehicleDetails,
                            traderDetails,
-                           request.cookies.trackingId())}
-            else {
-              Future.successful {
-                Logger.error("Microservice integration is disabled")
-                Redirect(routes.AcquireSuccess.present()).withCookie(validForm)
-              }
-            }
+                           request.cookies.trackingId())
           case (_, _, _, None) => Future.successful {
             Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
             Redirect(routes.SetUpTradeDetails.present())
           }
           case _ => Future.successful {
-            Logger.debug("Could not find expected data in cache on dispose submit - now redirecting...")
+            Logger.error("Could not find expected data in cache on dispose submit - now redirecting...")
             Redirect(routes.VehicleLookup.present())
           }
         }
@@ -144,12 +137,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
           Some(Redirect(nextPage(httpResponseCode, response))).
-          map(_.withCookie(AcquireCompletionViewModel(vehicleDetails,
-                                                      traderDetails,
-                                                      newKeeperDetailsView,
-                                                      completeAndConfirmForm,
-                                                      response.get.transactionId,
-                                                      transactionTimestamp))).
+            map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp))).
+            map(_.withCookie(completeAndConfirmForm)).
           get
     }.recover {
       case e: Throwable =>
@@ -191,7 +180,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       transactionTimestamp = dateTimeFormatter.print(timestamp),
       requiresSorn = false
     )
-
   }
 
   private def buildTitle (titleType: Option[TitleType]): TitleTypeDto = {

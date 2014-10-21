@@ -1,12 +1,11 @@
 package controllers.acquire
 
-import controllers.{AcquireSuccess, AcquireFailure}
+import controllers.AcquireFailure
 import controllers.acquire.Common.PrototypeHtml
 import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, fetchCookiesFromHeaders}
 import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.AcquireCompletionViewModel
-import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
@@ -55,7 +54,12 @@ final class AcquireFailureUnitSpec extends UnitSpec {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         firstName = Some(FirstNameValid),
         lastName = Some(LastNameValid),
         email = Some(EmailValid)
@@ -76,7 +80,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireFailure.buyAnother(request)
@@ -89,7 +93,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
         cookies.find(_.name == TraderDetailsCacheKey) should be(None)
       }
@@ -97,7 +101,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
 
     "redirect to the vehicle lookup page" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireFailure.buyAnother(request)
@@ -108,7 +112,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
   }
 
   "finish" should {
-    "discard the vehicle, new keeper and confirm cookies" in {
+    "discard all cookies" in {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
@@ -116,7 +120,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireFailure.finish(request)
@@ -129,15 +133,14 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
-
-        cookies.find(_.name == TraderDetailsCacheKey) should be(None)
+        verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(TraderDetailsCacheKey, cookies)
       }
     }
 
     "redirect to the before you start page" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
 
       val result = acquireFailure.finish(request)
       whenReady(result) { r =>
@@ -150,11 +153,15 @@ final class AcquireFailureUnitSpec extends UnitSpec {
     injector.getInstance(classOf[AcquireFailure])
   }
 
-
   private lazy val present = {
     val AcquireFailure = injector.getInstance(classOf[AcquireFailure])
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
+      withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
     AcquireFailure.present(request)
   }
 }

@@ -12,7 +12,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
 
-final class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                           config: Config) extends Controller {
 
   private[controllers] val form = Form(

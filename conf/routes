@@ -77,8 +77,6 @@ GET     /failure-acquire-finish             @controllers.AcquireFailure.finish
 
 GET     /uprn-not-found                     @controllers.UprnNotFound.present
 
-GET     /not-implemented                    @controllers.NotImplemented.present
-
 # Vehicle lookup failure
 GET     /vehicle-lookup-failure             @controllers.VehicleLookupFailure.present
 POST    /vehicle-lookup-failure             @controllers.VehicleLookupFailure.submit

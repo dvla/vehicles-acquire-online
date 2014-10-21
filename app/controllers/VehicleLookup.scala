@@ -25,7 +25,7 @@ import common.controllers.VehicleLookupBase.VehicleNotFound
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
-final class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService,
+class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService,
                                     vehicleLookupService: VehicleLookupService,
                                     dateService: DateService)
                                    (implicit val clientSideSessionFactory: ClientSideSessionFactory,

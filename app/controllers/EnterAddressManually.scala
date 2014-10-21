@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.{EnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
 import play.api.Logger
 import play.api.data.{Form, FormError}
@@ -12,9 +13,8 @@ import common.model.{TraderDetailsModel, AddressModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.enter_address_manually
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 
-final class EnterAddressManually @Inject()()
+class EnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends Controller {
 

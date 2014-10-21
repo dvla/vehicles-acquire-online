@@ -6,11 +6,12 @@ import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.{AcquireCompletionViewModel, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.{CompleteAndConfirmResponseModel, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.VehicleTaxOrSornFormModel
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
-import org.joda.time.LocalDate
+import org.joda.time.{DateTime, LocalDate}
 import org.openqa.selenium.Cookie
 import org.openqa.selenium.WebDriver
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
@@ -211,42 +212,19 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def acquireCompletionViewModel()(implicit webDriver: WebDriver) = {
-
-    val key = AcquireCompletionViewModel.AcquireCompletionCacheKey
-
-    val vehicleDetails = VehicleDetailsModel(RegistrationNumberValid, VehicleMakeValid, ModelValid, false)
-
-    val traderDetails = TraderDetailsModel(
-      traderName = TraderBusinessNameValid,
-      traderAddress = AddressModel(
-        uprn = None,
-        address = Seq(BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid)
-      ),
-      None
-    )
-
-    val newKeeperDetailsView = NewKeeperDetailsViewModel(None, None, None, None, None, None, None, None,
-      AddressModel(None, Seq(BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, PostcodeValid)),
-      false, "")
-
-    val completeAndConfirmForm = CompleteAndConfirmFormModel(None, new LocalDate(), "")
-
-    val value = AcquireCompletionViewModel(vehicleDetails,
-      traderDetails,
-      newKeeperDetailsView,
-      completeAndConfirmForm,
-      TransactionIdValid,
-      TransactionTimestampValid
-    )
+  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)
+                               (implicit webDriver: WebDriver) = {
+    val key = VehicleTaxOrSornCacheKey
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
     addCookie(key, value)
     this
   }
 
-  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)
-                            (implicit webDriver: WebDriver) = {
-    val key = VehicleTaxOrSornCacheKey
-    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
+  def completeAndConfirmResponseModelModel(id: String = TransactionIdValid,
+                                            timestamp: DateTime = TransactionTimestampValid)
+                                           (implicit webDriver: WebDriver) = {
+    val key = AcquireCompletionResponseCacheKey
+    val value = CompleteAndConfirmResponseModel(id, timestamp)
     addCookie(key, value)
     this
   }

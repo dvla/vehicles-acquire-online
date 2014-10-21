@@ -7,7 +7,7 @@ import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.{UnitSpec, WithApplication}
 import org.mockito.Mockito.when
-import pages.acquire.{VehicleTaxOrSornPage, CompleteAndConfirmPage, VehicleLookupPage}
+import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}

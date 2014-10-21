@@ -1,16 +1,24 @@
 package views.acquire
 
+import com.google.inject.Injector
+import com.tzavellas.sse.guice.ScalaModule
+import composition.{TestComposition, GlobalLike}
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.TestHarness
+import helpers.webbrowser.{TestGlobal, WebDriverFactory, TestHarness}
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.concurrent.Eventually
+import org.scalatest.mock.MockitoSugar
 import pages.common.ErrorPanel
 import pages.acquire.{AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
+import play.api.libs.ws.WSResponse
+import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
+import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.navigate
 import pages.acquire.CompleteAndConfirmPage.next
@@ -26,6 +34,7 @@ import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import scala.concurrent.Future
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -88,7 +97,27 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(AcquireSuccessPage.title)
     }
 
-    "be disabled after click" taggedAs UiTag in new WebBrowserWithJs {
+    val countingWebService = new FakeAcquireWebServiceImpl {
+      var calls = List[(AcquireRequestDto, String)]()
+
+      override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = {
+        calls ++= List(request -> trackingId)
+        super.callAcquireService(request, trackingId)
+      }
+    }
+
+    object MockAcquireServiceCompositionGlobal extends GlobalLike with TestComposition {
+      override lazy val injector: Injector = TestGlobal.testInjector(new ScalaModule with MockitoSugar {
+        override def configure() {
+          bind[AcquireWebService].toInstance(countingWebService)
+        }
+      })
+    }
+
+    "be disabled after click" taggedAs UiTag in new WebBrowser(
+      app = FakeApplication(withGlobal = Some(MockAcquireServiceCompositionGlobal)),
+      webDriver = WebDriverFactory.webDriver(javascriptEnabled = true)
+    ) {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
@@ -100,6 +129,10 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       click on consent
 
       next.underlying.getAttribute("class") should not include "disabled"
+      CompleteAndConfirmPage.singleClickSubmit
+      CompleteAndConfirmPage.singleClickSubmit
+      CompleteAndConfirmPage.singleClickSubmit
+      CompleteAndConfirmPage.singleClickSubmit
       CompleteAndConfirmPage.singleClickSubmit
       Eventually.eventually(next.underlying.getAttribute("class").contains("disabled"))
       Eventually.eventually(page.title == AcquireSuccessPage.title)

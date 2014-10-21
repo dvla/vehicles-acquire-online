@@ -11,7 +11,7 @@ import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 
-final class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                           config: Config) extends Controller {
 
   private[controllers] val form = Form(

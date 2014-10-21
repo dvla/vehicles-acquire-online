@@ -17,8 +17,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService.{RegistrationNumberValid, TransactionTimestampValid, TransactionIdValid}
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid, ModelValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, TransactionIdValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
@@ -28,7 +27,7 @@ import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import models.AcquireCompletionViewModel.AcquireCompletionCacheKey
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 
 class AcquireSuccessUnitSpec extends UnitSpec {
@@ -67,7 +66,12 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
           firstName = Some(FirstNameValid),
           lastName = Some(LastNameValid),
           email = Some(EmailValid)
@@ -91,7 +95,12 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel(
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
           businessName = Some(BusinessNameValid),
           fleetNumber = Some(FleetNumberValid),
           email = Some(EmailValid)
@@ -121,7 +130,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireSuccess.buyAnother(request)
@@ -134,15 +143,20 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
-        cookies.find(_.name == TraderDetailsCacheKey) should be(None)
+          cookies.find(_.name == TraderDetailsCacheKey) should be(None)
       }
     }
 
     "redirect to the vehicle lookup page" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = acquireSuccess.buyAnother(request)
       whenReady(result) { r =>
@@ -160,7 +174,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
@@ -174,16 +188,20 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleTaxOrSornCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(AcquireCompletionCacheKey, cookies)
-
-        cookies.find(_.name == TraderDetailsCacheKey) should not be(None)
+        verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
       }
     }
 
     "redirect to the before you start page" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = acquireSuccess.finish(request)
       whenReady(result) { r =>
@@ -202,7 +220,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-      withCookies(CookieFactoryForUnitSpecs.acquireCompletionViewModel())
+      withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
+      withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
     acquireSuccess.present(request)
   }
 }
