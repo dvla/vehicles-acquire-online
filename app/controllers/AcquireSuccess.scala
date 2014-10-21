@@ -1,21 +1,18 @@
 package controllers
 
 import com.google.inject.Inject
-import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
-import models.{VehicleTaxOrSornFormModel, AcquireCompletionViewModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AllCacheKeys}
-import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
-import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
+import models.{AllCacheKeys, VehicleNewKeeperCompletionCacheKeys}
+import models.AcquireCompletionViewModel
+import models.CompleteAndConfirmResponseModel
+import models.CompleteAndConfirmFormModel
+import models.NewKeeperDetailsViewModel
+import models.VehicleTaxOrSornFormModel
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel}
-import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
 
 final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -45,16 +42,7 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
     val result = for {
       acquireCompletionViewModel <- request.cookies.getModel[TraderDetailsModel]
     } yield Redirect(routes.VehicleLookup.present())
-      .discardingCookies(Set(
-        NewKeeperDetailsCacheKey,
-        VehicleLookupDetailsCacheKey,
-        VehicleLookupFormModelCacheKey,
-        CompleteAndConfirmCacheKey,
-        PrivateKeeperDetailsCacheKey,
-        BusinessKeeperDetailsCacheKey,
-        AcquireCompletionResponseCacheKey,
-        VehicleTaxOrSornCacheKey
-      ))
+      .discardingCookies(VehicleNewKeeperCompletionCacheKeys)
     result getOrElse {
       Logger.warn("Missing cookies in cache. Redirecting to BeforeYouStart")
       Redirect(routes.BeforeYouStart.present())

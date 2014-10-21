@@ -112,7 +112,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
   }
 
   "finish" should {
-    "discard the vehicle, new keeper and confirm cookies" in {
+    "discard all cookies" in {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
@@ -134,8 +134,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
-
-        cookies.find(_.name == TraderDetailsCacheKey) should be(None)
+        verifyCookieHasBeenDiscarded(TraderDetailsCacheKey, cookies)
       }
     }
 
