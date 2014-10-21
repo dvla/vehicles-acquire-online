@@ -154,7 +154,6 @@ final class AcquireFailureUnitSpec extends UnitSpec {
     injector.getInstance(classOf[AcquireFailure])
   }
 
-
   private lazy val present = {
     val AcquireFailure = injector.getInstance(classOf[AcquireFailure])
     val request = FakeRequest().

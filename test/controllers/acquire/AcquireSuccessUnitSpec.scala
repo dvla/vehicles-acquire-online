@@ -17,8 +17,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService.{RegistrationNumberValid, TransactionTimestampValid, TransactionIdValid}
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid, ModelValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, TransactionIdValid}
 import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
