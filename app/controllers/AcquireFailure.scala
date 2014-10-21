@@ -18,6 +18,10 @@ import utils.helpers.Config
 class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
+  private final val MissingCookiesAcquireFailure = "Missing cookies in cache. Acquire was failed, however cannot " +
+    "display failure page. Redirecting to BeforeYouStart"
+  private final val MissingCookies = "Missing cookies in cache."
+
   def present = Action { implicit request =>
     (request.cookies.getModel[VehicleDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
@@ -30,10 +34,7 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_failure(AcquireCompletionViewModel(vehicleDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
-      case _ =>
-        Logger.warn("Missing cookies in cache. Acquire was failed, however cannot display failure page. " +
-          "Redirecting to BeforeYouStart")
-        Redirect(routes.BeforeYouStart.present())
+      case _ => redirectToStart(MissingCookiesAcquireFailure)
     }
   }
 
@@ -42,14 +43,16 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       traderDetails <- request.cookies.getModel[TraderDetailsModel]
     } yield Redirect(routes.VehicleLookup.present())
         .discardingCookies(VehicleNewKeeperCompletionCacheKeys)
-    result getOrElse {
-      Logger.warn("missing cookies in cache.")
-      Redirect(routes.BeforeYouStart.present())
-    }
+    result getOrElse redirectToStart(MissingCookies)
   }
 
   def finish = Action { implicit request =>
     Redirect(routes.BeforeYouStart.present())
         .discardingCookies(AllCacheKeys)
+  }
+
+  private def redirectToStart(message: String) = {
+    Logger.warn(message)
+    Redirect(routes.BeforeYouStart.present())
   }
 }

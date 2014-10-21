@@ -19,6 +19,10 @@ import utils.helpers.Config
 class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
+  private final val MissingCookiesAcquireSuccess = "Missing cookies in cache. Acquire was successful, however cannot " +
+    "display success page. Redirecting to BeforeYouStart"
+  private final val MissingCookies = "Missing cookies in cache. Redirecting to BeforeYouStart"
+
   def present = Action { implicit request =>
     (request.cookies.getModel[VehicleDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
@@ -31,10 +35,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
-      case _ =>
-        Logger.warn("Missing cookies in cache. Acquire was successful, however cannot display success page. " +
-          "Redirecting to BeforeYouStart")
-        Redirect(routes.BeforeYouStart.present())
+      case _ => redirectToStart(MissingCookiesAcquireSuccess)
     }
   }
 
@@ -43,14 +44,16 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       acquireCompletionViewModel <- request.cookies.getModel[TraderDetailsModel]
     } yield Redirect(routes.VehicleLookup.present())
       .discardingCookies(VehicleNewKeeperCompletionCacheKeys)
-    result getOrElse {
-      Logger.warn("Missing cookies in cache. Redirecting to BeforeYouStart")
-      Redirect(routes.BeforeYouStart.present())
-    }
+    result getOrElse redirectToStart(MissingCookies)
   }
 
   def finish = Action { implicit request =>
     Redirect(routes.BeforeYouStart.present())
       .discardingCookies(AllCacheKeys)
+  }
+
+  private def redirectToStart(message: String) = {
+    Logger.warn(message)
+    Redirect(routes.BeforeYouStart.present())
   }
 }
