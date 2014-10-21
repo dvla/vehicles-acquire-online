@@ -14,6 +14,7 @@ import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCach
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 
 package object models {
   final val HelpCacheKey = "help"
@@ -54,7 +55,8 @@ package object models {
     VehicleTaxOrSornCacheKey,
     NewKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
-    VehicleLookupResponseCodeCacheKey
+    VehicleLookupResponseCodeCacheKey,
+    AcquireCompletionResponseCacheKey
   )
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page

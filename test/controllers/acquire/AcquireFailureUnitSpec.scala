@@ -26,9 +26,9 @@ import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionIdValid, 
 final class AcquireFailureUnitSpec extends UnitSpec {
   "present" should {
     "display the page" in new WithApplication {
-//      whenReady(present) { r =>
-//        r.header.status should equal(OK)
-//      }
+      whenReady(present) { r =>
+        r.header.status should equal(OK)
+      }
     }
 
     "not display progress bar" in new WithApplication {
@@ -36,38 +36,38 @@ final class AcquireFailureUnitSpec extends UnitSpec {
     }
 
     "display prototype message when config set to true" in new WithApplication {
-//      contentAsString(present) should include(PrototypeHtml)
+      contentAsString(present) should include(PrototypeHtml)
     }
 
     "not display prototype message when config set to false" in new WithApplication {
-//      val request = FakeRequest()
-//      implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
-//      implicit val config: Config = mock[Config]
-//      when(config.isPrototypeBannerVisible).thenReturn(false) // Stub this config value.
-//      val AcquireFailurePrototypeNotVisible = new AcquireFailure()
-//
-//      val result = AcquireFailurePrototypeNotVisible.present(request)
-//      contentAsString(result) should not include PrototypeHtml
+      val request = FakeRequest()
+      implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
+      implicit val config: Config = mock[Config]
+      when(config.isPrototypeBannerVisible).thenReturn(false) // Stub this config value.
+      val AcquireFailurePrototypeNotVisible = new AcquireFailure()
+
+      val result = AcquireFailurePrototypeNotVisible.present(request)
+      contentAsString(result) should not include PrototypeHtml
     }
 
     "present a full page when all cookies are present for failure" in new WithApplication {
-//      val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
-//
-//      val request = FakeRequest().
-//        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
-//        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-//        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-//        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
-//        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-//        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
-//        firstName = Some(FirstNameValid),
-//        lastName = Some(LastNameValid),
-//        email = Some(EmailValid)
-//      ))
-//
-//      val content = contentAsString(acquireFailure.present(request))
-//      content should include(fmt.print(TransactionTimestampValid))
-//      content should include(TransactionIdValid)
+      val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
+
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
+        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
+        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+        firstName = Some(FirstNameValid),
+        lastName = Some(LastNameValid),
+        email = Some(EmailValid)
+      ))
+
+      val content = contentAsString(acquireFailure.present(request))
+      content should include(fmt.print(TransactionTimestampValid))
+      content should include(TransactionIdValid)
     }
   }
 
@@ -158,6 +158,11 @@ final class AcquireFailureUnitSpec extends UnitSpec {
   private lazy val present = {
     val AcquireFailure = injector.getInstance(classOf[AcquireFailure])
     val request = FakeRequest().
+      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
       withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
     AcquireFailure.present(request)
   }
