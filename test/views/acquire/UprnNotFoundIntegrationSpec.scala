@@ -4,10 +4,12 @@ import helpers.UiSpec
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.webbrowser.TestHarness
-import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.{EnterAddressManuallyPage, BeforeYouStartPage, SetupTradeDetailsPage}
 import pages.common.UprnNotFoundPage
 import pages.common.UprnNotFoundPage.setupTradeDetails
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import helpers.acquire.CookieFactoryForUISpecs
+import pages.common.UprnNotFoundPage.manualAddress
 
 final class UprnNotFoundIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
@@ -36,23 +38,22 @@ final class UprnNotFoundIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "manualAddress button" should {
-//    ToDo uncomment tests once EnterAddressManually has been implemented
-//    "go to manualaddress page after the Manual Address button is clicked and trade details have been set up in cache" taggedAs UiTag in new WebBrowser {
-//      go to BeforeYouStartPage
-//      CookieFactoryForUISpecs.setupTradeDetails()
-//      go to UprnNotFoundPage
-//
-//      click on manualAddress
-//
-//      page.title should equal (EnterAddressManuallyPage.title)
-//    }
+    "go to manualaddress page after the Manual Address button is clicked and trade details have been set up in cache" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      CookieFactoryForUISpecs.setupTradeDetails()
+      go to UprnNotFoundPage
 
-//    "go to setuptradedetails page when trade details have not been set up in cache" taggedAs UiTag in new WebBrowser {
-//      go to UprnNotFoundPage
-//
-//      click on manualAddress
-//
-//      page.title should equal(SetupTradeDetailsPage.title)
-//    }
+      click on manualAddress
+
+      page.title should equal (EnterAddressManuallyPage.title)
+    }
+
+    "go to setuptradedetails page when trade details have not been set up in cache" taggedAs UiTag in new WebBrowser {
+      go to UprnNotFoundPage
+
+      click on manualAddress
+
+      page.title should equal(SetupTradeDetailsPage.title)
+    }
   }
 }

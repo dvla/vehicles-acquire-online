@@ -1,8 +1,8 @@
 package views.acquire
 
-import com.google.inject.{Guice, Injector}
+import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
-import composition.{TestComposition, GlobalLike, TestModule}
+import composition.{TestComposition, GlobalLike}
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import ProgressBar.progressStep
@@ -17,7 +17,7 @@ import pages.acquire.{AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStart
 import play.api.libs.ws.WSResponse
 import play.api.test.FakeApplication
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.acquire.{AcquireRequestDto, AcquireServiceImpl, AcquireService, AcquireWebService}
+import webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.navigate
@@ -136,9 +136,6 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       CompleteAndConfirmPage.singleClickSubmit
       Eventually.eventually(next.underlying.getAttribute("class").contains("disabled"))
       Eventually.eventually(page.title == AcquireSuccessPage.title)
-
-//      Thread.sleep(500)
-//      countingWebService.calls should have size 1
     }
 
     "display one validation error message when a mileage is entered greater than max length for a new keeper" taggedAs UiTag in new WebBrowser {
