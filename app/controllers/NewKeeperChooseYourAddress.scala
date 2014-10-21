@@ -50,7 +50,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   }
 
   private def error(message: String): Result = {
-    Logger.error(message)
+    Logger.warn(message)
     Redirect(routes.VehicleLookup.present())
   }
 

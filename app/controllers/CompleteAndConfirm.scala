@@ -65,7 +65,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
               CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
             )
           case _ =>
-            Logger.error("Could not find expected data in cache on dispose submit - now redirecting...")
+            Logger.warn("Could not find expected data in cache on dispose submit - now redirecting...")
             Redirect(routes.VehicleLookup.present())
         }
       },
@@ -83,11 +83,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                            traderDetails,
                            request.cookies.trackingId())
           case (_, _, _, None) => Future.successful {
-            Logger.error("Could not find either dealer details or VehicleLookupFormModel in cache on Acquire submit")
+            Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
+              "now redirecting to SetUpTradeDetails...")
             Redirect(routes.SetUpTradeDetails.present())
           }
           case _ => Future.successful {
-            Logger.error("Could not find expected data in cache on dispose submit - now redirecting...")
+            Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
             Redirect(routes.VehicleLookup.present())
           }
         }
