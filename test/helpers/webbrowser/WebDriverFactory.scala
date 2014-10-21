@@ -8,6 +8,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxProfile}
 import org.openqa.selenium.phantomjs.{PhantomJSDriver, PhantomJSDriverService}
 import org.openqa.selenium.remote.DesiredCapabilities
+import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
 
 import java.util.concurrent.TimeUnit
@@ -49,21 +50,22 @@ object WebDriverFactory {
   }
 
   def testRemote: Boolean = {
-    getProperty("test.remote", default = false)
-//    val defaultRemote = sys.env.get("test.remote") getOrElse
-//      sys.props.get("test.remote").getOrElse("true")
-//    getProperty("test.remote", default = defaultRemote.toBoolean)
+    val defaultRemote = sys.env.get("test.remote") getOrElse
+      sys.props.get("test.remote").getOrElse("false")
+    getProperty("test.remote", default = defaultRemote.toBoolean)
   }
 
   def testUrl: String = {
     if (testRemote) {
-      getProperty("test.url", "http://localhost:9000/")
-//      val testUrlEnvVar = sys.env.get("test.url") getOrElse
-//                          sys.props.get("test.url").getOrElse("http://localhost:9000/")
-//      getProperty("test.url", testUrlEnvVar)
+      val testUrlEnvVar = sys.env.get("test.url") getOrElse
+                          sys.props.get("test.url").getOrElse("http://localhost:9000/")
+      val testUrl = getProperty("test.url", testUrlEnvVar)
+      Logger.info(s"WebDriver remote testUrl: $testUrl")
+      testUrl
     }
     else {
       // Default if testing locally
+      Logger.info(s"WebDriver local testUrl: http://localhost:9004")
       new String("http://localhost:9004/")
     }
   }
