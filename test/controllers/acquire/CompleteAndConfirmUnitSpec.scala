@@ -179,14 +179,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
   }
 
-  private def acquireServiceMock(): AcquireService = {
-    val acquireServiceMock = mock[AcquireService]
-    when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
-      thenReturn(Future.successful((0, None)))
-
-    acquireServiceMock
-  }
-
   private def acquireWebService(acquireServiceStatus: Int = OK,
                                 acquireServiceResponse: Option[AcquireResponseDto] = Some(acquireResponseSuccess)): AcquireWebService = {
     val acquireWebService = mock[AcquireWebService]
@@ -198,25 +190,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     acquireWebService
   }
-
-  private def dateServiceStub(dayToday: Int,
-                              monthToday: Int,
-                              yearToday: Int) = {
-    val dayMonthYearStub = new DayMonthYear(day = dayToday,
-      month = monthToday,
-      year = yearToday)
-    val dateService = mock[DateService]
-    when(dateService.today).thenReturn(dayMonthYearStub)
-    dateService
-  }
-
-  private val dateValid: String = DayMonthYear(
-    1,
-    1,
-    2014
-  ).toDateTime.get.toString
-
-  private val emptySpace = " "
 
   private def dateServiceStubbed(day: Int = 1,
                                  month: Int = 1,
@@ -269,7 +242,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   private def completeAndConfirm = {
-    val config = new Config
     injector.getInstance(classOf[CompleteAndConfirm])
   }
 
