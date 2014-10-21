@@ -45,11 +45,10 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         });
 
         $(":submit").click(function() {
-           console.log("Before submit")
            if($(this).hasClass("disabled")) return false;
            $(this).addClass("disabled");
            return true;
-        })
+        });
 
     });
 
