@@ -1,24 +1,29 @@
 package controllers
 
 import com.google.inject.Inject
-import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.AcquireCompletionViewModel
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
-import models.{VehicleTaxOrSornFormModel, AcquireCompletionViewModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, NewKeeperDetailsViewModel, AllCacheKeys}
-import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import models.CompleteAndConfirmFormModel
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
+import models.CompleteAndConfirmResponseModel
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.NewKeeperDetailsViewModel
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.VehicleTaxOrSornFormModel
+import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
+import models.AllCacheKeys
+import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel}
+import common.model.{TraderDetailsModel, VehicleDetailsModel}
 import VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import utils.helpers.Config
 
-final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
@@ -33,11 +38,10 @@ final class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: Client
       Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
-      case _ => {
+      case _ =>
         Logger.warn("Missing cookies in cache. Acquire was successful, however cannot display success page. " +
           "Redirecting to BeforeYouStart")
         Redirect(routes.BeforeYouStart.present())
-      }
     }
   }
 

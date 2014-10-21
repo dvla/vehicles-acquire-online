@@ -11,7 +11,7 @@ import common.clientsidesession.CookieImplicits.RichCookies
 import common.model.{TraderDetailsModel, BruteForcePreventionModel}
 import utils.helpers.Config
 
-final class VehicleLookupFailure @Inject()()
+class VehicleLookupFailure @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends Controller {
 

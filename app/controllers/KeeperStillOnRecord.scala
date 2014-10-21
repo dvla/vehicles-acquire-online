@@ -11,7 +11,7 @@ import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.RichCookies
 import utils.helpers.Config
 
-final class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>

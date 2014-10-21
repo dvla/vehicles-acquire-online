@@ -180,7 +180,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       transactionTimestamp = dateTimeFormatter.print(timestamp),
       requiresSorn = false
     )
-
   }
 
   private def buildTitle (titleType: Option[TitleType]): TitleTypeDto = {

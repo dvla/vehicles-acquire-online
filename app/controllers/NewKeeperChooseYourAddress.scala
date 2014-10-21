@@ -10,18 +10,18 @@ import models.NewKeeperChooseYourAddressViewModel
 import models.BusinessKeeperDetailsFormModel
 import models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
+import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 import models.PrivateKeeperDetailsFormModel
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
+import common.model.VehicleDetailsModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
-import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 
 class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -194,12 +194,11 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     lookedUpAddress.map {
       case Some(addressViewModel) =>
           createNewKeeper(addressViewModel) match {
-          case Some(newKeeperDetails) => {
+          case Some(newKeeperDetails) =>
             Redirect(routes.VehicleTaxOrSorn.present())
               .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
               .withCookie(model)
               .withCookie(newKeeperDetails)
-          }
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
         }
       case None => Redirect(routes.UprnNotFound.present())
