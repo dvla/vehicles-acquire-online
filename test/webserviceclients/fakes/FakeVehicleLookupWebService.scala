@@ -22,7 +22,6 @@ final class FakeVehicleLookupWebService extends VehicleLookupWebService {
       }
     }
     val responseAsJson = Json.toJson(response)
-    //Logger.debug(s"FakeVehicleLookupWebService callVehicleLookupService with: $responseAsJson")
     new FakeResponse(status = responseStatus, fakeJson = Some(responseAsJson)) // Any call to a webservice will always return this successful response.
   }
 }
@@ -38,12 +37,17 @@ object FakeVehicleLookupWebService {
   final val KeeperUprnValid = 10123456789L
   final val ConsentValid = "true"
   final val TransactionIdValid = "A1-100"
+  final val VrmNotFound = "vehicle_lookup_vrm_not_found"
+  final val DocumentRecordMismatch = "vehicle_lookup_document_record_mismatch"
   final val TransactionTimestampValid = new DateTime()
 
-  private def vehicleDetails(disposeFlag: Boolean = true) = VehicleDetailsDto(registrationNumber = RegistrationNumberValid,
-    vehicleMake = VehicleMakeValid,
-    vehicleModel = VehicleModelValid,
-    disposeFlag = disposeFlag)
+  private def vehicleDetails(disposeFlag: Boolean = true) =
+    VehicleDetailsDto(
+      registrationNumber = RegistrationNumberValid,
+      vehicleMake = VehicleMakeValid,
+      vehicleModel = VehicleModelValid,
+      disposeFlag = disposeFlag
+    )
 
   val vehicleDetailsResponseSuccess: (Int, Option[VehicleDetailsResponseDto]) = {
     (OK, Some(VehicleDetailsResponseDto(responseCode = None, vehicleDetailsDto = Some(vehicleDetails()))))
@@ -54,14 +58,11 @@ object FakeVehicleLookupWebService {
   }
 
   val vehicleDetailsResponseVRMNotFound: (Int, Option[VehicleDetailsResponseDto]) = {
-    (OK, Some(VehicleDetailsResponseDto(responseCode = Some("vehicle_lookup_vrm_not_found"), vehicleDetailsDto = None))) // TODO make response code a constant
+    (OK, Some(VehicleDetailsResponseDto(responseCode = Some(VrmNotFound), vehicleDetailsDto = None)))
   }
 
   val vehicleDetailsResponseDocRefNumberNotLatest: (Int, Option[VehicleDetailsResponseDto]) = {
-    (OK, Some(VehicleDetailsResponseDto(
-      responseCode = Some("vehicle_lookup_document_record_mismatch"),
-      vehicleDetailsDto = None
-    )))
+    (OK, Some(VehicleDetailsResponseDto(responseCode = Some(DocumentRecordMismatch), vehicleDetailsDto = None)))
   }
 
   val vehicleDetailsResponseNotFoundResponseCode: (Int, Option[VehicleDetailsResponseDto]) = {
