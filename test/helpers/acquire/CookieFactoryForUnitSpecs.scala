@@ -4,7 +4,6 @@ import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import org.joda.time.{DateTime, LocalDate}
-import org.openqa.selenium.WebDriver
 import pages.acquire.{HelpPage, VehicleLookupPage}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
@@ -46,7 +45,11 @@ import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleModelValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid, TransactionIdValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionTimestampValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionIdValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import models.HelpCacheKey
 
@@ -84,25 +87,29 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     val value = SetupTradeDetailsFormModel(
       traderBusinessName = traderBusinessName,
       traderPostcode = traderPostcode,
-      traderEmail = traderEmail)
+      traderEmail = traderEmail
+    )
     createCookie(key, value)
   }
 
-  def businessChooseYourAddress(): Cookie = {
+  def businessChooseYourAddress(uprn: Long = UprnValid): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
+    val value = BusinessChooseYourAddressFormModel(uprnSelected = uprn.toString)
     createCookie(key, value)
   }
 
-  def enterAddressManually(): Cookie = {
+  def enterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                           line2: Option[String] = Some(Line2Valid),
+                           line3: Option[String] = Some(Line3Valid),
+                           postTown: String = PostTownValid): Cookie = {
     val key = EnterAddressManuallyCacheKey
     val value = EnterAddressManuallyFormModel(
       addressAndPostcodeModel = AddressAndPostcodeViewModel(
         addressLinesModel = AddressLinesViewModel(
-          buildingNameOrNumber = BuildingNameOrNumberValid,
-          line2 = Some(Line2Valid),
-          line3 = Some(Line3Valid),
-          postTown = PostTownValid
+          buildingNameOrNumber = buildingNameOrNumber,
+          line2 = line2,
+          line3 = line3,
+          postTown = postTown
         )
       )
     )
@@ -123,7 +130,6 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     )
     createCookie(key, value)
   }
-
 
   def traderDetailsModel(uprn: Option[Long] = None,
                          buildingNameOrNumber: String = BuildingNameOrNumberValid,
