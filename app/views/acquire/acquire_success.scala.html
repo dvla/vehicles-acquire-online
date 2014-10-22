@@ -43,41 +43,45 @@
 
         <h2>@Messages("acquire_success.vehicle_details.header")</h2>
         <p>@Messages("acquire_success.vehicle_details.p1")</p>
+        <div class="info-notice">
+            <dl class="playback">
+                <dt>@Messages("acquire_success.vehicle_details.registration_number")</dt>
+                <dd class="uppercase-text">@viewModel.vehicleDetails.registrationNumber</dd>
+                <dt>@Messages("acquire_success.vehicle_details.make")</dt>
+                <dd class="uppercase-text">@viewModel.vehicleDetails.vehicleMake</dd>
+                <dt>@Messages("acquire_success.vehicle_details.model")</dt>
+                <dd class="uppercase-text">@viewModel.vehicleDetails.vehicleModel</dd>
+                <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
 
-        <dl class="playback">
-            <dt>@Messages("acquire_success.vehicle_details.registration_number")</dt>
-            <dd class="uppercase-text">@viewModel.vehicleDetails.registrationNumber</dd>
-            <dt>@Messages("acquire_success.vehicle_details.make")</dt>
-            <dd class="uppercase-text">@viewModel.vehicleDetails.vehicleMake</dd>
-            <dt>@Messages("acquire_success.vehicle_details.model")</dt>
-            <dd class="uppercase-text">@viewModel.vehicleDetails.vehicleModel</dd>
-            <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
-
-            @if(viewModel.vehicleSorn.sornVehicle == None) {
-            <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
-            } else {
-            <dd class="uppercase-text">
-                @Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
-                @Messages("acquire_success.vehicle_details.sornEntered.p1")
-            </li>
-            }
-            <dt>@Messages("acquire_success.vehicle_details.mileage")</dt>
-            @if(viewModel.completeAndConfirmDetails.mileage == None) {
-            <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.mileage_not_entered")</dd>
-            } else {
-            <dd class="uppercase-text">@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</dd>
-            }
-        </dl>
+                @if(viewModel.vehicleSorn.sornVehicle == None) {
+                <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
+                } else {
+                <dd class="uppercase-text">
+                    @Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+                    @Messages("acquire_success.vehicle_details.sornEntered.p1")
+                </li>
+                }
+                <dt>@Messages("acquire_success.vehicle_details.mileage")</dt>
+                @if(viewModel.completeAndConfirmDetails.mileage == None) {
+                <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.mileage_not_entered")</dd>
+                } else {
+                <dd class="uppercase-text">@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</dd>
+                }
+            </dl>
+        </div>
 
         <p>@Messages("acquire_success.new_keeper_details.p1")</p>
-        <dl class="playback">
-            <dt>@Messages("acquire_success.vehicle_details.name")</dt>
-            <dd class="uppercase-text">@viewModel.newKeeperDetails.displayName</dd>
-            <dt>@Messages("acquire_success.vehicle_details.address")</dt>
-            <dd class="uppercase-text">@for(addr <- viewModel.newKeeperDetails.address.address) {@addr<br/>}</dd>
-            <dt>@Messages("acquire_success.vehicle_details.email")</dt>
-            <dd class="uppercase-text">@viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))</dd>
-        </dl>
+
+        <div class="info-notice">
+            <dl class="playback">
+                <dt>@Messages("acquire_success.vehicle_details.name")</dt>
+                <dd class="uppercase-text">@viewModel.newKeeperDetails.displayName</dd>
+                <dt>@Messages("acquire_success.vehicle_details.address")</dt>
+                <dd class="uppercase-text">@for(addr <- viewModel.newKeeperDetails.address.address) {@addr<br/>}</dd>
+                <dt>@Messages("acquire_success.vehicle_details.email")</dt>
+                <dd class="uppercase-text">@viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))</dd>
+            </dl>
+        </div>
 
         <h2>@Messages("acquire_success.further_information.header")</h2>
         <p>@Messages("acquire_success.further_information.p1")</p>
