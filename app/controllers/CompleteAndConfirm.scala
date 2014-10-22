@@ -74,15 +74,17 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
         val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
         val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
-        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
+        val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
             acquireAction (validForm,
                            newKeeperDetails,
                            vehicleLookup,
                            vehicleDetails,
                            traderDetails,
+                           taxOrSorn,
                            request.cookies.trackingId())
-          case (_, _, _, None) => Future.successful {
+          case (_, _, _, None, _) => Future.successful {
             Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
               "now redirecting to SetUpTradeDetails...")
             Redirect(routes.SetUpTradeDetails.present())
@@ -127,13 +129,14 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                             vehicleLookup: VehicleLookupFormModel,
                             vehicleDetails: VehicleDetailsModel,
                             traderDetails: TraderDetailsModel,
+                            taxOrSorn: VehicleTaxOrSornFormModel,
                             trackingId: String)
                            (implicit request: Request[AnyContent]): Future[Result] = {
 
     val transactionTimestamp = dateService.now.toDateTime
 
     val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
-      newKeeperDetailsView, traderDetails, transactionTimestamp)
+      newKeeperDetailsView, traderDetails, taxOrSorn, transactionTimestamp)
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
@@ -157,7 +160,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
                                completeAndConfirmFormModel: CompleteAndConfirmFormModel,
                                newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
-                               traderDetailsModel: TraderDetailsModel, timestamp: DateTime): AcquireRequestDto = {
+                               traderDetailsModel: TraderDetailsModel, taxOrSornModel: VehicleTaxOrSornFormModel,
+                               timestamp: DateTime): AcquireRequestDto = {
 
     val keeperDetails = buildKeeperDetails(newKeeperDetailsViewModel)
 
@@ -177,9 +181,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       fleetNumber = newKeeperDetailsViewModel.fleetNumber,
       dateOfTransfer = dateTimeFormatter.print(completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay),
       mileage = completeAndConfirmFormModel.mileage,
-      keeperConsent = consentToBoolean(completeAndConfirmFormModel.consent),
+      keeperConsent = checkboxValueToBoolean(completeAndConfirmFormModel.consent),
       transactionTimestamp = dateTimeFormatter.print(timestamp),
-      requiresSorn = false
+      requiresSorn = checkboxValueToBoolean(taxOrSornModel.sornVehicle.getOrElse("false"))
     )
   }
 
@@ -232,8 +236,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         routes.MicroServiceError.present()
     }
 
-  def consentToBoolean (consent: String): Boolean = {
-    consent == "true"
+  def checkboxValueToBoolean (checkboxValue: String): Boolean = {
+    checkboxValue == "true"
   }
 
   def getPostCodeFromAddress (address: Seq[String]): Option[String] = {
