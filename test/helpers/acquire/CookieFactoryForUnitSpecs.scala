@@ -55,6 +55,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
   implicit private val cookieFlags = injector.getInstance(classOf[CookieFlags])
   final val TrackingIdValue = "trackingId"
   final val KeeperEmail = "abc@def.com"
+  final val SeenCookieTrue = "yes"
   private val session = new ClearTextClientSideSession(TrackingIdValue)
 
   private def createCookie[A](key: String, value: A)(implicit tjs: Writes[A]): Cookie = {
@@ -70,7 +71,7 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
 
   def seenCookieMessage(): Cookie = {
     val key = SeenCookieMessageCacheKey
-    val value = "yes" // TODO make a constant
+    val value = SeenCookieTrue
     createCookie(key, value)
   }
 
