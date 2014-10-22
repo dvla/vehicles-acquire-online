@@ -76,12 +76,14 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
         (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt) match {
           case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails)) =>
-            acquireAction (validForm,
-                           newKeeperDetails,
-                           vehicleLookup,
-                           vehicleDetails,
-                           traderDetails,
-                           request.cookies.trackingId())
+            acquireAction (
+              validForm,
+              newKeeperDetails,
+              vehicleLookup,
+              vehicleDetails,
+              traderDetails,
+              request.cookies.trackingId()
+            )
           case (_, _, _, None) => Future.successful {
             Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
               "now redirecting to SetUpTradeDetails...")

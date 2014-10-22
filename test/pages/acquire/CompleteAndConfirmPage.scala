@@ -33,13 +33,6 @@ object CompleteAndConfirmPage extends Page with WebBrowserDSL {
 
   def consent(implicit driver: WebDriver): Checkbox = checkbox(id(ConsentId))
 
-  /**
-   * Clicks on the submit button but doesn't wait for the page to be resubmitted
-   */
-  def singleClickSubmit(implicit driver: WebDriver): Unit = {
-    new Actions(driver).click(next.underlying)
-  }
-
   def navigate(mileage: String = MileageValid,
                dayDateOfSale: String = DayDateOfSaleValid,
                monthDateOfSale: String = MonthDateOfSaleValid,
