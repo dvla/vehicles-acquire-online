@@ -22,17 +22,19 @@
             <dt>@Messages("acquire_success.transaction_details.transaction_date")</dt>
             <dd>@viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")</dd>
         </dl>
-        <dl class="playback related">
-            <dt><h2>@Messages("acquire_success.trader_details.header")</h2></dt>
-            <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
-            <dd>@viewModel.traderDetails.traderName</dd>
-            <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
-            <dd>@for(addr <- viewModel.traderDetails.traderAddress.address) {@addr<br/>}</dd>
-            <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
-            <dd>@viewModel.traderDetails.traderEmail.getOrElse(Messages("acquire_email_not_entered"))</dd>
-            <dt>@Messages("acquire_success.date_of_sale.label")</dt>
-            <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
-        </dl>
+        <div class="related">
+            <dl class="playback bg-plain">
+                <dt><h2>@Messages("acquire_success.trader_details.header")</h2></dt>
+                <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
+                <dd>@viewModel.traderDetails.traderName</dd>
+                <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
+                <dd>@for(addr <- viewModel.traderDetails.traderAddress.address) {@addr<br/>}</dd>
+                <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
+                <dd>@viewModel.traderDetails.traderEmail.getOrElse(Messages("acquire_email_not_entered"))</dd>
+                <dt>@Messages("acquire_success.date_of_sale.label")</dt>
+                <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
+            </dl>
+        </div>
     </div>
     <div class="second-col">
         <div class="alert-complete">
