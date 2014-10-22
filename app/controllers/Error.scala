@@ -14,7 +14,6 @@ final class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessi
     Ok(views.html.acquire.error(exceptionDigest))
   }
 
-  // TODO is there a submit button that calls this? If it is unused then delete.
   def submit(exceptionDigest: String) = Action.async { implicit request =>
     Logger.debug("Error submit called - now removing full set of cookies and redirecting to Start page")
     CookieHelper.discardAllCookies
