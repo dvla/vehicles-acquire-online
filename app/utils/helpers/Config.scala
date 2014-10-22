@@ -20,8 +20,8 @@ class Config {
 
   val acquire = new AcquireConfig()
 
-  val isMicroserviceIntegrationEnabled: Boolean = getProperty("microservice.integration.enabled", default = false)
-
+  val ordnanceSurveyUseUprn: Boolean = getProperty("ordnancesurvey.useUprn", default = false)
+  
   // opening and closing times
   val opening: Int = getProperty("openingTime", default = 1)
   val closing: Int = getProperty("closingTime", default = 23)
