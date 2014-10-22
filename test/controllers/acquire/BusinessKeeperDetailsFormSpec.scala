@@ -1,10 +1,10 @@
 package controllers.acquire
 
-import helpers.UnitSpec
 import controllers.BusinessKeeperDetails
+import helpers.UnitSpec
+import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 
 class BusinessKeeperDetailsFormSpec extends UnitSpec {
 

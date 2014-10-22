@@ -7,21 +7,6 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
 import models.{VehicleLookupFormModel, CompleteAndConfirmFormModel}
-import org.joda.time.format.DateTimeFormat
-import org.mockito.Mockito.when
-import pages.acquire.{VehicleLookupPage, BeforeYouStartPage}
-import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import play.api.test.{FakeRequest, WithApplication}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, TransactionIdValid}
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid}
-import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
-import webserviceclients.fakes.FakeVehicleLookupWebService.{VehicleMakeValid, VehicleModelValid}
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
@@ -29,6 +14,21 @@ import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
+import org.joda.time.format.DateTimeFormat
+import org.mockito.Mockito.when
+import pages.acquire.{VehicleLookupPage, BeforeYouStartPage}
+import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid}
+import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
+import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.{FakeRequest, WithApplication}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import utils.helpers.Config
+import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, TransactionIdValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.{VehicleMakeValid, VehicleModelValid}
 
 class AcquireSuccessUnitSpec extends UnitSpec {
 

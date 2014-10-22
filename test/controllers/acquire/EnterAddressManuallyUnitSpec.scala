@@ -3,9 +3,13 @@ package controllers.acquire
 import controllers.EnterAddressManually
 import controllers.acquire.Common.PrototypeHtml
 import helpers.JsonUtils.deserializeJsonToModel
-import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.common.CookieHelper.fetchCookiesFromHeaders
+import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import helpers.{UnitSpec, WithApplication}
+import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
 import play.api.mvc.Result
@@ -14,20 +18,16 @@ import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaul
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.TraderDetailsModel
+import TraderDetailsModel.TraderDetailsCacheKey
 import common.views.helpers.FormExtensions
 import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config
 import views.acquire.EnterAddressManually.PostcodeId
-import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import TraderDetailsModel.TraderDetailsCacheKey
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
-import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 
 import scala.concurrent.Future
 

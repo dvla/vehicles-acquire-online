@@ -6,14 +6,13 @@ import helpers.common.CookieHelper
 import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.{UnitSpec, WithApplication}
+import models.HelpCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, REFERER, contentAsString, defaultAwaitTimeout, status}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
-import models.HelpCacheKey
-import scala.Some
 
 final class HelpUnitSpec extends UnitSpec {
   "present" should {
