@@ -46,7 +46,6 @@ final class VAHappyPath(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wit
     goToVehicleLookupPage()
     VehicleLookupPage.vehicleRegistrationNumber enter "A1"
     VehicleLookupPage.documentReferenceNumber enter "11111111111"
-
   }
 
   def fillInBusinessKeeperDetailsPage() = {
@@ -60,6 +59,7 @@ final class VAHappyPath(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wit
     click on BusinessKeeperDetailsPage.next
     navigateAfterCustmourTypeSelection()
   }
+
   def fillInPrivateKeeperDetailsPage() = {
     fillInVehicleDetailsPage()
     click on VehicleLookupPage.vehicleSoldToPrivateIndividual
@@ -70,6 +70,7 @@ final class VAHappyPath(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wit
     PrivateKeeperDetailsPage.postcodeTextBox enter "dd34dd"
     click on PrivateKeeperDetailsPage.next
     navigateAfterCustmourTypeSelection()
+    page.title should equal(AcquireSuccessPage.title)
   }
 
   def navigateAfterCustmourTypeSelection() = {
@@ -77,47 +78,65 @@ final class VAHappyPath(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wit
     EnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 highrate"
     EnterAddressManuallyPage.addressPostTown enter "swansea"
     click on EnterAddressManuallyPage.next
-    /*CompleteAndConfirmPage.dayDateOfSaleTextBox enter "07"
+    click on VehicleTaxOrSornPage.sornVehicle
+    click on VehicleTaxOrSornPage.next
+    CompleteAndConfirmPage.dayDateOfSaleTextBox enter "07"
     CompleteAndConfirmPage.monthDateOfSaleTextBox enter "08"
     CompleteAndConfirmPage.yearDateOfSaleTextBox enter "1999"
-    CompleteAndConfirmPage.next*/
+    click on CompleteAndConfirmPage.consent
+    click on CompleteAndConfirmPage.next
+  }
+
+  def fillInPrivateKeeperDetailsPageWithFailureScreen() = {
+    fillInVehicleDetailsPage()
+    click on VehicleLookupPage.vehicleSoldToPrivateIndividual
+    click on VehicleLookupPage.next
+    click on PrivateKeeperDetailsPage.mr
+    PrivateKeeperDetailsPage.firstNameTextBox enter "testcase1"
+    PrivateKeeperDetailsPage.lastNameTextBox enter "hgjjghj"
+    PrivateKeeperDetailsPage.postcodeTextBox enter "dd34dd"
+    click on PrivateKeeperDetailsPage.next
+    navigateAfterCustmourTypeSelection()
   }
 
   @Given("^the user is on the Provide trader details page$")
-  def the_user_is_on_the_Provide_trader_details_page()  {
+  def the_user_is_on_the_Provide_trader_details_page() {
     goToSetupTradeDetailsPage()
   }
 
-  @When("^the trader entered through successful postcode lookup\\.$")
-  def the_trader_entered_through_successful_postcode_lookup(){
-
-   SetupTradeDetailsPage.happyPath()
-
+  @When("^the trader entered through successful postcode lookup$")
+  def the_trader_entered_through_successful_postcode_lookup() {
+    SetupTradeDetailsPage.happyPath()
   }
 
   @When("^entered valid registration number and doc reference number$")
-  def entered_valid_registration_number_and_doc_reference_number(): Unit ={
+  def entered_valid_registration_number_and_doc_reference_number() {
     fillInBusinessKeeperDetailsPage()
   }
 
   @When("^the user on Private Keeper details page and entered through successful postcode lookup$")
-  def the_user_on_Private_Keeper_details_page_and_entered_through_successful_postcode_lookup(){
+  def the_user_on_Private_Keeper_details_page_and_entered_through_successful_postcode_lookup() {
     PrivateKeeperDetailsPage.navigate()
   }
 
-  @When("^the user on Business Keeper details page and entered through successful postcode lookup$")
-  def the_user_on_Business_Keeper_details_page_and_entered_through_successful_postcode_lookup(){
-   BusinessKeeperDetailsPage.navigate()
+  @Then("^the user will be on confirmed summary page$")
+  def the_user_will_be_on_confirmed_summary_page() {
+    fillInPrivateKeeperDetailsPage()
   }
 
-  @When("^the trader entered through unsuccessful postcode lookup\\.$")
-  def the_trader_entered_through_unsuccessful_postcode_lookup(){
+  @When("^the user on Business Keeper details page and entered through successful postcode lookup$")
+  def the_user_on_Business_Keeper_details_page_and_entered_through_successful_postcode_lookup() {
+    BusinessKeeperDetailsPage.navigate()
+  }
+
+  @When("^the trader entered through unsuccessful postcode lookup$")
+  def the_trader_entered_through_unsuccessful_postcode_lookup() {
     goToVehicleLookupPage()
   }
 
   @When("^the user on Business Keeper details page and entered through unsuccessful postcode lookup$")
-  def the_user_on_Business_Keeper_details_page_and_entered_through_unsuccessful_postcode_lookup(){
-     fillInBusinessKeeperDetailsPage()
+  def the_user_on_Business_Keeper_details_page_and_entered_through_unsuccessful_postcode_lookup() {
+    fillInBusinessKeeperDetailsPage()
   }
 
   @When("^the user on Private Keeper details page and entered through unsuccessful postcode lookup$")
@@ -125,8 +144,16 @@ final class VAHappyPath(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wit
     fillInPrivateKeeperDetailsPage()
   }
 
-  @Then("^the user will be on confirmed summary page\\.$")
-  def the_user_will_be_on_confirmed_summary_page(){
-
+  @When("^the user on Private Keeper details page and entered through unsuccessful postcode lookup with failure data$")
+  def the_user_on_Private_Keeper_details_page_and_entered_through_unsuccessful_postcode_lookup_with_failure_data() {
+     fillInPrivateKeeperDetailsPageWithFailureScreen()
   }
+
+  @Then("^the user will be on confirmed transaction failure screen$")
+  def the_user_will_be_on_confirmed_transaction_failure_screen() {
+    page.title should equal(AcquireFailurePage.title)
+  }
+
 }
+
+
