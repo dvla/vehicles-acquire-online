@@ -8,6 +8,8 @@ import Sandbox.sandboxAsyncTask
 import Sandbox.gatlingTask
 import Sandbox.gatlingTests
 import Sandbox.vehiclesLookup
+import Sandbox.acceptTask
+import Sandbox.accept
 import net.litola.SassPlugin
 import Common._
 
@@ -101,6 +103,10 @@ testGatlingTask
 sandboxAsyncTask
 
 gatlingTask
+
+acceptanceTests := (test in Test in acceptanceTestsProject).value
+
+acceptTask
 
 lazy val p1 = osAddressLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val p2 = vehiclesLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
