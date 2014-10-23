@@ -3,6 +3,7 @@ import java.net.URLClassLoader
 import com.typesafe.config.ConfigFactory
 import org.apache.commons.io.FileUtils
 import sbt.Keys._
+import sbt.Scoped.Apply2
 import sbt._
 import scala.sys.process.Process
 
@@ -196,6 +197,8 @@ object Sandbox extends Plugin {
     System.setProperty("https.port", HttpsPort.toString)
     System.setProperty("http.port", "disabled")
     System.setProperty("baseUrl", s"https://localhost:$HttpsPort")
+    System.setProperty("test.remote", "true")
+    System.setProperty("test.url", s"https://localhost:$HttpsPort/")
     runProject(
       fullClasspath.in(Test).value,
       None,
@@ -212,6 +215,21 @@ object Sandbox extends Plugin {
   lazy val gatlingTask = gatling <<= (sandboxAsync, (testGatling in Runtime).toTask) { (body, stop) =>
     body.flatMap(t => stop)
   }
+
+  lazy val acceptanceTests = taskKey[Unit]("A task for running the acceptance tests of the project.")
+
+  lazy val allAcceptanceTests = Def.task {
+    acceptanceTests.value
+    testGatling.value
+  }
+
+  lazy val accept = taskKey[Unit]("Runs all the acceptance tests against the sandbox.")
+  lazy val acceptTask = accept := runSequentially(sandboxAsync, allAcceptanceTests).value
+
+  type ITask[T]  = Def.Initialize[Task[T]]
+
+  def runSequentially[A, B](a: ITask[A], b: ITask[B]) =
+    new Apply2((a, b)).apply((a, b) => a.flatMap(x => b))
 
   lazy val sandboxSettings = Seq(
     runMicroServicesTask,
