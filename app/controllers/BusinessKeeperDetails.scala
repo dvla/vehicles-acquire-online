@@ -46,7 +46,7 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
     )
   }
 
-  private def formWithReplacedErrors(form: Form[BusinessKeeperDetailsFormModel]) =
+  private def formWithReplacedErrors(form: Form[BusinessKeeperDetailsFormModel]) = {
     form.replaceError(
       BusinessKeeperDetailsFormModel.Form.BusinessNameId,
       FormError(key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessName")
@@ -54,6 +54,7 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
         BusinessKeeperDetailsFormModel.Form.PostcodeId,
         FormError(key = BusinessKeeperDetailsFormModel.Form.PostcodeId,message = "error.restricted.validPostcode")
       ).distinctErrors
+  }
 
   private def redirectToSetupTradeDetails(message:String) = {
     Logger.warn(message)

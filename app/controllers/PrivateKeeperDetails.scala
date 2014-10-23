@@ -25,13 +25,12 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
     PrivateKeeperDetailsFormModel.Form.Mapping
   )
 
+  private final val CookieErrorMessage = "Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails."
+
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
-        Ok(views.html.acquire.private_keeper_details(vehicleDetails, form.fill()))
-      case _ =>
-        Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
-        Redirect(routes.SetUpTradeDetails.present())
+      case Some(vehicleDetails) => Ok(views.html.acquire.private_keeper_details(vehicleDetails, form.fill()))
+      case _ => redirectToSetupTradeDetails(CookieErrorMessage)
     }
   }
 
@@ -39,32 +38,33 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
       request.cookies.getModel[VehicleDetailsModel] match {
         case Some(vehicleDetails) =>
           form.bindFromRequest.fold(
-            invalidForm => {
-              val formWithReplacedErrors = invalidForm.
-                replaceError(
-                  FirstNameId,
-                  FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)
-                ).
-                replaceError(
-                  LastNameId,
-                  FormError(
-                    key = LastNameId,
-                    message = "error.validLastName", args = Seq.empty)
-                ).
-                replaceError(
-                  DriverNumberId,
-                  FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)
-                ).
-                replaceError(
-                  PostcodeId,
-                  FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
-                ).distinctErrors
-              BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors))
-            },
+            invalidForm => BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors(invalidForm))),
             validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm))
-        case _ =>
-          Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
-          Redirect(routes.SetUpTradeDetails.present())
+        case _ => redirectToSetupTradeDetails(CookieErrorMessage)
       }
+  }
+
+  private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsFormModel]) = {
+    form.replaceError(
+      FirstNameId,
+      FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)
+    ).
+      replaceError(
+        LastNameId,
+        FormError(key = LastNameId,message = "error.validLastName", args = Seq.empty)
+      ).
+      replaceError(
+        DriverNumberId,
+        FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)
+      ).
+      replaceError(
+        PostcodeId,
+        FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
+      ).distinctErrors
+  }
+
+  private def redirectToSetupTradeDetails(message:String) = {
+    Logger.warn(message)
+    Redirect(routes.SetUpTradeDetails.present())
   }
 }
