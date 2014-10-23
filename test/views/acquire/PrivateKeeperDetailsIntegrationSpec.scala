@@ -13,6 +13,7 @@ import pages.acquire.NewKeeperChooseYourAddressPage
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
+import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
@@ -125,6 +126,13 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       cacheSetup()
       navigate(postcode = PostcodeInvalid)
       ErrorPanel.numberOfErrors should equal(1)
+    }
+
+    "display one validation error message when the title and the first name are longer then 26" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate(title = "tenchartdd", firstName = "15characterssdyff")
+      ErrorPanel.text should include(Messages("error.titlePlusFirstName.tooLong"))
     }
   }
 

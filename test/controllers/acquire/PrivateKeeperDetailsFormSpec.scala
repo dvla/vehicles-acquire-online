@@ -2,6 +2,7 @@ package controllers.acquire
 
 import helpers.UnitSpec
 import controllers.PrivateKeeperDetails
+import models.PrivateKeeperDetailsFormModel
 import org.joda.time.LocalDate
 import pages.acquire.PrivateKeeperDetailsPage.EmailValid
 import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
@@ -14,7 +15,7 @@ import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import models.PrivateKeeperDetailsFormModel.Form.TitleId
 import models.PrivateKeeperDetailsFormModel.Form.EmailId
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
-import models.PrivateKeeperDetailsFormModel.Form.FirstNameMaxLength
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameAndTitleMaxLength
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameMinLength
 import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
@@ -63,7 +64,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     "reject if form has no fields completed" in {
       formWithValidDefaults(title = "", firstName = "", lastName = "", email = "").
         errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.title.unknownOption", "error.minLength", "error.required", "error.validFirstName", "error.minLength", "error.required", "error.validLastName")
+        List("error.title.unknownOption", "error.validFirstName", "error.minLength", "error.required", "error.validLastName")
     }
   }
 
@@ -109,12 +110,12 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
   "firstName" should {
     "reject if empty" in {
       formWithValidDefaults(firstName = "").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.minLength", "error.validFirstName", "error.required")
+        List("error.validFirstName")
     }
 
     "reject if greater than max length" in {
-      formWithValidDefaults(firstName = "a" * (FirstNameMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.maxLength")
+      formWithValidDefaults(firstName = "a" * (FirstNameAndTitleMaxLength + 1)).errors.flatMap(_.messages) should contain theSameElementsAs
+        List("error.titlePlusFirstName.tooLong")
     }
 
     "reject if denied special characters are present $" in {
@@ -138,8 +139,22 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "accept if equal to max length" in {
-      val model = formWithValidDefaults(firstName = "a" * FirstNameMaxLength).get
-      model.firstName should equal("a" * FirstNameMaxLength)
+      val maxFirstName = "a" * (FirstNameAndTitleMaxLength - 1)
+      val formModel = validBoudFormModel(title = "4", otherTitle = "x", firstName = maxFirstName)
+      formModel.firstName should equal(maxFirstName)
+      formModel.title should equal(TitleType(4, "x"))
+    }
+
+    "don't accept if title plus first name is above the max" in {
+      val title = "sometitle"
+      val tooLongFirstName = "a" * (FirstNameAndTitleMaxLength - title.length + 1)
+      formWithValidDefaults(title = "4", otherTitle = title, firstName = tooLongFirstName)
+        .errors.flatMap(_.messages) should contain theSameElementsAs List("error.titlePlusFirstName.tooLong")
+
+      val longEnoughFirstName = "a" * (FirstNameAndTitleMaxLength - title.length)
+      val formModel = validBoudFormModel(title = "4", otherTitle = title, firstName = longEnoughFirstName)
+      formModel.firstName should equal(longEnoughFirstName)
+      formModel.title should equal(TitleType(4, title))
     }
 
     "accept if equal to min length" in {
@@ -356,7 +371,34 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
     }
   }
 
+  private def validBoudFormModel(title: String = "1",
+                                 otherTitle: String = "",
+                                 firstName: String = FirstNameValid,
+                                 lastName: String = LastNameValid,
+                                 dayDateOfBirth: String = DayDateOfBirthValid,
+                                 monthDateOfBirth: String = MonthDateOfBirthValid,
+                                 yearDateOfBirth: String = YearDateOfBirthValid,
+                                 email: String = EmailValid,
+                                 driverNumber: String = DriverNumberValid,
+                                 postcode: String = PostcodeValid): PrivateKeeperDetailsFormModel =
+    formWithValidDefaults(
+      title,
+      otherTitle,
+      firstName,
+      lastName,
+      dayDateOfBirth,
+      monthDateOfBirth,
+      yearDateOfBirth,
+      email,
+      driverNumber,
+      postcode
+    ) match {
+      case form if form.hasErrors => throw new Exception(form.errors.foldLeft("")((str, error) => str + " " + error))
+      case form => form.get
+    }
+
   private def formWithValidDefaults(title: String = "1",
+                                    otherTitle: String = "",
                                     firstName: String = FirstNameValid,
                                     lastName: String = LastNameValid,
                                     dayDateOfBirth: String = DayDateOfBirthValid,
@@ -369,6 +411,7 @@ class PrivateKeeperDetailsFormSpec extends UnitSpec {
       .form.bind(
         Map(
           s"$TitleId.${TitlePickerString.TitleRadioKey}" -> title,
+          s"$TitleId.${TitlePickerString.TitleTextKey}" -> otherTitle,
           FirstNameId -> firstName,
           LastNameId -> lastName,
           s"$DateOfBirthId.$DayId" -> dayDateOfBirth,

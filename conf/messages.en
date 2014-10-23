@@ -56,6 +56,7 @@ error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, et
 error.postTown.characterInvalid = Town or city contains invalid characters
 error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
+error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss etc and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
@@ -257,8 +258,7 @@ acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address
 acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_privatekeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
-acquire_privatekeeperdetails.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
+acquire_privatekeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
@@ -277,10 +277,9 @@ privatekeeper_dateofbirth = Date of birth of new keeper
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
-acquire_businesskeeperdetails.p1 = Enter the details of the person buying the vehicle.
+acquire_businesskeeperdetails.p1 = Enter the details of the business buying the vehicle.
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_businesskeeperdetails.p3 = An email address is optional, and only used to send an optional receipt to the new keeper at the end of this transaction.
-acquire_businesskeeperdetails.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
+acquire_businesskeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
 acquire_businesskeeperdetails.vehiclemake = Make
@@ -296,6 +295,7 @@ acquire_businesskeeperdetails.consentError = You must have the consent of the ne
 acquire_businesskeeperdetails.postcodelabel = Business postcode
 acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 businesskeeper_postcode = Business postcode
+businesskeeper_email = Business email
 businessName = Business name
 acquire_email_not_entered = Not entered
 
@@ -355,10 +355,9 @@ acquire_vehicleTaxOrSorn.backbutton = Back
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
-acquire_completeandconfirm.taxOrSorn = SORN
-acquire_completeandconfirm.sorn = Make a SORN?
-acquire_completeandconfirm.sornEntered = Yes
-acquire_completeandconfirm.sornNotEntered = Not entered
+acquire_completeandconfirm.taxOrSorn = Tax or SORN
+acquire_completeandconfirm.sornEntered = SORN from today
+acquire_completeandconfirm.sornNotEntered = This vehicle is taxed, or will be taxed
 acquire_completeandconfirm.newkeeperDetails = New keeper details
 acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address

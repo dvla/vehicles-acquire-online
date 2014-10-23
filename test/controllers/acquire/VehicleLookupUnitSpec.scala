@@ -9,11 +9,7 @@ import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleReg
 import models.{BusinessKeeperDetailsCacheKeys, PrivateKeeperDetailsCacheKeys}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import pages.acquire.BusinessChooseYourAddressPage
-import pages.acquire.BusinessKeeperDetailsPage
-import pages.acquire.PrivateKeeperDetailsPage
-import pages.acquire.SetupTradeDetailsPage
-import pages.acquire.MicroServiceErrorPage
+import pages.acquire.{EnterAddressManuallyPage, BusinessChooseYourAddressPage, BusinessKeeperDetailsPage, PrivateKeeperDetailsPage, SetupTradeDetailsPage, MicroServiceErrorPage}
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
 import play.api.test.FakeRequest
@@ -150,41 +146,22 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       count should equal(2) // The same message is displayed in 2 places - once in the validation-summary at the top of the page and once above the field.
     }
 
-    "redirect to BusinessChooseYourAddress when back button is pressed and there is a uprn" in new WithApplication {
-      val request = FakeRequest().withFormUrlEncodedBody().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+    "redirect to BusinessChooseYourAddress when back button is pressed and there is no manual address cookie in cache" in new WithApplication {
+      val request = FakeRequest()
       val result = vehicleLookupResponseGenerator().back(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
     }
 
-    "redirect to SetupTradeDetails page when back button is pressed and dealer details is not in cache" in new WithApplication {
-      val request = FakeRequest().withFormUrlEncodedBody()
-      val result = vehicleLookupResponseGenerator().back(request)
-
-      result.futureValue.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
-    }
-
-    "redirect to SetUpTradeDetails when back button and the user has completed the vehicle lookup form" in new WithApplication {
+    "redirect to EnterAddressManually when back button is pressed and the user has manually entered an address" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
       val result = vehicleLookupResponseGenerator().back(request)
 
-      result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
-    }
-
-    "redirect to SetUpTradeDetails when back button clicked and there are no trader details stored in cache" in new WithApplication {
-      // No cache setup with dealer details
-      val request = buildCorrectlyPopulatedRequest()
-      val result = vehicleLookupResponseGenerator().back(request)
-
-      result.futureValue.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      result.futureValue.header.headers.get(LOCATION) should equal(Some(EnterAddressManuallyPage.address))
     }
 
     "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
-
-
-
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
@@ -195,7 +172,6 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
-
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))

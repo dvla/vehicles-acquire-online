@@ -18,7 +18,7 @@
 @import common.views.html.widgets.base.valtechInputText
 @import common.views.html.widgets.titlePicker
 @import common.mappings.Postcode
-@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, DateOfBirthId, EmailId, FirstNameId, FirstNameMaxLength, PostcodeId}
+@import models.PrivateKeeperDetailsFormModel.Form.{TitleId, DateOfBirthId, EmailId, FirstNameId, FirstNameAndTitleMaxLength, PostcodeId}
 @import models.PrivateKeeperDetailsFormModel.Form.{LastNameId, LastNameMaxLength, DriverNumberId, DriverNumberMaxLength}
 
 @main(
@@ -41,14 +41,13 @@
                     <dd>@data.vehicleModel</dd>
                 </dl>
                 <div class="alert-warning print-message">
-                  <p><strong>@Messages("acquire_privatekeeperdetails.p4")</strong></p>
+                  <p><strong>@Messages("acquire_privatekeeperdetails.p3")</strong></p>
                 </div>
             </div>
 
             <div class="second-col">
                 <p>@Messages("acquire_privatekeeperdetails.p1")</p>
                 <p>@Messages("acquire_privatekeeperdetails.p2")</p>
-                <p>@Messages("acquire_privatekeeperdetails.p3")</p>
 
                 <div class="uppercase-input">
                     @titlePicker(
@@ -60,7 +59,7 @@
                     @valtechInputText(privateKeeperDetailsForm(FirstNameId), args =
                         Map('_label -> Messages("acquire_privatekeeperdetails.firstnamelabel"),
                             '_showConstraints -> false,
-                            'maxLength -> FirstNameMaxLength
+                            'maxLength -> FirstNameAndTitleMaxLength
                         )
                     )
                 </div>
@@ -91,7 +90,6 @@
                 @valtechInputText(privateKeeperDetailsForm(EmailId), args =
                     Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
                         '_showConstraints -> false,
-                        'typeEmail -> true,
                         'maxLength -> EmailMaxLength
                     )
                 )

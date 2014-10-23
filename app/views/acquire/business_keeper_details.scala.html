@@ -35,14 +35,13 @@
                 <dd>@viewModel.vehicleDetails.vehicleModel</dd>
             </dl>
             <div class="alert-warning print-message">
-              <p><strong>@Messages("acquire_businesskeeperdetails.p4")</strong></p>
+              <p><strong>@Messages("acquire_businesskeeperdetails.p3")</strong></p>
             </div>
         </div>
 
         <div class="second-col">
             <p>@Messages("acquire_businesskeeperdetails.p1")</p>
             <p>@Messages("acquire_businesskeeperdetails.p2")</p>
-            <p>@Messages("acquire_businesskeeperdetails.p3")</p>
 
             <div class="form-steps">
                 @form(action = controllers.routes.BusinessKeeperDetails.submit()) {
@@ -71,7 +70,6 @@
                     @valtechInputText(viewModel.form(EmailId), args =
                         Map('_label -> Messages("acquire_businesskeeperdetails.email"),
                             '_showConstraints -> false,
-                            'typeEmail -> true,
                             'maxLength -> EmailMaxLength
                         )
                     )
