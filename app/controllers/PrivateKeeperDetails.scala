@@ -47,8 +47,6 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
 
   private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsFormModel]) = {
     form.replaceError(
-      FirstNameId, FormError(key = FirstNameId, message = "error.titlePlusFirstName.tooLong", args = Seq.empty)
-    ).replaceError(
         LastNameId, FormError(key = LastNameId,message = "error.validLastName", args = Seq.empty)
       ).replaceError(
         DateOfBirthId, FormError(key = DateOfBirthId, message = "error.date.invalid", args = Seq.empty)
