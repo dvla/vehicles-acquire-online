@@ -4,7 +4,7 @@ import javax.inject.Inject
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
-import play.api.mvc.{Action, Controller, Request}
+import play.api.mvc.{Action, Controller, Request, Result}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.{BusinessChooseYourAddressFormModel, SetupTradeDetailsFormModel}
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -13,6 +13,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
+import common.model.AddressModel
 import common.model.TraderDetailsModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
@@ -30,11 +31,16 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       case Some(setupTradeDetailsModel) =>
         val session = clientSideSessionFactory.getSession(request.cookies)
         fetchAddresses(setupTradeDetailsModel)(session, request2lang).map { addresses =>
-          Ok(views.html.acquire.business_choose_your_address(form.fill(),
+          if (config.ordnanceSurveyUseUprn) Ok(views.html.acquire.business_choose_your_address(form.fill(),
             setupTradeDetailsModel.traderBusinessName,
             setupTradeDetailsModel.traderPostcode,
             setupTradeDetailsModel.traderEmail,
             addresses))
+          else Ok(views.html.acquire.business_choose_your_address(form.fill(),
+            setupTradeDetailsModel.traderBusinessName,
+            setupTradeDetailsModel.traderPostcode,
+            setupTradeDetailsModel.traderEmail,
+            index(addresses)))
         }
       case None => Future {
         Redirect(routes.SetUpTradeDetails.present())
@@ -64,7 +70,10 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetailsModel) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            lookupUprn(validForm, setupTradeDetailsModel.traderBusinessName, setupTradeDetailsModel.traderEmail)
+            if (config.ordnanceSurveyUseUprn)
+              lookupUprn(validForm, setupTradeDetailsModel.traderBusinessName, setupTradeDetailsModel.traderEmail)
+            else
+              lookupAddressByPostcodeThenIndex(validForm, setupTradeDetailsModel)
           case None => Future {
             Logger.warn("Failed to find dealer details, redirecting")
             Redirect(routes.SetUpTradeDetails.present())
@@ -73,7 +82,34 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     )
   }
 
-  private def fetchAddresses(model: SetupTradeDetailsFormModel)(implicit session: ClientSideSession, lang: Lang) =
+  private def index(addresses: Seq[(String, String)]) = {
+    addresses.map { case (uprn, address) => address}. // Extract the address.
+      zipWithIndex. // Add an index for each address
+      map { case (address, index) => (index.toString, address)} // Flip them around so index comes first.
+  }
+
+  private def lookupAddressByPostcodeThenIndex(model: BusinessChooseYourAddressFormModel,
+                                               setupBusinessDetailsForm: SetupTradeDetailsFormModel)
+                                              (implicit request: Request[_], session: ClientSideSession): Future[Result] = {
+    fetchAddresses(setupBusinessDetailsForm)(session, request2lang).map { addresses =>
+      val indexSelected = model.uprnSelected.toInt
+      if (indexSelected < addresses.length) {
+        val lookedUpAddresses = index(addresses)
+        val lookedUpAddress = lookedUpAddresses(indexSelected) match {
+          case (index, address) => address
+        }
+        val addressModel = AddressModel(uprn = None, address = lookedUpAddress.split(","))
+        nextPage(model, setupBusinessDetailsForm.traderBusinessName, addressModel, setupBusinessDetailsForm.traderEmail)
+      }
+      else {
+        // Guard against IndexOutOfBoundsException
+        Redirect(routes.UprnNotFound.present())
+      }
+    }
+  }
+
+  private def fetchAddresses(model: SetupTradeDetailsFormModel)
+                            (implicit session: ClientSideSession, lang: Lang): Future[Seq[(String, String)]] =
     addressLookupService.fetchAddressesForPostcode(model.traderPostcode, session.trackingId)
 
   private def formWithReplacedErrors(form: Form[BusinessChooseYourAddressFormModel])(implicit request: Request[_]) =
@@ -86,12 +122,24 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
-        val traderDetailsModel = TraderDetailsModel(traderName = traderName, traderAddress = addressViewModel, traderEmail = traderEmail)
-        Redirect(routes.VehicleLookup.present()).
-          discardingCookie(EnterAddressManuallyCacheKey).
-          withCookie(model).
-          withCookie(traderDetailsModel)
+        nextPage(model, traderName, addressViewModel, traderEmail)
       case None => Redirect(routes.UprnNotFound.present())
     }
+  }
+
+  private def nextPage(model: BusinessChooseYourAddressFormModel,
+                       traderName: String,
+                       addressModel: AddressModel,
+                       traderEmail: Option[String])
+                      (implicit request: Request[_], session: ClientSideSession): Result = {
+    val traderDetailsModel = TraderDetailsModel(
+      traderName = traderName,
+      traderAddress = addressModel,
+      traderEmail = traderEmail
+    )
+    Redirect(routes.VehicleLookup.present()).
+      discardingCookie(EnterAddressManuallyCacheKey).
+      withCookie(model).
+      withCookie(traderDetailsModel)
   }
 }
