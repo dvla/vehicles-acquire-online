@@ -40,7 +40,10 @@
         <div class="alert-complete">
             <h2>@Messages("acquire_success.complete.header")</h2>
             <p>@Messages("acquire_success.complete.p1")</p>
-            <p>@Messages("acquire_success.complete.p2")</p>
+        </div>
+
+        <div class="alert-warning">
+            <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
         </div>
 
         <h2>@Messages("acquire_success.vehicle_details.header")</h2>
@@ -56,18 +59,19 @@
                 <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
 
                 @if(viewModel.vehicleSorn.sornVehicle == None) {
-                <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
+                    <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
+                    <dd>@Messages("acquire_success.vehicle_details.sornNotEntered.p1")</dd>
                 } else {
-                <dd class="uppercase-text">
-                    @Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
-                    @Messages("acquire_success.vehicle_details.sornEntered.p1")
-                </li>
+                    <dd class="uppercase-text">
+                        @Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+                    </dd>
+                    <dd>@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
                 }
                 <dt>@Messages("acquire_success.vehicle_details.mileage")</dt>
                 @if(viewModel.completeAndConfirmDetails.mileage == None) {
-                <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.mileage_not_entered")</dd>
+                    <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.mileage_not_entered")</dd>
                 } else {
-                <dd class="uppercase-text">@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</dd>
+                    <dd class="uppercase-text">@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</dd>
                 }
             </dl>
         </div>
