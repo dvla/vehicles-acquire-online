@@ -56,6 +56,7 @@ error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, et
 error.postTown.characterInvalid = Town or city contains invalid characters
 error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
+error.titlePlusFirstName.tooLong = The length of Title the and the First name(s) fields together should not be more then 26 characters
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month

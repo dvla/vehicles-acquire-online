@@ -46,10 +46,10 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
 
   private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsFormModel]) = {
     form.replaceError(
-      FirstNameId,
-      FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)
-    ).
-      replaceError(
+//      FirstNameId,
+//      FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)
+//    ).
+//      replaceError(
         LastNameId,
         FormError(key = LastNameId,message = "error.validLastName", args = Seq.empty)
       ).

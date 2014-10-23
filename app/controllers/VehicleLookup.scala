@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import models.{BusinessKeeperDetailsCacheKeys, PrivateKeeperDetailsCacheKeys}
+import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, PrivateKeeperDetailsCacheKeys}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Call, Request}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -98,11 +98,10 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
   }
 
   def back = Action { implicit request =>
-    request.cookies.getModel[TraderDetailsModel] match {
-      case Some(dealerDetails) =>
-        if (dealerDetails.traderAddress.uprn.isDefined) Redirect(routes.BusinessChooseYourAddress.present())
-        else Redirect(routes.EnterAddressManually.present())
-      case None => Redirect(routes.SetUpTradeDetails.present())
+    request.cookies.getModel[EnterAddressManuallyFormModel] match {
+      case Some(manualAddress) =>
+        Redirect(routes.EnterAddressManually.present())
+      case None => Redirect(routes.BusinessChooseYourAddress.present())
     }
   }
 
