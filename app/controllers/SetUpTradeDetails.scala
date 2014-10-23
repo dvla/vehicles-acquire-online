@@ -2,7 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.SetupTradeDetailsFormModel
-import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId}
+import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderEmailId, TraderPostcodeId}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
@@ -31,11 +31,11 @@ class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSid
 
   private def formWithReplacedErrors(form: Form[SetupTradeDetailsFormModel]) = {
     form.replaceError(
-      TraderNameId,
-      FormError(key = TraderNameId, message = "error.validBusinessName", args = Seq.empty)
+      TraderNameId, FormError(key = TraderNameId, message = "error.validBusinessName", args = Seq.empty)
     ).replaceError(
-        TraderPostcodeId,
-        FormError(key = TraderPostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
+        TraderEmailId,FormError(key = TraderEmailId, message = "error.email", args = Seq.empty)
+      ).replaceError(
+        TraderPostcodeId, FormError(key = TraderPostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
       ).distinctErrors
   }
 }
