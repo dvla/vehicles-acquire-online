@@ -7,20 +7,29 @@ import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import models.{CompleteAndConfirmResponseModel, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel, EnterAddressManuallyFormModel, VehicleLookupFormModel, PrivateKeeperDetailsFormModel, BusinessKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
+import models.CompleteAndConfirmResponseModel
+import models.SetupTradeDetailsFormModel
+import models.BusinessChooseYourAddressFormModel
+import models.EnterAddressManuallyFormModel
+import models.VehicleLookupFormModel
+import models.PrivateKeeperDetailsFormModel
+import models.BusinessKeeperDetailsFormModel
+import models.NewKeeperDetailsViewModel
+import models.CompleteAndConfirmFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.VehicleTaxOrSornFormModel
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.{DateTime, LocalDate}
 import org.openqa.selenium.Cookie
 import org.openqa.selenium.WebDriver
-import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid, TraderEmailValid}
+import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
 import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
 import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
 import pages.acquire.CompleteAndConfirmPage.{MileageValid,DayDateOfSaleValid,MonthDateOfSaleValid,YearDateOfSaleValid}
+import helpers.acquire.CookieFactoryForUnitSpecs.{ConsentTrue, VehicleLookupFailureResponseCode}
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
@@ -37,7 +46,11 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionIdValid, TransactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionIdValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionTimestampValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -61,10 +74,15 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def setupTradeDetails(traderPostcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
+  def setupTradeDetails(traderBusinessName: String = TraderBusinessNameValid,
+                        traderPostcode: String = PostcodeValid,
+                        traderEmail: Option[String] = None)(implicit webDriver: WebDriver) = {
     val key = SetupTradeDetailsCacheKey
-    val value = SetupTradeDetailsFormModel(traderBusinessName = TraderBusinessNameValid,
-      traderPostcode = traderPostcode, traderEmail = Some(TraderEmailValid))
+    val value = SetupTradeDetailsFormModel(
+      traderBusinessName,
+      traderPostcode = traderPostcode,
+      traderEmail = traderEmail
+    )
     addCookie(key, value)
     this
   }
@@ -76,13 +94,18 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def enterAddressManually()(implicit webDriver: WebDriver) = {
+  def enterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                           line2: Option[String] = Some(Line2Valid),
+                           line3: Option[String] = Some(Line3Valid),
+                           postTown: String = PostTownValid)(implicit webDriver: WebDriver) = {
     val key = EnterAddressManuallyCacheKey
     val value = EnterAddressManuallyFormModel(addressAndPostcodeModel = AddressAndPostcodeViewModel(
-      addressLinesModel = AddressLinesViewModel(buildingNameOrNumber = BuildingNameOrNumberValid,
-        line2 = Some(Line2Valid),
-        line3 = Some(Line3Valid),
-        postTown = PostTownValid)))
+      addressLinesModel = AddressLinesViewModel(
+        buildingNameOrNumber = buildingNameOrNumber,
+        line2 = line2,
+        line3 = line3,
+        postTown = postTown)
+    ))
     addCookie(key, value)
     this
   }
@@ -112,8 +135,7 @@ object CookieFactoryForUISpecs {
 
   def vehicleLookupFormModel(referenceNumber: String = ReferenceNumberValid,
                              registrationNumber: String = RegistrationNumberValid,
-                             vehicleSoldTo: String = VehicleSoldTo_Private)
-                            (implicit webDriver: WebDriver) = {
+                             vehicleSoldTo: String = VehicleSoldTo_Private)(implicit webDriver: WebDriver) = {
     val key = VehicleLookupFormModelCacheKey
     val value = VehicleLookupFormModel(referenceNumber = referenceNumber,
       registrationNumber = registrationNumber,
@@ -122,7 +144,7 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure")
+  def vehicleLookupResponseCode(responseCode: String = VehicleLookupFailureResponseCode)
                                (implicit webDriver: WebDriver) = {
     val key = VehicleLookupResponseCodeCacheKey
     val value = responseCode
@@ -135,10 +157,11 @@ object CookieFactoryForUISpecs {
                      vehicleModel: String = ModelValid,
                      disposeFlag: Boolean = false)(implicit webDriver: WebDriver) = {
     val key = VehicleLookupDetailsCacheKey
-    val value = VehicleDetailsModel(registrationNumber = registrationNumber,
-                                    vehicleMake,
-                                    vehicleModel,
-                                    disposeFlag)
+    val value = VehicleDetailsModel(
+      registrationNumber = registrationNumber,
+      vehicleMake,
+      vehicleModel,
+      disposeFlag)
     addCookie(key, value)
     this
   }
@@ -192,8 +215,7 @@ object CookieFactoryForUISpecs {
                        fleetNumber: Option[String] = None,
                        email: Option[String] = None,
                        address: AddressModel = addressWithoutUprn,
-                       isBusinessKeeper: Boolean = false)
-                      (implicit webDriver: WebDriver) = {
+                       isBusinessKeeper: Boolean = false)(implicit webDriver: WebDriver) = {
     val key = NewKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
       title = title,
@@ -206,14 +228,14 @@ object CookieFactoryForUISpecs {
       address = address,
       email = email,
       isBusinessKeeper = isBusinessKeeper,
-      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
+      displayName = if (businessName == None) firstName + " " + lastName
+                    else businessName.getOrElse("")
     )
     addCookie(key, value)
     this
   }
 
-  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)
-                               (implicit webDriver: WebDriver) = {
+  def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)(implicit webDriver: WebDriver) = {
     val key = VehicleTaxOrSornCacheKey
     val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
     addCookie(key, value)
@@ -221,8 +243,7 @@ object CookieFactoryForUISpecs {
   }
 
   def completeAndConfirmResponseModelModel(id: String = TransactionIdValid,
-                                            timestamp: DateTime = TransactionTimestampValid)
-                                           (implicit webDriver: WebDriver) = {
+                                           timestamp: DateTime = TransactionTimestampValid)(implicit webDriver: WebDriver) = {
     val key = AcquireCompletionResponseCacheKey
     val value = CompleteAndConfirmResponseModel(id, timestamp)
     addCookie(key, value)
@@ -233,12 +254,13 @@ object CookieFactoryForUISpecs {
                               dateOfSale: LocalDate = new LocalDate(
                                 YearDateOfSaleValid.toInt,
                                 MonthDateOfSaleValid.toInt,
-                                DayDateOfSaleValid.toInt))(implicit webDriver: WebDriver) = {
+                                DayDateOfSaleValid.toInt),
+                              consent: String = ConsentTrue)(implicit webDriver: WebDriver) = {
     val key = CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
     val value = CompleteAndConfirmFormModel(
       mileage,
       dateOfSale,
-      ""
+      consent
     )
     addCookie(key, value)
     this

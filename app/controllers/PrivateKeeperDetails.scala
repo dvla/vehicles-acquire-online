@@ -52,10 +52,6 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
                   FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)
                 ).
                 replaceError(
-                  EmailId,
-                  FormError(key = FirstNameId, message = "error.validEmail", args = Seq.empty)
-                ).
-                replaceError(
                   PostcodeId,
                   FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
                 ).distinctErrors

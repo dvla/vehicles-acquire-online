@@ -20,7 +20,7 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
 
   def traderPostcode(implicit driver: WebDriver): TextField = textField(id(TraderPostcodeId))
 
-  def traderEmail(implicit driver: WebDriver): EmailField = emailField(id(TraderEmailId))
+  def traderEmail(implicit driver: WebDriver): TextField = textField(id(TraderEmailId))
 
   def lookup(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 

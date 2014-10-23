@@ -22,7 +22,7 @@ object BusinessKeeperDetailsFormModel {
   object Form {
     final val FleetNumberId = "fleetNumber"
     final val BusinessNameId = "businessName"
-    final val EmailId = "email"
+    final val EmailId = "businesskeeper_email"
     final val PostcodeId = "businesskeeper_postcode"
 
     final val Mapping = mapping(
