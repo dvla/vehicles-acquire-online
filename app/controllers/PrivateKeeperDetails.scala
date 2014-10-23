@@ -19,7 +19,7 @@ import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import utils.helpers.Config
 
-final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(
