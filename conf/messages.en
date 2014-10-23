@@ -355,10 +355,9 @@ acquire_vehicleTaxOrSorn.backbutton = Back
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
-acquire_completeandconfirm.taxOrSorn = SORN
-acquire_completeandconfirm.sorn = Make a SORN?
-acquire_completeandconfirm.sornEntered = Yes
-acquire_completeandconfirm.sornNotEntered = Not entered
+acquire_completeandconfirm.taxOrSorn = Tax or SORN
+acquire_completeandconfirm.sornEntered = SORN from today
+acquire_completeandconfirm.sornNotEntered = This vehicle is taxed, or will be taxed
 acquire_completeandconfirm.newkeeperDetails = New keeper details
 acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address
