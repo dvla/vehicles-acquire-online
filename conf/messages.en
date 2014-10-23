@@ -294,6 +294,7 @@ acquire_businesskeeperdetails.consentError = You must have the consent of the ne
 acquire_businesskeeperdetails.postcodelabel = Business postcode
 acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 businesskeeper_postcode = Business postcode
+businesskeeper_email = Business email
 businessName = Business name
 acquire_email_not_entered = Not entered
 

@@ -20,7 +20,7 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def businessNameField(implicit driver: WebDriver): TextField = textField(id(BusinessNameId))
 
-  def emailField(implicit driver: WebDriver): EmailField = emailField(id(EmailId))
+  def emailField(implicit driver: WebDriver): TextField = textField(id(EmailId))
 
   def postcodeField(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
   
