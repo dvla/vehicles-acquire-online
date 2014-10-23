@@ -257,7 +257,6 @@ acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address
 acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_privatekeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
 acquire_privatekeeperdetails.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 privatekeeper_title = Title
 privatekeeper_email = Email
@@ -277,9 +276,8 @@ privatekeeper_dateofbirth = Date of birth of new keeper
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
-acquire_businesskeeperdetails.p1 = Enter the details of the person buying the vehicle.
+acquire_businesskeeperdetails.p1 = Enter the details of the business buying the vehicle.
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_businesskeeperdetails.p3 = An email address is optional, and only used to send an optional receipt to the new keeper at the end of this transaction.
 acquire_businesskeeperdetails.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
 acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
