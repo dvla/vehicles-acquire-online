@@ -7,7 +7,6 @@ import BusinessChooseYourAddress.BackId
 import BusinessChooseYourAddress.EnterAddressManuallyButtonId
 import BusinessChooseYourAddress.SelectId
 import org.openqa.selenium.WebDriver
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
 object BusinessChooseYourAddressPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("business-choose-your-address")
@@ -29,7 +28,9 @@ object BusinessChooseYourAddressPage extends Page with WebBrowserDSL {
 
   def happyPath(implicit driver: WebDriver) = {
     go to BusinessChooseYourAddressPage
-    chooseAddress.value = UprnValid.toString
+    // HACK for Northern Ireland
+    //    chooseAddress.value = traderUprnValid.toString
+    chooseAddress.value = "0"
     click on select
   }
 
