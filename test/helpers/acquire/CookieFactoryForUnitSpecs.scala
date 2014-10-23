@@ -239,12 +239,17 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def newKeeperChooseYourAddress(): Cookie = {
+  def newKeeperChooseYourAddressUseUprn(uprnSelected: String = UprnValid.toString): Cookie = {
     val key = NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
     val value = NewKeeperChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
     createCookie(key, value)
   }
 
+  def newKeeperChooseYourAddress(uprnSelected: String = "0"): Cookie = {
+    val key = NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+    val value = NewKeeperChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
+    createCookie(key, value)
+  }
   def newKeeperDetailsModel(title: Option[TitleType] = None,
                             firstName: Option[String] = None,
                             lastName: Option[String] = None,

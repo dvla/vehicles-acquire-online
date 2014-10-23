@@ -29,7 +29,9 @@ object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
 
   def happyPath(implicit driver: WebDriver) = {
     go to NewKeeperChooseYourAddressPage
-    chooseAddress.value = UprnValid.toString
+    // HACK for Northern Ireland
+//    chooseAddress.value = traderUprnValid.toString
+    chooseAddress.value = "0"
     click on select
   }
 

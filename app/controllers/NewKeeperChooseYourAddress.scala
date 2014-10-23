@@ -2,15 +2,18 @@ package controllers
 
 import javax.inject.Inject
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.NewKeeperChooseYourAddressViewModel
 import models.BusinessKeeperDetailsFormModel
 import models.NewKeeperChooseYourAddressFormModel
+import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 import models.PrivateKeeperDetailsFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
+import uk.gov.dvla.vehicles.presentation.common.model.AddressModel
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -58,20 +61,37 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     switch(
       privateKeeperDetails =>
         fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-          openView(
-            constructPrivateKeeperName(privateKeeperDetails),
-            privateKeeperDetails.postcode,
-            privateKeeperDetails.email,
-            addresses
-          )
+          if (config.ordnanceSurveyUseUprn) {
+            openView(
+              constructPrivateKeeperName(privateKeeperDetails),
+              privateKeeperDetails.postcode,
+              privateKeeperDetails.email,
+              addresses
+            )
+          } else {
+            openView(
+              constructPrivateKeeperName(privateKeeperDetails),
+              privateKeeperDetails.postcode,
+              privateKeeperDetails.email,
+              index(addresses)
+            )
+          }
         },
       businessKeeperDetails =>
         fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-          openView(businessKeeperDetails.businessName,
-            businessKeeperDetails.postcode,
-            businessKeeperDetails.email,
-            addresses
-          )
+          if (config.ordnanceSurveyUseUprn) {
+            openView(businessKeeperDetails.businessName,
+              businessKeeperDetails.postcode,
+              businessKeeperDetails.email,
+              addresses
+            )
+          } else {
+            openView(businessKeeperDetails.businessName,
+              businessKeeperDetails.postcode,
+              businessKeeperDetails.email,
+              index(addresses)
+            )
+          }
         },
       message => Future.successful(error(message))
     )
@@ -133,20 +153,29 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       ),
       implicit validForm => switch(
         privateKeeperDetails => {
-          lookupUprn(
-            constructPrivateKeeperName(privateKeeperDetails),
-            privateKeeperDetails.email,
-            None,
-            isBusinessKeeper = false
-          )
+          if (config.ordnanceSurveyUseUprn) {
+            lookupUprn(
+              constructPrivateKeeperName(privateKeeperDetails),
+              privateKeeperDetails.email,
+              None,
+              isBusinessKeeper = false
+            )
+          } else {
+            lookupAddressByPostcodeThenIndex(validForm, privateKeeperDetails.postcode)
+          }
         },
         businessKeeperDetails => {
-          lookupUprn(
-            businessKeeperDetails.businessName,
-            businessKeeperDetails.email,
-            businessKeeperDetails.fleetNumber,
-            isBusinessKeeper = true
-          )
+          if (config.ordnanceSurveyUseUprn) {
+            lookupUprn(
+              businessKeeperDetails.businessName,
+              businessKeeperDetails.email,
+              businessKeeperDetails.fleetNumber,
+              isBusinessKeeper = true
+            )
+          } else {
+            lookupAddressByPostcodeThenIndex(validForm,
+                                             businessKeeperDetails.postcode)
+          }
         },
         message => Future.successful(error(message))
       )
@@ -167,6 +196,12 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
   private def fetchAddresses(postcode: String)(implicit request: Request[_]) = {
     val session = clientSideSessionFactory.getSession(request.cookies)
     addressLookupService.fetchAddressesForPostcode(postcode, session.trackingId)
+  }
+
+  private def index(addresses: Seq[(String, String)]) = {
+    addresses.map { case (uprn, address) => address}. // Extract the address.
+      zipWithIndex. // Add an index for each address
+      map { case (address, index) => (index.toString, address)} // Flip them around so index comes first.
   }
 
   private def formWithReplacedErrors(form: Form[NewKeeperChooseYourAddressFormModel])(implicit request: Request[_]) =
@@ -194,4 +229,38 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       case None => Redirect(routes.UprnNotFound.present())
     }
   }
+
+  private def lookupAddressByPostcodeThenIndex(model: NewKeeperChooseYourAddressFormModel,
+                                               postCode: String)
+                                              (implicit request: Request[_]): Future[Result] = {
+    fetchAddresses(postCode)(request).map { addresses =>
+      val indexSelected = model.uprnSelected.toInt
+      if (indexSelected < addresses.length) {
+        val lookedUpAddresses = index(addresses)
+        val lookedUpAddress = lookedUpAddresses(indexSelected) match {
+          case (index, address) => address
+        }
+        val addressModel = AddressModel(uprn = None, address = lookedUpAddress.split(","))
+        createNewKeeper(addressModel) match {
+          case Some(newKeeperDetails) => nextPage(newKeeperDetails, addressModel)
+          case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
+        }
+      }
+      else {
+        // Guard against IndexOutOfBoundsException
+        Redirect(routes.UprnNotFound.present())
+      }
+    }
+  }
+
+  private def nextPage(model: NewKeeperDetailsViewModel, addressModel: AddressModel)
+                      (implicit request: Request[_]): Result = {
+    /* The redirect is done as the final step within the map so that:
+     1) we are not blocking threads
+     2) the browser does not change page before the future has completed and written to the cache. */
+    Redirect(routes.VehicleTaxOrSorn.present()).
+      discardingCookie(EnterAddressManuallyCacheKey).
+      withCookie(model)//.
+  }
+
 }

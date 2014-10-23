@@ -28,7 +28,9 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
     (newKeeperDetailsOpt, vehicleDetailsOpt) match {
       case (Some(newKeeperDetails), Some(vehicleDetails)) =>
         Ok(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleDetails, newKeeperDetails)))
-      case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
+      case _ => {
+        redirectToVehicleLookup(NoCookiesFoundMessage)
+      }
     }
   }
 
