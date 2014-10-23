@@ -4,7 +4,6 @@ import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import org.joda.time.{DateTime, LocalDate}
-import org.openqa.selenium.WebDriver
 import pages.acquire.{HelpPage, VehicleLookupPage}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
@@ -46,16 +45,22 @@ import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleModelValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, ReferenceNumberValid, RegistrationNumberValid, VehicleMakeValid, TransactionIdValid}
+import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionTimestampValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionIdValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import models.HelpCacheKey
 
-object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make this more fluent by returning "this" at the end of the defs
+object CookieFactoryForUnitSpecs extends TestComposition {
 
   implicit private val cookieFlags = injector.getInstance(classOf[CookieFlags])
   final val TrackingIdValue = "trackingId"
   final val KeeperEmail = "abc@def.com"
   final val SeenCookieTrue = "yes"
+  final val ConsentTrue = "true"
+  final val VehicleLookupFailureResponseCode = "disposal_vehiclelookupfailure"
   private val session = new ClearTextClientSideSession(TrackingIdValue)
 
   private def createCookie[A](key: String, value: A)(implicit tjs: Writes[A]): Cookie = {
@@ -75,28 +80,36 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def setupTradeDetails(traderPostcode: String = PostcodeValid, traderEmail: Option[String] = None): Cookie = {
+  def setupTradeDetails(traderBusinessName: String = TraderBusinessNameValid,
+                        traderPostcode: String = PostcodeValid,
+                        traderEmail: Option[String] = None): Cookie = {
     val key = SetupTradeDetailsCacheKey
-    val value = SetupTradeDetailsFormModel(traderBusinessName = TraderBusinessNameValid,
-      traderPostcode = traderPostcode, traderEmail = traderEmail)
+    val value = SetupTradeDetailsFormModel(
+      traderBusinessName = traderBusinessName,
+      traderPostcode = traderPostcode,
+      traderEmail = traderEmail
+    )
     createCookie(key, value)
   }
 
-  def businessChooseYourAddress(): Cookie = {
+  def businessChooseYourAddress(uprn: Long = UprnValid): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressFormModel(uprnSelected = UprnValid.toString)
+    val value = BusinessChooseYourAddressFormModel(uprnSelected = uprn.toString)
     createCookie(key, value)
   }
 
-  def enterAddressManually(): Cookie = {
+  def enterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                           line2: Option[String] = Some(Line2Valid),
+                           line3: Option[String] = Some(Line3Valid),
+                           postTown: String = PostTownValid): Cookie = {
     val key = EnterAddressManuallyCacheKey
     val value = EnterAddressManuallyFormModel(
       addressAndPostcodeModel = AddressAndPostcodeViewModel(
         addressLinesModel = AddressLinesViewModel(
-          buildingNameOrNumber = BuildingNameOrNumberValid,
-            line2 = Some(Line2Valid),
-            line3 = Some(Line3Valid),
-            postTown = PostTownValid
+          buildingNameOrNumber = buildingNameOrNumber,
+          line2 = line2,
+          line3 = line3,
+          postTown = postTown
         )
       )
     )
@@ -117,7 +130,6 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     )
     createCookie(key, value)
   }
-
 
   def traderDetailsModel(uprn: Option[Long] = None,
                          buildingNameOrNumber: String = BuildingNameOrNumberValid,
@@ -178,16 +190,19 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
     createCookie(key, value)
   }
 
-  def vehicleLookupResponseCode(responseCode: String = "disposal_vehiclelookupfailure"): Cookie =
+  def vehicleLookupResponseCode(responseCode: String = VehicleLookupFailureResponseCode): Cookie =
     createCookie(VehicleLookupResponseCodeCacheKey, responseCode)
 
   def privateKeeperDetailsModel(title: TitleType = TitleType(1, ""),
                                 firstName: String = FirstNameValid,
                                 lastName: String = LastNameValid,
-                                dateOfBirth: Option[LocalDate] = Some(new LocalDate(
-                                  YearDateOfBirthValid.toInt,
-                                  MonthDateOfBirthValid.toInt,
-                                  DayDateOfBirthValid.toInt)),
+                                dateOfBirth: Option[LocalDate] = Some(
+                                  new LocalDate(
+                                    YearDateOfBirthValid.toInt,
+                                    MonthDateOfBirthValid.toInt,
+                                    DayDateOfBirthValid.toInt
+                                  )
+                                ),
                                 email: Option[String] = Some(EmailValid),
                                 driverNumber: Option[String] = Some(DriverNumberValid),
                                 postcode: String = PostcodeValid): Cookie = {
@@ -208,12 +223,13 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
                               dateOfSale: LocalDate = new LocalDate(
                                 YearDateOfSaleValid.toInt,
                                 MonthDateOfSaleValid.toInt,
-                                DayDateOfSaleValid.toInt)): Cookie = {
+                                DayDateOfSaleValid.toInt),
+                              consent: String = ConsentTrue): Cookie = {
     val key = CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
     val value = CompleteAndConfirmFormModel(
       mileage,
       dateOfSale,
-      ""
+      consent
     )
     createCookie(key, value)
   }
@@ -277,7 +293,8 @@ object CookieFactoryForUnitSpecs extends TestComposition { // TODO can we make t
       address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
       email = email,
       isBusinessKeeper = isBusinessKeeper,
-      displayName = if (businessName == None) firstName + " " + lastName else businessName.getOrElse("")
+      displayName = if (businessName == None) firstName + " " + lastName
+                    else businessName.getOrElse("")
     )
     createCookie(key, value)
   }
