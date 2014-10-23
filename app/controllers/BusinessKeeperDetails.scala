@@ -51,6 +51,9 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
       BusinessKeeperDetailsFormModel.Form.BusinessNameId,
       FormError(key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessName")
     ).replaceError(
+        BusinessKeeperDetailsFormModel.Form.EmailId,
+        FormError(key = BusinessKeeperDetailsFormModel.Form.EmailId,message = "error.email")
+      ).replaceError(
         BusinessKeeperDetailsFormModel.Form.PostcodeId,
         FormError(key = BusinessKeeperDetailsFormModel.Form.PostcodeId,message = "error.restricted.validPostcode")
       ).distinctErrors
