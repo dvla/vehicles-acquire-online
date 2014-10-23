@@ -58,15 +58,13 @@ object WebDriverFactory {
   def testUrl: String = {
     if (testRemote) {
       val testUrlEnvVar = sys.env.get("test.url") getOrElse
-                          sys.props.get("test.url").getOrElse("http://localhost:9000/")
+        sys.props.get("test.url").getOrElse("http://localhost:9000/")
       val testUrl = getProperty("test.url", testUrlEnvVar)
-      println(s"WebDriver remote testUrl: $testUrl")
       Logger.info(s"WebDriver remote testUrl: $testUrl")
       testUrl
     }
     else {
       // Default if testing locally
-      println(s"WebDriver local testUrl: http://localhost:9004")
       Logger.info(s"WebDriver local testUrl: http://localhost:9004")
       new String("http://localhost:9004/")
     }

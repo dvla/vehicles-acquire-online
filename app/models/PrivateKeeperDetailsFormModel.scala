@@ -2,7 +2,8 @@ package models
 
 import org.joda.time.LocalDate
 import play.api.data.Forms.{mapping, optional}
-import play.api.data.Mapping
+import play.api.data.{Forms, FormError, Mapping}
+import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
 import play.api.data.validation.Constraints.pattern
 import play.api.libs.json.Json
@@ -28,6 +29,7 @@ object PrivateKeeperDetailsFormModel {
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
   final val PrivateKeeperDetailsCacheKey = "privateKeeperDetails"
   implicit val Key = CacheKey[PrivateKeeperDetailsFormModel](PrivateKeeperDetailsCacheKey)
+  private val NameRegEx = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r
 
   object Form {
     final val TitleId = "privatekeeper_title"
@@ -41,19 +43,12 @@ object PrivateKeeperDetailsFormModel {
 
     final val DriverNumberMaxLength = 16
     final val FirstNameMinLength = 1
-    final val FirstNameMaxLength = 25
+    final val FirstNameAndTitleMaxLength = 26
     final val LastNameMinLength = 1
     final val LastNameMaxLength = 25
 
     def firstNameMapping: Mapping[String] =
-      nonEmptyTextWithTransform(_.trim)(FirstNameMinLength, FirstNameMaxLength) verifying validFirstName
-
-    final val NameRegEx = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r
-    
-    def validFirstName: Constraint[String] = pattern(
-      regex = NameRegEx,
-      name = "constraint.validFirstName",
-      error = "error.validFirstName")
+      Forms.of(FirstNameFormatter.firstNameFormatter(TitleId))
 
     def lastNameMapping: Mapping[String] =
       nonEmptyTextWithTransform(_.trim)(LastNameMinLength, LastNameMaxLength) verifying validLastName
@@ -72,5 +67,35 @@ object PrivateKeeperDetailsFormModel {
       DriverNumberId -> optional(driverNumber),
       PostcodeId -> postcode
     )(PrivateKeeperDetailsFormModel.apply)(PrivateKeeperDetailsFormModel.unapply)
+  }
+
+  private object FirstNameFormatter {
+    private val titleFormatter = TitlePickerString.formatter
+
+    private type R = Either[Seq[FormError], String]
+
+    def firstNameFormatter(titleKey: String) = new Formatter[String] {
+      override def bind(key: String, data: Map[String, String]): R = {
+        def t = titleFormatter.bind(titleKey, data) match {
+          case Left(errors) => ""
+          case Right(title) => NewKeeperDetailsViewModel.getTitle(title).trim
+        }
+
+        def errors(errors: String*): R = Left(errors.map(FormError(key, _)))
+
+        data.get(key).fold[R](Left(Seq[FormError](FormError(key, "error.validFirstName")))) { firstName =>
+          firstName.trim.length match {
+            case l if l < Form.FirstNameMinLength => errors("error.validFirstName")
+            case l if l > Form.FirstNameAndTitleMaxLength - t.length =>
+              errors("error.titlePlusFirstName.tooLong")
+            case _ =>
+              if (NameRegEx.pattern.matcher(firstName).matches()) Right(firstName)
+              else errors("error.validFirstName")
+          }
+        }
+      }
+
+      override def unbind(key: String, value: String) = Map(key -> value)
+    }
   }
 }
