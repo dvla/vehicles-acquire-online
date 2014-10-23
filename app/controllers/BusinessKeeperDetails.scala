@@ -19,18 +19,15 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
     BusinessKeeperDetailsFormModel.Form.Mapping
   )
 
+  private final val CookieErrorMessage = "Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails."
+
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleDetailsModel] match {
       case Some(vehicleDetails) =>
         Ok(views.html.acquire.business_keeper_details(
-          BusinessKeeperDetailsViewModel(
-            form.fill(),
-            vehicleDetails
-          )
+          BusinessKeeperDetailsViewModel(form.fill(),vehicleDetails)
         ))
-      case _ =>
-        Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
-        Redirect(routes.SetUpTradeDetails.present())
+      case _ => redirectToSetupTradeDetails(CookieErrorMessage)
     }
   }
 
@@ -39,25 +36,27 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
       invalidForm => {
         request.cookies.getModel[VehicleDetailsModel] match {
           case Some(vehicleDetails) =>
-            val formWithReplacedErrors = invalidForm.
-              replaceError(BusinessKeeperDetailsFormModel.Form.BusinessNameId, FormError(
-                key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessName"
-            )).
-              replaceError(BusinessKeeperDetailsFormModel.Form.PostcodeId, FormError(
-                key = BusinessKeeperDetailsFormModel.Form.PostcodeId,message = "error.restricted.validPostcode"
-            )).distinctErrors
             BadRequest(views.html.acquire.business_keeper_details(
-              BusinessKeeperDetailsViewModel(
-                formWithReplacedErrors,
-                vehicleDetails
-              )
+              BusinessKeeperDetailsViewModel(formWithReplacedErrors(invalidForm), vehicleDetails)
             ))
-          case None =>
-            Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
-            Redirect(routes.SetUpTradeDetails.present())
+          case None => redirectToSetupTradeDetails(CookieErrorMessage)
         }
       },
       validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm)
     )
+  }
+
+  private def formWithReplacedErrors(form: Form[BusinessKeeperDetailsFormModel]) =
+    form.replaceError(
+      BusinessKeeperDetailsFormModel.Form.BusinessNameId,
+      FormError(key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessName")
+    ).replaceError(
+        BusinessKeeperDetailsFormModel.Form.PostcodeId,
+        FormError(key = BusinessKeeperDetailsFormModel.Form.PostcodeId,message = "error.restricted.validPostcode")
+      ).distinctErrors
+
+  private def redirectToSetupTradeDetails(message:String) = {
+    Logger.warn(message)
+    Redirect(routes.SetUpTradeDetails.present())
   }
 }
