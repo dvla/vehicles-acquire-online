@@ -40,7 +40,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
   def other(implicit driver: WebDriver) = radioButton(id(s"${TitleId}_titleOption_$OtherTitleRadioValue"))
   def otherText(implicit driver: WebDriver) = textField(id(s"${TitleId}_titleText"))
 
-  def emailTextBox(implicit driver: WebDriver): EmailField = emailField(id(EmailId))
+  def emailTextBox(implicit driver: WebDriver): TextField = textField(id(EmailId))
 
   def driverNumberTextBox(implicit driver: WebDriver): TextField = textField(id(DriverNumberId))
 
