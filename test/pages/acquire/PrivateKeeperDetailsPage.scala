@@ -13,7 +13,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
   final override val title: String = "Enter keeper details"
 
   final val TitleInvalid = "other"
-  final val FirstNameValid = "TestFirstName"
+  final val FirstNameValid = "fn"
   final val FirstNameInvalid = ""
   final val LastNameValid = "TestLastName"
   final val LastNameInvalid = ""
@@ -59,8 +59,10 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
   private def titleRadioButtons(implicit driver: WebDriver) = Seq(mr, miss, mrs, other)
 
   def selectTitle(title: String)(implicit driver: WebDriver): Unit = {
-    titleRadioButtons.find(_.underlying.getAttribute("id") endsWith titleType(title))
-      .fold(throw new Exception(s"Radio button with id ending at $title not found"))(click on _)
+    titleRadioButtons.find(_.underlying.getAttribute("id") endsWith titleType(title)).fold {
+      click on other
+      otherText enter title
+    } (click on _)
   }
 
   def assertTitleSelected(title: String)(implicit driver: WebDriver): Unit = {

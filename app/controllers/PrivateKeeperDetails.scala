@@ -42,10 +42,6 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
             invalidForm => {
               val formWithReplacedErrors = invalidForm.
                 replaceError(
-                  FirstNameId,
-                  FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)
-                ).
-                replaceError(
                   LastNameId,
                   FormError(
                     key = LastNameId,
