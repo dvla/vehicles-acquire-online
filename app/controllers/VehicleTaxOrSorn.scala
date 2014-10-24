@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.EnterAddressManuallyFormModel
 import models.{NewKeeperDetailsViewModel, VehicleTaxOrSornViewModel, VehicleTaxOrSornFormModel}
 import play.api.Logger
 import play.api.data.Form
@@ -40,11 +41,10 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
   }
 
   def back = Action { implicit request =>
-    request.cookies.getModel[NewKeeperDetailsViewModel] match {
-      case Some(keeperDetails) =>
-        if (keeperDetails.address.uprn.isDefined) Redirect(routes.NewKeeperChooseYourAddress.present())
-        else Redirect(routes.NewKeeperEnterAddressManually.present())
-      case None => Redirect(routes.VehicleLookup.present())
+    request.cookies.getModel[EnterAddressManuallyFormModel] match {
+      case Some(manualAddress) =>
+        Redirect(routes.NewKeeperEnterAddressManually.present())
+      case None => Redirect(routes.NewKeeperChooseYourAddress.present())
     }
   }
 

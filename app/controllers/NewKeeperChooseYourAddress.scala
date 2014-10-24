@@ -112,8 +112,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     }
   }
 
-  private def handleInvalidForm(
-                                name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
+  private def handleInvalidForm(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                                (implicit invalidForm: Form[NewKeeperChooseYourAddressFormModel], request: Request[_]) = {
     request.cookies.getModel[VehicleDetailsModel] match {
       case Some(vehicleDetails) =>
@@ -133,21 +132,39 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
       implicit invalidForm => switch(
         privateKeeperDetails =>
           fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-            handleInvalidForm(
-              constructPrivateKeeperName(privateKeeperDetails),
-              privateKeeperDetails.postcode,
-              privateKeeperDetails.email,
-              addresses
-            )
+            if (config.ordnanceSurveyUseUprn) {
+              handleInvalidForm(
+                constructPrivateKeeperName(privateKeeperDetails),
+                privateKeeperDetails.postcode,
+                privateKeeperDetails.email,
+                addresses
+              )
+            } else {
+              handleInvalidForm(
+                constructPrivateKeeperName(privateKeeperDetails),
+                privateKeeperDetails.postcode,
+                privateKeeperDetails.email,
+                index(addresses)
+              )
+            }
           },
         businessKeeperDetails =>
           fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-            handleInvalidForm(
-              businessKeeperDetails.businessName,
-              businessKeeperDetails.postcode,
-              businessKeeperDetails.email,
-              addresses
-            )
+            if (config.ordnanceSurveyUseUprn) {
+              handleInvalidForm(
+                businessKeeperDetails.businessName,
+                businessKeeperDetails.postcode,
+                businessKeeperDetails.email,
+                addresses
+              )
+            } else {
+              handleInvalidForm(
+                businessKeeperDetails.businessName,
+                businessKeeperDetails.postcode,
+                businessKeeperDetails.email,
+                index(addresses)
+              )
+            }
           },
         message => Future.successful(error(message))
       ),
@@ -235,6 +252,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
                                               (implicit request: Request[_]): Future[Result] = {
     fetchAddresses(postCode)(request).map { addresses =>
       val indexSelected = model.uprnSelected.toInt
+
       if (indexSelected < addresses.length) {
         val lookedUpAddresses = index(addresses)
         val lookedUpAddress = lookedUpAddresses(indexSelected) match {
@@ -242,7 +260,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         }
         val addressModel = AddressModel(uprn = None, address = lookedUpAddress.split(","))
         createNewKeeper(addressModel) match {
-          case Some(newKeeperDetails) => nextPage(newKeeperDetails, addressModel)
+          case Some(newKeeperDetails) => nextPage(model, newKeeperDetails, addressModel)
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
         }
       }
@@ -253,14 +271,17 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     }
   }
 
-  private def nextPage(model: NewKeeperDetailsViewModel, addressModel: AddressModel)
+  private def nextPage(newKeeperDetailsChooseYourAddressModel: NewKeeperChooseYourAddressFormModel,
+                       newKeeperDetailsmodel: NewKeeperDetailsViewModel,
+                       addressModel: AddressModel)
                       (implicit request: Request[_]): Result = {
     /* The redirect is done as the final step within the map so that:
      1) we are not blocking threads
      2) the browser does not change page before the future has completed and written to the cache. */
     Redirect(routes.VehicleTaxOrSorn.present()).
-      discardingCookie(EnterAddressManuallyCacheKey).
-      withCookie(model)//.
+      discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
+      withCookie(newKeeperDetailsmodel).
+      withCookie(newKeeperDetailsChooseYourAddressModel)
   }
 
 }

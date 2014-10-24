@@ -81,6 +81,7 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
         dealerDetails().
         vehicleDetails().
         privateKeeperDetails().
+        enterAddressManually().
         newKeeperDetails(
           title = Some(TitleType(1,"")),
           address = addressWithoutUprn
