@@ -18,6 +18,8 @@ import common.clientsidesession.CookieImplicits.RichCookies
 import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import utils.helpers.Config
+import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import scala.Some
 
 class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -40,7 +42,8 @@ class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: Client
         case Some(vehicleDetails) =>
           form.bindFromRequest.fold(
             invalidForm => BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors(invalidForm))),
-            validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm))
+            validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm)
+                          .discardingCookie(NewKeeperChooseYourAddressCacheKey))
         case _ => redirectToSetupTradeDetails(CookieErrorMessage)
       }
   }

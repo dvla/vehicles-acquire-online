@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{BusinessKeeperDetailsViewModel, BusinessKeeperDetailsFormModel}
+import models.BusinessKeeperDetailsFormModel
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
@@ -11,6 +11,9 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.views.helpers.FormExtensions.formBinding
+import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import models.BusinessKeeperDetailsViewModel
+import scala.Some
 
 class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
@@ -43,6 +46,7 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
         }
       },
       validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm)
+                    .discardingCookie(NewKeeperChooseYourAddressCacheKey)
     )
   }
 
