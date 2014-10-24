@@ -2,6 +2,7 @@ package controllers.acquire
 
 import controllers.BusinessChooseYourAddress
 import controllers.acquire.Common.PrototypeHtml
+import helpers.WithApplication
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.common.CookieHelper.verifyCookieHasBeenDiscarded
@@ -14,7 +15,7 @@ import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import pages.common.UprnNotFoundPage
-import play.api.test.WithApplication
+import play.api.test.Helpers.contentAsString
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
@@ -47,6 +48,14 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val content = contentAsString(result)
       content should include(TraderBusinessNameValid)
       content should include( s"""<option value="$UprnValid" selected>""")
+    }
+
+    "display expected drop-down values" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressController(ordnanceSurveyUseUprn = true).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="$UprnValid" >""")
     }
 
     "display unselected field when cookie does not exist" in new WithApplication {
@@ -95,6 +104,14 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       content should include( s"""<option value="0" selected>""")
     }
 
+    "display expected drop-down values" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressController(ordnanceSurveyUseUprn = false).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="0" >""")
+    }
+
     "display unselected field when cookie does not exist" in new WithApplication {
       val content = contentAsString(present(ordnanceSurveyUseUprn = false))
       content should include(TraderBusinessNameValid)
@@ -141,6 +158,14 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
+    }
+
+    "display expected drop-down values when no address selected" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressController(ordnanceSurveyUseUprn = true).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="$UprnValid" >""")
     }
 
     "redirect to setupTradeDetails page when valid submit with no dealer name cached" in new WithApplication {
@@ -203,6 +228,14 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
+    }
+
+    "display expected drop-down values when no address selected" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val result = businessChooseYourAddressController(ordnanceSurveyUseUprn = false).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="0" >""")
     }
 
     "redirect to setupTradeDetails page when valid submit with no dealer name cached" in new WithApplication {
