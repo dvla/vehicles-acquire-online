@@ -4,7 +4,7 @@ import controllers.BusinessKeeperDetails
 import helpers.UnitSpec
 import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
-import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
+import mappings.BusinessKeeperName
 
 class BusinessKeeperDetailsFormSpec extends UnitSpec {
 
@@ -28,7 +28,7 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
     "reject if form has no fields completed" in {
       formWithValidDefaults(fleetNumber = "", businessName = "", email = "").
         errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.minLength", "error.required", "error.validBusinessName")
+        List("error.minLength", "error.required", "error.validBusinessKeeperName")
     }
   }
 
@@ -42,7 +42,7 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
       errors(1).key should equal(BusinessNameId)
       errors(1).message should equal("error.required")
       errors(2).key should equal(BusinessNameId)
-      errors(2).message should equal("error.validBusinessName")
+      errors(2).message should equal("error.validBusinessKeeperName")
     }
 
     "reject if business name is less than minimum length" in {
@@ -51,7 +51,7 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
     }
 
     "reject if business name is more than the maximum length" in {
-      formWithValidDefaults(businessName = "A" * BusinessName.MaxLength + 1)
+      formWithValidDefaults(businessName = "A" * BusinessKeeperName.MaxLength + 1)
         .errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
   }

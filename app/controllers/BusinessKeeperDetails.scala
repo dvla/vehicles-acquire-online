@@ -53,7 +53,7 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
   private def formWithReplacedErrors(form: Form[BusinessKeeperDetailsFormModel]) = {
     form.replaceError(
       BusinessKeeperDetailsFormModel.Form.BusinessNameId,
-      FormError(key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessName")
+      FormError(key = BusinessKeeperDetailsFormModel.Form.BusinessNameId,message = "error.validBusinessKeeperName")
     ).replaceError(
         BusinessKeeperDetailsFormModel.Form.EmailId,
         FormError(key = BusinessKeeperDetailsFormModel.Form.EmailId,message = "error.email")

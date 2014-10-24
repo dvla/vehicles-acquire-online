@@ -12,11 +12,11 @@
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
-@import common.mappings.BusinessName
 @import common.mappings.Postcode
 @import constraints.FleetNumber
 @import views.html.helper.form
 @import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+@import mappings.BusinessKeeperName
 
 @main(
     progress = Some(Messages("acquire_progress_5")),
@@ -61,7 +61,7 @@
                     <div class="uppercase-input">
                         @valtechInputText(viewModel.form(BusinessNameId), args =
                             Map('_label -> Messages("acquire_businesskeeperdetails.businessname"),
-                                'maxLength -> BusinessName.MaxLength,
+                                'maxLength -> BusinessKeeperName.MaxLength,
                                 '_showConstraints -> false
                             )
                         )

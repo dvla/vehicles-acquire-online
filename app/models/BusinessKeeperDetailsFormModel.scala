@@ -5,9 +5,9 @@ import play.api.data.Forms.{mapping, optional}
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
-import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
 import common.mappings.Postcode.postcode
+import mappings.BusinessKeeperName.businessKeeperNameMapping
 
 final case class BusinessKeeperDetailsFormModel(fleetNumber: Option[String],
                                                 businessName: String,
@@ -27,7 +27,7 @@ object BusinessKeeperDetailsFormModel {
 
     final val Mapping = mapping(
       FleetNumberId -> fleetNumberMapping,
-      BusinessNameId -> businessNameMapping,
+      BusinessNameId -> businessKeeperNameMapping,
       EmailId -> optional(email),
       PostcodeId -> postcode
     )(BusinessKeeperDetailsFormModel.apply)(BusinessKeeperDetailsFormModel.unapply)
