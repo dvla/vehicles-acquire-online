@@ -9,6 +9,7 @@ import models.PrivateKeeperDetailsFormModel.Form.EmailId
 import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
 import models.PrivateKeeperDetailsFormModel.Form.LastNameId
 import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
 import play.api.data.{FormError, Form}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -18,7 +19,7 @@ import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import utils.helpers.Config
 
-final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(
@@ -46,20 +47,15 @@ final class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: 
 
   private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsFormModel]) = {
     form.replaceError(
-//      FirstNameId,
-//      FormError(key = FirstNameId, message = "error.validFirstName", args = Seq.empty)
-//    ).
-//      replaceError(
-        LastNameId,
-        FormError(key = LastNameId,message = "error.validLastName", args = Seq.empty)
-      ).
-      replaceError(
-        DriverNumberId,
-        FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)
-      ).
-      replaceError(
-        PostcodeId,
-        FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
+        LastNameId, FormError(key = LastNameId,message = "error.validLastName", args = Seq.empty)
+      ).replaceError(
+        DateOfBirthId, FormError(key = DateOfBirthId, message = "error.date.invalid", args = Seq.empty)
+      ).replaceError(
+        DriverNumberId, FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)
+      ).replaceError(
+        EmailId, FormError(key = EmailId, message = "error.email", args = Seq.empty)
+      ).replaceError(
+        PostcodeId, FormError(key = PostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
       ).distinctErrors
   }
 

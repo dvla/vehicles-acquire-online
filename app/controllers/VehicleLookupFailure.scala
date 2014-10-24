@@ -11,9 +11,8 @@ import common.clientsidesession.CookieImplicits.RichCookies
 import common.model.{TraderDetailsModel, BruteForcePreventionModel}
 import utils.helpers.Config
 
-class VehicleLookupFailure @Inject()()
-                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                           config: Config) extends Controller {
+class VehicleLookupFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+                                       config: Config) extends Controller {
 
   def present = Action { implicit request =>
     (request.cookies.getModel[TraderDetailsModel],
