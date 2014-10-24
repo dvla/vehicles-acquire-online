@@ -10,6 +10,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 
 class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                           config: Config) extends Controller {
@@ -26,6 +27,7 @@ class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSid
     form.bindFromRequest.fold(
       invalidForm => BadRequest(views.html.acquire.setup_trade_details(formWithReplacedErrors(invalidForm))),
       validForm => Redirect(routes.BusinessChooseYourAddress.present()).withCookie(validForm)
+        .discardingCookie(BusinessChooseYourAddressCacheKey)
     )
   }
 
