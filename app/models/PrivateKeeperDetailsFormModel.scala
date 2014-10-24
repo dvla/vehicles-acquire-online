@@ -5,7 +5,7 @@ import play.api.data.Forms.{mapping, optional}
 import play.api.data.{Forms, FormError, Mapping}
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
-import play.api.data.validation.Constraints.pattern
+import play.api.data.validation.Constraints.{nonEmpty, pattern}
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
@@ -48,7 +48,7 @@ object PrivateKeeperDetailsFormModel {
     final val LastNameMaxLength = 25
 
     def firstNameMapping: Mapping[String] =
-      Forms.of(FirstNameFormatter.firstNameFormatter(TitleId))
+      Forms.of(FirstNameFormatter.firstNameFormatter(TitleId)).verifying(nonEmpty)
 
     def lastNameMapping: Mapping[String] =
       nonEmptyTextWithTransform(_.trim)(LastNameMinLength, LastNameMaxLength) verifying validLastName

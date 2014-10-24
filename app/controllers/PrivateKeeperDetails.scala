@@ -6,7 +6,6 @@ import play.api.Logger
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import models.PrivateKeeperDetailsFormModel.Form.EmailId
-import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
 import models.PrivateKeeperDetailsFormModel.Form.LastNameId
 import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
 import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
@@ -19,7 +18,6 @@ import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import utils.helpers.Config
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
-import scala.Some
 
 class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {
