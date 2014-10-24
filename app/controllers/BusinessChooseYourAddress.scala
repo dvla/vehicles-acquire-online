@@ -55,11 +55,19 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
           case Some(setupTradeDetails) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
             fetchAddresses(setupTradeDetails).map { addresses =>
-              BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
-                setupTradeDetails.traderBusinessName,
-                setupTradeDetails.traderPostcode,
-                setupTradeDetails.traderEmail,
-                addresses))
+              if (config.ordnanceSurveyUseUprn) {
+                BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
+                  setupTradeDetails.traderBusinessName,
+                  setupTradeDetails.traderPostcode,
+                  setupTradeDetails.traderEmail,
+                  addresses))
+              } else {
+                BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
+                  setupTradeDetails.traderBusinessName,
+                  setupTradeDetails.traderPostcode,
+                  setupTradeDetails.traderEmail,
+                  index(addresses)))
+              }
             }
           case None => Future {
             Logger.warn("Failed to find dealer details, redirecting")
