@@ -35,7 +35,7 @@ object Sandbox extends Plugin {
   final val HttpsPort = 19443
   final val OsAddressLookupPort = 19801
   final val VehicleLookupPort = 19802
-  final val LegacyServicesStubsPort = 19086
+  final val LegacyServicesStubsPort = 19806
   final val AcquireFulfilPort = 19807
 
   val secretProperty = "DECRYPT_PASSWORD"
@@ -148,13 +148,11 @@ object Sandbox extends Plugin {
     System.setProperty("ordnancesurvey.baseUrl", s"http://localhost:$OsAddressLookupPort")
     System.setProperty("vehicleLookup.baseUrl", s"http://localhost:$VehicleLookupPort")
     System.setProperty("acquireVehicle.baseUrl", s"http://localhost:$AcquireFulfilPort")
-//    System.setProperty("disposeVehicle.baseUrl", s"http://localhost:$VehicleDisposePort")
     body.flatMap(t => stop)
   }
 
   lazy val testGatling = taskKey[Unit]("Runs the gatling test")
   lazy val testGatlingTask = testGatling := {
-//    System.setProperty("baseUrl", "http://localhost:9000/vrm-acquire")
     val classPath = fullClasspath.all(scopeGatlingTests).value.flatten
     val targetFolder = target.in(gatlingTests).value.getAbsolutePath
     val vehiclesGatlingExtractDir = new File(s"$targetFolder/gatlingJarExtract")
@@ -196,6 +194,7 @@ object Sandbox extends Plugin {
   lazy val runAsyncTask = runAsync := {
     System.setProperty("https.port", HttpsPort.toString)
     System.setProperty("http.port", "disabled")
+    System.setProperty("bruteForcePrevention.enabled", "false")
     System.setProperty("baseUrl", s"https://localhost:$HttpsPort")
     System.setProperty("test.remote", "true")
     System.setProperty("test.url", s"https://localhost:$HttpsPort/")
