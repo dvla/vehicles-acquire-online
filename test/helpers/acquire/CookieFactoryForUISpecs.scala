@@ -1,22 +1,24 @@
 package helpers.acquire
 
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
-import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import models.CompleteAndConfirmResponseModel
-import models.SetupTradeDetailsFormModel
 import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyFormModel
-import models.VehicleLookupFormModel
-import models.PrivateKeeperDetailsFormModel
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessKeeperDetailsFormModel
-import models.NewKeeperDetailsViewModel
+import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
-import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.EnterAddressManuallyFormModel
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.NewKeeperDetailsViewModel
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
+import models.PrivateKeeperDetailsFormModel
+import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.SetupTradeDetailsFormModel
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import models.VehicleLookupFormModel
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.VehicleTaxOrSornFormModel
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.{DateTime, LocalDate}
@@ -231,6 +233,22 @@ object CookieFactoryForUISpecs {
       displayName = if (businessName == None) firstName + " " + lastName
                     else businessName.getOrElse("")
     )
+    addCookie(key, value)
+    this
+  }
+
+  def newKeeperEnterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
+                           line2: Option[String] = Some(Line2Valid),
+                           line3: Option[String] = Some(Line3Valid),
+                           postTown: String = PostTownValid)(implicit webDriver: WebDriver) = {
+    val key = NewKeeperEnterAddressManuallyCacheKey
+    val value = EnterAddressManuallyFormModel(addressAndPostcodeModel = AddressAndPostcodeViewModel(
+      addressLinesModel = AddressLinesViewModel(
+        buildingNameOrNumber = buildingNameOrNumber,
+        line2 = line2,
+        line3 = line3,
+        postTown = postTown)
+    ))
     addCookie(key, value)
     this
   }

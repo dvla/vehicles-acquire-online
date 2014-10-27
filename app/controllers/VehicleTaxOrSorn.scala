@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.EnterAddressManuallyFormModel
+import models.NewKeeperEnterAddressManuallyFormModel
 import models.{NewKeeperDetailsViewModel, VehicleTaxOrSornViewModel, VehicleTaxOrSornFormModel}
 import play.api.Logger
 import play.api.data.Form
@@ -29,9 +29,8 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
     (newKeeperDetailsOpt, vehicleDetailsOpt) match {
       case (Some(newKeeperDetails), Some(vehicleDetails)) =>
         Ok(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleDetails, newKeeperDetails)))
-      case _ => {
+      case _ =>
         redirectToVehicleLookup(NoCookiesFoundMessage)
-      }
     }
   }
 
@@ -41,7 +40,7 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
   }
 
   def back = Action { implicit request =>
-    request.cookies.getModel[EnterAddressManuallyFormModel] match {
+    request.cookies.getModel[NewKeeperEnterAddressManuallyFormModel] match {
       case Some(manualAddress) =>
         Redirect(routes.NewKeeperEnterAddressManually.present())
       case None => Redirect(routes.NewKeeperChooseYourAddress.present())
