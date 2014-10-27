@@ -13,8 +13,13 @@
     progress = Some(Messages("acquire_progress_9")),
     title = "Summary"
 ){
-<div class="two-col clearfix">
+<div class="two-col clearfix acquire-success">
     <div class="first-col">
+
+        <div class="print-only">
+            <h2>@Messages("acquire_success.complete.header")</h2>
+            <p>@Messages("acquire_success.complete.p1")</p>
+        </div>
         <dl class="playback">
             <h2>@Messages("acquire_success.transaction_details.header")</h2>
             <dt>@Messages("acquire_success.transaction_details.transaction_id")</dt>

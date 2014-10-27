@@ -8,10 +8,16 @@
 }
 
 .vehicle-details-header {
-  page-break-before: always;
   padding-top: 20px;
 }
 
 .alert-warning {
   display: none;
+}
+
+.acquire-success {
+   .related,
+   .alert-complete {
+      display: none;
+   }
 }
