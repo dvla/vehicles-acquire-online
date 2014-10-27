@@ -2,6 +2,7 @@ package controllers.acquire
 
 import controllers.acquire.Common.PrototypeHtml
 import controllers.NewKeeperChooseYourAddress
+import helpers.WithApplication
 import helpers.common.CookieHelper
 import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import helpers.UnitSpec
@@ -17,8 +18,8 @@ import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
+import play.api.test.Helpers.contentAsString
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
-import play.api.test.WithApplication
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
 import TraderDetailsModel.TraderDetailsCacheKey
@@ -66,6 +67,24 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       val content = contentAsString(result)
       content should include(BusinessNameValid)
       content should include( s"""<option value="$UprnValid" selected>""")
+    }
+
+    "display expected drop-down values for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = true).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="$UprnValid" >""")
+    }
+
+    "display expected drop-down values for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = true).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="$UprnValid" >""")
     }
 
     "display unselected field when cookie does not exist for private new keeper" in new WithApplication {
@@ -140,6 +159,24 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       val content = contentAsString(result)
       content should include(BusinessNameValid)
       content should include( s"""<option value="0" selected>""")
+    }
+
+    "display expected drop-down values for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = false).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="0" >""")
+    }
+
+    "display expected drop-down values for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = false).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="0" >""")
     }
 
     "display unselected field when cookie does not exist for private new keeper" in new WithApplication {
@@ -219,6 +256,24 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
+    }
+
+    "display expected drop-down values when no address selected for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = true).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="$UprnValid" >""")
+    }
+
+    "display expected drop-down values when no address selected for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = true).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="$UprnValid" >""")
     }
 
     "redirect to vehicle lookup page when valid submit with keeper details cached" in new WithApplication {
@@ -349,6 +404,24 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
+    }
+
+    "display expected drop-down values when no address selected for private keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = false).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="0" >""")
+    }
+
+    "display expected drop-down values when no address selected for business keeper" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest("").
+        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+      val result = newKeeperChooseYourAddressWithUprnFound(ordnanceSurveyUseUprn = false).submit(request)
+      val content = contentAsString(result)
+      content should include( s"""<option value="0" >""")
     }
 
     "redirect to vehicle lookup page when valid submit with keeper details cached" in new WithApplication {
