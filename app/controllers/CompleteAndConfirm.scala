@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmViewModel
@@ -43,67 +44,85 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     "vehicle sorn details in cache. Now redirecting to vehicle lookup"
 
   def present = Action { implicit request =>
-    val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-    val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-    val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-    (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
-      case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
-        Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails, vehicleSorn), dateService))
-      case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
+    canPerformPresent {
+      val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+      val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+      val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+      (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+        case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
+          Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails, vehicleSorn), dateService))
+        case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
+      }
     }
   }
 
   def submit = Action.async { implicit request =>
-    form.bindFromRequest.fold(
-      invalidForm => Future.successful {
-        val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-        val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-        val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-        (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
-            BadRequest(complete_and_confirm(
-              CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
-            )
-          case _ =>
-            Logger.warn("Could not find expected data in cache on dispose submit - now redirecting...")
-            Redirect(routes.VehicleLookup.present())
-        }
-      },
-      validForm => {
-        val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-        val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
-        val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-        val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
-        val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-        (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
-            acquireAction (validForm,
-                           newKeeperDetails,
-                           vehicleLookup,
-                           vehicleDetails,
-                           traderDetails,
-                           taxOrSorn,
-                           request.cookies.trackingId())
-          case (_, _, _, None, _) => Future.successful {
-            Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
-              "now redirecting to SetUpTradeDetails...")
-            Redirect(routes.SetUpTradeDetails.present())
+    canPerformSubmit {
+      form.bindFromRequest.fold(
+        invalidForm => Future.successful {
+          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+          val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+          val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+          (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+            case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
+              BadRequest(complete_and_confirm(
+                CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
+              )
+            case _ =>
+              Logger.warn("Could not find expected data in cache on dispose submit - now redirecting...")
+              Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
           }
-          case _ => Future.successful {
-            Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
-            Redirect(routes.VehicleLookup.present())
+        },
+        validForm => {
+          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+          val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
+          val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+          val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
+          val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+          val validFormResult = (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
+            case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
+              acquireAction(validForm,
+                newKeeperDetails,
+                vehicleLookup,
+                vehicleDetails,
+                traderDetails,
+                taxOrSorn,
+                request.cookies.trackingId())
+            case (_, _, _, None, _) => Future.successful {
+              Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
+                "now redirecting to SetUpTradeDetails...")
+              Redirect(routes.SetUpTradeDetails.present())
+            }
+            case _ => Future.successful {
+              Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
+              Redirect(routes.VehicleLookup.present())
+            }
           }
+          validFormResult.map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
         }
-      }
-    )
+      )
+    }
   }
+
+  // The complete and confirm ca
+  private def canPerformPresent[R](action: => Result)(implicit request: Request[_]) =
+    request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
+      Logger.warn("Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request")
+      Redirect(routes.VehicleLookup.present())
+    }(c => action)
+
+  private def canPerformSubmit[R](action: => Future[Result])(implicit request: Request[_]) =
+    request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
+      Logger.warn("Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request")
+      Future.successful(Redirect(routes.VehicleLookup.present()))
+    }(c => action)
 
   private def redirectToVehicleLookup(message: String) = {
     Logger.warn(message)
     Redirect(routes.VehicleLookup.present())
   }
 
-    def back = Action { implicit request =>
+  def back = Action { implicit request =>
     request.cookies.getModel[NewKeeperDetailsViewModel] match {
       case Some(keeperDetails) =>
         if (keeperDetails.address.uprn.isDefined) Redirect(routes.NewKeeperChooseYourAddress.present())
@@ -140,10 +159,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
-          Some(Redirect(nextPage(httpResponseCode, response))).
-            map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp))).
-            map(_.withCookie(completeAndConfirmForm)).
-          get
+          Some(Redirect(nextPage(httpResponseCode, response)))
+            .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
+            .map(_.withCookie(completeAndConfirmForm))
+            .get
     }.recover {
       case e: Throwable =>
         Logger.warn(s"Acquire micro-service call failed.", e)

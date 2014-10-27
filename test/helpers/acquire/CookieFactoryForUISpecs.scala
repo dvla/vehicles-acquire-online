@@ -260,6 +260,10 @@ object CookieFactoryForUISpecs {
     this
   }
 
+  def preventGoingToCompleteAndConfirmPageCookie()(implicit webDriver: WebDriver) = {
+    addCookie(CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey, "")
+  }
+
   def completeAndConfirmResponseModelModel(id: String = TransactionIdValid,
                                            timestamp: DateTime = TransactionTimestampValid)(implicit webDriver: WebDriver) = {
     val key = AcquireCompletionResponseCacheKey
