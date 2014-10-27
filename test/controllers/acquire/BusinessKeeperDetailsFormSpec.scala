@@ -45,12 +45,12 @@ class BusinessKeeperDetailsFormSpec extends UnitSpec {
       errors(2).message should equal("error.validBusinessKeeperName")
     }
 
-    "reject if business name is less than minimum length" in {
+    "reject if business keeper name is less than minimum length" in {
       formWithValidDefaults(businessName = "A").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.minLength")
     }
 
-    "reject if business name is more than the maximum length" in {
+    "reject if business keeper name is more than the maximum length" in {
       formWithValidDefaults(businessName = "A" * BusinessKeeperName.MaxLength + 1)
         .errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
