@@ -65,12 +65,12 @@
 
                 @if(viewModel.vehicleSorn.sornVehicle == None) {
                     <dd class="tax-or-sorn uppercase-text">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
-                    <dd class="tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornNotEntered.p1")</dd>
+                    <dd class="word-wrap-only tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornNotEntered.p1")</dd>
                 } else {
                     <dd class="tax-or-sorn uppercase-text">
                         @Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
                     </dd>
-                    <dd class="tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
+                    <dd class="word-wrap-only tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
                 }
                 <dt>@Messages("acquire_success.vehicle_details.mileage")</dt>
                 @if(viewModel.completeAndConfirmDetails.mileage == None) {
