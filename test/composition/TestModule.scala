@@ -2,12 +2,11 @@ package composition
 
 import com.google.inject.name.Names
 import com.tzavellas.sse.guice.ScalaModule
-import composition.DevModule._
 import org.scalatest.mock.MockitoSugar
 import play.api.{LoggerLike, Logger}
 import uk.gov.dvla.vehicles.presentation.common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
-import webserviceclients.acquire.{AcquireServiceImpl, AcquireService, AcquireWebServiceImpl, AcquireWebService}
+import webserviceclients.acquire.{AcquireServiceImpl, AcquireService, AcquireWebService}
 import webserviceclients.fakes.{FakeAcquireWebServiceImpl, FakeDateServiceImpl, FakeVehicleLookupWebService, FakeAddressLookupWebServiceImpl}
 import uk.gov.dvla.vehicles.presentation.common
 import common.webserviceclients.vehiclelookup.{VehicleLookupServiceImpl, VehicleLookupService, VehicleLookupWebService}
