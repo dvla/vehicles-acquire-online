@@ -1,27 +1,43 @@
 package views.acquire
 
+import com.google.inject.Injector
+import com.tzavellas.sse.guice.ScalaModule
+import composition.{GlobalLike, TestComposition}
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.TestHarness
+import helpers.webbrowser.{TestGlobal, TestHarness}
+import models.{VehicleNewKeeperCompletionCacheKeys, VehicleTaxOrSornFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.mock.MockitoSugar
 import pages.common.ErrorPanel
-import pages.acquire.{AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
+import pages.acquire.{AcquireFailurePage, BusinessChooseYourAddressPage, VehicleLookupPage, AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
+import play.api.i18n.Messages
+import play.api.libs.ws.WSResponse
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
+import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.navigate
 import pages.acquire.CompleteAndConfirmPage.back
 import pages.acquire.CompleteAndConfirmPage.useTodaysDate
+import pages.acquire.CompleteAndConfirmPage.mileageTextBox
+import pages.acquire.CompleteAndConfirmPage.consent
 import pages.acquire.CompleteAndConfirmPage.dayDateOfSaleTextBox
 import pages.acquire.CompleteAndConfirmPage.monthDateOfSaleTextBox
 import pages.acquire.CompleteAndConfirmPage.yearDateOfSaleTextBox
+import pages.acquire.CompleteAndConfirmPage.next
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionDayValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
+import scala.concurrent.Future
+import play.api.test.FakeApplication
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -58,6 +74,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
     "Redirect when no new keeper details are cached" taggedAs UiTag in new WebBrowser {
       go to CompleteAndConfirmPage
       page.title should equal(SetupTradeDetailsPage.title)
+      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
@@ -66,6 +83,33 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
       csrf.getAttribute("value").size > 0 should equal(true)
+    }
+
+    "redirect to vehicles lookup page if there is no cookie preventGoingToCompleteAndConfirmPage set" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .dealerDetails()
+        .vehicleDetails()
+        .newKeeperDetails()
+        .vehicleLookupFormModel()
+        .vehicleTaxOrSornFormModel()
+      go to CompleteAndConfirmPage
+      page.title should equal(VehicleLookupPage.title)
+      assertCookiesDoesnExist(cookiesDeletedOnRedirect)
+    }
+
+    "redirect to Business choose your address page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie e set and there is no dealer details" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      CookieFactoryForUISpecs
+        .setupTradeDetails()
+        .vehicleDetails()
+        .newKeeperDetails()
+        .vehicleLookupFormModel()
+        .vehicleTaxOrSornFormModel()
+      go to CompleteAndConfirmPage
+      page.title should equal(SetupTradeDetailsPage.title)
+      assertCookiesDoesnExist(cookiesDeletedOnRedirect)
     }
   }
 
@@ -77,11 +121,36 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(AcquireSuccessPage.title)
     }
 
+    "go to the AcquireFailure page when all details are entered for a new keeper" taggedAs UiTag in new MockAppWebBrowser(failingWebService) {
+      go to BeforeYouStartPage
+      cacheSetup()
+      navigate()
+      page.title should equal(Messages("error.title"))
+    }
+
     "go to the appropriate next page when mandatory details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "")
       page.title should equal(AcquireSuccessPage.title)
+    }
+
+    "clear off the preventGoingToCompleteAndConfirmPage cookie on success" taggedAs UiTag in new WebBrowser {
+      go to BeforeYouStartPage
+      cacheSetup()
+      assertCookieExist
+      navigate()
+      page.title should equal(AcquireSuccessPage.title)
+      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
+    }
+
+    "clear off the preventGoingToCompleteAndConfirmPage cookie on failure" taggedAs UiTag in new MockAppWebBrowser(failingWebService) {
+      go to BeforeYouStartPage
+      cacheSetup()
+      assertCookieExist
+      navigate()
+      page.title should equal(Messages("error.title"))
+      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     /* Only works with phantomjs, chrome and firefox. Commenting out as not working with htmlunit
@@ -210,6 +279,26 @@ import play.api.test.FakeApplication
       navigate(yearDateOfSale = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
+
+    "redirect to vehicles lookup page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie e set" taggedAs UiTag in new WebBrowser {
+      def deleteFlagCookie(implicit driver: WebDriver) =
+        driver.manage.deleteCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey)
+
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to CompleteAndConfirmPage
+
+      mileageTextBox enter CompleteAndConfirmPage.MileageValid
+      dayDateOfSaleTextBox enter CompleteAndConfirmPage.DayDateOfSaleValid
+      monthDateOfSaleTextBox enter CompleteAndConfirmPage.MonthDateOfSaleValid
+      yearDateOfSaleTextBox enter CompleteAndConfirmPage.YearDateOfSaleValid
+      click on consent
+
+      deleteFlagCookie
+
+      click on next
+      page.title should equal(VehicleLookupPage.title)
+    }
   }
 
   "use todays date" should {
@@ -238,6 +327,7 @@ import play.api.test.FakeApplication
           title = Some(TitleType(1,"")),
           address = addressWithUprn
         ).vehicleTaxOrSornFormModel()
+        .preventGoingToCompleteAndConfirmPageCookie()
 
       go to CompleteAndConfirmPage
       click on back
@@ -253,4 +343,41 @@ import play.api.test.FakeApplication
       .newKeeperDetails()
       .vehicleLookupFormModel()
       .vehicleTaxOrSornFormModel()
+      .preventGoingToCompleteAndConfirmPageCookie()
+
+  class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowser(
+    app = FakeApplication(withGlobal = Some(mockAcquireServiceCompositionGlobal(webService)))
+  )
+
+  val failingWebService = new FakeAcquireWebServiceImpl {
+    override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] =
+      throw new Exception("Mock web service failure")
+  }
+
+  val countingWebService = new FakeAcquireWebServiceImpl {
+    var calls = List[(AcquireRequestDto, String)]()
+
+    override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = {
+      calls ++= List(request -> trackingId)
+      super.callAcquireService(request, trackingId)
+    }
+  }
+
+  def mockAcquireServiceCompositionGlobal(webService: AcquireWebService) = new GlobalLike with TestComposition {
+    override lazy val injector: Injector = TestGlobal.testInjector(new ScalaModule with MockitoSugar {
+      override def configure() {
+        bind[AcquireWebService].toInstance(webService)
+      }
+    })
+  }
+
+  private val cookiesDeletedOnRedirect =
+    VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
+
+  private def assertCookiesDoesnExist(cookies: Set[String])(implicit driver: WebDriver) =
+    for (cookie <- cookies) driver.manage().getCookieNamed(cookie) should be (null)
+
+  private def assertCookieExist(implicit driver: WebDriver) =
+    driver.manage().getCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey) should not be null
+
 }
