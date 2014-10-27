@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel
 import models.{NewKeeperDetailsViewModel, VehicleTaxOrSornViewModel, VehicleTaxOrSornFormModel}
 import play.api.Logger
@@ -58,7 +59,10 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
           case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
         }
       },
-      validForm => Redirect(routes.CompleteAndConfirm.present()).withCookie(validForm)
+      validForm => Redirect(routes.CompleteAndConfirm.present())
+        .withCookie(validForm)
+        .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")
+
     )
   }
 }

@@ -326,4 +326,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     val value = origin
     createCookie(key, value)
   }
+
+  def allowGoingToCompleteAndConfirm(): Cookie =
+    createCookie(CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey, "")
 }
