@@ -23,11 +23,20 @@ final class BusinessKeeperNameUnitSpec extends UnitSpec {
     val invalidBusinessKeeperName = Seq(
       "£wertyuiopqwertyuiopqwertyuiop",
       "%wertyuiopqwertyuiopqwertyuiop",
-      "*w",
-      "+q"
+      "w*",
+      "q+",
+      "q!",
+      "q\"",
+      "q£",
+      "q$",
+      "q%",
+      "q^",
+      "q&",
+      "q(",
+      "q)"
     )
     invalidBusinessKeeperName.foreach { num =>
-      s"indicate the fleet number is not valid: $num" in {
+      s"indicate the input is not valid: $num" in {
         val result = BusinessKeeperName.validBusinessKeeperName(num)
         result shouldBe an [Invalid]
         val invalid = result.asInstanceOf[Invalid]

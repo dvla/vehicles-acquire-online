@@ -8,7 +8,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import utils.helpers.Config
 
-final class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                         config: Config) extends Controller {
   private final val DefaultRedirectUrl = VehicleLookup.present().url
 
