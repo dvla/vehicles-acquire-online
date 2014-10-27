@@ -13,7 +13,6 @@ import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResu
 import common.views.helpers.FormExtensions.formBinding
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import models.BusinessKeeperDetailsViewModel
-import scala.Some
 
 class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller {

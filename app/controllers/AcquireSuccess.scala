@@ -32,7 +32,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       request.cookies.getModel[CompleteAndConfirmResponseModel]
       ) match {
       case (Some(vehicleDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
-      Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
+        Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
         Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
       case _ => redirectToStart(MissingCookiesAcquireSuccess)
