@@ -2,12 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import models.CompleteAndConfirmResponseModel
-import models.CompleteAndConfirmFormModel
-import models.CompleteAndConfirmViewModel
-import models.NewKeeperDetailsViewModel
-import models.VehicleLookupFormModel
-import models.VehicleTaxOrSornFormModel
+import models.{PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, VehicleLookupFormModel, VehicleTaxOrSornFormModel}
 import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
@@ -31,10 +26,13 @@ import webserviceclients.acquire.AcquireService
 import webserviceclients.acquire.KeeperDetailsDto
 import webserviceclients.acquire.TitleTypeDto
 import webserviceclients.acquire.TraderDetailsDto
+import models.VehicleNewKeeperCompletionCacheKeys
 
 class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,
                                                                config: Config) extends Controller {
+  private val cookiesToBeDiscardeOnRedirectAway =
+    VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
 
   private[controllers] val form = Form(
     CompleteAndConfirmFormModel.Form.Mapping
@@ -51,7 +49,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
         case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
           Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails, vehicleSorn), dateService))
-        case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
+        case _ =>
+          redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
       }
     }
   }
@@ -70,7 +69,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
               )
             case _ =>
               Logger.warn("Could not find expected data in cache on dispose submit - now redirecting...")
-              Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
+              Redirect(routes.VehicleLookup.present()).discardingCookies()
           }
         },
         validForm => {
@@ -107,14 +106,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   // The complete and confirm ca
   private def canPerformPresent[R](action: => Result)(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
-      Logger.warn("Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request")
-      Redirect(routes.VehicleLookup.present())
+      Logger.warn(s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
+        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardeOnRedirectAway")
+      Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardeOnRedirectAway)
     }(c => action)
 
   private def canPerformSubmit[R](action: => Future[Result])(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
-      Logger.warn("Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request")
-      Future.successful(Redirect(routes.VehicleLookup.present()))
+      Logger.warn(s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
+        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardeOnRedirectAway")
+      Future.successful(Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardeOnRedirectAway))
     }(c => action)
 
   private def redirectToVehicleLookup(message: String) = {

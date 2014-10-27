@@ -9,7 +9,7 @@ import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import helpers.webbrowser.{TestGlobal, TestHarness}
-import models.CompleteAndConfirmFormModel
+import models.{VehicleNewKeeperCompletionCacheKeys, VehicleTaxOrSornFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.mock.MockitoSugar
 import pages.common.ErrorPanel
@@ -17,6 +17,7 @@ import pages.acquire.{AcquireFailurePage, BusinessChooseYourAddressPage, Vehicle
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
 import webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
@@ -73,6 +74,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
     "Redirect when no new keeper details are cached" taggedAs UiTag in new WebBrowser {
       go to CompleteAndConfirmPage
       page.title should equal(SetupTradeDetailsPage.title)
+      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
@@ -94,6 +96,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         .vehicleTaxOrSornFormModel()
       go to CompleteAndConfirmPage
       page.title should equal(VehicleLookupPage.title)
+      assertCookiesDoesnExist(cookiesDeletedOnRedirect)
     }
 
     "redirect to Business choose your address page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie e set and there is no dealer details" taggedAs UiTag in new WebBrowser {
@@ -106,13 +109,9 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         .vehicleTaxOrSornFormModel()
       go to CompleteAndConfirmPage
       page.title should equal(SetupTradeDetailsPage.title)
+      assertCookiesDoesnExist(cookiesDeletedOnRedirect)
     }
   }
-
-  private def assertCookieDoesnExist(implicit driver: WebDriver) =
-    driver.manage().getCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey) should be(null)
-  private def assertCookieExist(implicit driver: WebDriver) =
-    driver.manage().getCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey) should not be null
 
   "submit button" should {
     "go to the appropriate next page when all details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
@@ -142,7 +141,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       assertCookieExist
       navigate()
       page.title should equal(AcquireSuccessPage.title)
-      assertCookieDoesnExist
+      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     "clear off the preventGoingToCompleteAndConfirmPage cookie on failure" taggedAs UiTag in new MockAppWebBrowser(failingWebService) {
@@ -151,7 +150,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       assertCookieExist
       navigate()
       page.title should equal(Messages("error.title"))
-      assertCookieDoesnExist
+      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     /* Only works with phantomjs, chrome and firefox. Commenting out as not working with htmlunit
@@ -371,4 +370,14 @@ import play.api.test.FakeApplication
       }
     })
   }
+
+  private val cookiesDeletedOnRedirect =
+    VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
+
+  private def assertCookiesDoesnExist(cookies: Set[String])(implicit driver: WebDriver) =
+    for (cookie <- cookies) driver.manage().getCookieNamed(cookie) should be (null)
+
+  private def assertCookieExist(implicit driver: WebDriver) =
+    driver.manage().getCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey) should not be null
+
 }
