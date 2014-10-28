@@ -7,11 +7,15 @@
     dd.tax-or-sorn {
         padding-bottom: 0;
     }
-    dd.tax-or-sorn-sub {
-        color: $grey-1;
-        font-weight: normal;
-        text-transform: none;
-    }
+  }
+
+  .first-col .playback,
+  .second-col .playback {
+      dd.tax-or-sorn-sub {
+          color: $grey-1;
+          font-weight: normal;
+          text-transform: none;
+      }
   }
 
   .acquire-success {
