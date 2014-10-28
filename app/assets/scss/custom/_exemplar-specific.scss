@@ -14,4 +14,52 @@
     }
   }
 
+  .acquire-success {
+      .first-col,
+      .second-col {
+          .desktop-only {
+              @media screen and (max-width:$device-medium) {
+                display: none;
+              }
+          }
+          .mobile-only {
+            display: none;
+              @media screen and (max-width:$device-medium) {
+                display: block;
+                margin-bottom: 2em;
+              }
+          }
+
+          .playback.transaction-details {
+              background: $light-blue-25;
+              padding: 1em;
+          }
+      }
+
+      .first-col {
+          float: left;
+          width: 63%;
+          @media screen and (max-width:$device-medium) {
+              width: 100%;
+          }
+          .playback {
+              dt,
+              dd {
+                  font-size: 19px;
+                  @media screen and (max-width:$device-small) {
+                      font-size: 16px;
+                  }
+              }
+          }
+      }
+      .second-col {
+          float: right;
+          width: 30%;
+          @media screen and (max-width:$device-medium) {
+              width: 100%;
+              display: none;
+          }
+      }
+  }
+
 }
