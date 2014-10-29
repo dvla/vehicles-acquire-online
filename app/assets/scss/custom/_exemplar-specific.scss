@@ -46,15 +46,6 @@
           @media screen and (max-width:$device-medium) {
               width: 100%;
           }
-          .playback {
-              dt,
-              dd {
-                  font-size: 19px;
-                  @media screen and (max-width:$device-small) {
-                      font-size: 16px;
-                  }
-              }
-          }
       }
       .second-col {
           float: right;
@@ -62,6 +53,12 @@
           @media screen and (max-width:$device-medium) {
               width: 100%;
               display: none;
+          }
+          .playback {
+              dt,
+              dd {
+                  font-size: 16px;
+              }
           }
       }
   }
