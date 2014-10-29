@@ -24,6 +24,7 @@
 
     <div class="two-col clearfix">
         <div class="first-col">
+            <h1 class="mobile-only">@Messages("acquire_completeAndConfirm.title")</h1>
             <dl class="playback">
                 <dt><h2>@Messages("acquire_completeandconfirm.taxOrSorn")</h2></dt>
                 @if(data.vehicleSorn.sornVehicle == None) {
@@ -65,7 +66,7 @@
         </div>
 
         <div class="second-col">
-            <h1>@Messages("acquire_completeAndConfirm.title")</h1>
+            <h2 class="desktop-only">@Messages("acquire_completeAndConfirm.title")</h2>
             @form(action = CompleteAndConfirm.submit) {
                 @csrfTokenHiddenField()
 

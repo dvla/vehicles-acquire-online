@@ -23,6 +23,7 @@
 ) {
 <div class="two-col clearfix">
     <div class="first-col">
+        <h1 class="mobile-only">@Messages("acquire_newKeeperChooseYourAddress_title")</h1>
         <dl class="playback">
             <dt><h2>@Messages("acquire_newKeeperChooseYourAddress.vehicledetails")</h2></dt>
             <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclereg")</dt>
@@ -38,7 +39,7 @@
     </div>
 
     <div class="second-col">
-        <h1>@Messages("acquire_newKeeperChooseYourAddress_title")</h1>
+        <h2 class="desktop-only">@Messages("acquire_newKeeperChooseYourAddress_title")</h2>
     @form(action = NewKeeperChooseYourAddress.submit()) {
         @csrfTokenHiddenField()
         <dl class="playback">

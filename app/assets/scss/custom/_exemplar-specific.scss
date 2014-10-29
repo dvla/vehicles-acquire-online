@@ -21,15 +21,8 @@
   .acquire-success {
       .first-col,
       .second-col {
-          .desktop-only {
+          .related.mobile-only {
               @media screen and (max-width:$device-medium) {
-                display: none;
-              }
-          }
-          .mobile-only {
-            display: none;
-              @media screen and (max-width:$device-medium) {
-                display: block;
                 margin-bottom: 2em;
               }
           }
