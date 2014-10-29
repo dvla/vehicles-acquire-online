@@ -24,16 +24,16 @@
 
     <div class="two-col clearfix">
         <div class="first-col">
-            <h2>@Messages("acquire_completeandconfirm.taxOrSorn")</h2>
             <dl class="playback">
+                <dt><h2>@Messages("acquire_completeandconfirm.taxOrSorn")</h2></dt>
                 @if(data.vehicleSorn.sornVehicle == None) {
                     <dd>@Messages("acquire_completeandconfirm.sornNotEntered")</dd>
                 } else {
                     <dd>@Messages("acquire_completeandconfirm.sornEntered")</dd>
                 }
             </dl>
-            <h2>@Messages("acquire_completeandconfirm.newkeeperDetails")</h2>
             <dl class="playback">
+                <dt><h2>@Messages("acquire_completeandconfirm.newkeeperDetails")</h2></dt>
                 <dt>@Messages("acquire_completeandconfirm.displayName")</dt>
                 <dd>@data.keeperDetails.displayName</dd>
                 <dt>@Messages("acquire_completeandconfirm.address")</dt>
@@ -53,8 +53,8 @@
                     }
                 }
             </dl>
-            <h2>@Messages("acquire_completeandconfirm.vehicleDetails")</h2>
             <dl class="playback">
+                <dt><h2>@Messages("acquire_completeandconfirm.vehicleDetails")</h2></dt>
                 <dt>@Messages("acquire_completeandconfirm.vehicleReg")</dt>
                 <dd>@data.vehicleDetails.registrationNumber</dd>
                 <dt>@Messages("acquire_completeandconfirm.vehicleMake")</dt>
