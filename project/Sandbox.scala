@@ -19,9 +19,9 @@ object CommonResolvers {
 }
 
 object Sandbox extends Plugin {
-  final val VersionOsAddressLookup = "0.4-SNAPSHOT"
-  final val VersionVehiclesLookup = "0.3-SNAPSHOT"
-  final val VersionVehiclesAcquireFulfil = "0.1-SNAPSHOT"
+  final val VersionOsAddressLookup = "0.5-SNAPSHOT"
+  final val VersionVehiclesLookup = "0.4-SNAPSHOT"
+  final val VersionVehiclesAcquireFulfil = "0.2-SNAPSHOT"
   final val VersionVehicleAndKeeperLookup = "0.2-SNAPSHOT"
   final val VersionVrmRetentionEligibility = "0.3-SNAPSHOT"
   final val VersionVrmRetentionRetain = "0.2-SNAPSHOT"
