@@ -43,6 +43,7 @@
       .first-col {
           float: left;
           width: 63%;
+          margin-top: 0;
           @media screen and (max-width:$device-medium) {
               width: 100%;
           }
@@ -50,6 +51,7 @@
       .second-col {
           float: right;
           width: 30%;
+
           @media screen and (max-width:$device-medium) {
               width: 100%;
               display: none;

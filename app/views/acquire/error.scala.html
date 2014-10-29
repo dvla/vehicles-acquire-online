@@ -10,6 +10,7 @@
 @main(
     title = Messages("error.title")
 ){
+    <h1>@Messages("error.title")</h1>
     @form(action = controllers.routes.Error.submit(exceptionDigest)) {
         @csrfTokenHiddenField()
 
