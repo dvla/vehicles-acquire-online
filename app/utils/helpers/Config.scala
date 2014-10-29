@@ -10,6 +10,7 @@ class Config {
 
   // Google analytics
   val isGoogleAnalyticsEnabled: Boolean = getProperty("googleAnalytics.enabled", default = false)
+  val googleAnalyticsTrackingId: String = getProperty("googleAnalytics.id.acquire", "NOT FOUND")
 
   // Progress step indicator
   val isProgressBarEnabled: Boolean = getProperty("progressBar.enabled", default = false)
