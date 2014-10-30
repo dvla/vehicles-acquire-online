@@ -3,6 +3,15 @@
 
 #{$htmlNamespace} {
 
+  .acquire-complete-confirm {
+      .first-col,
+      .second-col {
+          .playback dd.tax-or-sorn {
+              @include long-text-wrap('word');
+          }
+      }
+  }
+
   .acquire-success {
     .first-col .playback,
     .second-col .playback {
