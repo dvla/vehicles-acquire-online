@@ -3,7 +3,7 @@ package pages.acquire
 import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import views.acquire.BusinessChooseYourAddress
-import BusinessChooseYourAddress.BackId
+import BusinessChooseYourAddress.{BackId,SubmitId}
 import BusinessChooseYourAddress.EnterAddressManuallyButtonId
 import BusinessChooseYourAddress.SelectId
 import org.openqa.selenium.WebDriver
@@ -25,6 +25,8 @@ object BusinessChooseYourAddressPage extends Page with WebBrowserDSL {
   def getListCount(implicit driver: WebDriver): Int = getList.size
 
   def select(implicit driver: WebDriver): Element = find(id(SelectId)).get
+
+  def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
   def happyPath(implicit driver: WebDriver) = {
     go to BusinessChooseYourAddressPage
