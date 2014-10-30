@@ -59,19 +59,38 @@ final class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl w
   @Then("^the user will be taken to the page titled \"(.*?)\" page$")
   def the_user_will_be_taken_to_the_page_titled_page(title:String) {
     title match {
-      case "Enter keeper details"=>page.title should equal("Enter keeper details")
-      case "Enter business keeper details"=> page.title should equal("Enter business keeper details")
+      case "Enter keeper details"          =>page.title should equal("Enter keeper details")
+      case "Enter business keeper details" => page.title should equal("Enter business keeper details")
+      case "Select new keeper address"     =>page.title should equal("Select new keeper address")
+      case "Vehicle lookup"                =>page.title should equal("Enter vehicle details")
     }
   }
 
-  @When("^the user selects the  control labelled Back$")
-  def the_user_selects_the_control_labelled_Back() {
+  @When("^the user selects the  control labelled VehicleLookUpBack button$")
+  def the_user_selects_the_control_labelled_VehicleLookUpBack_button() {
     click on VehicleLookupPage.back
   }
 
   @Then("^the user will be taken to the page titled Select trader address page$")
   def the_user_will_be_taken_to_the_page_titled_Select_trader_address_page(){
     page.title should equal("Select trader address")
+  }
+
+  @Given("^the user is on the Enter business keeper details page$")
+  def the_user_is_on_the_Enter_business_keeper_details_page()  {
+    gotoVehicleLookUpPageWithKnownAddress()
+    the_user_fill_the_vrn_doc_ref_number_and_select_businessKeeper()
+    click on  VehicleLookupPage.next
+  }
+
+  @When("^the user selects the primary control labelled Next and there are no validation errors$")
+  def the_user_selects_the_primary_control_labelled_Next_and_there_are_no_validation_errors()  {
+    BusinessKeeperDetailsPage.navigate()
+  }
+
+  @When("^the user selects the secondary control labelled BusinessKeeperBack button$")
+  def the_user_selects_the_secondary_control_labelled_BusinessKeeperBack_button() {
+    click on BusinessKeeperDetailsPage.back
   }
 
 }

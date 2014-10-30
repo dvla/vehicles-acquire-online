@@ -20,6 +20,6 @@ Feature:
     Then the user will be taken to the page titled "Enter business keeper details" page
 
   Scenario:Vehicle lookup - Back
-    When the user selects the  control labelled Back
+    When the user selects the  control labelled VehicleLookUpBack button
     Then the user will be taken to the page titled Select trader address page
 
