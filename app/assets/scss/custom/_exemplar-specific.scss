@@ -19,6 +19,12 @@
             padding-bottom: 0;
         }
         dd.tax-or-sorn-sub {
+            -ms-word-break: normal;
+            word-break: normal;
+            word-wrap: normal;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            hyphens: none;
             color: $grey-1;
             font-weight: normal;
             text-transform: none;
