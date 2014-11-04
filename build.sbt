@@ -1,17 +1,12 @@
 import de.johoop.jacoco4sbt.JacocoPlugin._
 import org.scalastyle.sbt.ScalastylePlugin
-import Sandbox.runMicroServicesTask
-import Sandbox.sandboxTask
-import Sandbox.runAsyncTask
-import Sandbox.testGatlingTask
-import Sandbox.sandboxAsyncTask
-import Sandbox.gatlingTask
-import Sandbox.gatlingTests
-import Sandbox.vehiclesLookup
-import Sandbox.acceptTask
-import Sandbox.accept
 import net.litola.SassPlugin
 import Common._
+import uk.gov.dvla.vehicles.sandbox
+import sandbox.ProjectDefinitions.{osAddressLookup, vehiclesLookup, vehiclesAcquireFulfil, legacyStubs, gatlingTests}
+import sandbox.Sandbox
+import sandbox.SandboxSettings
+import sandbox.Tasks
 
 name := "vehicles-acquire-online"
 
@@ -93,24 +88,45 @@ ScalastylePlugin.Settings
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
 
-runMicroServicesTask
+// ====================== Sandbox Settings ==========================
+lazy val osAddressLookupProject = osAddressLookup("0.5-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val vehiclesLookupProject = vehiclesLookup("0.4-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val vehiclesAcquireFulfilProject = vehiclesAcquireFulfil("0.2-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val legacyStubsProject = legacyStubs("1.0-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val gatlingProject = gatlingTests().disablePlugins(PlayScala, SassPlugin, SbtWeb)
 
-sandboxTask
+SandboxSettings.portOffset := 19000
 
-runAsyncTask
+SandboxSettings.applicationContext := ""
 
-testGatlingTask
+SandboxSettings.webAppSecrets := "ui/dev/vehicles-acquire-online.conf.enc"
 
-sandboxAsyncTask
+SandboxSettings.osAddressLookupProject := osAddressLookupProject
 
-gatlingTask
+SandboxSettings.vehiclesLookupProject := vehiclesLookupProject
 
-acceptanceTests := (test in Test in acceptanceTestsProject).value
+SandboxSettings.vehiclesAcquireFulfilProject := vehiclesAcquireFulfilProject
 
-acceptTask
+SandboxSettings.legacyStubsProject := legacyStubsProject
 
-lazy val p1 = osAddressLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val p2 = vehiclesLookup.disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val p4 = legacyStubs.disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val p7 = gatlingTests.disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val p8 = vehiclesAcquireFulfil.disablePlugins(PlayScala, SassPlugin, SbtWeb)
+SandboxSettings.gatlingTestsProject := gatlingProject
+
+SandboxSettings.runAllMicroservices := {
+  Tasks.runLegacyStubs.value
+  Tasks.runOsAddressLookup.value
+  Tasks.runVehiclesLookup.value
+  Tasks.runVehiclesAcquireFulfil.value
+}
+
+SandboxSettings.gatlingSimulation := "uk.gov.dvla.acquire.simulations.happy.BeforeYouStart"
+
+SandboxSettings.acceptanceTests := (test in Test in acceptanceTestsProject).value
+
+Sandbox.sandboxTask
+
+Sandbox.sandboxAsyncTask
+
+Sandbox.gatlingTask
+
+Sandbox.acceptTask
+
