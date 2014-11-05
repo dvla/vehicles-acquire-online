@@ -9,7 +9,6 @@ class Config {
   val isPrototypeBannerVisible: Boolean = getProperty("prototype.disclaimer", default = true)
 
   // Google analytics
-  val isGoogleAnalyticsEnabled: Boolean = getProperty("googleAnalytics.enabled", default = false)
   val googleAnalyticsTrackingId: String = getProperty("googleAnalytics.id.acquire", "NOT FOUND")
 
   // Progress step indicator
