@@ -258,7 +258,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         val lookedUpAddress = lookedUpAddresses(indexSelected) match {
           case (index, address) => address
         }
-        val addressModel = AddressModel(uprn = None, address = lookedUpAddress.split(","))
+        val addressModel = AddressModel(uprn = None, address = lookedUpAddress.split(",") map (line => line.trim))
         createNewKeeper(addressModel) match {
           case Some(newKeeperDetails) => nextPage(model, newKeeperDetails, addressModel)
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
