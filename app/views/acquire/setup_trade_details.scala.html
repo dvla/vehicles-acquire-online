@@ -8,6 +8,7 @@ config: utils.helpers.Config)
 @import views.html.helper.form
 @import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 @import uk.gov.dvla.vehicles.presentation.common
+@import common.views.helpers.LabelHelper.optionalFieldKey
 @import common.mappings.Postcode
 @import common.mappings.Email.EmailMaxLength
 @import common.mappings.BusinessName
@@ -37,7 +38,8 @@ config: utils.helpers.Config)
         @valtechInputText(traderLookupForm(TraderEmailId),
             args = Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
                 '_showConstraints -> false,
-                'maxLength -> EmailMaxLength
+                'maxLength -> EmailMaxLength,
+                'optionalFieldKey -> true
             )
         )
 

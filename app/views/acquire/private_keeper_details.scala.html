@@ -10,6 +10,7 @@
 @import views.html.helper.form
 @import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 @import uk.gov.dvla.vehicles.presentation.common
+@import common.views.helpers.LabelHelper.optionalFieldKey
 @import common.mappings.Email.EmailMaxLength
 @import common.views.html.widgets.base.valtechSelect
 @import common.views.html.widgets.base.csrfTokenHiddenField
@@ -76,15 +77,17 @@
                     @valtechDate(
                         privateKeeperDetailsForm(DateOfBirthId),
                         Messages("privatekeeper_dateofbirth"),
-                        Some(Messages("acquire_privatekeeperdetails.dateofbirth.hint")
-                    ))
+                        Some(Messages("acquire_privatekeeperdetails.dateofbirth.hint")),
+                        args = Map('optionalFieldKey -> true)
+                    )
 
                 <div class="uppercase-input">
                     @valtechInputText(privateKeeperDetailsForm(DriverNumberId),
                         hintText = Some(Messages("acquire_privatekeeperdetails.drivernumber.hint")),
                         args = Map('_label -> Messages("acquire_privatekeeperdetails.drivernumberlabel"),
                             '_showConstraints -> false,
-                            'maxLength -> DriverNumberMaxLength
+                            'maxLength -> DriverNumberMaxLength,
+                            'optionalFieldKey -> true
                         )
                     )
                 </div>
@@ -92,7 +95,8 @@
                 @valtechInputText(privateKeeperDetailsForm(EmailId), args =
                     Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
                         '_showConstraints -> false,
-                        'maxLength -> EmailMaxLength
+                        'maxLength -> EmailMaxLength,
+                        'optionalFieldKey -> true
                     )
                 )
 
