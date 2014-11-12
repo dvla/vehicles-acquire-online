@@ -57,45 +57,35 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
     Redirect(routes.VehicleLookup.present())
   }
 
-  def present = Action.async { implicit request =>
-    switch(
-      privateKeeperDetails =>
-        fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-          if (config.ordnanceSurveyUseUprn) {
-            openView(
-              constructPrivateKeeperName(privateKeeperDetails),
-              privateKeeperDetails.postcode,
-              privateKeeperDetails.email,
-              addresses
-            )
-          } else {
-            openView(
-              constructPrivateKeeperName(privateKeeperDetails),
-              privateKeeperDetails.postcode,
-              privateKeeperDetails.email,
-              index(addresses)
-            )
-          }
-        },
-      businessKeeperDetails =>
-        fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-          if (config.ordnanceSurveyUseUprn) {
-            openView(businessKeeperDetails.businessName,
-              businessKeeperDetails.postcode,
-              businessKeeperDetails.email,
-              addresses
-            )
-          } else {
-            openView(businessKeeperDetails.businessName,
-              businessKeeperDetails.postcode,
-              businessKeeperDetails.email,
-              index(addresses)
-            )
-          }
-        },
-      message => Future.successful(error(message))
-    )
-  }
+  def present = Action.async { implicit request => switch(
+    privateKeeperDetails => fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
+      if (config.ordnanceSurveyUseUprn) openView(
+        constructPrivateKeeperName(privateKeeperDetails),
+        privateKeeperDetails.postcode,
+        privateKeeperDetails.email,
+        addresses
+      ) else openView(
+        constructPrivateKeeperName(privateKeeperDetails),
+        privateKeeperDetails.postcode,
+        privateKeeperDetails.email,
+        index(addresses)
+      )
+    },
+    businessKeeperDetails => fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
+        if (config.ordnanceSurveyUseUprn) openView(
+          businessKeeperDetails.businessName,
+          businessKeeperDetails.postcode,
+          businessKeeperDetails.email,
+          addresses
+        ) else openView(
+          businessKeeperDetails.businessName,
+          businessKeeperDetails.postcode,
+          businessKeeperDetails.email,
+          index(addresses)
+        )
+      },
+    message => Future.successful(error(message))
+  )}
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                       (implicit request: Request[_]) = {
@@ -121,82 +111,62 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           name,
           postcode,
           email,
-          addresses)
-        )
+          addresses
+        ))
       case _ => error(VehicleDetailsNotInCacheMessage)
     }
   }
 
   def submit = Action.async { implicit request =>
-    form.bindFromRequest.fold(
-      implicit invalidForm => switch(
-        privateKeeperDetails =>
-          fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
-            if (config.ordnanceSurveyUseUprn) {
-              handleInvalidForm(
-                constructPrivateKeeperName(privateKeeperDetails),
-                privateKeeperDetails.postcode,
-                privateKeeperDetails.email,
-                addresses
-              )
-            } else {
-              handleInvalidForm(
-                constructPrivateKeeperName(privateKeeperDetails),
-                privateKeeperDetails.postcode,
-                privateKeeperDetails.email,
-                index(addresses)
-              )
-            }
-          },
-        businessKeeperDetails =>
-          fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
-            if (config.ordnanceSurveyUseUprn) {
-              handleInvalidForm(
-                businessKeeperDetails.businessName,
-                businessKeeperDetails.postcode,
-                businessKeeperDetails.email,
-                addresses
-              )
-            } else {
-              handleInvalidForm(
-                businessKeeperDetails.businessName,
-                businessKeeperDetails.postcode,
-                businessKeeperDetails.email,
-                index(addresses)
-              )
-            }
-          },
-        message => Future.successful(error(message))
-      ),
-      implicit validForm => switch(
-        privateKeeperDetails => {
-          if (config.ordnanceSurveyUseUprn) {
-            lookupUprn(
-              constructPrivateKeeperName(privateKeeperDetails),
-              privateKeeperDetails.email,
-              None,
-              isBusinessKeeper = false
-            )
-          } else {
-            lookupAddressByPostcodeThenIndex(validForm, privateKeeperDetails.postcode)
-          }
-        },
-        businessKeeperDetails => {
-          if (config.ordnanceSurveyUseUprn) {
-            lookupUprn(
-              businessKeeperDetails.businessName,
-              businessKeeperDetails.email,
-              businessKeeperDetails.fleetNumber,
-              isBusinessKeeper = true
-            )
-          } else {
-            lookupAddressByPostcodeThenIndex(validForm,
-                                             businessKeeperDetails.postcode)
-          }
-        },
-        message => Future.successful(error(message))
-      )
+    def onInvalidForm(implicit invalidForm: Form[NewKeeperChooseYourAddressFormModel]) = switch(
+      privateKeeperDetails => fetchAddresses(privateKeeperDetails.postcode).map { addresses =>
+        if (config.ordnanceSurveyUseUprn) handleInvalidForm(
+          constructPrivateKeeperName(privateKeeperDetails),
+          privateKeeperDetails.postcode,
+          privateKeeperDetails.email,
+          addresses
+        ) else handleInvalidForm(
+          constructPrivateKeeperName(privateKeeperDetails),
+          privateKeeperDetails.postcode,
+          privateKeeperDetails.email,
+          index(addresses)
+        )
+      },
+      businessKeeperDetails => fetchAddresses(businessKeeperDetails.postcode).map { addresses =>
+        if (config.ordnanceSurveyUseUprn) handleInvalidForm(
+          businessKeeperDetails.businessName,
+          businessKeeperDetails.postcode,
+          businessKeeperDetails.email,
+          addresses
+        ) else handleInvalidForm(
+          businessKeeperDetails.businessName,
+          businessKeeperDetails.postcode,
+          businessKeeperDetails.email,
+          index(addresses)
+        )
+      },
+      message => Future.successful(error(message))
     )
+
+    def onValidForm(implicit validModel: NewKeeperChooseYourAddressFormModel) = switch(
+      privateKeeperDetails =>
+        if (config.ordnanceSurveyUseUprn) lookupUprn(
+          constructPrivateKeeperName(privateKeeperDetails),
+          privateKeeperDetails.email,
+          None,
+          isBusinessKeeper = false
+        ) else lookupAddressByPostcodeThenIndex(validModel, privateKeeperDetails.postcode),
+      businessKeeperDetails =>
+        if (config.ordnanceSurveyUseUprn) lookupUprn(
+          businessKeeperDetails.businessName,
+          businessKeeperDetails.email,
+          businessKeeperDetails.fleetNumber,
+          isBusinessKeeper = true
+        ) else lookupAddressByPostcodeThenIndex(validModel, businessKeeperDetails.postcode),
+      message => Future.successful(error(message))
+    )
+
+    form.bindFromRequest.fold(onInvalidForm(_), onValidForm(_))
   }
 
   def back = Action { implicit request =>
