@@ -1,7 +1,7 @@
 package pages.acquire
 
 import org.openqa.selenium.WebDriver
-import helpers.webbrowser.{Element, EmailField, Page, TextField, WebBrowserDSL, WebDriverFactory}
+import helpers.webbrowser.{Element, Page, TextField, TelField, WebBrowserDSL, WebDriverFactory}
 import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 
@@ -16,7 +16,7 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   final val PostcodeValid = "QQ99QQ"
   final val PostcodeInvalid = "XX99XX"
 
-  def fleetNumberField(implicit driver: WebDriver): TextField = textField(id(FleetNumberId))
+  def fleetNumberField(implicit driver: WebDriver): TelField = telField(id(FleetNumberId))
 
   def businessNameField(implicit driver: WebDriver): TextField = textField(id(BusinessNameId))
 
