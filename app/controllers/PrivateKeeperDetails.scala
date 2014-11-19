@@ -39,7 +39,9 @@ class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: Client
       request.cookies.getModel[VehicleDetailsModel] match {
         case Some(vehicleDetails) =>
           form.bindFromRequest.fold(
-            invalidForm => BadRequest(views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors(invalidForm))),
+            invalidForm => BadRequest(
+              views.html.acquire.private_keeper_details(vehicleDetails, formWithReplacedErrors(invalidForm))
+            ),
             validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm)
                           .discardingCookie(NewKeeperChooseYourAddressCacheKey))
         case _ => redirectToSetupTradeDetails(CookieErrorMessage)
