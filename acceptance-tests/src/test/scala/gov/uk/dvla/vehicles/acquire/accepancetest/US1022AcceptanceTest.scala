@@ -6,14 +6,8 @@ import org.junit.runner.RunWith
 
 @RunWith(classOf[Cucumber])
 @Options(
-  features = Array("acceptance-tests/src/test/resources/gherkin/"),
+  features = Array("acceptance-tests/src/test/resources/gherkin/US1022.feature"),
   glue = Array("gov.uk.dvla.vehicles.acquire.stepdefs"),
   tags = Array("@tag")
 )
-class RunTest {
-}
-
-object FeaturePath {
-  final val Path = getClass.getClassLoader.getResource("/gherkin/").toURI.getPath
-}
-
+class US1022AcceptanceTest
