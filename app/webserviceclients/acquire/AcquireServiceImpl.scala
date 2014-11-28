@@ -12,7 +12,10 @@ final class AcquireServiceImpl @Inject()(config: AcquireConfig, ws: AcquireWebSe
   override def invoke(cmd: AcquireRequestDto, trackingId: String): Future[(Int, Option[AcquireResponseDto])] = {
     val vrm = LogFormats.anonymize(cmd.registrationNumber)
     val refNo = LogFormats.anonymize(cmd.referenceNumber)
-    val postcode = LogFormats.anonymize(cmd.traderDetails.traderPostCode)
+    val postcode = cmd.traderDetails match {
+      case Some(traderDetails) => LogFormats.anonymize(traderDetails.traderPostCode)
+      case _ => ""
+    }
 
     Logger.debug("Calling acquire vehicle micro-service with " +
       s"$refNo $vrm $postcode ${cmd.keeperConsent} ${cmd.keeperConsent} ${cmd.mileage}")

@@ -37,18 +37,18 @@ class AcquireWebServiceImplSpec extends UnitSpec with WireMockFixture {
     keeperEmailAddress = None,
     keeperDriverNumber = None)
 
-  val traderDetails = TraderDetailsDto(
+  val traderDetails = Some(TraderDetailsDto(
     traderOrganisationName = "Org name",
     traderAddressLines = Seq("a", "b"),
     traderPostTown = "post town",
     traderPostCode = "QQ99QQ",
-    traderEmailAddress = None)
+    traderEmailAddress = None))
 
   val request = AcquireRequestDto(
     referenceNumber = "ref num",
     registrationNumber = "vrm",
-    keeperDetails: KeeperDetailsDto,
-    traderDetails: TraderDetailsDto,
+    keeperDetails,
+    traderDetails,
     fleetNumber = None,
     dateOfTransfer = new DateTime().toString,
     mileage = None,

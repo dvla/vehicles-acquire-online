@@ -197,7 +197,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     AcquireRequestDto(referenceNumber = vehicleLookup.referenceNumber,
       registrationNumber = vehicleLookup.registrationNumber,
       keeperDetails,
-      traderDetails,
+      Some(traderDetails),
       fleetNumber = newKeeperDetailsViewModel.fleetNumber,
       dateOfTransfer = dateTimeFormatter.print(completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay),
       mileage = completeAndConfirmFormModel.mileage,

@@ -35,7 +35,7 @@ object TraderDetailsDto{
 final case class AcquireRequestDto(referenceNumber: String,
                                    registrationNumber: String,
                                    keeperDetails: KeeperDetailsDto,
-                                   traderDetails: TraderDetailsDto,
+                                   traderDetails: Option[TraderDetailsDto],
                                    fleetNumber: Option[String] = None,
                                    dateOfTransfer: String,
                                    mileage: Option[Int],
