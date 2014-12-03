@@ -259,7 +259,7 @@ acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address
 acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
 acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_privatekeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA.
+acquire_privatekeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
 privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
@@ -280,7 +280,7 @@ privatekeeper_dateofbirth = Date of birth of new keeper
 acquire_businesskeeperdetails.title = Enter business keeper details
 acquire_businesskeeperdetails.p1 = Enter the details of the business buying the vehicle.
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_businesskeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA.
+acquire_businesskeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
 acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
 acquire_businesskeeperdetails.vehiclemake = Make
@@ -321,7 +321,7 @@ acquire_newKeeperChooseYourAddress.vehicledetails = Vehicle details
 acquire_newKeeperChooseYourAddress.vehiclereg = Registration
 acquire_newKeeperChooseYourAddress.vehiclemake = Make
 acquire_newKeeperChooseYourAddress.vehiclemodel = Model
-acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
+acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
 
 #[optional] - new keeper manual address entry
 acquire_newKeeperEnterAddressManually.title = Enter keeper address
@@ -331,7 +331,7 @@ acquire_newKeeperEnterAddressManually.vehicleDetails = Vehicle details
 acquire_newKeeperEnterAddressManually.vehicleReg = Registration
 acquire_newKeeperEnterAddressManually.vehicleMake = Make
 acquire_newKeeperEnterAddressManually.vehicleModel = Model
-acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA.
+acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
 
 #vehicle tax or sorn
 acquire_vehicleTaxOrSorn_title = Vehicle tax or SORN
