@@ -9,6 +9,7 @@ import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import play.api.Logger
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -20,12 +21,12 @@ import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
-import webserviceclients.acquire.AcquireRequestDto
-import webserviceclients.acquire.AcquireResponseDto
-import webserviceclients.acquire.AcquireService
-import webserviceclients.acquire.KeeperDetailsDto
-import webserviceclients.acquire.TitleTypeDto
-import webserviceclients.acquire.TraderDetailsDto
+import common.webserviceclients.acquire.AcquireRequestDto
+import common.webserviceclients.acquire.AcquireResponseDto
+import common.webserviceclients.acquire.AcquireService
+import common.webserviceclients.acquire.KeeperDetailsDto
+import common.webserviceclients.acquire.TitleTypeDto
+import common.webserviceclients.acquire.TraderDetailsDto
 import models.VehicleNewKeeperCompletionCacheKeys
 
 class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -156,7 +157,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     val transactionTimestamp = dateService.now.toDateTime
 
     val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
-      newKeeperDetailsView, traderDetails, taxOrSorn, transactionTimestamp)
+      newKeeperDetailsView, traderDetails, taxOrSorn, transactionTimestamp, trackingId)
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
@@ -181,7 +182,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                                completeAndConfirmFormModel: CompleteAndConfirmFormModel,
                                newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
                                traderDetailsModel: TraderDetailsModel, taxOrSornModel: VehicleTaxOrSornFormModel,
-                               timestamp: DateTime): AcquireRequestDto = {
+                               timestamp: DateTime,
+                               trackingId: String): AcquireRequestDto = {
 
     val keeperDetails = buildKeeperDetails(newKeeperDetailsViewModel)
 
@@ -194,7 +196,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
     val dateTimeFormatter = ISODateTimeFormat.dateTime()
 
-    AcquireRequestDto(referenceNumber = vehicleLookup.referenceNumber,
+    AcquireRequestDto(buildWebHeader(trackingId),
+      referenceNumber = vehicleLookup.referenceNumber,
       registrationNumber = vehicleLookup.registrationNumber,
       keeperDetails,
       Some(traderDetails),
@@ -272,5 +275,18 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     val excludeLines = 2
     val getLines = if (lines <= address.length - excludeLines) lines else address.length - excludeLines
     address.take(getLines)
+  }
+
+  private def buildWebHeader(trackingId: String): VssWebHeaderDto =
+  {
+    VssWebHeaderDto(transactionId = trackingId,
+      originDateTime = new DateTime,
+      applicationCode = config.applicationCode,
+      serviceTypeCode = config.serviceTypeCode,
+      buildEndUser())
+  }
+
+  private def buildEndUser(): VssWebEndUserDto = {
+    VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
   }
 }

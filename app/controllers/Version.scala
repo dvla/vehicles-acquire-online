@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import uk.gov.dvla.vehicles.presentation.common.controllers
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.config.{OrdnanceSurveyConfig, VehicleLookupConfig}
-import webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
 class Version @Inject()(vehicleLookupConfig: VehicleLookupConfig,
                         osAddressLookupConfig: OrdnanceSurveyConfig,

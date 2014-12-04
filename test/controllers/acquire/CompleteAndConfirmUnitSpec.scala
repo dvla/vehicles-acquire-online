@@ -23,12 +23,12 @@ import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, Mo
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import uk.gov.dvla.vehicles.presentation.common.views.models.DayMonthYear
 import utils.helpers.Config
-import webserviceclients.acquire.AcquireRequestDto
-import webserviceclients.acquire.AcquireResponseDto
-import webserviceclients.acquire.AcquireConfig
-import webserviceclients.acquire.AcquireServiceImpl
-import webserviceclients.acquire.AcquireService
-import webserviceclients.acquire.AcquireWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireRequestDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireResponseDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireServiceImpl
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseSuccess, acquireResponseApplicationBeingProcessed}
 

@@ -18,7 +18,7 @@ import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
-import webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.CompleteAndConfirmPage.navigate

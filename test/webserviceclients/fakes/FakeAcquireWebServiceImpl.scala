@@ -4,8 +4,7 @@ import play.api.Logger
 import play.api.http.Status.OK
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
-import webserviceclients.acquire.{AcquireWebService, AcquireResponseDto, AcquireRequestDto}
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireResponseDto, AcquireRequestDto, AcquireWebService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -31,6 +30,7 @@ object FakeAcquireWebServiceImpl {
   private final val AuditIdValid = "7575"
   private final val SimulateMicroServiceUnavailable = "8" * 11
   private final val SimulateSoapEndpointFailure = "9" * 11
+  private final val RegistrationNumberValid = "AB12AWR"
 
   val acquireResponseSuccess =
     AcquireResponseDto(transactionId = TransactionIdValid,

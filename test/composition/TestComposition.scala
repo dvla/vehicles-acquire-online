@@ -7,7 +7,7 @@ import org.scalatest.mock.MockitoSugar
 import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
-import webserviceclients.acquire.AcquireWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeDateServiceImpl
 import webserviceclients.fakes.FakeVehicleLookupWebService
