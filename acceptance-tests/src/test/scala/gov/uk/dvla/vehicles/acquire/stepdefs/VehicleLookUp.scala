@@ -2,19 +2,22 @@ package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
-import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import pages.acquire._
+import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.BusinessKeeperDetailsPage
+import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.VehicleLookupPage
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 
-
-final class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
   lazy val vaHappyPath = new VAHappyPath(webBrowserDriver)
 
-  def gotoVehicleLookUpPageWithKnownAddress(){
+  def gotoVehicleLookUpPageWithKnownAddress() {
     vaHappyPath.goToSetupTradeDetailsPage()
     SetupTradeDetailsPage.traderName enter "VA12SU"
     SetupTradeDetailsPage.traderPostcode enter "qq99qq"
@@ -27,7 +30,7 @@ final class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl w
 
   @Given("^the user is on the Vehicle lookup page$")
   def the_user_is_on_the_Vehicle_lookup_page() {
-    gotoVehicleLookUpPageWithKnownAddress
+    gotoVehicleLookUpPageWithKnownAddress()
   }
 
   @Then("^the user will be stay on the VehicleLookPage$")
@@ -53,16 +56,16 @@ final class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl w
 
   @When("^the user selects the control labelled Next$")
   def the_user_selects_the_control_labelled_Next()  {
-    click on  VehicleLookupPage.next
+    click on VehicleLookupPage.next
   }
 
   @Then("^the user will be taken to the page titled \"(.*?)\" page$")
   def the_user_will_be_taken_to_the_page_titled_page(title:String) {
     title match {
-      case "Enter keeper details"          =>page.title should equal("Enter keeper details")
+      case "Enter keeper details"          => page.title should equal("Enter keeper details")
       case "Enter business keeper details" => page.title should equal("Enter business keeper details")
-      case "Select new keeper address"     =>page.title should equal("Select new keeper address")
-      case "Vehicle lookup"                =>page.title should equal("Enter vehicle details")
+      case "Select new keeper address"     => page.title should equal("Select new keeper address")
+      case "Vehicle lookup"                => page.title should equal("Enter vehicle details")
     }
   }
 
@@ -92,7 +95,4 @@ final class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl w
   def the_user_selects_the_secondary_control_labelled_BusinessKeeperBack_button() {
     click on BusinessKeeperDetailsPage.back
   }
-
 }
-
-

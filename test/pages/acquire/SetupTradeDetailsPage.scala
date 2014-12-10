@@ -1,6 +1,7 @@
 package pages.acquire
 
-import helpers.webbrowser._
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
 import org.openqa.selenium.WebDriver
 import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import views.acquire.SetupTradeDetails.SubmitId
@@ -12,7 +13,7 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
   final val TraderEmailValid = "example@example.co.uk"
 
   final val address = buildAppUrl("setup-trade-details")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Provide trader details"
 
 

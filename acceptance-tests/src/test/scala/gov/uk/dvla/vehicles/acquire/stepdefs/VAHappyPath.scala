@@ -2,12 +2,22 @@ package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
-import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import pages.acquire._
-import webserviceclients.fakes.FakeVehicleLookupWebService._
-
+import pages.acquire.AcquireFailurePage
+import pages.acquire.AcquireSuccessPage
+import pages.acquire.BeforeYouStartPage
+import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.BusinessKeeperDetailsPage
+import pages.acquire.CompleteAndConfirmPage
+import pages.acquire.EnterAddressManuallyPage
+import pages.acquire.NewKeeperChooseYourAddressPage
+import pages.acquire.PrivateKeeperDetailsPage
+import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.VehicleLookupPage
+import pages.acquire.VehicleTaxOrSornPage
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 
 // TODO - Store input as variables
 
@@ -159,7 +169,4 @@ final class VAHappyPath(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wit
   def the_user_will_be_on_confirmed_transaction_failure_screen() {
     page.title should equal(AcquireFailurePage.title)
   }
-
 }
-
-

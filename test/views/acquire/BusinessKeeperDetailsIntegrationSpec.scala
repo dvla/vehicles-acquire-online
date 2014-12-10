@@ -1,18 +1,18 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
-import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.{BeforeYouStartPage, BusinessKeeperDetailsPage, NewKeeperChooseYourAddressPage, VehicleLookupPage}
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.acquire.BusinessKeeperDetailsPage.{navigate, back}
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import ProgressBar.progressStep
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 
 final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 

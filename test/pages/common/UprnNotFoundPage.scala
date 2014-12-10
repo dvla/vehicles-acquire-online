@@ -1,14 +1,14 @@
 package pages.common
 
-import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
-import views.common.UprnNotFound
-import UprnNotFound.{ManualaddressbuttonId, SetuptradedetailsbuttonId}
 import org.openqa.selenium.WebDriver
 import pages.acquire.buildAppUrl
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
+import views.common.UprnNotFound.{ManualaddressbuttonId, SetuptradedetailsbuttonId}
 
 object UprnNotFoundPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("uprn-not-found")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Error confirming post code"
 
   def setupTradeDetails(implicit driver: WebDriver): Element = find(id(SetuptradedetailsbuttonId)).get

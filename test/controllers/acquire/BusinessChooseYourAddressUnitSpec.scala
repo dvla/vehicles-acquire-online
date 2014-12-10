@@ -8,14 +8,13 @@ import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.common.CookieHelper.verifyCookieHasBeenDiscarded
 import helpers.common.CookieHelper.verifyCookieHasNotBeenDiscarded
 import helpers.UnitSpec
-import org.mockito.Mockito.when
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import pages.common.UprnNotFoundPage
-import play.api.test.Helpers.contentAsString
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}

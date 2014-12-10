@@ -1,17 +1,16 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import java.security.cert.X509Certificate
-
-import cucumber.api.PendingException
 import cucumber.api.java.en.{Given, Then}
 import cucumber.api.scala.{EN, ScalaDsl}
-import helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver, WebDriverFactory}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.conn.ssl.{TrustStrategy, SSLContexts}
-import org.apache.http.impl.client.{HttpClientBuilder, HttpClients}
+import org.apache.http.impl.client.HttpClientBuilder
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import scala.io.Source.fromInputStream
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver, WebDriverFactory}
 
 class VersionSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
   private var versionString: String = null
@@ -23,7 +22,6 @@ class VersionSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN 
     val sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
       override def isTrusted(chain: Array[X509Certificate], authType: String): Boolean= true
     }).useTLS().build()
-
 
     val httpClient = HttpClientBuilder.create.setSslcontext(sslContext).build()
     val post = new HttpGet(WebDriverFactory.testUrl +  "/version")

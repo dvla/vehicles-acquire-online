@@ -1,10 +1,10 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.common.ProgressBar.progressStep
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebDriver, WebElement}
 import pages.common.ErrorPanel
 import pages.acquire.NewKeeperEnterAddressManuallyPage.{happyPath, happyPathMandatoryFieldsOnly, sadPath}

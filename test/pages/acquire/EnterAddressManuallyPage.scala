@@ -1,5 +1,6 @@
 package pages.acquire
 
+import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
 import views.acquire.EnterAddressManually
 import EnterAddressManually.{BackId, NextId}
@@ -11,7 +12,7 @@ import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberVal
 
 object EnterAddressManuallyPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("enter-address-manually")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter address"
 
   def addressBuildingNameOrNumber(implicit driver: WebDriver): TextField =

@@ -2,25 +2,17 @@ package views.acquire
 
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
-import composition.{GlobalLike, TestComposition}
+import composition.{TestGlobal, TestHarness, GlobalLike, TestComposition}
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
-import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.{TestGlobal, TestHarness}
-import models.{VehicleNewKeeperCompletionCacheKeys, VehicleTaxOrSornFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmFormModel}
+import models.{VehicleNewKeeperCompletionCacheKeys, CompleteAndConfirmFormModel}
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.mock.MockitoSugar
-import pages.common.ErrorPanel
-import pages.acquire.{AcquireFailurePage, BusinessChooseYourAddressPage, VehicleLookupPage, AcquireSuccessPage, CompleteAndConfirmPage, BeforeYouStartPage, SetupTradeDetailsPage, VehicleTaxOrSornPage}
-import play.api.i18n.Messages
-import play.api.libs.ws.WSResponse
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
-import webserviceclients.fakes.FakeAcquireWebServiceImpl
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import pages.acquire.VehicleLookupPage
+import pages.acquire.AcquireSuccessPage
+import pages.acquire.CompleteAndConfirmPage
 import pages.acquire.CompleteAndConfirmPage.navigate
 import pages.acquire.CompleteAndConfirmPage.back
 import pages.acquire.CompleteAndConfirmPage.useTodaysDate
@@ -30,14 +22,25 @@ import pages.acquire.CompleteAndConfirmPage.dayDateOfSaleTextBox
 import pages.acquire.CompleteAndConfirmPage.monthDateOfSaleTextBox
 import pages.acquire.CompleteAndConfirmPage.yearDateOfSaleTextBox
 import pages.acquire.CompleteAndConfirmPage.next
+import pages.acquire.BeforeYouStartPage
+import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.VehicleTaxOrSornPage
+import pages.common.ErrorPanel
+import pages.common.Feedback.AcquireEmailFeedbackLink
+import play.api.i18n.Messages
+import play.api.libs.ws.WSResponse
+import play.api.test.FakeApplication
+import ProgressBar.progressStep
+import scala.concurrent.Future
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
+import webserviceclients.fakes.FakeAcquireWebServiceImpl
+import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionDayValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
-import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import scala.concurrent.Future
-import play.api.test.FakeApplication
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 

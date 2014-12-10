@@ -1,16 +1,16 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import org.openqa.selenium.WebDriver
 import pages.acquire.VehicleLookupFailurePage.{beforeYouStart, vehicleLookup}
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage, VehicleLookupFailurePage}
-import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 
 final class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

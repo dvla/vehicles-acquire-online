@@ -1,13 +1,14 @@
 package pages.acquire
 
 import org.openqa.selenium.WebDriver
+import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TextField, TelField, WebBrowserDSL, WebDriverFactory}
 import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 
 object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("business-keeper-details")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter business keeper details"
 
   final val FleetNumberValid = "123456"

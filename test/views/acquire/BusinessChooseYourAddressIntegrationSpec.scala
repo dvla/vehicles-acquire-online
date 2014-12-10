@@ -1,12 +1,10 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import helpers.webbrowser.TestHarness
-import ProgressBar.progressStep
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BusinessChooseYourAddressPage
@@ -15,9 +13,11 @@ import pages.acquire.EnterAddressManuallyPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
+import pages.common.Feedback.AcquireEmailFeedbackLink
+import ProgressBar.progressStep
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
-import pages.common.Feedback.AcquireEmailFeedbackLink
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 
 final class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {

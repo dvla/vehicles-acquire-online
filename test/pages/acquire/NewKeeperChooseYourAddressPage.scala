@@ -1,5 +1,6 @@
 package pages.acquire
 
+import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
 import models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import views.acquire.NewKeeperChooseYourAddress
@@ -7,11 +8,10 @@ import NewKeeperChooseYourAddress.BackId
 import NewKeeperChooseYourAddress.EnterAddressManuallyButtonId
 import NewKeeperChooseYourAddress.SelectId
 import org.openqa.selenium.WebDriver
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
 object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("new-keeper-choose-your-address")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select new keeper address"
   //final val titleCy = "Dewiswch eich cyfeiriad masnach"
 

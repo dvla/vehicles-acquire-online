@@ -1,13 +1,13 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.common.ProgressBar
-import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.TestHarness
 import pages.acquire.{SetupTradeDetailsPage, BeforeYouStartPage}
 import pages.acquire.BeforeYouStartPage.startNow
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import ProgressBar.progressStep
 
 final class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

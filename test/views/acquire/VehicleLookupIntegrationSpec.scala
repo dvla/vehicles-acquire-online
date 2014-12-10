@@ -1,10 +1,11 @@
 package views.acquire
 
+import composition.TestGlobal
+import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.{TestGlobal, TestHarness}
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import org.openqa.selenium.{By, WebElement, WebDriver}

@@ -1,9 +1,9 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import pages.acquire.{EnterAddressManuallyPage, BeforeYouStartPage, SetupTradeDetailsPage}
 import pages.common.UprnNotFoundPage
 import pages.common.UprnNotFoundPage.setupTradeDetails

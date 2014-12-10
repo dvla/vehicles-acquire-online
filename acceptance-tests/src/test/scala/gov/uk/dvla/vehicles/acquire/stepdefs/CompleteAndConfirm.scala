@@ -2,13 +2,13 @@ package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
+import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import pages.acquire._
+import pages.acquire.AcquireSuccessPage
 
-final class CompleteAndConfirm(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
-
+class CompleteAndConfirm(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -40,6 +40,4 @@ final class CompleteAndConfirm(webBrowserDriver: WebBrowserDriver) extends Scala
   def the_user_will_be_taken_to_the_page(sorn: String) {
      page.title should equal(sorn)
   }
-
-
 }

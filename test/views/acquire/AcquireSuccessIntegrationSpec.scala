@@ -1,15 +1,15 @@
 package views.acquire
 
-import helpers.common.ProgressBar
+import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import ProgressBar.progressStep
+import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
-import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.acquire.{AcquireSuccessPage, BeforeYouStartPage, VehicleLookupPage}
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import ProgressBar.progressStep
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 
 final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 

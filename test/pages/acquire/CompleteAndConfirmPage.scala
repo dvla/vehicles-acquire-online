@@ -1,14 +1,14 @@
 package pages.acquire
 
-import helpers.webbrowser._
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{Checkbox, Element, Page, TelField, WebBrowserDSL, WebDriverFactory}
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId, TodaysDateId}
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.interactions.Actions
 import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
 object CompleteAndConfirmPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("complete-and-confirm")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Complete and confirm"
 
   final val MileageValid = "1000"

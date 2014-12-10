@@ -1,6 +1,7 @@
 package pages.acquire
 
-import helpers.webbrowser.{Element, EmailField, Page, TelField, TextField, WebBrowserDSL, WebDriverFactory}
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{Element, Page, TelField, TextField, WebBrowserDSL, WebDriverFactory}
 import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId, PostcodeId, TitleId}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
@@ -9,7 +10,7 @@ import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
   final val address = buildAppUrl("private-keeper-details")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter keeper details"
 
   final val TitleInvalid = "other"

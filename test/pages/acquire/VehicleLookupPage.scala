@@ -1,5 +1,6 @@
 package pages.acquire
 
+import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, RadioButton, WebBrowserDSL, WebDriverFactory, TelField, TextField}
 import views.acquire.VehicleLookup
 import VehicleLookup.{BackId, SubmitId}
@@ -10,7 +11,7 @@ import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Busines
 
 object VehicleLookupPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("vehicle-lookup")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter vehicle details"
 
   def vehicleRegistrationNumber(implicit driver: WebDriver): TextField = textField(id(VehicleRegistrationNumberId))

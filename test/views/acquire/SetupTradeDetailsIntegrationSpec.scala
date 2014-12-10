@@ -1,9 +1,9 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import pages.common.{Accessibility, ErrorPanel}
 import pages.acquire.SetupTradeDetailsPage.{happyPath, PostcodeValid, TraderBusinessNameValid}
 import pages.acquire.SetupTradeDetailsPage

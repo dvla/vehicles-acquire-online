@@ -1,10 +1,10 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import org.openqa.selenium.WebDriver
 import pages.acquire.MicroServiceErrorPage.{exit, tryAgain}
 import pages.acquire.{BeforeYouStartPage, MicroServiceErrorPage, SetupTradeDetailsPage, VehicleLookupPage}

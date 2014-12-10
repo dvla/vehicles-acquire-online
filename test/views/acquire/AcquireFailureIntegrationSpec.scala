@@ -1,10 +1,10 @@
 package views.acquire
 
-import helpers.UiSpec
-import helpers.common.ProgressBar
+import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
+import helpers.common.ProgressBar
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
+import helpers.UiSpec
 import org.openqa.selenium.WebDriver
 import pages.acquire.AcquireFailurePage.buyAnother
 import pages.acquire.{AcquireFailurePage, BeforeYouStartPage, VehicleLookupPage}

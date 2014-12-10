@@ -1,9 +1,10 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
-import helpers.webbrowser.{WebDriverFactory, TestHarness}
 import pages.ApplicationContext.applicationContext
 import scala.io.Source.fromInputStream
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebDriverFactory
 
 class VersionIntegrationSpec extends UiSpec with TestHarness {
   "Version endpoint" should {

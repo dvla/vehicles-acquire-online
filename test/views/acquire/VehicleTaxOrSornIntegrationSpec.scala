@@ -1,10 +1,10 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.NewKeeperChooseYourAddressPage

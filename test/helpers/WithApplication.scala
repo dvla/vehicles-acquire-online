@@ -1,6 +1,6 @@
 package helpers
 
-import helpers.webbrowser.TestGlobal
+import composition.TestGlobal
 import helpers.WithApplication.fakeAppWithTestGlobal
 import play.api.test.FakeApplication
 

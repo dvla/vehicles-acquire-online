@@ -1,5 +1,6 @@
 package pages.acquire
 
+import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import views.acquire.BusinessChooseYourAddress

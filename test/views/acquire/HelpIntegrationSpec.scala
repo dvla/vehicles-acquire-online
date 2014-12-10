@@ -1,9 +1,9 @@
 package views.acquire
 
+import composition.TestHarness
 import helpers.UiSpec
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
-import helpers.webbrowser.TestHarness
 import org.openqa.selenium.WebDriver
 import pages.acquire.HelpPage.{back, exit}
 import pages.common.HelpPanel
