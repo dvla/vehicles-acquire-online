@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver
 
 object BusinessChooseYourAddressPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("business-choose-your-address")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override def url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select trader address"
   final val titleCy = "Dewiswch eich cyfeiriad masnach"
 
