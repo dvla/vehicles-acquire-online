@@ -37,6 +37,7 @@ widget.optional = (optional)
 error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
 error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
+error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
 error.validTitle = Must be a valid title
 error.title=An unrecoverable error has occurred
 error.button=Start again
@@ -180,6 +181,7 @@ acquire_vehiclelookup.traderaddresslabel = Address
 acquire_vehiclelookup.traderpostcodelabel = Postcode
 acquire_vehiclelookup.traderemaillabel = Email
 
+vehicleSoldTo = Vehicle sold to
 acquire_vehiclelookup.vehiclesoldto.label = Is the vehicle being sold to a private individual or a business?
 acquire_vehiclelookup.vehiclesoldto.private = Private individual
 acquire_vehiclelookup.vehiclesoldto.business = Business

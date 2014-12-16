@@ -71,6 +71,12 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
                   args = Seq.empty
                 )
               ).replaceError(
+                  VehicleLookupFormModel.Form.VehicleSoldToId,
+                  FormError(
+                    key = VehicleLookupFormModel.Form.VehicleSoldToId,
+                    message = "error.restricted.validKeeperOption",
+                    args = Seq.empty)
+              ).replaceError(
                   VehicleLookupFormModel.Form.DocumentReferenceNumberId,
                   FormError(
                     key = VehicleLookupFormModel.Form.DocumentReferenceNumberId,
