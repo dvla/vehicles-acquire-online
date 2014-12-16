@@ -62,7 +62,7 @@ class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN
   @Then("^the user will be taken to the page titled \"(.*?)\" page$")
   def the_user_will_be_taken_to_the_page_titled_page(title:String) {
     title match {
-      case "Enter keeper details"          => page.title should equal("Enter keeper details")
+      case "Enter new keeper details"      => page.title should equal("Enter new keeper details")
       case "Enter business keeper details" => page.title should equal("Enter business keeper details")
       case "Select new keeper address"     => page.title should equal("Select new keeper address")
       case "Vehicle lookup"                => page.title should equal("Enter vehicle details")

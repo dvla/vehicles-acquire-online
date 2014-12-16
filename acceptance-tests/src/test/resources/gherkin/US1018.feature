@@ -11,7 +11,7 @@ Feature:
   Scenario:Vehicle lookup disposal set private
     When the user fill the vrn doc ref number and select privateKeeper
     And the user selects the control labelled Next
-    Then the user will be taken to the page titled "Enter keeper details" page
+    Then the user will be taken to the page titled "Enter new keeper details" page
 
 
   Scenario:Vehicle lookup - disposal set business
