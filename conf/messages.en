@@ -279,7 +279,7 @@ acquire_privatekeeperdetails.dateofbirth.hint = For example, 20 3 1976
 privatekeeper_dateofbirth = Date of birth of new keeper
 
 #business keeper details
-acquire_businesskeeperdetails.title = Enter business keeper details
+acquire_businesskeeperdetails.title = Enter new business keeper details
 acquire_businesskeeperdetails.p1 = Enter the details of the business buying the vehicle.
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
 acquire_businesskeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
