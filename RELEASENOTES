@@ -1,0 +1,15 @@
+======== 1.4 ========
+Time of release binaries creation:
+Wed Dec 17 11:00:56 UTC 2014
+
+User stories:
+US954 – Add sandbox gatling tests to the start of the build pipeline
+US1350 – Extract the sandbox into a plugin reusable across all projects
+US1409 – Widget code tidy up
+US1601 – Date Of Birth with use today’s date should be cleaned up
+US1978 – Change wording on summary page to past tense
+US2110 – Change Title & Other labels on K2K & Acquire
+
+Bugs:
+DE150 – Acquire – Heading on Enter Keeper details and select keeper address
+DE248 – Acquire – Enter Vehicle details wording on screen error
