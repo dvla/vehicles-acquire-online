@@ -13,7 +13,7 @@ import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberVal
 object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("new-keeper-enter-address-manually")
   override def url: String = WebDriverFactory.testUrl + address.substring(1)
-  final override val title: String = "Enter keeper address"
+  final override val title: String = "Enter new keeper address"
 
   def addressBuildingNameOrNumber(implicit driver: WebDriver): TextField =
     textField(id(s"${AddressAndPostcodeId}_${AddressLinesId}_$BuildingNameOrNumberId"))
