@@ -1,3 +1,16 @@
+======== 1.4.1 ========
+Time of release binaries creation: 
+Fri Dec 19 12:09:19 UTC 2014
+
+Bugs:
+DE151 – Acquire unable to select todays date on complete & confirm
+DE195 – Acquire from trade – keeper address failure
+DE198 – Acquire Details in playback blue box’s do not wrap correctly
+DE199 – Acquire wrapping of text on the Thank You screen
+DE222 – Acquire Print preview screens display customer name and title in small characters
+DE223 – Acquire – transaction details prints twice on print preview screen
+DE273 – Postcode error across all sites
+
 ======== 1.4 ========
 Time of release binaries creation:
 Wed Dec 17 11:00:56 UTC 2014
