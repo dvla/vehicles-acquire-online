@@ -209,7 +209,7 @@ vehicle_lookup_document_reference_mismatch.p2 = Please make sure you have the mo
 vehicle_lookup_document_reference_mismatch.p3 = For each vehicle registration number, only 3 attempts can be made to retrieve the vehicle details.
 
 #page 3 [optional] - manual address entry
-acquire_enteraddressmanually.title = Enter new address
+acquire_enteraddressmanually.title = Enter address
 acquire_enteraddressmanually.submitbutton = Next
 acquire_enteraddressmanually.backbutton = Back
 addressAndPostcode_addressLines = Address
@@ -326,7 +326,7 @@ acquire_newKeeperChooseYourAddress.vehiclemodel = Model
 acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
 
 #[optional] - new keeper manual address entry
-acquire_newKeeperEnterAddressManually.title = Enter new keeper address
+acquire_newKeeperEnterAddressManually.title = Enter keeper address
 acquire_newKeeperEnterAddressManually.submitbutton = Next
 acquire_newKeeperEnterAddressManually.backbutton = Back
 acquire_newKeeperEnterAddressManually.vehicleDetails = Vehicle details
