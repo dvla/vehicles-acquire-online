@@ -4,20 +4,17 @@
   config: utils.helpers.Config
 )
 
-@import controllers.routes.BeforeYouStart
-@import controllers.routes.VehicleLookup
 @import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 @import uk.gov.dvla.vehicles.presentation.common
-@import common.views.helpers.LabelHelper.optionalFieldKey
 @import common.mappings.Email.EmailMaxLength
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
+@import common.mappings.BusinessKeeperName
 @import common.mappings.Postcode
 @import constraints.FleetNumber
 @import views.html.helper.form
 @import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
-@import mappings.BusinessKeeperName
 
 @main(
     progress = Some(Messages("acquire_progress_5")),
