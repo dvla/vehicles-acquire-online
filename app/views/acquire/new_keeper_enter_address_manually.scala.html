@@ -19,7 +19,6 @@
 
 <div class="two-col clearfix">
     <div class="first-col">
-        <h1 class="mobile-only">@Messages("acquire_newKeeperEnterAddressManually.title")</h1>
         <dl class="playback">
             <dt><h2>@Messages("acquire_newKeeperEnterAddressManually.vehicleDetails")</h2></dt>
             <dt>@Messages("acquire_newKeeperEnterAddressManually.vehicleReg")</dt>
@@ -35,7 +34,6 @@
     </div>
 
     <div class="second-col">
-        <h2 class="page-title desktop-only">@Messages("acquire_newKeeperEnterAddressManually.title")</h2>
         <div class="enter-address-manually uppercase-input sr-only-labels">
             @form(action = controllers.routes.NewKeeperEnterAddressManually.submit()) {
             @csrfTokenHiddenField()
