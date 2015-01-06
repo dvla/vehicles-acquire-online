@@ -36,7 +36,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
 
   private[controllers] val form = Form(
-    CompleteAndConfirmFormModel.Form.Mapping
+    CompleteAndConfirmFormModel.Form.detailMapping
   )
 
   private final val NoCookiesFoundMessage = "Failed to find new keeper details and or vehicle details and or " +
