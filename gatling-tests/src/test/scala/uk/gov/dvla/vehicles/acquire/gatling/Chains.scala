@@ -3,8 +3,8 @@ package uk.gov.dvla.vehicles.acquire.gatling
 import io.gatling.core.Predef._
 import io.gatling.core.feeder.RecordSeqFeederBuilder
 import io.gatling.http.Predef._
-import uk.gov.dvla.vehicles.dispose.gatling.Headers
-import uk.gov.dvla.vehicles.dispose.gatling.Headers.headers_accept_html
+import uk.gov.dvla.vehicles.acquire.gatling.Headers
+import uk.gov.dvla.vehicles.acquire.gatling.Headers.headers_accept_html
 
 class Chains(data: RecordSeqFeederBuilder[String]) {
 

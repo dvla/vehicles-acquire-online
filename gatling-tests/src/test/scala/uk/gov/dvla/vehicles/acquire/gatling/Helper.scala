@@ -1,4 +1,4 @@
-package uk.gov.dvla.vehicles.dispose.gatling
+package uk.gov.dvla.vehicles.acquire.gatling
 
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
@@ -9,7 +9,7 @@ object Helper {
   private val config = ConfigFactory.load()
 
   def baseUrl: String =
-    if (config.hasPath("test.url")) config.getString("test.url")
+    if (config.hasPath("test.url")) config.getString("test.url").reverse.dropWhile(_ == '/').reverse
     else "http://localhost:9000"
 
   val httpConf = http

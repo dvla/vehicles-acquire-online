@@ -1,4 +1,4 @@
-package uk.gov.dvla.vehicles.dispose.gatling
+package uk.gov.dvla.vehicles.acquire.gatling
 
 object Headers {
 
