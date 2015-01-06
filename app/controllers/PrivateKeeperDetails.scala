@@ -16,14 +16,16 @@ import common.model.VehicleDetailsModel
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
+import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import utils.helpers.Config
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 
 class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+                                       dateService: DateService,
                                        config: Config) extends Controller {
 
   private[controllers] val form = Form(
-    PrivateKeeperDetailsFormModel.Form.Mapping
+    PrivateKeeperDetailsFormModel.Form.detailMapping
   )
 
   private final val CookieErrorMessage = "Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails."
