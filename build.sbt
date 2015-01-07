@@ -95,9 +95,9 @@ ScalastylePlugin.Settings
 net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 // ====================== Sandbox Settings ==========================
-lazy val osAddressLookupProject = osAddressLookup("0.9-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val vehiclesLookupProject = vehiclesLookup("0.7-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val vehiclesAcquireFulfilProject = vehiclesAcquireFulfil("0.5-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val osAddressLookupProject = osAddressLookup("0.8").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val vehiclesLookupProject = vehiclesLookup("0.6").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val vehiclesAcquireFulfilProject = vehiclesAcquireFulfil("0.4").disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val legacyStubsProject = legacyStubs("1.0-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
 lazy val gatlingProject = gatlingTests().disablePlugins(PlayScala, SassPlugin, SbtWeb)
 
