@@ -502,3 +502,4 @@ common_feedback.message = Please don't include any Personal of financial informa
 common_feedback.label = What went wrong, if anything? What went well? How could we improve this service?
 common_feedback.placeholder = 500 characters remaining
 common_feedback.submit_button = Submit feedback
+common_feedback.thankyou = Thank you for your feedback

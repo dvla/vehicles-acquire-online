@@ -50,7 +50,6 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
            return true;
         });
 
-
         // Feedback form character countdown
 
         function updateCountdown() {
