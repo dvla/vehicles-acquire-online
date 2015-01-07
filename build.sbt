@@ -136,3 +136,5 @@ Sandbox.gatlingTask
 
 Sandbox.acceptTask
 
+resolvers ++= Seq("Bintray-repo" at "http://dl.bintray.com/dvla/maven/")
+
