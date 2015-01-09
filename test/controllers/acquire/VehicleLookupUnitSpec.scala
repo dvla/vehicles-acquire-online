@@ -241,7 +241,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     new BruteForcePreventionServiceImpl(
-      config = new BruteForcePreventionConfig,
+      config = new TestBruteForcePreventionConfig,
       ws = bruteForcePreventionWebService,
       dateService = new FakeDateServiceImpl
     )

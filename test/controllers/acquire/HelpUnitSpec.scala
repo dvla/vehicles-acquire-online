@@ -76,6 +76,6 @@ final class HelpUnitSpec extends UnitSpec {
     }
   }
 
-  private val help = injector.getInstance(classOf[Help])
+  private lazy val help = injector.getInstance(classOf[Help])
   private lazy val present = help.present(FakeRequest())
 }

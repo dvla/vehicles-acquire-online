@@ -44,5 +44,5 @@ class BeforeYouStartUnitSpec extends UnitSpec {
     }
   }
 
-  private val beforeYouStart = injector.getInstance(classOf[BeforeYouStart])
+  private lazy val beforeYouStart = injector.getInstance(classOf[BeforeYouStart])
 }

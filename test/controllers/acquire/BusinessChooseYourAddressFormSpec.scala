@@ -1,5 +1,6 @@
 package controllers.acquire
 
+import composition.WithApplication
 import controllers.BusinessChooseYourAddress
 import helpers.UnitSpec
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
@@ -15,13 +16,13 @@ import utils.helpers.Config
 
 class BusinessChooseYourAddressFormSpec extends UnitSpec {
   "form" should {
-    "accept when all fields contain valid responses" in {
+    "accept when all fields contain valid responses" in new WithApplication {
       formWithValidDefaults().get.uprnSelected should equal(UprnValid.toString)
     }
   }
 
   "addressSelect" should {
-    "reject if empty" in {
+    "reject if empty" in new WithApplication {
       val errors = formWithValidDefaults(addressSelected = "").errors
       errors.length should equal(1)
       errors(0).key should equal(AddressSelectId)
