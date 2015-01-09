@@ -6,7 +6,7 @@ set -o errexit
 export SBT_OPTS="-Dspecs2.color=false -Dsbt.log.format=true -Dsbt.log.noformat=true -DopeningTime=0 -DclosingTime=24 \
  -Xms1024M -Xmx3096M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:+UseParNewGC \
  -XX:PermSize=1024M -XX:MaxPermSize=2048M -Dtest.port=9004 -DtimeoutInMillisSoap=30000 \
- -Dspray.can.server.request-timeout=30s -DacquireVehicle.requestTimeout=30000 -Dws.timeout.request=30s $SBT_OPTS"
+ -Dspray.can.server.request-timeout=30s -DacquireVehicle.requestTimeout=30000 -Dws.timeout.request=30000 $SBT_OPTS"
 
 sbt clean test accept dist publish
 
