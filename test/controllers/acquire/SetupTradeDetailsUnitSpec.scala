@@ -8,6 +8,7 @@ import helpers.common.CookieHelper
 import CookieHelper.fetchCookiesFromHeaders
 import helpers.UnitSpec
 import models.SetupTradeDetailsFormModel
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
@@ -67,7 +68,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
         whenReady(result) { r =>
           r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
           val cookies = fetchCookiesFromHeaders(r)
-          val cookieName = "setupTraderDetails"
+          val cookieName = SetupTradeDetailsCacheKey
           cookies.find(_.name == cookieName) match {
             case Some(cookie) =>
               val json = cookie.value
