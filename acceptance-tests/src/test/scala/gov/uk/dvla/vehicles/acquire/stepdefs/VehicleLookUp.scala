@@ -76,7 +76,7 @@ class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN
 
   @Then("^the user will be taken to the page titled Select trader address page$")
   def the_user_will_be_taken_to_the_page_titled_Select_trader_address_page(){
-    page.title should equal("Select trader address")
+    page.title should equal(BusinessChooseYourAddressPage.title)
   }
 
   @Given("^the user is on the Enter business keeper details page$")
@@ -84,6 +84,7 @@ class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN
     gotoVehicleLookUpPageWithKnownAddress()
     the_user_fill_the_vrn_doc_ref_number_and_select_businessKeeper()
     click on  VehicleLookupPage.next
+    page.title should equal(BusinessKeeperDetailsPage.title)
   }
 
   @When("^the user selects the primary control labelled Next and there are no validation errors$")

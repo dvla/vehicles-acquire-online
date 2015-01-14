@@ -9,7 +9,7 @@ final case class VehicleTaxOrSornFormModel(sornVehicle: Option[String])
 
 object VehicleTaxOrSornFormModel {
   implicit val JsonFormat = Json.format[VehicleTaxOrSornFormModel]
-  final val VehicleTaxOrSornCacheKey = "vehicleTaxOrSorn"
+  final val VehicleTaxOrSornCacheKey = s"${CacheKeyPrefix}vehicleTaxOrSorn"
   implicit val Key = CacheKey[VehicleTaxOrSornFormModel](VehicleTaxOrSornCacheKey)
 
   object Form {

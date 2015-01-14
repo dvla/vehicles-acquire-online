@@ -13,6 +13,6 @@ final case class AcquireCompletionViewModel(vehicleDetails: VehicleDetailsModel,
 
 object AcquireCompletionViewModel {
   implicit val JsonFormat = Json.format[CompleteAndConfirmResponseModel]
-  final val AcquireCompletionCacheKey = "acquireCompletion"
+  final val AcquireCompletionCacheKey = s"${CacheKeyPrefix}acquireCompletion"
   implicit val Key = CacheKey[CompleteAndConfirmResponseModel](AcquireCompletionCacheKey)
 }

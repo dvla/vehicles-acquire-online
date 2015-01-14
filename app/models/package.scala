@@ -17,8 +17,9 @@ import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 
 package object models {
-  final val HelpCacheKey = "help"
-  final val SeenCookieMessageCacheKey = "seen_cookie_message"
+  final val CacheKeyPrefix = "acq-"
+  final val HelpCacheKey = s"${CacheKeyPrefix}help"
+  final val SeenCookieMessageCacheKey = "seen_cookie_message" // Same value across all exemplars
 
   final val AcquireCacheKeys = Set(
     NewKeeperChooseYourAddressCacheKey,
