@@ -156,7 +156,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
     )
   }
 
-  private val privateKeeperDetails = {
+  private lazy val privateKeeperDetails = {
     injector.getInstance(classOf[PrivateKeeperDetails])
   }
 

@@ -8,6 +8,7 @@ import helpers.common.CookieHelper
 import CookieHelper.fetchCookiesFromHeaders
 import helpers.UnitSpec
 import models.SetupTradeDetailsFormModel
+import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
@@ -52,6 +53,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
       when(config.isPrototypeBannerVisible).thenReturn(false)
+      when(config.googleAnalyticsTrackingId).thenReturn(None)
       // Stub this config value.
       val setUpTradeDetailsPrototypeNotVisible = new SetUpTradeDetails()
 
@@ -67,7 +69,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
         whenReady(result) { r =>
           r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
           val cookies = fetchCookiesFromHeaders(r)
-          val cookieName = "setupTraderDetails"
+          val cookieName = SetupTradeDetailsCacheKey
           cookies.find(_.name == cookieName) match {
             case Some(cookie) =>
               val json = cookie.value
@@ -113,7 +115,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       TraderEmailId -> dealerEmail)
   }
 
-  private val setUpTradeDetails = {
+  private lazy val setUpTradeDetails = {
     injector.getInstance(classOf[SetUpTradeDetails])
   }
 

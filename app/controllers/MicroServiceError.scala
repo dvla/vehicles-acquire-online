@@ -2,6 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.routes.VehicleLookup
+import models.CacheKeyPrefix
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -14,7 +15,7 @@ class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideS
 
   def present = Action { implicit request =>
     val referer = request.headers.get(REFERER).getOrElse(DefaultRedirectUrl)
-    Ok(views.html.acquire.micro_service_error()).
+    ServiceUnavailable(views.html.acquire.micro_service_error()).
       // Save the previous page URL (from the referer header) into a cookie.
       withCookie(MicroServiceError.MicroServiceErrorRefererCacheKey, referer)
   }
@@ -26,5 +27,5 @@ class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideS
 }
 
 object MicroServiceError {
-  final val MicroServiceErrorRefererCacheKey = "msError"
+  final val MicroServiceErrorRefererCacheKey = s"${CacheKeyPrefix}msError"
 }

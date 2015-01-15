@@ -524,6 +524,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
     implicit val config: Config = mock[Config]
     when(config.isPrototypeBannerVisible).thenReturn(isPrototypeBannerVisible) // Stub this config value.
     when(config.ordnanceSurveyUseUprn).thenReturn(ordnanceSurveyUseUprn) // Stub this config value.
+    when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
     new NewKeeperChooseYourAddress(addressLookupService)
   }
 

@@ -122,7 +122,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 }
 
   "buyAnother" should {
-    "discard the vehicle, new keeper and confirm cookies" in {
+    "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
@@ -149,7 +149,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the vehicle lookup page" in {
+    "redirect to the vehicle lookup page" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
@@ -166,7 +166,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
   }
 
   "finish" should {
-    "discard the vehicle, new keeper and confirm cookies" in {
+    "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
@@ -194,7 +194,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the before you start page" in {
+    "redirect to the before you start page" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
@@ -210,7 +210,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     }
   }
 
-  private val acquireSuccess = {
+  private lazy val acquireSuccess = {
     injector.getInstance(classOf[AcquireSuccess])
   }
 

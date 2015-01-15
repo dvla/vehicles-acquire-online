@@ -122,7 +122,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     }
   }
 
-  private val vehicleTaxOrSorn = {
+  private lazy val vehicleTaxOrSorn = {
     injector.getInstance(classOf[VehicleTaxOrSorn])
   }
 
