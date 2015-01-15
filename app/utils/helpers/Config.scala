@@ -9,39 +9,39 @@ class Config {
   private val notFound = "NOT FOUND"
 
   // Prototype message in html
-  val isPrototypeBannerVisible: Boolean = getProperty("prototype.disclaimer", default = true)
+  lazy val isPrototypeBannerVisible: Boolean = getProperty[Boolean]("prototype.disclaimer")
 
   // Google analytics
-  val googleAnalyticsTrackingId: String = getProperty("googleAnalytics.id.acquire", notFound)
+  lazy val googleAnalyticsTrackingId: Option[String] = getOptionalProperty[String]("googleAnalytics.id.acquire")
 
   // Progress step indicator
-  val isProgressBarEnabled: Boolean = getProperty("progressBar.enabled", default = false)
+  lazy val isProgressBarEnabled: Boolean = getProperty[Boolean]("progressBar.enabled")
 
-  val isHtml5ValidationEnabled: Boolean = getProperty("html5Validation.enabled", default = false)
+  lazy val isHtml5ValidationEnabled: Boolean = getProperty[Boolean]("html5Validation.enabled")
 
-  val startUrl: String = getProperty("start.page", default = "NOT FOUND")
+  lazy val startUrl: String = getProperty[String]("start.page")
 
-  val acquire = new AcquireConfig()
+  lazy val acquire = new AcquireConfig()
 
-  val ordnanceSurveyUseUprn: Boolean = getProperty("ordnancesurvey.useUprn", default = false)
+  lazy val ordnanceSurveyUseUprn: Boolean = getProperty[Boolean]("ordnancesurvey.useUprn")
   
   // opening and closing times
-  val opening: Int = getProperty("openingTime", default = 1)
-  val closing: Int = getProperty("closingTime", default = 23)
+  lazy val opening: Int = getProperty[Int]("openingTime")
+  lazy val closing: Int = getProperty[Int]("closingTime")
 
   // Web headers
-  val applicationCode: String = getProperty("webHeader.applicationCode", notFound)
-  val serviceTypeCode: String = getProperty("webHeader.serviceTypeCode", notFound)
-  val orgBusinessUnit: String = getProperty("webHeader.orgBusinessUnit", notFound)
+  lazy val applicationCode: String = getProperty[String]("webHeader.applicationCode")
+  lazy val serviceTypeCode: String = getProperty[String]("webHeader.serviceTypeCode")
+  lazy val orgBusinessUnit: String = getProperty[String]("webHeader.orgBusinessUnit")
 
 
-  val emailConfiguration: EmailConfiguration = EmailConfiguration(
-    getProperty("smtp.host", notFound),
-    getProperty("smtp.port", 25),
-    getProperty("smtp.user", notFound),
-    getProperty("smtp.password", notFound),
-    From(getProperty("email.senderAddress", notFound), "DO-NOT-REPLY"),
-    From(getProperty("email.feedbackAddress", notFound), "Feedback"),
+  lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(
+    getProperty[String]("smtp.host"),
+    getProperty[Int]("smtp.port"),
+    getProperty[String]("smtp.user"),
+    getProperty[String]("smtp.password"),
+    From(getProperty[String]("email.senderAddress"), "DO-NOT-REPLY"),
+    From(getProperty[String]("email.feedbackAddress"), "Feedback"),
     getStringListProperty("email.whitelist")
   )
 }

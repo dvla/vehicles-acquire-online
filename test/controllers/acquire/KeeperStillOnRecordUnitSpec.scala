@@ -77,7 +77,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
     }
   }
 
-  private val keeperStillOnRecord = {
+  private lazy val keeperStillOnRecord = {
     injector.getInstance(classOf[KeeperStillOnRecord])
   }
 

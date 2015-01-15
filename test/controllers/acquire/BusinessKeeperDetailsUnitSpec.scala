@@ -126,7 +126,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
     )
   }
 
-  private val businessKeeperDetails = {
+  private lazy val businessKeeperDetails = {
     injector.getInstance(classOf[BusinessKeeperDetails])
   }
 
