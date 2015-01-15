@@ -8,8 +8,8 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehiclelookup.
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class FakeVehicleLookupWebService extends VehicleLookupWebService {
-  import webserviceclients.fakes.FakeVehicleLookupWebService._
+final class FakeVehicleAndKeeperLookupWebService extends VehicleLookupWebService {
+  import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 
   override def callVehicleLookupService(request: VehicleDetailsRequestDto, trackingId: String) = Future {
     val (responseStatus, response) = {
@@ -26,7 +26,7 @@ final class FakeVehicleLookupWebService extends VehicleLookupWebService {
   }
 }
 
-object FakeVehicleLookupWebService {
+object FakeVehicleAndKeeperLookupWebService {
   final val SoldToIndividual = ""
   final val RegistrationNumberValid = "AB12AWR"
   final val RegistrationNumberWithSpaceValid = "AB12 AWR"
