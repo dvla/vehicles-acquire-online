@@ -31,10 +31,6 @@ object VehicleLookupPage extends Page with WebBrowserDSL {
                 isVehicleSoldToPrivateIndividual: Boolean = true)
                (implicit driver: WebDriver) = {
     go to VehicleLookupPage
-
-    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> happy path " + referenceNumber)
-
-
     documentReferenceNumber enter referenceNumber
     VehicleLookupPage.vehicleRegistrationNumber enter registrationNumber
 

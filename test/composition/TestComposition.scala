@@ -11,12 +11,10 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.Acquir
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeDateServiceImpl
-import webserviceclients.fakes.FakeVehicleLookupWebService
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperLookupServiceImpl, VehicleAndKeeperLookupService, VehicleAndKeeperLookupWebServiceImpl, VehicleAndKeeperLookupWebService}
 import webserviceclients.fakes._
 import uk.gov.dvla.vehicles.presentation.common
-import common.webserviceclients.vehiclelookup.VehicleLookupWebService
 import common.clientsidesession.CookieFlags
 import common.clientsidesession.NoCookieFlags
 import common.clientsidesession.ClientSideSessionFactory

@@ -8,7 +8,7 @@ import play.api.Logger
 import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.model.VehicleDetailsModel
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.views.helpers.FormExtensions.formBinding
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
@@ -33,8 +33,8 @@ abstract class BusinessKeeperDetailsBase @Inject()()
   private final val CookieErrorMessage = "Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails."
 
   def present = Action { implicit request =>
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) => presentResult(BusinessKeeperDetailsViewModel(form.fill(),vehicleDetails))
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeeprDetails) => presentResult(BusinessKeeperDetailsViewModel(form.fill(),vehicleAndKeeeprDetails))
       case _ => redirectToSetupTradeDetails(CookieErrorMessage)
     }
   }
@@ -42,9 +42,9 @@ abstract class BusinessKeeperDetailsBase @Inject()()
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-        request.cookies.getModel[VehicleDetailsModel] match {
-          case Some(vehicleDetails) =>
-            error1(BusinessKeeperDetailsViewModel(formWithReplacedErrors(invalidForm), vehicleDetails))
+        request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+          case Some(vehicleAndKeeperDetails) =>
+            error1(BusinessKeeperDetailsViewModel(formWithReplacedErrors(invalidForm), vehicleAndKeeperDetails))
           case None => redirectToSetupTradeDetails(CookieErrorMessage)
         }
       },

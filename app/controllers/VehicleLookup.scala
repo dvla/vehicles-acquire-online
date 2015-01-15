@@ -133,8 +133,8 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
   private def vehicleFoundResult(vehicleAndKeeperDetailsDto: VehicleAndKeeperDetailsDto, soldTo: String)(implicit request: Request[_]) = {
     val model = VehicleAndKeeperDetailsModel.from(vehicleAndKeeperDetailsDto)
     val disposed = model.disposeFlag.getOrElse(true)
-    if (disposed) vehicleDisposedResult(model, soldTo) else Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
 
+    if (disposed) vehicleDisposedResult(model, soldTo) else Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
   }
 
   private def vehicleDisposedResult(vehicleAndKeeperDetailsModel: VehicleAndKeeperDetailsModel, soldTo: String)(implicit request: Request[_]) = {
