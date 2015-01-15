@@ -19,9 +19,9 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionIdValid, TransactionTimestampValid}
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionIdValid, TransactionTimestampValid}
 
 final class AcquireFailureUnitSpec extends UnitSpec {
   "present" should {
@@ -54,7 +54,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
@@ -74,7 +74,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
   "buyAnother" should {
     "discard the vehicle, new keeper and confirm cookies" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
@@ -87,7 +87,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
 
-        verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
@@ -114,7 +114,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
   "finish" should {
     "discard all cookies" in {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
@@ -127,7 +127,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
 
-        verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
@@ -156,7 +156,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
   private lazy val present = {
     val AcquireFailure = injector.getInstance(classOf[AcquireFailure])
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).

@@ -12,7 +12,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
 import common.model.AddressModel
-import common.model.VehicleDetailsModel
+import common.model.VehicleAndKeeperDetailsModel
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
@@ -73,10 +73,10 @@ class NewKeeperEnterAddressManually @Inject()()
 
   private def openView(postcode: String)
                       (implicit request: Request[_]) = {
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeperDetails) =>
         Ok(new_keeper_enter_address_manually(
-          NewKeeperEnterAddressManuallyViewModel(form.fill(), vehicleDetails),
+          NewKeeperEnterAddressManuallyViewModel(form.fill(), vehicleAndKeeperDetails),
           postcode
         ))
       case _ => error(VehicleDetailsNotInCacheMessage)
@@ -91,10 +91,10 @@ class NewKeeperEnterAddressManually @Inject()()
   private def handleInvalidForm(invalidForm: Form[NewKeeperEnterAddressManuallyFormModel],
                                 postcode: String)
                                (implicit request: Request[_]) = {
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeperDetails) =>
         BadRequest(new_keeper_enter_address_manually(
-          NewKeeperEnterAddressManuallyViewModel(formWithReplacedErrors(invalidForm), vehicleDetails),
+          NewKeeperEnterAddressManuallyViewModel(formWithReplacedErrors(invalidForm), vehicleAndKeeperDetails),
           postcode)
         )
       case _ => error(VehicleDetailsNotInCacheMessage)

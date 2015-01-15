@@ -142,7 +142,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       CookieFactoryForUISpecs.
         setupTradeDetails().
         dealerDetails(addressWithUprn).
-        vehicleDetails()
+        vehicleAndKeeperDetails()
 
       go to PrivateKeeperDetailsPage
       click on back
@@ -154,5 +154,5 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
     CookieFactoryForUISpecs.
       setupTradeDetails()
       .dealerDetails()
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
 }

@@ -1,8 +1,8 @@
 package models
 
 import play.api.data.Form
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 
 case class VehicleTaxOrSornViewModel(form: Form[models.VehicleTaxOrSornFormModel],
-                                     vehicleDetails: VehicleDetailsModel,
+                                     vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
                                      keeperDetails: NewKeeperDetailsViewModel)

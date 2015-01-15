@@ -1,5 +1,4 @@
 package controllers.acquire
-
 import controllers.VehicleLookup
 import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
@@ -9,10 +8,10 @@ import play.api.http.Status.OK
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.services.DateServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupWebService
-import common.webserviceclients.vehiclelookup.VehicleLookupServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleDetailsResponseDto
-import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsResponse
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionConfig
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
@@ -25,10 +24,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import webserviceclients.fakes.FakeVehicleLookupWebService.ConsentValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.vehicleDetailsResponseSuccess
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ConsentValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ReferenceNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.vehicleDetailsResponseSuccess
 import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
 
 final class VehicleLookupFormSpec extends UnitSpec {
@@ -136,20 +135,22 @@ final class VehicleLookupFormSpec extends UnitSpec {
 
   val dateService = new DateServiceImpl
 
-  private def vehicleLookupResponseGenerator(fullResponse:(Int, Option[VehicleDetailsResponseDto])) = {
-    val vehicleLookupWebService: VehicleLookupWebService = mock[VehicleLookupWebService]
-    when(vehicleLookupWebService.callVehicleLookupService(any[VehicleDetailsRequestDto], any[String])).thenReturn(Future {
+  private def vehicleLookupResponseGenerator(fullResponse:(Int, Option[VehicleAndKeeperDetailsResponse])) = {
+    val vehicleAndKeeperLookupWebService: VehicleAndKeeperLookupWebService = mock[VehicleAndKeeperLookupWebService]
+    when(vehicleAndKeeperLookupWebService.invoke(any[VehicleAndKeeperDetailsRequest], any[String])).thenReturn(Future {
       val responseAsJson : Option[JsValue] = fullResponse._2 match {
         case Some(e) => Some(Json.toJson(e))
         case _ => None
       }
       new FakeResponse(status = fullResponse._1, fakeJson = responseAsJson)// Any call to a webservice will always return this successful response.
     })
-    val vehicleLookupServiceImpl = new VehicleLookupServiceImpl(vehicleLookupWebService)
+    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(vehicleAndKeeperLookupWebService)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
-    new VehicleLookup(bruteForceService = bruteForceServiceImpl,
-      vehicleLookupService = vehicleLookupServiceImpl, dateService)
+    new VehicleLookup(
+      bruteForceService = bruteForceServiceImpl,
+      vehicleAndKeeperLookupService = vehicleAndKeeperLookupServiceImpl, dateService
+    )
   }
 
   private def formWithValidDefaults(referenceNumber: String = ReferenceNumberValid,

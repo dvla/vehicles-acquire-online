@@ -63,7 +63,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
-        .vehicleDetails()
+        .vehicleAndKeeperDetails()
       go to NewKeeperChooseYourAddressPage
       page.title should equal(VehicleLookupPage.title)
     }
@@ -165,7 +165,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
-        .vehicleDetails()
+        .vehicleAndKeeperDetails()
       go to PrivateKeeperDetailsPage
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
@@ -176,7 +176,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
-        .vehicleDetails()
+        .vehicleAndKeeperDetails()
       go to BusinessKeeperDetailsPage
       BusinessKeeperDetailsPage.submitPostcodeWithoutAddresses
       page.source should include("No addresses found for that postcode") // Does not contain the positive message
@@ -274,13 +274,13 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     CookieFactoryForUISpecs.
       setupTradeDetails()
       .dealerDetails()
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
       .privateKeeperDetails()
 
   private def cacheSetupBusinessKeeper()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs.
       setupTradeDetails()
       .dealerDetails()
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
       .businessKeeperDetails()
 }

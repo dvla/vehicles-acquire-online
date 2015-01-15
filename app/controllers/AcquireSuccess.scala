@@ -13,7 +13,7 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import common.model.{TraderDetailsModel, VehicleDetailsModel}
+import common.model.{TraderDetailsModel, VehicleAndKeeperDetailsModel}
 import utils.helpers.Config
 
 class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -24,16 +24,16 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   private final val MissingCookies = "Missing cookies in cache. Redirecting to BeforeYouStart"
 
   def present = Action { implicit request =>
-    (request.cookies.getModel[VehicleDetailsModel],
+    (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
       request.cookies.getModel[CompleteAndConfirmFormModel],
       request.cookies.getModel[VehicleTaxOrSornFormModel],
       request.cookies.getModel[CompleteAndConfirmResponseModel]
       ) match {
-      case (Some(vehicleDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
+      case (Some(vehicleAndKeeperDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
         Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
-        Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleDetailsModel,
+        Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleAndKeeperDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
       case _ => redirectToStart(MissingCookiesAcquireSuccess)
     }

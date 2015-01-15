@@ -8,7 +8,7 @@ import play.api.test.{FakeRequest, WithApplication}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import webserviceclients.fakes.FakeVehicleLookupWebService.{RegistrationNumberValid, VehicleMakeValid, VehicleModelValid}
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{RegistrationNumberValid, VehicleMakeValid, VehicleModelValid}
 
 class VehicleTaxOrSornUnitSpec extends UnitSpec {
 
@@ -22,7 +22,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     "present a pre-poulated form when the vehicle sorn cookie indicates the user has sorned the vehicle" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel(sornVehicle = Some("true")))
       val content = contentAsString(vehicleTaxOrSorn.present(request))
       content should include("checked") // Sorn checkbox value
@@ -31,14 +31,14 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     "present an empty form when the vehicle sorn cookie indicates the user has not sorned the vehicle" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
       content should not include "checked" // Sorn checkbox value
     }
 
     "redirect to vehicle lookup when no new keeper details cookie is in cache" in new WithApplication {
-      val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = vehicleTaxOrSorn.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
@@ -61,7 +61,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
         email = Some(EmailValid),
         isBusinessKeeper = true
       )).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
       content should include("<dt>Fleet number</dt>")
@@ -78,7 +78,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
         email = Some(EmailValid),
         isBusinessKeeper = false
       )).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
       content should include(s"$FirstNameValid")
@@ -89,7 +89,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     "play back vehicle details as expected" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
       content should include(s"<dd>$RegistrationNumberValid</dd>")
@@ -102,7 +102,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     "redirect to next page without sorning the vehicle" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val result = vehicleTaxOrSorn.submit(request)
       whenReady(result) { r =>
@@ -113,7 +113,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     "redirect to next page with sorning the vehicle" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel(sornVehicle = Some("true")))
       val result = vehicleTaxOrSorn.submit(request)
       whenReady(result) { r =>
@@ -129,7 +129,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
   private lazy val present = {
     val request = FakeRequest().
       withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
     vehicleTaxOrSorn.present(request)
   }
 }

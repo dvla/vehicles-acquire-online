@@ -79,6 +79,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       val vehicleWithKeeperStillOnRecordRefNumber = "99999999993"
+      println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Running failing test")
       happyPath(referenceNumber = vehicleWithKeeperStillOnRecordRefNumber)
       page.title should equal(KeeperStillOnRecordPage.title)
     }

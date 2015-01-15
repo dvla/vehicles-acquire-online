@@ -10,7 +10,7 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
 
@@ -26,10 +26,10 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
 
   def present = Action { implicit request =>
     val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-    val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-    (newKeeperDetailsOpt, vehicleDetailsOpt) match {
-      case (Some(newKeeperDetails), Some(vehicleDetails)) =>
-        Ok(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleDetails, newKeeperDetails)))
+    val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
+    (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt) match {
+      case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails)) =>
+        Ok(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleAndKeeperDetails, newKeeperDetails)))
       case _ =>
         redirectToVehicleLookup(NoCookiesFoundMessage)
     }
@@ -52,10 +52,10 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
     form.bindFromRequest.fold(
       invalidForm => { // Note this code should never get executed as only an optional checkbox is posted
         val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-        val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
-        (newKeeperDetailsOpt, vehicleDetailsOpt) match {
-          case (Some(newKeeperDetails), Some(vehicleDetails)) =>
-            BadRequest(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleDetails, newKeeperDetails)))
+        val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
+        (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt) match {
+          case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails)) =>
+            BadRequest(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleAndKeeperDetails, newKeeperDetails)))
           case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
         }
       },

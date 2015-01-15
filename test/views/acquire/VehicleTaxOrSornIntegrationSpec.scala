@@ -62,7 +62,7 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       CookieFactoryForUISpecs.
         setupTradeDetails().
         dealerDetails(addressWithUprn).
-        vehicleDetails().
+        vehicleAndKeeperDetails().
         privateKeeperDetails().
         newKeeperDetails(
           title = Some(TitleType(1,"")),
@@ -79,7 +79,7 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       CookieFactoryForUISpecs.
         setupTradeDetails().
         dealerDetails().
-        vehicleDetails().
+        vehicleAndKeeperDetails().
         privateKeeperDetails().
         newKeeperEnterAddressManually().
         newKeeperDetails(
@@ -97,7 +97,7 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
     CookieFactoryForUISpecs.
       setupTradeDetails()
       .dealerDetails()
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
       .newKeeperDetails()
       .vehicleLookupFormModel()
 

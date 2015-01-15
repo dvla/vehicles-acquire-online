@@ -1,4 +1,4 @@
-@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel)(implicit lang: Lang,
+@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel)(implicit lang: Lang,
 token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
 config: utils.helpers.Config)
 
@@ -18,9 +18,9 @@ config: utils.helpers.Config)
                 <dt>@Messages("acquire_keeperstillonrecord.vehiclereg")</dt>
                 <dd>@data.registrationNumber</dd>
                 <dt>@Messages("acquire_keeperstillonrecord.vehiclemake")</dt>
-                <dd>@data.vehicleMake</dd>
+                <dd>@data.make</dd>
                 <dt>@Messages("acquire_keeperstillonrecord.vehiclemodel")</dt>
-                <dd>@data.vehicleModel</dd>
+                <dd>@data.model</dd>
             </dl>
         </div>
         <div class="second-col">

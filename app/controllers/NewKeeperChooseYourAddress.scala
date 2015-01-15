@@ -19,7 +19,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.ClientSideSessionFactory
-import common.model.VehicleDetailsModel
+import common.model.VehicleAndKeeperDetailsModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -89,10 +89,10 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private def openView(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                       (implicit request: Request[_]) = {
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeperDetails) =>
         Ok(views.html.acquire.new_keeper_choose_your_address(
-          NewKeeperChooseYourAddressViewModel(form.fill(), vehicleDetails),
+          NewKeeperChooseYourAddressViewModel(form.fill(), vehicleAndKeeperDetails),
           name,
           postcode,
           email,
@@ -104,10 +104,10 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
 
   private def handleInvalidForm(name: String, postcode: String, email: Option[String], addresses: Seq[(String, String)])
                                (implicit invalidForm: Form[NewKeeperChooseYourAddressFormModel], request: Request[_]) = {
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeperDetails) =>
         BadRequest(new_keeper_choose_your_address(
-          NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleDetails),
+          NewKeeperChooseYourAddressViewModel(formWithReplacedErrors(invalidForm), vehicleAndKeeperDetails),
           name,
           postcode,
           email,

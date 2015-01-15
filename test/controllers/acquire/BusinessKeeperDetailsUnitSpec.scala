@@ -40,7 +40,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
     "display populated fields when cookie exists" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val result = businessKeeperDetails.present(request)
       val content = contentAsString(result)
@@ -62,7 +62,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
   "submit" should {
     "redirect to next page when only mandatory fields are filled in" in new WithApplication {
       val request = buildRequest(fleetNumber = "", email = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
@@ -71,7 +71,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
     "redirect to next page when all fields are complete" in new WithApplication {
       val request = buildRequest()
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
@@ -88,7 +88,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
     "return a bad request if no details are entered" in new WithApplication {
       val request = buildRequest(businessName = "", postcode = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
@@ -97,7 +97,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
     "replace required error message for business name with standard error message " in new WithApplication {
       val request = buildRequest(businessName = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = businessKeeperDetails.submit(request)
       val errorMessage = "Must be between 2 and 30 characters and only contain valid characters"
       val count = errorMessage.r.findAllIn(contentAsString(result)).length
@@ -106,7 +106,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
     "replace required error message for business postcode with standard error message " in new WithApplication {
       val request = buildRequest(postcode = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = businessKeeperDetails.submit(request)
       val errorMessage = "Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA"
       val count = errorMessage.r.findAllIn(contentAsString(result)).length
@@ -131,7 +131,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
   }
 
   private lazy val present = {
-    val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+    val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
     businessKeeperDetails.present(request)
   }
 }

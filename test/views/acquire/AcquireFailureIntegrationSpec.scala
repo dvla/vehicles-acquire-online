@@ -41,7 +41,7 @@ final class AcquireFailureIntegrationSpec extends UiSpec with TestHarness {
 
   private def cacheSetup()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs.
-      vehicleDetails().
+      vehicleAndKeeperDetails().
       dealerDetails().
       newKeeperDetails().
       completeAndConfirmDetails().

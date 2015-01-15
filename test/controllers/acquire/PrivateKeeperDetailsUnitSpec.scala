@@ -56,7 +56,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
     "display populated fields when cookie exists" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
@@ -71,7 +71,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
     "display populated other title when cookie exists" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel(title = TitleType(4, "otherTitle")))
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
@@ -80,7 +80,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
     "display empty fields when cookie does not exist" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
@@ -92,7 +92,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
   "submit" should {
     "redirect to next page when mandatory fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(email = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
@@ -101,7 +101,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
     "redirect to next page when all fields are complete" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(NewKeeperChooseYourAddressPage.address))
@@ -123,7 +123,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
                                                    email = "",
                                                    driverNumber = "",
                                                    postcode = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = privateKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
@@ -132,7 +132,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
     "replace required error message for postcode with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(postcode = "")
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = privateKeeperDetails.submit(request)
       val errorMessage = "Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA"
       val count = errorMessage.r.findAllIn(contentAsString(result)).length
@@ -162,7 +162,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
 
   private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
     privateKeeperDetails.present(request)
   }
 }

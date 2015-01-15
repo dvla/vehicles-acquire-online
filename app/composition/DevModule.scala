@@ -20,15 +20,12 @@ import common.services.DateServiceImpl
 import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupService
-import common.webserviceclients.vehiclelookup.VehicleLookupWebServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupWebService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
 import common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import common.webserviceclients.acquire.{AcquireWebService, AcquireService, AcquireServiceImpl, AcquireWebServiceImpl}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperLookupService, VehicleAndKeeperLookupWebServiceImpl, VehicleAndKeeperLookupWebService, VehicleAndKeeperLookupServiceImpl}
 
 /**
  * Provides real implementations of traits
@@ -50,8 +47,8 @@ class DevModule extends ScalaModule {
 
     bindClientSideSessionFactory()
 
-    bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
-    bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
+    bind[VehicleAndKeeperLookupWebService].to[VehicleAndKeeperLookupWebServiceImpl].asEagerSingleton()
+    bind[VehicleAndKeeperLookupService].to[VehicleAndKeeperLookupServiceImpl].asEagerSingleton()
 
     bind[AcquireWebService].to[AcquireWebServiceImpl].asEagerSingleton()
     bind[AcquireService].to[AcquireServiceImpl].asEagerSingleton()

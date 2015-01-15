@@ -16,7 +16,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.mappings.TitleType
-import common.model.{VehicleDetailsModel, TraderDetailsModel}
+import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -45,11 +45,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   def present = Action { implicit request =>
     canPerformPresent {
       val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-      val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+      val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
       val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-      (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
-        case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
-          Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleDetails, newKeeperDetails, vehicleSorn), dateService))
+      (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
+        case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails), Some(vehicleSorn)) =>
+          Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleAndKeeperDetails, newKeeperDetails, vehicleSorn), dateService))
         case _ =>
           redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
       }
@@ -61,9 +61,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       form.bindFromRequest.fold(
         invalidForm => Future.successful {
           val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-          val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
           val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-          (newKeeperDetailsOpt, vehicleDetailsOpt, vehicleSornOpt) match {
+          (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
             case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
               BadRequest(complete_and_confirm(
                 CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
@@ -76,10 +76,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         validForm => {
           val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
           val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
-          val vehicleDetailsOpt = request.cookies.getModel[VehicleDetailsModel]
+          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
           val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
           val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-          val validFormResult = (newKeeperDetailsOpt, vehicleLookupOpt, vehicleDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
+          val validFormResult = (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
             case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
               acquireAction(validForm,
                 newKeeperDetails,
@@ -148,7 +148,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   private def acquireAction(completeAndConfirmForm: CompleteAndConfirmFormModel,
                             newKeeperDetailsView: NewKeeperDetailsViewModel,
                             vehicleLookup: VehicleLookupFormModel,
-                            vehicleDetails: VehicleDetailsModel,
+                            vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
                             traderDetails: TraderDetailsModel,
                             taxOrSorn: VehicleTaxOrSornFormModel,
                             trackingId: String)

@@ -8,7 +8,7 @@ import play.api.Logger
 import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.model.VehicleDetailsModel
+import common.model.VehicleAndKeeperDetailsModel
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.views.helpers.FormExtensions.formBinding
 import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
@@ -24,10 +24,10 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
   private final val CookieErrorMessage = "Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails."
 
   def present = Action { implicit request =>
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeperDetails) =>
         Ok(views.html.acquire.business_keeper_details(
-          BusinessKeeperDetailsViewModel(form.fill(),vehicleDetails)
+          BusinessKeeperDetailsViewModel(form.fill(),vehicleAndKeeperDetails)
         ))
       case _ => redirectToSetupTradeDetails(CookieErrorMessage)
     }
@@ -36,10 +36,10 @@ class BusinessKeeperDetails @Inject()()(implicit clientSideSessionFactory: Clien
   def submit = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-        request.cookies.getModel[VehicleDetailsModel] match {
-          case Some(vehicleDetails) =>
+        request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+          case Some(vehicleAndKeeperDetails) =>
             BadRequest(views.html.acquire.business_keeper_details(
-              BusinessKeeperDetailsViewModel(formWithReplacedErrors(invalidForm), vehicleDetails)
+              BusinessKeeperDetailsViewModel(formWithReplacedErrors(invalidForm), vehicleAndKeeperDetails)
             ))
           case None => redirectToSetupTradeDetails(CookieErrorMessage)
         }

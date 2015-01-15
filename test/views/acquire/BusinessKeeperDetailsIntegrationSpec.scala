@@ -91,7 +91,7 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
       CookieFactoryForUISpecs.
         setupTradeDetails().
         dealerDetails(addressWithUprn).
-        vehicleDetails()
+        vehicleAndKeeperDetails()
 
       go to BusinessKeeperDetailsPage
       click on back
@@ -103,5 +103,5 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
     CookieFactoryForUISpecs.
       setupTradeDetails()
       .dealerDetails()
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
 }

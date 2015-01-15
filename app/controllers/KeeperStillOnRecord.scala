@@ -7,7 +7,7 @@ import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.RichResult
-import common.model.VehicleDetailsModel
+import common.model.VehicleAndKeeperDetailsModel
 import common.clientsidesession.CookieImplicits.RichCookies
 import utils.helpers.Config
 
@@ -15,9 +15,9 @@ class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientS
                                        config: Config) extends Controller {
 
   def present = Action { implicit request =>
-    request.cookies.getModel[VehicleDetailsModel] match {
-      case Some(vehicleDetails) =>
-        Ok(views.html.acquire.keeper_still_on_record(vehicleDetails))
+    request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
+      case Some(vehicleAndKeeperDetails) =>
+        Ok(views.html.acquire.keeper_still_on_record(vehicleAndKeeperDetails))
       case _ =>
         Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
