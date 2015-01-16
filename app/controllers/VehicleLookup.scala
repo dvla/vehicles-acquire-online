@@ -7,7 +7,6 @@ import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, Pr
 import org.joda.time.DateTime
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Call, Request}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperDetailsDto, VehicleAndKeeperLookupService, VehicleAndKeeperDetailsRequest}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -15,12 +14,15 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.controllers.VehicleLookupBase
 import common.controllers.VehicleLookupBase.LookupResult
-import uk.gov.dvla.vehicles.presentation.common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import common.controllers.VehicleLookupBase.VehicleFound
+import common.controllers.VehicleLookupBase.VehicleNotFound
+import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
-import common.controllers.VehicleLookupBase.VehicleFound
-import common.controllers.VehicleLookupBase.VehicleNotFound
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
@@ -111,23 +113,23 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
   }
 
   override protected def callLookupService(trackingId: String, form: Form)(implicit request: Request[_]): Future[LookupResult] = {
-  val vehicleAndKeeperDetailsRequest = VehicleAndKeeperDetailsRequest(
-    referenceNumber = form.referenceNumber,
-    registrationNumber = form.registrationNumber,
-    transactionTimestamp = new DateTime
-  )
+    val vehicleAndKeeperDetailsRequest = VehicleAndKeeperDetailsRequest(
+      referenceNumber = form.referenceNumber,
+      registrationNumber = form.registrationNumber,
+      transactionTimestamp = new DateTime
+    )
 
-  vehicleAndKeeperLookupService.invoke(vehicleAndKeeperDetailsRequest, trackingId) map { response =>
-    response.responseCode match {
-      case Some(responseCode) =>
-        VehicleNotFound(responseCode)
-      case None =>
-        response.vehicleAndKeeperDetailsDto match {
-          case Some(dto) => VehicleFound(vehicleFoundResult(dto, form.vehicleSoldTo))
-          case None => throw new RuntimeException("No vehicleDetailsDto found")
-        }
+    vehicleAndKeeperLookupService.invoke(vehicleAndKeeperDetailsRequest, trackingId) map { response =>
+      response.responseCode match {
+        case Some(responseCode) =>
+          VehicleNotFound(responseCode)
+        case None =>
+          response.vehicleAndKeeperDetailsDto match {
+            case Some(dto) => VehicleFound(vehicleFoundResult(dto, form.vehicleSoldTo))
+            case None => throw new RuntimeException("No vehicleAndKeeperDetailsDto found")
+          }
+      }
     }
-  }
   }
 
   private def vehicleFoundResult(vehicleAndKeeperDetailsDto: VehicleAndKeeperDetailsDto, soldTo: String)(implicit request: Request[_]) = {
