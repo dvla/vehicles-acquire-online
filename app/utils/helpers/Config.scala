@@ -1,6 +1,6 @@
 package utils.helpers
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.{getProperty, getOptionalProperty, getStringListProperty}
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
@@ -30,18 +30,18 @@ class Config {
   lazy val closing: Int = getProperty[Int]("closingTime")
 
   // Web headers
-  lazy val applicationCode: String = getProperty[String]("webHeader.applicationCode")
-  lazy val serviceTypeCode: String = getProperty[String]("webHeader.serviceTypeCode")
-  lazy val orgBusinessUnit: String = getProperty[String]("webHeader.orgBusinessUnit")
+  lazy val applicationCode: String = getOptionalProperty[String]("webHeader.applicationCode").getOrElse(notFound)
+  lazy val serviceTypeCode: String = getOptionalProperty[String]("webHeader.serviceTypeCode").getOrElse(notFound)
+  lazy val orgBusinessUnit: String = getOptionalProperty[String]("webHeader.orgBusinessUnit").getOrElse(notFound)
 
 
   lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(
-    getProperty[String]("smtp.host"),
-    getProperty[Int]("smtp.port"),
-    getProperty[String]("smtp.user"),
-    getProperty[String]("smtp.password"),
-    From(getProperty[String]("email.senderAddress"), "DO-NOT-REPLY"),
-    From(getProperty[String]("email.feedbackAddress"), "Feedback"),
+    getOptionalProperty[String]("smtp.host").getOrElse(""),
+    getOptionalProperty[Int]("smtp.port").getOrElse(25),
+    getOptionalProperty[String]("smtp.user").getOrElse(""),
+    getOptionalProperty[String]("smtp.password").getOrElse(""),
+    From(getOptionalProperty[String]("email.senderAddress").getOrElse(""), "DO-NOT-REPLY"),
+    From(getOptionalProperty[String]("email.feedbackAddress").getOrElse(""), "Feedback"),
     getStringListProperty("email.whitelist")
   )
 }

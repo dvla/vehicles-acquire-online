@@ -37,6 +37,8 @@ class TestConfig extends Config {
   override lazy val applicationCode: String = ""
   override lazy val serviceTypeCode: String = ""
   override lazy val orgBusinessUnit: String = ""
+  override lazy val channelCode: String = ""
+  override lazy val contactId: Long = 0
 
 
   override lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(

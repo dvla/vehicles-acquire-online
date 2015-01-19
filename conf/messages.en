@@ -503,6 +503,7 @@ common_feedback.label = What went wrong, if anything? What went well? How could 
 common_feedback.placeholder = 500 characters remaining
 common_feedback.submit_button = Submit feedback
 common_feedback.thankyou = Thank you for your feedback
+common_feedback.subject = Buy from the trade - Feedback
 
 
 # Cookie policy
