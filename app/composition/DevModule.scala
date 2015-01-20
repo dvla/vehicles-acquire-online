@@ -26,6 +26,7 @@ import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebServ
 import common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import common.webserviceclients.acquire.{AcquireWebService, AcquireService, AcquireServiceImpl, AcquireWebServiceImpl}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperLookupService, VehicleAndKeeperLookupWebServiceImpl, VehicleAndKeeperLookupWebService, VehicleAndKeeperLookupServiceImpl}
+import utils.helpers.ConfigImpl
 
 /**
  * Provides real implementations of traits
@@ -39,6 +40,9 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeep
  */
 class DevModule extends ScalaModule {
   def configure() {
+
+    bind[utils.helpers.Config].to[ConfigImpl]
+
     bind[AddressLookupService].to[AddressLookupServiceImpl].asEagerSingleton()
     bind[AddressLookupWebService].to[WebServiceImpl].asEagerSingleton()
 

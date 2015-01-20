@@ -3,45 +3,47 @@ package composition
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
 import utils.helpers.Config
 
 /**
- * Created by gerasimosarvanitis on 09/01/2015.
+ * Test configuration. This should be provided as the configuration, so we need to bind this to Config type.
  */
 class TestConfig extends Config {
 
 
-  override lazy val acquire = new AcquireConfig()
+  override lazy val acquire = new FakeAcquireConfig()
 
   // Prototype message in html
-  override lazy val isPrototypeBannerVisible: Boolean = true
+  def isPrototypeBannerVisible: Boolean = getOptionalProperty[Boolean]("prototype.disclaimer").getOrElse(true)
 
   // Google analytics
-  override lazy val googleAnalyticsTrackingId: Option[String] = None
+  def googleAnalyticsTrackingId: Option[String] = None
 
   // Progress step indicator
-  override lazy val isProgressBarEnabled: Boolean = getOptionalProperty[Boolean]("progressBar.enabled").getOrElse(true)
+  def isProgressBarEnabled: Boolean = getOptionalProperty[Boolean]("progressBar.enabled").getOrElse(true)
 
-  override lazy val isHtml5ValidationEnabled: Boolean =
+  def isHtml5ValidationEnabled: Boolean =
     getOptionalProperty[Boolean]("html5Validation.enabled").getOrElse(false)
 
-  override lazy val startUrl: String = "/before-you-start"
+  def startUrl: String = "/before-you-start"
 
-  override lazy val ordnanceSurveyUseUprn: Boolean = false
+  def ordnanceSurveyUseUprn: Boolean = false
+
 
   // opening and closing times
-  override lazy val opening: Int = 1
-  override lazy val closing: Int = 18
+  def opening: Int = 1
+  def closing: Int = 18
 
   // Web headers
-  override lazy val applicationCode: String = ""
-  override lazy val serviceTypeCode: String = ""
-  override lazy val orgBusinessUnit: String = ""
-  override lazy val channelCode: String = ""
-  override lazy val contactId: Long = 0
+  def applicationCode: String = ""
+  def serviceTypeCode: String = ""
+  def orgBusinessUnit: String = ""
+  def channelCode: String = ""
+  def contactId: Long = 0
 
 
-  override lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(
+  def emailConfiguration: EmailConfiguration = EmailConfiguration(
     "",
     25,
     "",

@@ -7,7 +7,8 @@ import org.scalatest.mock.MockitoSugar
 import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireConfig, AcquireWebService}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeDateServiceImpl
@@ -41,7 +42,8 @@ private class TestModule() extends ScalaModule with MockitoSugar {
   def configure() {
     Logger.debug("Guice is loading TestModule")
 
-    bind[Config].to[TestConfig]
+    bind[AcquireConfig].to[FakeAcquireConfig]
+    bind[utils.helpers.Config].toInstance(new TestConfig)
 
     ordnanceSurveyAddressLookup()
     bind[VehicleAndKeeperLookupWebService].to[FakeVehicleAndKeeperLookupWebService].asEagerSingleton()

@@ -4,46 +4,36 @@ import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.{getProperty, g
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
-class Config {
-
-  private final val NotFound = "NOT FOUND"
-  private final val NotFoundLong = 9
+trait Config {
 
   // Prototype message in html
-  lazy val isPrototypeBannerVisible: Boolean = getProperty[Boolean]("prototype.disclaimer")
+  def isPrototypeBannerVisible: Boolean
 
   // Google analytics
-  lazy val googleAnalyticsTrackingId: Option[String] = getOptionalProperty[String]("googleAnalytics.id.acquire")
+  def googleAnalyticsTrackingId: Option[String]
 
   // Progress step indicator
-  lazy val isProgressBarEnabled: Boolean = getProperty[Boolean]("progressBar.enabled")
+  def isProgressBarEnabled: Boolean
 
-  lazy val isHtml5ValidationEnabled: Boolean = getProperty[Boolean]("html5Validation.enabled")
+  def isHtml5ValidationEnabled: Boolean
 
-  lazy val startUrl: String = getProperty[String]("start.page")
+  def startUrl: String
 
-  lazy val acquire = new AcquireConfig()
+  def acquire: AcquireConfig
 
-  lazy val ordnanceSurveyUseUprn: Boolean = getProperty[Boolean]("ordnancesurvey.useUprn")
+  def ordnanceSurveyUseUprn: Boolean
   
   // opening and closing times
-  lazy val opening: Int = getProperty[Int]("openingTime")
-  lazy val closing: Int = getProperty[Int]("closingTime")
+  def opening: Int
+  def closing: Int
 
   // Web headers
-  lazy val applicationCode: String = getOptionalProperty[String]("webHeader.applicationCode").getOrElse(NotFound)
-  lazy val serviceTypeCode: String = getOptionalProperty[String]("webHeader.serviceTypeCode").getOrElse(NotFound)
-  lazy val orgBusinessUnit: String = getOptionalProperty[String]("webHeader.orgBusinessUnit").getOrElse(NotFound)
-  lazy val channelCode: String = getOptionalProperty[String]("webHeader.channelCode").getOrElse(NotFound)
-  lazy val contactId: Long = getOptionalProperty[Long]("webHeader.contactId").getOrElse(NotFoundLong)
+  def applicationCode: String
+  def serviceTypeCode: String
+  def orgBusinessUnit: String
+  def channelCode: String
+  def contactId: Long
 
-  lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(
-    getOptionalProperty[String]("smtp.host").getOrElse(""),
-    getOptionalProperty[Int]("smtp.port").getOrElse(25),
-    getOptionalProperty[String]("smtp.user").getOrElse(""),
-    getOptionalProperty[String]("smtp.password").getOrElse(""),
-    From(getOptionalProperty[String]("email.senderAddress").getOrElse(""), "DO-NOT-REPLY"),
-    From(getOptionalProperty[String]("email.feedbackAddress").getOrElse(""), "Feedback"),
-    getStringListProperty("email.whitelist")
-  )
+
+  def emailConfiguration: EmailConfiguration
 }
