@@ -33,6 +33,8 @@ class ConfigImpl extends Config {
   override val applicationCode: String = getProperty[String]("webHeader.applicationCode")
   override val serviceTypeCode: String = getProperty[String]("webHeader.serviceTypeCode")
   override val orgBusinessUnit: String = getProperty[String]("webHeader.orgBusinessUnit")
+  override val channelCode: String = getProperty[String]("webHeader.channelCode")
+  override val contactId: Long = getProperty[Long]("webHeader.contactId")
 
 
   override val emailConfiguration: EmailConfiguration = EmailConfiguration(

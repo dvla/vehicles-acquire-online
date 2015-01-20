@@ -39,6 +39,8 @@ class TestConfig extends Config {
   def applicationCode: String = ""
   def serviceTypeCode: String = ""
   def orgBusinessUnit: String = ""
+  def channelCode: String = ""
+  def contactId: Long = 0
 
 
   def emailConfiguration: EmailConfiguration = EmailConfiguration(

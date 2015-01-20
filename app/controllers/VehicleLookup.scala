@@ -7,6 +7,7 @@ import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, Pr
 import org.joda.time.DateTime
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Call, Request}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{DmsWebEndUserDto, DmsWebHeaderDto}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperDetailsDto, VehicleAndKeeperLookupService, VehicleAndKeeperDetailsRequest}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -112,6 +113,7 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
 
   override protected def callLookupService(trackingId: String, form: Form)(implicit request: Request[_]): Future[LookupResult] = {
   val vehicleAndKeeperDetailsRequest = VehicleAndKeeperDetailsRequest(
+    dmsHeader = buildHeader(trackingId),
     referenceNumber = form.referenceNumber,
     registrationNumber = form.registrationNumber,
     transactionTimestamp = new DateTime
@@ -147,5 +149,26 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
     Redirect(call).
       discardingCookies(discardedCookies).
       withCookie(vehicleAndKeeperDetailsModel)
+  }
+
+  private def buildHeader(trackingId: String): DmsWebHeaderDto = {
+    DmsWebHeaderDto(conversationId = trackingId,
+      originDateTime = new DateTime,
+      applicationCode = config.applicationCode,
+      channelCode = config.channelCode,
+      contactId = config.contactId,
+      eventFlag = true,
+      serviceTypeCode = config.serviceTypeCode,
+      languageCode = "EN",
+      endUser = buildEndUser)
+  }
+
+  private def buildEndUser: DmsWebEndUserDto = {
+    DmsWebEndUserDto(endUserTeamCode = config.applicationCode,
+      endUserTeamDesc = config.applicationCode,
+      endUserRole = config.applicationCode,
+      endUserId = config.applicationCode,
+      endUserIdDesc = config.applicationCode,
+      endUserLongNameDesc = config.applicationCode)
   }
 }
