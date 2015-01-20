@@ -20,6 +20,7 @@ import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
+import common.webserviceclients.common.{DmsWebEndUserDto, DmsWebHeaderDto}
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
@@ -114,6 +115,7 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
 
   override protected def callLookupService(trackingId: String, form: Form)(implicit request: Request[_]): Future[LookupResult] = {
     val vehicleAndKeeperDetailsRequest = VehicleAndKeeperDetailsRequest(
+      dmsHeader = buildHeader(trackingId),
       referenceNumber = form.referenceNumber,
       registrationNumber = form.registrationNumber,
       transactionTimestamp = new DateTime
@@ -149,5 +151,28 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
     Redirect(call).
       discardingCookies(discardedCookies).
       withCookie(vehicleAndKeeperDetailsModel)
+  }
+
+  private def buildHeader(trackingId: String): DmsWebHeaderDto = {
+    val alwaysLog = true
+    val englishLanguage = "EN"
+    DmsWebHeaderDto(conversationId = trackingId,
+      originDateTime = new DateTime,
+      applicationCode = config.applicationCode,
+      channelCode = config.channelCode,
+      contactId = config.contactId,
+      eventFlag = alwaysLog,
+      serviceTypeCode = config.serviceTypeCode,
+      languageCode = englishLanguage,
+      endUser = buildEndUser)
+  }
+
+  private def buildEndUser: DmsWebEndUserDto = {
+    DmsWebEndUserDto(endUserTeamCode = config.applicationCode,
+      endUserTeamDesc = config.applicationCode,
+      endUserRole = config.applicationCode,
+      endUserId = config.applicationCode,
+      endUserIdDesc = config.applicationCode,
+      endUserLongNameDesc = config.applicationCode)
   }
 }
