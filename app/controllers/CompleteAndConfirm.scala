@@ -2,7 +2,12 @@ package controllers
 
 import com.google.inject.Inject
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import models.{PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel, CompleteAndConfirmResponseModel, CompleteAndConfirmFormModel, CompleteAndConfirmViewModel, VehicleLookupFormModel, VehicleTaxOrSornFormModel}
+import models.NewKeeperDetailsViewModel
+import models.CompleteAndConfirmResponseModel
+import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmViewModel
+import models.VehicleLookupFormModel
+import models.VehicleTaxOrSornFormModel
 import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
@@ -49,7 +54,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
       (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
         case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails), Some(vehicleSorn)) =>
-          Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(), vehicleAndKeeperDetails, newKeeperDetails, vehicleSorn), dateService))
+          Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(),
+            vehicleAndKeeperDetails,
+            newKeeperDetails,
+            vehicleSorn),
+            dateService))
         case _ =>
           redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
       }
@@ -66,7 +75,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
             case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
               BadRequest(complete_and_confirm(
-                CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm), vehicleDetails, newKeeperDetails, vehicleSorn), dateService)
+                CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
+                  vehicleDetails,
+                  newKeeperDetails,
+                  vehicleSorn),
+                dateService)
               )
             case _ =>
               Logger.warn("Could not find expected data in cache on dispose submit - now redirecting...")
@@ -79,8 +92,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
           val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
           val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-          val validFormResult = (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
-            case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
+          val validFormResult =
+            (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
+            case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails),
+            Some(traderDetails), Some(taxOrSorn)) =>
               acquireAction(validForm,
                 newKeeperDetails,
                 vehicleLookup,
