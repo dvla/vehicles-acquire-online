@@ -7,8 +7,11 @@ import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, Pr
 import org.joda.time.DateTime
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Call, Request}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{DmsWebEndUserDto, DmsWebHeaderDto}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperDetailsDto, VehicleAndKeeperLookupService, VehicleAndKeeperDetailsRequest}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients
+import webserviceclients.common.{DmsWebEndUserDto, DmsWebHeaderDto}
+import webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
+import webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
+import webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -152,14 +155,16 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
   }
 
   private def buildHeader(trackingId: String): DmsWebHeaderDto = {
+    val alwaysLog = true
+    val englishLanguage = "EN"
     DmsWebHeaderDto(conversationId = trackingId,
       originDateTime = new DateTime,
       applicationCode = config.applicationCode,
       channelCode = config.channelCode,
       contactId = config.contactId,
-      eventFlag = true,
+      eventFlag = alwaysLog,
       serviceTypeCode = config.serviceTypeCode,
-      languageCode = "EN",
+      languageCode = englishLanguage,
       endUser = buildEndUser)
   }
 

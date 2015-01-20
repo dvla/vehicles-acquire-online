@@ -6,7 +6,8 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.Acquir
 
 class Config {
 
-  private val notFound = "NOT FOUND"
+  private final val NotFound = "NOT FOUND"
+  private final val NotFoundLong = 9
 
   // Prototype message in html
   lazy val isPrototypeBannerVisible: Boolean = getProperty[Boolean]("prototype.disclaimer")
@@ -30,11 +31,11 @@ class Config {
   lazy val closing: Int = getProperty[Int]("closingTime")
 
   // Web headers
-  lazy val applicationCode: String = getOptionalProperty[String]("webHeader.applicationCode").getOrElse(notFound)
-  lazy val serviceTypeCode: String = getOptionalProperty[String]("webHeader.serviceTypeCode").getOrElse(notFound)
-  lazy val orgBusinessUnit: String = getOptionalProperty[String]("webHeader.orgBusinessUnit").getOrElse(notFound)
-  lazy val channelCode: String = getOptionalProperty[String]("webHeader.channelCode").getOrElse(notFound)
-  lazy val contactId: Long = getOptionalProperty[Long]("webHeader.contactId").getOrElse(0)
+  lazy val applicationCode: String = getOptionalProperty[String]("webHeader.applicationCode").getOrElse(NotFound)
+  lazy val serviceTypeCode: String = getOptionalProperty[String]("webHeader.serviceTypeCode").getOrElse(NotFound)
+  lazy val orgBusinessUnit: String = getOptionalProperty[String]("webHeader.orgBusinessUnit").getOrElse(NotFound)
+  lazy val channelCode: String = getOptionalProperty[String]("webHeader.channelCode").getOrElse(NotFound)
+  lazy val contactId: Long = getOptionalProperty[Long]("webHeader.contactId").getOrElse(NotFoundLong)
 
   lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(
     getOptionalProperty[String]("smtp.host").getOrElse(""),
