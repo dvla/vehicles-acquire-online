@@ -1,5 +1,5 @@
-@(cookiesPolicyMap: Map[String, List[uk.gov.dvla.vehicles.presentation.common.model.CookieReport]])
-        (implicit lang: Lang,
+@(cookiesPolicyMap: Map[String, List[uk.gov.dvla.vehicles.presentation.common.model.CookieReport]])(implicit
+        lang: Lang,
         token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
         config: utils.helpers.Config)
 
