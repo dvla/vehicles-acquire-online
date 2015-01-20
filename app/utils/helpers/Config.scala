@@ -33,7 +33,8 @@ class Config {
   lazy val applicationCode: String = getOptionalProperty[String]("webHeader.applicationCode").getOrElse(notFound)
   lazy val serviceTypeCode: String = getOptionalProperty[String]("webHeader.serviceTypeCode").getOrElse(notFound)
   lazy val orgBusinessUnit: String = getOptionalProperty[String]("webHeader.orgBusinessUnit").getOrElse(notFound)
-
+  lazy val channelCode: String = getOptionalProperty[String]("webHeader.channelCode").getOrElse(notFound)
+  lazy val contactId: Long = getOptionalProperty[Long]("webHeader.contactId").getOrElse(0)
 
   lazy val emailConfiguration: EmailConfiguration = EmailConfiguration(
     getOptionalProperty[String]("smtp.host").getOrElse(""),
