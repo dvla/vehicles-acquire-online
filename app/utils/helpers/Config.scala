@@ -1,6 +1,8 @@
 package utils.helpers
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.{getProperty, getOptionalProperty, getStringListProperty}
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getStringListProperty
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
