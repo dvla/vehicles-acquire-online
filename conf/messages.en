@@ -1,3 +1,6 @@
+#main
+main.banner.help = Help
+
 #global
 global.cookiemessage = GOV.UK uses cookies to make the site simpler.
 global.cookiefindoutmore = Find out more about cookies
