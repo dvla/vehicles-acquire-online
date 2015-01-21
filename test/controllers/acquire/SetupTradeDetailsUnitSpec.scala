@@ -53,6 +53,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
       when(config.isPrototypeBannerVisible).thenReturn(false)
+      when(config.googleAnalyticsTrackingId).thenReturn(None)
       // Stub this config value.
       val setUpTradeDetailsPrototypeNotVisible = new SetUpTradeDetails()
 
@@ -114,7 +115,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       TraderEmailId -> dealerEmail)
   }
 
-  private val setUpTradeDetails = {
+  private lazy val setUpTradeDetails = {
     injector.getInstance(classOf[SetUpTradeDetails])
   }
 

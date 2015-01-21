@@ -2,9 +2,9 @@ package models
 
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
 
-final case class AcquireCompletionViewModel(vehicleDetails: VehicleDetailsModel,
+final case class AcquireCompletionViewModel(vehicleDetails: VehicleAndKeeperDetailsModel,
                                             traderDetails: TraderDetailsModel,
                                             newKeeperDetails: NewKeeperDetailsViewModel,
                                             completeAndConfirmDetails: CompleteAndConfirmFormModel,

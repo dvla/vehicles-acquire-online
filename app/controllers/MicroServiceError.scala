@@ -21,7 +21,8 @@ class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideS
   }
 
   def back = Action { implicit request =>
-    val referer: String = request.cookies.getString(MicroServiceError.MicroServiceErrorRefererCacheKey).getOrElse(DefaultRedirectUrl)
+    val referer: String = request.cookies.getString(MicroServiceError.MicroServiceErrorRefererCacheKey)
+      .getOrElse(DefaultRedirectUrl)
     Redirect(referer).discardingCookie(MicroServiceError.MicroServiceErrorRefererCacheKey)
   }
 }

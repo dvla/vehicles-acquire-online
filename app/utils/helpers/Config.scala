@@ -1,47 +1,41 @@
 package utils.helpers
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getStringListProperty
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
-class Config {
-
-  private val notFound = "NOT FOUND"
+trait Config {
 
   // Prototype message in html
-  val isPrototypeBannerVisible: Boolean = getProperty("prototype.disclaimer", default = true)
+  def isPrototypeBannerVisible: Boolean
 
   // Google analytics
-  val googleAnalyticsTrackingId: String = getProperty("googleAnalytics.id.acquire", notFound)
+  def googleAnalyticsTrackingId: Option[String]
 
   // Progress step indicator
-  val isProgressBarEnabled: Boolean = getProperty("progressBar.enabled", default = false)
+  def isProgressBarEnabled: Boolean
 
-  val isHtml5ValidationEnabled: Boolean = getProperty("html5Validation.enabled", default = false)
+  def isHtml5ValidationEnabled: Boolean
 
-  val startUrl: String = getProperty("start.page", default = "NOT FOUND")
+  def startUrl: String
 
-  val acquire = new AcquireConfig()
+  def acquire: AcquireConfig
 
-  val ordnanceSurveyUseUprn: Boolean = getProperty("ordnancesurvey.useUprn", default = false)
+  def ordnanceSurveyUseUprn: Boolean
   
   // opening and closing times
-  val opening: Int = getProperty("openingTime", default = 1)
-  val closing: Int = getProperty("closingTime", default = 23)
+  def opening: Int
+  def closing: Int
 
   // Web headers
-  val applicationCode: String = getProperty("webHeader.applicationCode", notFound)
-  val serviceTypeCode: String = getProperty("webHeader.serviceTypeCode", notFound)
-  val orgBusinessUnit: String = getProperty("webHeader.orgBusinessUnit", notFound)
+  def applicationCode: String
+  def serviceTypeCode: String
+  def orgBusinessUnit: String
+  def channelCode: String
+  def contactId: Long
 
 
-  val emailConfiguration: EmailConfiguration = EmailConfiguration(
-    getProperty("smtp.host", notFound),
-    getProperty("smtp.port", 25),
-    getProperty("smtp.user", notFound),
-    getProperty("smtp.password", notFound),
-    From(getProperty("email.senderAddress", notFound), "DO-NOT-REPLY"),
-    From(getProperty("email.feedbackAddress", notFound), "Feedback"),
-    getStringListProperty("email.whitelist")
-  )
+  def emailConfiguration: EmailConfiguration
 }

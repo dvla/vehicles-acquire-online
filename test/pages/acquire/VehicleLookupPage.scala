@@ -6,7 +6,7 @@ import views.acquire.VehicleLookup
 import VehicleLookup.{BackId, SubmitId}
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import org.openqa.selenium.WebDriver
-import webserviceclients.fakes.FakeVehicleLookupWebService.{ReferenceNumberValid, RegistrationNumberValid}
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
 
 object VehicleLookupPage extends Page with WebBrowserDSL {

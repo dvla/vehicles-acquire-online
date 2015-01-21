@@ -60,7 +60,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "present a full form when new keeper, vehicle details and vehicle sorn cookies are present for new keeper" in new WithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
@@ -93,7 +93,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         fleetNumber = Some(FleetNumberValid),
         email = Some(EmailValid),
         isBusinessKeeper = true
-      )).withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      )).withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
       val content = contentAsString(completeAndConfirm.present(request))
@@ -110,7 +110,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         lastName = Some(LastNameValid),
         email = Some(EmailValid),
         isBusinessKeeper = false
-      )).withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      )).withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
       val content = contentAsString(completeAndConfirm.present(request))
@@ -124,7 +124,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "replace numeric mileage error message for with standard error message" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$")
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
@@ -138,7 +138,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
@@ -156,7 +156,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "redirect to next page when all fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
@@ -174,7 +174,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     "return a bad request if consent is not ticked" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(consent = "")
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
 
@@ -254,7 +254,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   private lazy val present = {
     val request = FakeRequest()
       .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-      .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
 

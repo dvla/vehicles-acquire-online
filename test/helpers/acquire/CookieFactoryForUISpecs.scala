@@ -26,7 +26,7 @@ import org.openqa.selenium.Cookie
 import org.openqa.selenium.WebDriver
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid}
-import pages.acquire.PrivateKeeperDetailsPage.{ModelValid, FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid, DriverNumberValid}
 import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
@@ -39,8 +39,8 @@ import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import uk.gov.dvla.vehicles.presentation.common
 import common.controllers.AlternateLanguages.{CyId, EnId}
 import common.mappings.TitleType
-import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
-import common.model.{BruteForcePreventionModel, VehicleDetailsModel, TraderDetailsModel, AddressModel}
+import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.{BruteForcePreventionModel, VehicleAndKeeperDetailsModel, TraderDetailsModel, AddressModel}
 import TraderDetailsModel.TraderDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
@@ -48,11 +48,12 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
-import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionIdValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionTimestampValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionIdValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionTimestampValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ReferenceNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleModelValid
 
 object CookieFactoryForUISpecs {
   private def addCookie[A](key: String, value: A)(implicit tjs: Writes[A], webDriver: WebDriver): Unit = {
@@ -154,16 +155,27 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def vehicleDetails(registrationNumber: String = RegistrationNumberValid,
-                     vehicleMake: String = VehicleMakeValid,
-                     vehicleModel: String = ModelValid,
-                     disposeFlag: Boolean = false)(implicit webDriver: WebDriver) = {
-    val key = VehicleLookupDetailsCacheKey
-    val value = VehicleDetailsModel(
+  def vehicleAndKeeperDetails(registrationNumber: String = RegistrationNumberValid,
+                              vehicleMake: Option[String] = Some(VehicleMakeValid),
+                              vehicleModel: Option[String] = Some(VehicleModelValid),
+                              title: Option[String] = None,
+                              firstName: Option[String] = None,
+                              lastName: Option[String] = None,
+                              address: Option[AddressModel] = None,
+                              keeperEndDate: Option[DateTime] = None,
+                              disposeFlag: Option[Boolean] = Some(false))(implicit webDriver: WebDriver) = {
+    val key = VehicleAndKeeperLookupDetailsCacheKey
+    val value = VehicleAndKeeperDetailsModel(
       registrationNumber = registrationNumber,
-      vehicleMake,
-      vehicleModel,
-      disposeFlag)
+      make = vehicleMake,
+      model = vehicleModel,
+      title = title,
+      firstName = firstName,
+      lastName = lastName,
+      address = address,
+      keeperEndDate = keeperEndDate,
+      disposeFlag = disposeFlag
+    )
     addCookie(key, value)
     this
   }

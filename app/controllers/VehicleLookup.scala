@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, PrivateKeeperDetailsCacheKeys}
+import org.joda.time.DateTime
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Call, Request}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -13,20 +14,21 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.controllers.VehicleLookupBase
 import common.controllers.VehicleLookupBase.LookupResult
-import common.model.{VehicleDetailsModel, TraderDetailsModel}
-import common.services.DateService
-import common.views.helpers.FormExtensions.formBinding
-import common.webserviceclients.vehiclelookup.VehicleDetailsRequestDto
-import common.webserviceclients.vehiclelookup.VehicleDetailsDto
-import common.webserviceclients.vehiclelookup.VehicleLookupService
-import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.controllers.VehicleLookupBase.VehicleFound
 import common.controllers.VehicleLookupBase.VehicleNotFound
+import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import common.services.DateService
+import common.views.helpers.FormExtensions.formBinding
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
+import common.webserviceclients.common.{DmsWebEndUserDto, DmsWebHeaderDto}
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
 class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService,
-                                    vehicleLookupService: VehicleLookupService,
+                                    vehicleAndKeeperLookupService: VehicleAndKeeperLookupService,
                                     dateService: DateService)
                                    (implicit val clientSideSessionFactory: ClientSideSessionFactory,
                                     config: Config) extends VehicleLookupBase {
@@ -112,35 +114,34 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
   }
 
   override protected def callLookupService(trackingId: String, form: Form)(implicit request: Request[_]): Future[LookupResult] = {
-    val vehicleDetailsRequest = VehicleDetailsRequestDto(
+    val vehicleAndKeeperDetailsRequest = VehicleAndKeeperDetailsRequest(
+      dmsHeader = buildHeader(trackingId),
       referenceNumber = form.referenceNumber,
       registrationNumber = form.registrationNumber,
-      userName = request.cookies.getModel[TraderDetailsModel].fold("")(_.traderName)
+      transactionTimestamp = new DateTime
     )
 
-    vehicleLookupService.invoke(vehicleDetailsRequest, trackingId) map { response =>
+    vehicleAndKeeperLookupService.invoke(vehicleAndKeeperDetailsRequest, trackingId) map { response =>
       response.responseCode match {
         case Some(responseCode) =>
           VehicleNotFound(responseCode)
-
         case None =>
-          response.vehicleDetailsDto match {
+          response.vehicleAndKeeperDetailsDto match {
             case Some(dto) => VehicleFound(vehicleFoundResult(dto, form.vehicleSoldTo))
-            case None => throw new RuntimeException("No vehicleDetailsDto found")
+            case None => throw new RuntimeException("No vehicleAndKeeperDetailsDto found")
           }
       }
     }
   }
 
-  private def vehicleFoundResult(vehicleDetailsDto: VehicleDetailsDto, soldTo: String)(implicit request: Request[_]) = {
-    val model = VehicleDetailsModel.fromDto(vehicleDetailsDto)
-    if (model.disposeFlag)
-      vehicleDisposedResult(model, soldTo)
-    else
-      Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
+  private def vehicleFoundResult(vehicleAndKeeperDetailsDto: VehicleAndKeeperDetailsDto, soldTo: String)(implicit request: Request[_]) = {
+    val model = VehicleAndKeeperDetailsModel.from(vehicleAndKeeperDetailsDto)
+    val disposed = model.disposeFlag.getOrElse(true)
+
+    if (disposed) vehicleDisposedResult(model, soldTo) else Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
   }
 
-  private def vehicleDisposedResult(vehicleDetailsModel: VehicleDetailsModel, soldTo: String)(implicit request: Request[_]) = {
+  private def vehicleDisposedResult(vehicleAndKeeperDetailsModel: VehicleAndKeeperDetailsModel, soldTo: String)(implicit request: Request[_]) = {
     val (call, discardedCookies) =
       if (soldTo == VehicleSoldTo_Private)
         (routes.PrivateKeeperDetails.present(), BusinessKeeperDetailsCacheKeys)
@@ -149,6 +150,20 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
 
     Redirect(call).
       discardingCookies(discardedCookies).
-      withCookie(vehicleDetailsModel)
+      withCookie(vehicleAndKeeperDetailsModel)
+  }
+
+  private def buildHeader(trackingId: String): DmsWebHeaderDto = {
+    val alwaysLog = true
+    val englishLanguage = "EN"
+    DmsWebHeaderDto(conversationId = trackingId,
+      originDateTime = new DateTime,
+      applicationCode = config.applicationCode,
+      channelCode = config.channelCode,
+      contactId = config.contactId,
+      eventFlag = alwaysLog,
+      serviceTypeCode = config.serviceTypeCode,
+      languageCode = englishLanguage,
+      endUser = None)
   }
 }

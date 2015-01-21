@@ -7,7 +7,7 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
@@ -34,7 +34,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
     "remove all vehicle related cookies and redirect to vehicle lookup page" in new WithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
       val result = keeperStillOnRecord.buyAnotherVehicle(request)
 
@@ -42,7 +42,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
         val cookies = fetchCookiesFromHeaders(r)
         cookies.size should equal(3)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupResponseCodeCacheKey, cookies)
 
         r.header.status should equal(SEE_OTHER)
@@ -58,7 +58,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddress())
 
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = keeperStillOnRecord.finish(request)
 
       whenReady(result) { r =>
@@ -70,21 +70,21 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
           SetupTradeDetailsCacheKey,
           BusinessChooseYourAddressCacheKey,
           VehicleLookupFormModelCacheKey,
-          VehicleLookupDetailsCacheKey
+          VehicleAndKeeperLookupDetailsCacheKey
         )
         cookieNames.foreach(verifyCookieHasBeenDiscarded(_, cookies))
       }
     }
   }
 
-  private val keeperStillOnRecord = {
+  private lazy val keeperStillOnRecord = {
     injector.getInstance(classOf[KeeperStillOnRecord])
   }
 
   private lazy val present = {
     val request = FakeRequest()
       .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-      .withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
     keeperStillOnRecord.present(request)
   }
 

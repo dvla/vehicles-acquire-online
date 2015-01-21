@@ -24,11 +24,11 @@ import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.{TransactionTimestampValid, TransactionIdValid}
-import webserviceclients.fakes.FakeVehicleLookupWebService.{VehicleMakeValid, VehicleModelValid}
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionTimestampValid, TransactionIdValid}
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{VehicleMakeValid, VehicleModelValid}
 
 class AcquireSuccessUnitSpec extends UnitSpec {
 
@@ -66,7 +66,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
@@ -95,7 +95,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
@@ -122,9 +122,9 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 }
 
   "buyAnother" should {
-    "discard the vehicle, new keeper and confirm cookies" in {
+    "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
@@ -137,7 +137,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
 
-        verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
@@ -149,9 +149,9 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the vehicle lookup page" in {
+    "redirect to the vehicle lookup page" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
@@ -166,9 +166,9 @@ class AcquireSuccessUnitSpec extends UnitSpec {
   }
 
   "finish" should {
-    "discard the vehicle, new keeper and confirm cookies" in {
+    "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
@@ -182,7 +182,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
 
-        verifyCookieHasBeenDiscarded(VehicleLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
@@ -194,9 +194,9 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the before you start page" in {
+    "redirect to the before you start page" in new WithApplication {
       val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
         withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
@@ -210,13 +210,13 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     }
   }
 
-  private val acquireSuccess = {
+  private lazy val acquireSuccess = {
     injector.getInstance(classOf[AcquireSuccess])
   }
 
   private lazy val present = {
     val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.vehicleDetailsModel()).
+      withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
       withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).

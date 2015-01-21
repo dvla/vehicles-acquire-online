@@ -4,7 +4,7 @@ import com.google.inject.name.Names
 import com.tzavellas.sse.guice.ScalaModule
 import play.api.{Logger, LoggerLike}
 import uk.gov.dvla.vehicles.presentation.common
-import common.ConfigProperties.getProperty
+import common.ConfigProperties.getOptionalProperty
 import common.clientsidesession.AesEncryption
 import common.clientsidesession.ClearTextClientSideSessionFactory
 import common.clientsidesession.ClientSideSessionFactory
@@ -20,15 +20,16 @@ import common.services.DateServiceImpl
 import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupService
-import common.webserviceclients.vehiclelookup.VehicleLookupWebServiceImpl
-import common.webserviceclients.vehiclelookup.VehicleLookupWebService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
 import common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import common.webserviceclients.acquire.{AcquireWebService, AcquireService, AcquireServiceImpl, AcquireWebServiceImpl}
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebServiceImpl
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
+import utils.helpers.ConfigImpl
 
 /**
  * Provides real implementations of traits
@@ -42,6 +43,9 @@ import common.webserviceclients.acquire.{AcquireWebService, AcquireService, Acqu
  */
 class DevModule extends ScalaModule {
   def configure() {
+
+    bind[utils.helpers.Config].to[ConfigImpl]
+
     bind[AddressLookupService].to[AddressLookupServiceImpl].asEagerSingleton()
     bind[AddressLookupWebService].to[WebServiceImpl].asEagerSingleton()
 
@@ -50,8 +54,8 @@ class DevModule extends ScalaModule {
 
     bindClientSideSessionFactory()
 
-    bind[VehicleLookupWebService].to[VehicleLookupWebServiceImpl].asEagerSingleton()
-    bind[VehicleLookupService].to[VehicleLookupServiceImpl].asEagerSingleton()
+    bind[VehicleAndKeeperLookupWebService].to[VehicleAndKeeperLookupWebServiceImpl].asEagerSingleton()
+    bind[VehicleAndKeeperLookupService].to[VehicleAndKeeperLookupServiceImpl].asEagerSingleton()
 
     bind[AcquireWebService].to[AcquireWebServiceImpl].asEagerSingleton()
     bind[AcquireService].to[AcquireServiceImpl].asEagerSingleton()
@@ -64,7 +68,7 @@ class DevModule extends ScalaModule {
   }
 
   protected def bindClientSideSessionFactory(): Unit = {
-    if (getProperty("encryptCookies", default = true)) {
+    if (getOptionalProperty[Boolean]("encryptCookies").getOrElse(true)){
       bind[CookieEncryption].toInstance(new AesEncryption with CookieEncryption)
       bind[CookieNameHashGenerator].toInstance(new Sha1HashGenerator with CookieNameHashGenerator)
       bind[ClientSideSessionFactory].to[EncryptedClientSideSessionFactory].asEagerSingleton()

@@ -7,13 +7,15 @@ import org.scalatest.mock.MockitoSugar
 import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common.filters.{DateTimeZoneServiceImpl, DateTimeZoneService}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireConfig, AcquireWebService}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
+import utils.helpers.Config
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeDateServiceImpl
-import webserviceclients.fakes.FakeVehicleLookupWebService
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperLookupServiceImpl, VehicleAndKeeperLookupService, VehicleAndKeeperLookupWebServiceImpl, VehicleAndKeeperLookupWebService}
+import webserviceclients.fakes._
 import uk.gov.dvla.vehicles.presentation.common
-import common.webserviceclients.vehiclelookup.VehicleLookupWebService
 import common.clientsidesession.CookieFlags
 import common.clientsidesession.NoCookieFlags
 import common.clientsidesession.ClientSideSessionFactory
@@ -39,8 +41,12 @@ trait TestComposition extends Composition {
 private class TestModule() extends ScalaModule with MockitoSugar {
   def configure() {
     Logger.debug("Guice is loading TestModule")
+
+    bind[AcquireConfig].to[FakeAcquireConfig]
+    bind[utils.helpers.Config].toInstance(new TestConfig)
+
     ordnanceSurveyAddressLookup()
-    bind[VehicleLookupWebService].to[FakeVehicleLookupWebService].asEagerSingleton()
+    bind[VehicleAndKeeperLookupWebService].to[FakeVehicleAndKeeperLookupWebService].asEagerSingleton()
 
     bind[AcquireWebService].to[FakeAcquireWebServiceImpl].asEagerSingleton()
 

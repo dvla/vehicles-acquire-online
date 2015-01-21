@@ -1,4 +1,4 @@
-@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleDetailsModel,
+@(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel,
     privateKeeperDetailsForm: Form[models.PrivateKeeperDetailsFormModel]
 )(implicit lang: Lang,
     token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
@@ -37,9 +37,9 @@
                     <dt>@Messages("acquire_privatekeeperdetails.vehiclereg")</dt>
                     <dd>@data.registrationNumber</dd>
                     <dt>@Messages("acquire_privatekeeperdetails.vehiclemake")</dt>
-                    <dd>@data.vehicleMake</dd>
+                    <dd>@data.make</dd>
                     <dt>@Messages("acquire_privatekeeperdetails.vehiclemodel")</dt>
-                    <dd>@data.vehicleModel</dd>
+                    <dd>@data.model</dd>
                 </dl>
                 <div class="alert-warning print-message">
                   <p><strong>@Messages("acquire_privatekeeperdetails.p3")</strong></p>

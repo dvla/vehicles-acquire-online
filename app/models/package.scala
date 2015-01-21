@@ -1,7 +1,7 @@
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
-import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -36,7 +36,7 @@ package object models {
   // Set of cookies related to looking up a vehicle
   final val VehicleLookupCacheKeys = Set(
     VehicleLookupFormModelCacheKey,
-    VehicleLookupDetailsCacheKey,
+    VehicleAndKeeperLookupDetailsCacheKey,
     VehicleLookupResponseCodeCacheKey
   )
 

@@ -9,11 +9,10 @@ import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleDetailsModel}
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, AddressModel}
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel._
+import uk.gov.dvla.vehicles.presentation.common.model._
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
-import common.model.VehicleDetailsModel.VehicleLookupDetailsCacheKey
 import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessKeeperDetailsFormModel
@@ -42,14 +41,15 @@ import pages.acquire.CompleteAndConfirmPage.MileageValid
 import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBirthValid, MonthDateOfBirthValid}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleModelValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionTimestampValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.ReferenceNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.RegistrationNumberValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.VehicleMakeValid
-import webserviceclients.fakes.FakeVehicleLookupWebService.TransactionIdValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleModelValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionTimestampValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ReferenceNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionIdValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import models.HelpCacheKey
 
@@ -182,15 +182,25 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def vehicleDetailsModel(registrationNumber: String = RegistrationNumberValid,
-                          vehicleMake: String = VehicleMakeValid,
-                          vehicleModel: String = VehicleModelValid,
-                          disposeFlag: Boolean = false): Cookie = {
-    val key = VehicleLookupDetailsCacheKey
-    val value = VehicleDetailsModel(
+  def vehicleAndKeeperDetailsModel(registrationNumber: String = RegistrationNumberValid,
+                                   vehicleMake: Option[String] = Some(VehicleMakeValid),
+                                   vehicleModel: Option[String] = Some(VehicleModelValid),
+                                   title: Option[String] = None,
+                                   firstName: Option[String] = None,
+                                   lastName: Option[String] = None,
+                                   address: Option[AddressModel] = None,
+                                   keeperEndDate: Option[DateTime] = None,
+                                   disposeFlag: Option[Boolean] = Some(false)): Cookie = {
+    val key = VehicleAndKeeperLookupDetailsCacheKey
+    val value = VehicleAndKeeperDetailsModel(
       registrationNumber = registrationNumber,
-      vehicleMake = vehicleMake,
-      vehicleModel = vehicleModel,
+      make = vehicleMake,
+      model = vehicleModel,
+      title = title,
+      firstName = firstName,
+      lastName = lastName,
+      address = address,
+      keeperEndDate = keeperEndDate,
       disposeFlag = disposeFlag
     )
     createCookie(key, value)

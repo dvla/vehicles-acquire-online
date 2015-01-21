@@ -93,7 +93,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
-        .vehicleDetails()
+        .vehicleAndKeeperDetails()
         .newKeeperDetails()
         .vehicleLookupFormModel()
         .vehicleTaxOrSornFormModel()
@@ -106,7 +106,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
-        .vehicleDetails()
+        .vehicleAndKeeperDetails()
         .newKeeperDetails()
         .vehicleLookupFormModel()
         .vehicleTaxOrSornFormModel()
@@ -324,7 +324,7 @@ import play.api.test.FakeApplication
       CookieFactoryForUISpecs.
         setupTradeDetails().
         dealerDetails(addressWithUprn).
-        vehicleDetails().
+        vehicleAndKeeperDetails().
         privateKeeperDetails().
         newKeeperDetails(
           title = Some(TitleType(1,"")),
@@ -342,7 +342,7 @@ import play.api.test.FakeApplication
     CookieFactoryForUISpecs
       .setupTradeDetails()
       .dealerDetails()
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
       .newKeeperDetails()
       .vehicleLookupFormModel()
       .vehicleTaxOrSornFormModel()

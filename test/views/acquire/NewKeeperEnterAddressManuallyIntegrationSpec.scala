@@ -78,6 +78,6 @@ final class NewKeeperEnterAddressManuallyIntegrationSpec extends UiSpec with Tes
 
   private def cacheSetup()(implicit webDriver: WebDriver) =
     CookieFactoryForUISpecs
-      .vehicleDetails()
+      .vehicleAndKeeperDetails()
       .businessKeeperDetails() // Not bothering with private keeper details
 }
