@@ -1,6 +1,5 @@
 @tag
 Feature:
-
   Background:
     Given the user is on the Vehicle lookup page
 
@@ -13,7 +12,6 @@ Feature:
     And the user selects the control labelled Next
     Then the user will be taken to the page titled "Enter new keeper details" page
 
-
   Scenario:Vehicle lookup - disposal set business
     When the user fill the vrn doc ref number and select businessKeeper
     And the user selects the control labelled Next
@@ -22,4 +20,3 @@ Feature:
   Scenario:Vehicle lookup - Back
     When the user selects the  control labelled VehicleLookUpBack button
     Then the user will be taken to the page titled Select trader address page
-

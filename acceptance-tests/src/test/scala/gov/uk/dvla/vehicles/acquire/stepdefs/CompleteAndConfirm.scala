@@ -22,7 +22,7 @@ class CompleteAndConfirm(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   @When("^the user click on  the primary control labelled \"(.*?)\"$")
   def the_user_click_on_the_primary_control_labelled(confirmPage: String) {
     vaHappyPath.fillInPrivateKeeperDetailsPage()
-    vaHappyPath.navigateAfterCustmourTypeSelection(true)
+    vaHappyPath.navigateAfterCustomerTypeSelection(navigateToNextPage = true)
   }
 
   @Then("^the user will be taken to the Summary page$")
@@ -33,7 +33,7 @@ class CompleteAndConfirm(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   @When("^the user selects the secondary control labelled \"(.*?)\"$")
   def the_user_selects_the_secondary_control_labelled(back: String) {
     vaHappyPath.fillInPrivateKeeperDetailsPage()
-    vaHappyPath.navigateAfterCustmourTypeSelection(false)
+    vaHappyPath.navigateAfterCustomerTypeSelection(navigateToNextPage = false)
   }
 
   @Then("^the user will be taken to the \"(.*?)\" page$")

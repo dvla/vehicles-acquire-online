@@ -1,6 +1,5 @@
 @tag
 Feature:
-
   Background:
     Given the user is on the version page
 

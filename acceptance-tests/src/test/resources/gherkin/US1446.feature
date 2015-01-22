@@ -31,7 +31,3 @@ Feature: Minimum Happy Path Acceptance Tests For VehicleAcquireOnline
     And entered valid registration number and doc reference number
     And the user on Private Keeper details page and entered through unsuccessful postcode lookup with failure data
     Then the user will be on confirmed transaction failure screen
-
-
-
-
