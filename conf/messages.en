@@ -206,12 +206,12 @@ acquire_vehiclelookupfailure.title = Look-up was unsuccessful
 acquire_vehiclelookupfailure.p1 = The service is temporarily unavailable. Please try again later or send a completed V5C/3 to DVLA, Swansea, SA99 1BD
 acquire_vehiclelookupfailure.button = Try again
 acquire_vehiclelookupfailure.button2 = Exit
-vehicle_lookup_vrm_not_found.p1 = The V5C document reference number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
-vehicle_lookup_vrm_not_found.p2 = Please make sure you have the most recent V5C and try again.
-vehicle_lookup_vrm_not_found.p3 = For each vehicle registration number, only 3 attempts can be made to retrieve the vehicle details.
-vehicle_lookup_document_reference_mismatch.p1 = The V5C document reference number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
-vehicle_lookup_document_reference_mismatch.p2 = Please make sure you have the most recent V5C and try again.
-vehicle_lookup_document_reference_mismatch.p3 = For each vehicle registration number, only 3 attempts can be made to retrieve the vehicle details.
+vehicle_and_keeper_lookup_vrm_not_found.p1 = The V5C document reference number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
+vehicle_and_keeper_lookup_vrm_not_found.p2 = Please make sure you have the most recent V5C and try again.
+vehicle_and_keeper_lookup_vrm_not_found.p3 = For each vehicle registration number, only 3 attempts can be made to retrieve the vehicle details.
+vehicle_and_keeper_lookup_document_reference_mismatch.p1 = The V5C document reference number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
+vehicle_and_keeper_lookup_document_reference_mismatch.p2 = Please make sure you have the most recent V5C and try again.
+vehicle_and_keeper_lookup_document_reference_mismatch.p3 = For each vehicle registration number, only 3 attempts can be made to retrieve the vehicle details.
 
 #page 3 [optional] - manual address entry
 acquire_enteraddressmanually.title = Enter address
@@ -508,7 +508,6 @@ common_feedback.submit_button = Submit feedback
 common_feedback.thankyou = Thank you for your feedback
 common_feedback.subject = Buy from the trade - Feedback
 
-
 # Cookie policy
 footer.cookies = Cookies
 cookie-policy-title = Cookies
@@ -525,7 +524,6 @@ cookie-policy.table.name = Cookie name
 cookie-policy.table.purpose = cookie purpose
 cookie-policy.table.expires = expires on
 cookie-policy-p10 = The following cookies are used:
-
 
 cookie-policy.name.google_analytics = Measuring website usage (Google Analytics)
 cookie-policy.name.google_analytics.p1 = Google Analytics software collects information about how you use the site. This is done to help make sure the site is meeting the needs of its users and to help make improvements.
@@ -553,8 +551,6 @@ cookie-policy.name.introductory_message.p3 =
 cookie-policy.name.introductory_message.p4 =
 cookie-policy.cookies.introductory_message.seen_cookie_message = Saves a message to let us know that you have seen our cookie message
 
-
-
 cookie-policy.expires.1month = 1 month
 cookie-policy.expires.4months= 4 months
 cookie-policy.expires.6months = 6 months
@@ -563,4 +559,3 @@ cookie-policy.expires.2years = 2 years
 cookie-policy.expires.30min = 30 minutes
 cookie-policy.expires.inactivity = After 15 minutes of inactivity or when you close your browser
 cookie-policy.expires.close = When you close your browser
-
