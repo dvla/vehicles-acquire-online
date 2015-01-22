@@ -67,13 +67,13 @@ POST        /complete-and-confirm                       @controllers.CompleteAnd
 
 #page 9 - Success
 GET         /acquire-success                            @controllers.AcquireSuccess.present
-GET         /acquire-another                            @controllers.AcquireSuccess.buyAnother
-GET         /acquire-finish                             @controllers.AcquireSuccess.finish
+POST        /acquire-another                            @controllers.AcquireSuccess.buyAnother
+POST        /acquire-finish                             @controllers.AcquireSuccess.finish
 
 # Failure
 GET         /buy-from-the-trade-failure                 @controllers.AcquireFailure.present
-GET         /failure-acquire-another                    @controllers.AcquireFailure.buyAnother
-GET         /failure-acquire-finish                     @controllers.AcquireFailure.finish
+POST        /failure-acquire-another                    @controllers.AcquireFailure.buyAnother
+POST        /failure-acquire-finish                     @controllers.AcquireFailure.finish
 
 # feedback
 GET         /feedback                                   @controllers.FeedbackController.present
@@ -104,4 +104,4 @@ GET         /healthcheck                                @uk.gov.dvla.vehicles.pr
 
 GET         /version                                    @controllers.Version.version
 
-GET         /cookie-policy                                 @controllers.CookiePolicyController.present
+GET         /cookie-policy                              @controllers.CookiePolicyController.present

@@ -103,19 +103,25 @@
         <div class="form-steps">
 
             <div class="step">
-                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">@Messages("acquire_success.buttonnavprint")</button>
+                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">
+                    @Messages("acquire_success.buttonnavprint")
+                </button>
             </div>
 
             <div class="step">
                 @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
-                @csrfTokenHiddenField()
-                <button id="@BuyAnotherId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_success.buyAnother")</button>
+                    @csrfTokenHiddenField()
+                    <button id="@BuyAnotherId" type="submit" name="action" class="button button-new-disposal button-secondary">
+                        @Messages("acquire_success.buyAnother")
+                    </button>
                 }
             </div>
             <div class="step">
                 @form(action = controllers.routes.AcquireSuccess.finish()) {
-                @csrfTokenHiddenField()
-                <button id="@FinishId" type="submit" name="action" class="button button-new-disposal button-secondary">@Messages("acquire_success.finish")</button>
+                    @csrfTokenHiddenField()
+                    <button id="@FinishId" type="submit" name="action" class="button button-new-disposal button-secondary">
+                        @Messages("acquire_success.finish")
+                    </button>
                 }
             </div>
         </div>
