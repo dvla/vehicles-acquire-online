@@ -38,7 +38,7 @@
             @form(action = controllers.routes.NewKeeperEnterAddressManually.submit()) {
             @csrfTokenHiddenField()
 
-            @addressAndPostcode(viewModel.form(AddressAndPostcodeId))
+            @addressAndPostcode(viewModel.form(AddressAndPostcodeId), Map('_postTownMaxLength -> 20))
 
             <legend>@Messages("address.postcode.label")</legend>
             <div class="read-only-input">@newKeeperPostcode</div>
