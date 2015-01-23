@@ -56,7 +56,8 @@ object FakeVehicleAndKeeperLookupWebService {
       keeperAddressLine4 = Some("a"),
       keeperPostTown = Some("a"),
       keeperPostcode = Some("a"),
-      disposeFlag = Some(disposeFlag)
+      disposeFlag = Some(disposeFlag),
+      keeperEndDate = if (disposeFlag) Some(new DateTime()) else None
     )
 
   val vehicleDetailsResponseSuccess: (Int, Option[VehicleAndKeeperDetailsResponse]) = {
