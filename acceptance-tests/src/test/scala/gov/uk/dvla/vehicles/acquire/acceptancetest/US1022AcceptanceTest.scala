@@ -1,4 +1,4 @@
-package gov.uk.dvla.vehicles.acquire.accepancetest
+package gov.uk.dvla.vehicles.acquire.acceptancetest
 
 import cucumber.api.junit.Cucumber
 import cucumber.api.junit.Cucumber.Options
