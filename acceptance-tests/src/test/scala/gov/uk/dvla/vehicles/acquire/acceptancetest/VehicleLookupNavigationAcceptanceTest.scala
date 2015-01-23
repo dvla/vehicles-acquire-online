@@ -6,8 +6,9 @@ import org.junit.runner.RunWith
 
 @RunWith(classOf[Cucumber])
 @Options(
-  features = Array("acceptance-tests/src/test/resources/gherkin/US1446.feature"),
+  features = Array("acceptance-tests/src/test/resources/gherkin/VehicleLookupNavigation.feature"),
   glue = Array("gov.uk.dvla.vehicles.acquire.stepdefs"),
-  tags = Array("@tagBROKEN")
+  tags = Array("@tag")
 )
-class US1446AcceptanceTest
+class VehicleLookupNavigationAcceptanceTest
+

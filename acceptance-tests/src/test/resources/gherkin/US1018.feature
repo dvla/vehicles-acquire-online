@@ -3,20 +3,20 @@ Feature:
   Background:
     Given the user is on the Vehicle lookup page
 
-  Scenario: Vehicle lookup disposal not set
-    When the user selects the control labelled Next
-    Then the user will be stay on the VehicleLookPage
+  Scenario: The user does not choose a new keeper type
+    When the user navigates to the next page
+    Then the user remains on the VehicleLookPage
 
-  Scenario:Vehicle lookup disposal set private
-    When the user fill the vrn doc ref number and select privateKeeper
-    And the user selects the control labelled Next
-    Then the user will be taken to the page titled "Enter new keeper details" page
+  Scenario: The user chooses a new keeper type of private
+    When the user fills in the vrn, doc ref number and selects privateKeeper
+    And the user navigates to the next page
+    Then the user is taken to the page entitled "Enter new keeper details"
 
-  Scenario:Vehicle lookup - disposal set business
-    When the user fill the vrn doc ref number and select businessKeeper
-    And the user selects the control labelled Next
-    Then the user will be taken to the page titled "Enter business keeper details" page
+  Scenario: The user chooses a new keeper type of business
+    When the user fills in the vrn, doc ref number and selects businessKeeper
+    And the user navigates to the next page
+    Then the user is taken to the page entitled "Enter business keeper details"
 
-  Scenario:Vehicle lookup - Back
-    When the user selects the  control labelled VehicleLookUpBack button
-    Then the user will be taken to the page titled Select trader address page
+  Scenario: The user navigates to the previous page
+    When the user selects the control labelled VehicleLookUpBack button
+    Then the user is taken to the page entitled "Select trader address"
