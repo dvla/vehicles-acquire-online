@@ -9,8 +9,7 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import scala.io.Source.fromInputStream
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver, WebDriverFactory}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver, WebDriverFactory}
 
 class VersionSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
   private var versionString: String = null

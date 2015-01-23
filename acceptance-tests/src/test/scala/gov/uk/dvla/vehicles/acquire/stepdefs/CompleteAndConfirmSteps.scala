@@ -2,17 +2,16 @@ package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.AcquireSuccessPage
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 
-class CompleteAndConfirm(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
-  lazy val vaHappyPath = new VAHappyPath(webBrowserDriver)
+  lazy val vaHappyPath = new VAHappyPathSteps(webBrowserDriver)
 
   @Given("^the user is on the \"(.*?)\" page$")
   def the_user_is_on_the_page(confirm: String) {

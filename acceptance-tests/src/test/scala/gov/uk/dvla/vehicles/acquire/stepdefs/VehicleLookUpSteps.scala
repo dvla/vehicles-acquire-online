@@ -8,14 +8,13 @@ import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.BusinessKeeperDetailsPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 
-class VehicleLookUp(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
-  lazy val vaHappyPath = new VAHappyPath(webBrowserDriver)
+  lazy val vaHappyPath = new VAHappyPathSteps(webBrowserDriver)
 
   def gotoVehicleLookUpPageWithKnownAddress() {
     vaHappyPath.goToSetupTradeDetailsPage()
