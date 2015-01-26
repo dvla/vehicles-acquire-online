@@ -4,7 +4,6 @@ import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import pages.acquire.AcquireSuccessPage
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 
 class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
@@ -13,30 +12,24 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   lazy val vaHappyPath = new VAHappyPathSteps(webBrowserDriver)
 
-  @Given("^the user is on the \"(.*?)\" page$")
-  def the_user_is_on_the_page(confirm: String) {
+  @Given("^the user is on the Complete and confirm page$")
+  def the_user_is_on_the_complete_and_confirm_page() {
     vaHappyPath.fillInVehicleDetailsPage()
+    vaHappyPath.fillInPrivateKeeperDetailsPage()
   }
 
-  @When("^the user click on  the primary control labelled \"(.*?)\"$")
-  def the_user_click_on_the_primary_control_labelled(confirmPage: String) {
-    vaHappyPath.fillInPrivateKeeperDetailsPage()
+  @When("^the user clicks the primary control labelled Confirm New Keeper$")
+  def the_user_clicks_the_primary_control_labelled_confirm_new_keeper() {
     vaHappyPath.navigateAfterCustomerTypeSelection(navigateToNextPage = true)
   }
 
-  @Then("^the user will be taken to the Summary page$")
-  def the_user_will_be_taken_to_the_Summary_page() {
-    page.title should equal(AcquireSuccessPage.title)
-  }
-
-  @When("^the user selects the secondary control labelled \"(.*?)\"$")
-  def the_user_selects_the_secondary_control_labelled(back: String) {
-    vaHappyPath.fillInPrivateKeeperDetailsPage()
+  @When("^the user clicks the secondary control labelled Back$")
+  def the_user_clicks_the_secondary_control_labelled_back() {
     vaHappyPath.navigateAfterCustomerTypeSelection(navigateToNextPage = false)
   }
 
   @Then("^the user will be taken to the \"(.*?)\" page$")
-  def the_user_will_be_taken_to_the_page(sorn: String) {
-     page.title should equal(sorn)
+  def the_user_will_be_taken_to_the_page(pageTitle: String) {
+     page.title should equal(pageTitle)
   }
 }
