@@ -69,8 +69,6 @@
             @form(action = CompleteAndConfirm.submit) {
                 @csrfTokenHiddenField()
 
-                <p>@Messages("acquire_completeAndConfirm.p1")</p>
-
                 @valtechInputText(
                     data.form(MileageId), args =
                     Map('_label -> Messages("acquire_completeAndConfirm.mileage.label"),
