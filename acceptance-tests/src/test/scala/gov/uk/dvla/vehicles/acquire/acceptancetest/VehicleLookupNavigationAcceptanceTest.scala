@@ -1,14 +1,14 @@
 package gov.uk.dvla.vehicles.acquire.acceptancetest
 
 import cucumber.api.junit.Cucumber
-import cucumber.api.junit.Cucumber.Options
+import cucumber.api.CucumberOptions
 import org.junit.runner.RunWith
 
 @RunWith(classOf[Cucumber])
-@Options(
+@CucumberOptions(
   features = Array("acceptance-tests/src/test/resources/gherkin/VehicleLookupNavigation.feature"),
   glue = Array("gov.uk.dvla.vehicles.acquire.stepdefs"),
-  tags = Array("@tag")
+  tags = Array("@working")
 )
 class VehicleLookupNavigationAcceptanceTest
 

@@ -1,4 +1,4 @@
-@tag
+@working
 Feature: Minimum happy path acceptance tests for VehiclesAcquireOnline
   Background:
     Given the user is on the Provide trader details page
