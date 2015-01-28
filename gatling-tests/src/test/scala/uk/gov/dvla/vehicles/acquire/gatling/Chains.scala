@@ -286,7 +286,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .formParam("dateofsale.day", "${dateDay}")
           .formParam("dateofsale.month", "${dateMonth}")
           .formParam("dateofsale.year", "${dateYear}")
-          .formParam("consent", "${consent}")
+          .formParam("Consent", "${Consent}")
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
           // Assertions
