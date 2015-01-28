@@ -55,9 +55,10 @@
 
     <div class="second-col">
         <p>@Messages("acquire_vehicleTaxOrSorn.p1")</p>
-        <a class="large" href="https://www.gov.uk/tax-disc" target="_blank">
-            @Messages("acquire_vehicleTaxOrSorn.link")
-        </a>
+        <p>
+            <a class="large" href="https://www.gov.uk/tax-disc" target="_blank">@Messages("acquire_vehicleTaxOrSorn.link")</a>
+            <span class="form-hint"><em>This will open up a new window, once taxing is completed please return to this page and continue with acquiring the vehicle.</em></span>
+        </p>
         <p>@Messages("acquire_vehicleTaxOrSorn.p2")</p>
         @form(action = VehicleTaxOrSorn.submit()) {
             @csrfTokenHiddenField()
@@ -66,6 +67,7 @@
                 args = Map(
                     '_showConstraints -> false,
                     'autofocus -> true,
+                    'NO_OPTIONAL_LABEL -> true,
                     'title -> "dsdsdsdsdsdsdsdsdsdsds",
                     '_label -> Messages("acquire_vehicleTaxOrSorn.sornVehicle")
                 )
