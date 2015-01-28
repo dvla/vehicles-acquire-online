@@ -15,7 +15,7 @@ object CompleteAndConfirmPage extends Page with WebBrowserDSL {
   final val DayDateOfSaleValid = "19"
   final val MonthDateOfSaleValid = "10"
   final val YearDateOfSaleValid = "2012"
-  final val ConsentTrue = "consent"
+  final val ConsentTrue = "Consent"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 

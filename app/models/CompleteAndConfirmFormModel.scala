@@ -24,7 +24,7 @@ object CompleteAndConfirmFormModel {
     final val MileageId = "mileage"
     final val DateOfSaleId = "dateofsale"
     final val TodaysDateId = "todays_date"
-    final val ConsentId = "consent"
+    final val ConsentId = "Consent"
 
     final def detailMapping(implicit dateService: DateService) = mapping(
       MileageId -> mileage,
