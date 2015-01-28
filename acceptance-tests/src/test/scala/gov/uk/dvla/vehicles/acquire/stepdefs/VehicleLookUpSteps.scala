@@ -4,18 +4,14 @@ import cucumber.api.java.en.{And, Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import pages.acquire.BusinessChooseYourAddressPage
-import pages.acquire.BusinessKeeperDetailsPage
-import pages.acquire.SetupTradeDetailsPage
-import pages.acquire.VehicleLookupPage
-import pages.acquire.VehicleLookupFailurePage
+import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
 
 class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
-  lazy val vaHappyPath = new VAHappyPathSteps(webBrowserDriver)
+  lazy val happyPath = new HappyPathSteps(webBrowserDriver)
 
   private final val ValidVrn = "A1"
   // Will result in the legacy stubs throwing a GetVehicleAndKeeperDetailsVehicleNotFoundException
@@ -28,7 +24,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   private final val InvalidDocReferenceNumber = "1" * 10 + "2"
 
   def gotoVehicleLookUpPageWithKnownAddress() {
-    vaHappyPath.goToSetupTradeDetailsPage()
+    happyPath.goToSetupTradeDetailsPage()
     SetupTradeDetailsPage.traderName enter "VA12SU"
     SetupTradeDetailsPage.traderPostcode enter "qq99qq"
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
@@ -53,34 +49,34 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   @When("^the user fills in the vrn, doc ref number and selects privateKeeper$")
   def the_user_fill_in_the_vrn_doc_ref_number_and_selects_privateKeeper() {
-    vaHappyPath.fillInVehicleDetailsPage()
+    happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
     VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
-    vaHappyPath.click on VehicleLookupPage.vehicleSoldToPrivateIndividual
+    happyPath.click on VehicleLookupPage.vehicleSoldToPrivateIndividual
   }
 
   @When("^the user fills in the vrn, doc ref number and selects businessKeeper$")
   def the_user_fills_in_the_vrn_doc_ref_number_and_selects_businessKeeper() {
-    vaHappyPath.fillInVehicleDetailsPage()
+    happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
     VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
-    vaHappyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
   @When("^the user fills in data that results in vrn not found error from the micro service$")
   def the_user_fills_in_data_that_results_in_a_vrn_not_found_error_from_the_micro_service() {
-    vaHappyPath.fillInVehicleDetailsPage()
+    happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     VehicleLookupPage.vehicleRegistrationNumber enter VrnNotFound
     VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
-    vaHappyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
   @When("^the user fills in data that results in document reference mismatch error from the micro service$")
   def the_user_fills_in_data_that_results_in_document_reference_mismatch_error_from_the_micro_service() = {
-    vaHappyPath.fillInVehicleDetailsPage()
+    happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
     VehicleLookupPage.documentReferenceNumber enter InvalidDocReferenceNumber
-    vaHappyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
   @When("^the user navigates to the next page$")
@@ -93,14 +89,24 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     click on VehicleLookupPage.back
   }
 
-  @When("^the user selects the primary control labelled Next and there are no validation errors$")
-  def the_user_selects_the_primary_control_labelled_Next_and_there_are_no_validation_errors() {
+  @When("^the user navigates forwards from the business keeper details page and there are no validation errors$")
+  def the_user_navigates_forwards_from_the_business_keeper_details_page_and_there_are_no_validation_errors() {
     BusinessKeeperDetailsPage.navigate()
   }
 
-  @When("^the user selects the secondary control labelled BusinessKeeperBack button$")
-  def the_user_selects_the_secondary_control_labelled_BusinessKeeperBack_button() {
+  @When("^the user navigates backwards from the business keeper details page$")
+  def the_user_navigates_backwards_from_the_business_keeper_details_page() {
     click on BusinessKeeperDetailsPage.back
+  }
+
+  @When("^the user navigates forwards from private keeper details page and there are no validation errors$")
+  def the_user_navigates_forwards_from_private_keeper_details_page_and_there_are_no_validation_errors() = {
+    PrivateKeeperDetailsPage.navigate()
+  }
+
+  @When("^the user navigates backwards from private keeper details page$")
+  def the_user_navigates_backwards_from_private_keeper_details_page() = {
+    click on PrivateKeeperDetailsPage.back
   }
 
   @And("^the user performs the lookup$")
