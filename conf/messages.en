@@ -136,6 +136,7 @@ acquire_setuptradedetails.title = Provide trader details
 acquire_setuptradedetails.name = Sell a vehicle into the motor trade
 acquire_setuptradedetails.p1 = Set-up trade details
 acquire_setuptradedetails.tradernamelabel = Trader name
+acquire_setuptradedetails.tradername.hint = Name of the company that the vehicle is being sold to
 acquire_setuptradedetails.traderpostcodelabel = Postcode
 acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
 acquire_setuptradedetails.traderemaillabel = Trader email address
