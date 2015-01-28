@@ -14,6 +14,8 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   lazy val happyPath = new HappyPathSteps(webBrowserDriver)
 
   private final val ValidVrn = "A1"
+  private final val VehicleNotDisposedVrn = "AA11AAA"
+  private final val VehicleNotDisposedDocReferenceNumber = "88888888881"
   // Will result in the legacy stubs throwing a GetVehicleAndKeeperDetailsVehicleNotFoundException
   // and the ms will return a response code of
   // VMPR1 - vehicle_and_keeper_lookup_vrm_not_found
@@ -34,9 +36,14 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     click on BusinessChooseYourAddressPage.next
   }
 
-  @Given("^the user is on the Vehicle lookup page$")
-  def the_user_is_on_the_Vehicle_lookup_page() {
+  @Given("^the user is on the Vehicle lookup page with trade address from lookup$")
+  def the_user_is_on_the_Vehicle_lookup_page_with_trade_address_from_lookup() {
     gotoVehicleLookUpPageWithKnownAddress()
+  }
+
+  @Given("^the user is on the Vehicle lookup page with trade address entered manually$")
+  def the_user_is_on_the_Vehicle_lookup_page_with_trade_address_entered_manually() {
+    happyPath.goToVehicleLookupPage()
   }
 
   @Given("^the user is on the Enter business keeper details page$")
@@ -72,10 +79,18 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   }
 
   @When("^the user fills in data that results in document reference mismatch error from the micro service$")
-  def the_user_fills_in_data_that_results_in_document_reference_mismatch_error_from_the_micro_service() = {
+  def the_user_fills_in_data_that_results_in_document_reference_mismatch_error_from_the_micro_service() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
     VehicleLookupPage.documentReferenceNumber enter InvalidDocReferenceNumber
+    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+  }
+
+  @When("^the user fills in data for a vehicle which has not been disposed$")
+  def the_user_fills_in_data_for_a_vehicle_which_has_not_been_disposed() {
+    happyPath.goToVehicleLookupPage()
+    VehicleLookupPage.vehicleRegistrationNumber enter VehicleNotDisposedVrn
+    VehicleLookupPage.documentReferenceNumber enter VehicleNotDisposedDocReferenceNumber
     happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
 

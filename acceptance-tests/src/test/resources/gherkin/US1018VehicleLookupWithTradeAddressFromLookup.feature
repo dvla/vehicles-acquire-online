@@ -1,7 +1,7 @@
 @working
 Feature:
   Background:
-    Given the user is on the Vehicle lookup page
+    Given the user is on the Vehicle lookup page with trade address from lookup
 
   Scenario: The user does not choose a new keeper type
     When the user navigates to the next page
@@ -32,3 +32,8 @@ Feature:
     And the user performs the lookup
     Then the user will be redirected to the vehicle lookup failure page
     Then the page will contain text "The V5C document reference number entered is either not valid or does not come from the most recent V5C issued for this vehicle."
+
+  Scenario: vehicle lookup is performed on a vehicle that has not yet been disposed
+    When the user fills in data for a vehicle which has not been disposed
+    And the user performs the lookup
+    Then the user is taken to the page entitled "A keeper is on the record"
