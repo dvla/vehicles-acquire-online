@@ -110,7 +110,6 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
   }
 
   def businessChooseYourAddress = {
-
     val url = "/business-choose-your-address"
     val chainTitle = s"POST $url"
     exitBlockOnFail(
@@ -124,7 +123,6 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
           .check(regex( """<input type="hidden" name="csrf_prevention_token" value="(.*)"/>""").saveAs("csrf_prevention_token"))
-
       )
     )
   }

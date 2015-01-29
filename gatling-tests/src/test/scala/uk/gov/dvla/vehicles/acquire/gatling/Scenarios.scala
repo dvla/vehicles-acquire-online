@@ -14,10 +14,10 @@ object Scenarios {
       )
   }
 
-  def buyFromTraderForBusiness = {
-    val data = csv("data/happy/BuyAVehicleFromTheTraderToBusiness.csv").circular
+  def newBusinessKeeperBuysAVehicleFromTheTrade = {
+    val data = csv("data/happy/NewBusinessKeeperBuysAVehicleFromTheTrade.csv").circular
     val chain = new Chains(data)
-    scenario("Buy a vehicle from the motor trader as a new business keeper from start to finish")
+    scenario("New business keeper buys a vehicle from the motor trade from start to finish")
       .exitBlockOnFail(
         exec(
           chain.beforeYouStart,
@@ -34,10 +34,12 @@ object Scenarios {
       )
   }
 
-  def buyFromTraderForBusinessAllOptionalDataFilledIn = {
-    val data = csv("data/happy/BuyAVehicleFromTheTraderToBusinessAllOptionalDataFilledIn.csv").circular
+  def newBusinessKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn = {
+    val data = csv("data/happy/NewBusinessKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.csv").circular
     val chain = new Chains(data)
-    scenario("Buy a vehicle from the motor trader as a new business keeper from start to finish with all optional data filled in")
+    val name = "New business keeper buys a vehicle from the motor trade with all optional data filled in " +
+      "from start to finish"
+    scenario(name)
       .exitBlockOnFail(
         exec(
           chain.beforeYouStart,
@@ -54,10 +56,10 @@ object Scenarios {
       )
   }
 
-  def buyFromTheTraderForPrivate = {
-    val data = csv("data/happy/BuyAVehicleFromTheTraderToPrivate.csv").circular
+  def newPrivateKeeperBuysAVehicleFromTheTrade = {
+    val data = csv("data/happy/NewPrivateKeeperBuysAVehicleFromTheTrade.csv").circular
     val chain = new Chains(data)
-    scenario("Buy a vehicle from the motor trader as a private keeper from start to finish")
+    scenario("New private keeper buys a vehicle from the motor trade from start to finish")
       .exitBlockOnFail(
         exec(
           chain.beforeYouStart,
@@ -74,10 +76,12 @@ object Scenarios {
       )
   }
 
-  def buyFromTraderForPrivateAllOptionalDataFilledIn = {
-    val data = csv("data/happy/BuyAVehicleFromTheTraderToPrivateAllOptionalDataFilledIn.csv").circular
+  def newPrivateKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn = {
+    val data = csv("data/happy/NewPrivateKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.csv").circular
     val chain = new Chains(data)
-    scenario("Buy a vehicle from the motor trader as a private keeper from start to finish with all optional data filled in")
+    val name = "New private keeper buys a vehicle from the motor trade with all optional data filled in " +
+      "from start to finish"
+    scenario(name)
       .exitBlockOnFail(
         exec(
           chain.beforeYouStart,

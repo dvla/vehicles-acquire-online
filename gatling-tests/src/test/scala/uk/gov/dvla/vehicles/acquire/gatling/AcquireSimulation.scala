@@ -10,10 +10,10 @@ class AcquireSimulation extends Simulation {
 
   setUp(
     verifyAssetsAreAccessible.inject(oneUser),
-    buyFromTraderForBusiness.inject(oneUser)
-    /*buyFromTraderForBusinessAllOptionalDataFilledIn.inject(oneUser),
-    buyFromTheTraderForPrivate.inject(oneUser),
-    buyFromTraderForPrivateAllOptionalDataFilledIn.inject(oneUser),
+    newBusinessKeeperBuysAVehicleFromTheTrade.inject(oneUser)
+    /*newBusinessKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.inject(oneUser),
+    newPrivateKeeperBuysAVehicleFromTheTrade.inject(oneUser),
+    newPrivateKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.inject(oneUser),
     vehicleLookupUnsuccessful.inject(oneUser)*/
   ).
     protocols(httpConf).
