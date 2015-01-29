@@ -118,15 +118,15 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     page.title should equal(VehicleTaxOrSornPage.title)
   }
 
-  def goToVehicleTaxOrSornPageWithKeeperAddressFromLookup() = {
-    goToSelectNewKeeperAddressPage()
+  def goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps: Boolean = true) = {
+    if (callNavigationSteps) goToSelectNewKeeperAddressPage()
     NewKeeperChooseYourAddressPage.chooseAddress.value = "0"
     click on NewKeeperChooseYourAddressPage.select
     page.title should equal(VehicleTaxOrSornPage.title)
   }
 
-  def goToCompleteAndConfirmPage() = {
-    goToVehicleTaxOrSornPage()
+  def goToCompleteAndConfirmPage(callNavigationSteps: Boolean = true) = {
+    if (callNavigationSteps) goToVehicleTaxOrSornPage()
     click on VehicleTaxOrSornPage.sornVehicle
     click on VehicleTaxOrSornPage.next
     page.title should equal(CompleteAndConfirmPage.title)
@@ -146,6 +146,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.next
     page.title should equal(AcquireSuccessPage.title)
   }
+
 
 ////
   /*
@@ -207,11 +208,23 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on PrivateKeeperDetailsPage.next
   }
 */
-  // duplicate
-//  @Given("^the user is on the Vehicle lookup page$")
-//  def the_user_is_on_the_Vehicle_lookup_page() {
-//    fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-//  }
+
+  def goToCompleteAndConfirmPageWithTransactionFailureData() {
+    goToPrivateKeeperDetailsPage()
+    click on PrivateKeeperDetailsPage.mr
+    PrivateKeeperDetailsPage.firstNameTextBox enter NameWhichResultsInTransactionFailure
+    PrivateKeeperDetailsPage.lastNameTextBox enter LastName
+    PrivateKeeperDetailsPage.postcodeTextBox enter Postcode
+    click on PrivateKeeperDetailsPage.next
+    page.title should equal(NewKeeperChooseYourAddressPage.title)
+
+    goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps = false)
+    goToCompleteAndConfirmPage(callNavigationSteps = false)
+    CompleteAndConfirmPage.dayDateOfSaleTextBox enter "07"
+    CompleteAndConfirmPage.monthDateOfSaleTextBox enter "08"
+    CompleteAndConfirmPage.yearDateOfSaleTextBox enter "1999"
+    click on CompleteAndConfirmPage.consent
+  }
 
   @Given("^the user is on the Private keeper details page$")
   def the_user_is_on_the_Private_keeper_details_page() {

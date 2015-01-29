@@ -14,8 +14,8 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   lazy val happyPath = new HappyPathSteps(webBrowserDriver)
 
   private final val ValidVrn = "A1"
-  private final val VehicleNotDisposedVrn = "AA11AAA"
-  private final val VehicleNotDisposedDocReferenceNumber = "88888888881"
+  private final val VehicleNotDisposedVrn = "AA11AAE"
+  private final val VehicleNotDisposedDocReferenceNumber = "88888888885"
   // Will result in the legacy stubs throwing a GetVehicleAndKeeperDetailsVehicleNotFoundException
   // and the ms will return a response code of
   // VMPR1 - vehicle_and_keeper_lookup_vrm_not_found
