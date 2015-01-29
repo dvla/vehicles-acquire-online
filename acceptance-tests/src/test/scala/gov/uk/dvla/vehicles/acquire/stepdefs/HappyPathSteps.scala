@@ -57,13 +57,17 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     page.title should equal(SetupTradeDetailsPage.title)
   }
 
-  def goToEnterAddressManuallyPage() = {
+  def goToBusinessChooseYourAddressPage() = {
     goToSetupTradeDetailsPage()
     SetupTradeDetailsPage.traderName enter "VA12SU"
-    SetupTradeDetailsPage.traderPostcode enter "AA99 1AA"
+    SetupTradeDetailsPage.traderPostcode enter Postcode
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     page.title should equal(BusinessChooseYourAddressPage.title)
+  }
+
+  def goToEnterAddressManuallyPage() = {
+    goToBusinessChooseYourAddressPage()
     click on BusinessChooseYourAddressPage.manualAddress
     page.title should equal(EnterAddressManuallyPage.title)
   }
@@ -225,6 +229,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.consent
   }
 
+  @Given("^the user is on the Business choose your address page$")
+  def the_user_is_on_the_Business_choose_your_address_page() {
+    goToBusinessChooseYourAddressPage()
+  }
+
   @Given("^the user is on the Private keeper details page$")
   def the_user_is_on_the_Private_keeper_details_page() {
     goToPrivateKeeperDetailsPage()
@@ -243,6 +252,23 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   @Given("^the user is on the Vehicle tax or sorn page with keeper address from lookup$")
   def the_user_is_on_the_Vehicle_tax_or_sorn_page_with_keeper_address_from_lookup() {
     goToVehicleTaxOrSornPageWithKeeperAddressFromLookup()
+  }
+
+  @When("^the user navigates forwards from business choose your address page and there are no validation errors$")
+  def the_user_navigates_forwards_from_business_choose_your_address_page_and_there_are_no_validation_errors() = {
+    BusinessChooseYourAddressPage.chooseAddress.value = "0"
+    click on BusinessChooseYourAddressPage.select
+    click on BusinessChooseYourAddressPage.next
+  }
+
+  @When("^the user navigates forwards from business choose your address page to the enter address manually page$")
+  def the_user_navigates_forwards_from_business_choose_your_address_page_to_the_enter_address_manually_page() = {
+    click on BusinessChooseYourAddressPage.manualAddress
+  }
+
+  @When("^the user navigates backwards from the business choose your address page$")
+  def the_user_navigates_backwards_from_the_business_choose_your_address_page() = {
+    click on BusinessChooseYourAddressPage.back
   }
 
   @When("^the user navigates forwards from the vehicle tax or sorn page and there are no validation errors$")
