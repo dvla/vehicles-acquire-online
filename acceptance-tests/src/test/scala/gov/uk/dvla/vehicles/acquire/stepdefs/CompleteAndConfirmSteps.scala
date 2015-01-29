@@ -10,22 +10,21 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
-  lazy val vaHappyPath = new VAHappyPathSteps(webBrowserDriver)
+  lazy val happyPath = new HappyPathSteps(webBrowserDriver)
 
   @Given("^the user is on the Complete and confirm page$")
   def the_user_is_on_the_complete_and_confirm_page() {
-    vaHappyPath.fillInVehicleDetailsPage()
-    vaHappyPath.fillInPrivateKeeperDetailsPage()
+    happyPath.goToCompleteAndConfirmPage()
   }
 
   @When("^the user clicks the primary control labelled Confirm New Keeper$")
   def the_user_clicks_the_primary_control_labelled_confirm_new_keeper() {
-    vaHappyPath.navigateAfterCustomerTypeSelection(navigateToNextPage = true)
+    happyPath.goToAcquireSuccessPage()
   }
 
   @When("^the user clicks the secondary control labelled Back$")
   def the_user_clicks_the_secondary_control_labelled_back() {
-    vaHappyPath.navigateAfterCustomerTypeSelection(navigateToNextPage = false)
+    happyPath.goToCompleteAndConfirmPageAndNavigateBackwards
   }
 
   @Then("^the user will be taken to the \"(.*?)\" page$")

@@ -1,9 +1,17 @@
 @working
 Feature:
   Background:
-    Given the user is on the Vehicle lookup page
+    Given the user is on the Enter business keeper details page
 
-  Scenario: vehicle lookup fails because the vrm is not found
+  Scenario: Enter business keeper details - Next
+    When the user navigates forwards from the business keeper details page and there are no validation errors
+    Then the user is taken to the page entitled "Select new keeper address"
+
+  Scenario: Enter business keeper details - Back
+    When the user navigates backwards from the business keeper details page
+    Then the user is taken to the page entitled "Enter vehicle details"
+
+  Scenario: vehicle lookup fails because the vrn is not found
     When the user fills in data that results in vrn not found error from the micro service
     And the user performs the lookup
     Then the user will be redirected to the vehicle lookup failure page
