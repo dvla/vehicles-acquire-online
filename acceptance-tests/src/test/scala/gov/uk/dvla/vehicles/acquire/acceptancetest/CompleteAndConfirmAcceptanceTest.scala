@@ -7,9 +7,9 @@ import org.junit.runner.RunWith
 @RunWith(classOf[Cucumber])
 @CucumberOptions(
   features = Array(
-    "acceptance-tests/src/test/resources/gherkin/US1026CompleteAndConfirm.feature",
-    "acceptance-tests/src/test/resources/gherkin/US1026CompleteAndConfirmWithTransactionFailedData.feature"),
+    "acceptance-tests/src/test/resources/gherkin/CompleteAndConfirm.feature",
+    "acceptance-tests/src/test/resources/gherkin/CompleteAndConfirmWithTransactionFailedData.feature"),
   glue = Array("gov.uk.dvla.vehicles.acquire.stepdefs"),
   tags = Array("@working")
 )
-class US1026CompleteAndConfirmAcceptanceTest
+class CompleteAndConfirmAcceptanceTest
