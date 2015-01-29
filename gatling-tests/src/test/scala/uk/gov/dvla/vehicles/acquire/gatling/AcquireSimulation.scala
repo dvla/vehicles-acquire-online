@@ -10,11 +10,11 @@ class AcquireSimulation extends Simulation {
 
   setUp(
     verifyAssetsAreAccessible.inject(oneUser),
-    newBusinessKeeperBuysAVehicleFromTheTrade.inject(oneUser)
-    /*newBusinessKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.inject(oneUser),
+    newBusinessKeeperBuysAVehicleFromTheTrade.inject(oneUser),
+    newBusinessKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.inject(oneUser),
     newPrivateKeeperBuysAVehicleFromTheTrade.inject(oneUser),
     newPrivateKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.inject(oneUser),
-    vehicleLookupUnsuccessful.inject(oneUser)*/
+    vehicleLookupUnsuccessful.inject(oneUser)
   ).
     protocols(httpConf).
     assertions(global.failedRequests.count.is(0))
