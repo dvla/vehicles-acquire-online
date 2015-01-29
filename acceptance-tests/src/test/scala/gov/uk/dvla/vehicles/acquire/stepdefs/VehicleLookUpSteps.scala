@@ -94,8 +94,8 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
-  @When("^the user navigates to the next page$")
-  def the_user_navigates_to_the_next_page() {
+  @When("^the user navigates forwards from the vehicle lookup page and there are no validation errors$")
+  def the_user_navigates_forwards_from_the_vehicle_lookup_page_and_there_are_no_validation_errors() {
     click on VehicleLookupPage.next
   }
 

@@ -30,9 +30,3 @@ Feature: Minimum happy path acceptance tests for VehiclesAcquireOnline
 #    And entered valid registration number and doc reference number
 #    And the user on Private Keeper details page and entered through unsuccessful postcode lookup
 #    Then the user will be on confirmed summary page
-
-#  Scenario: Private keeper happy path with unsuccessful postcode failure screen
-#    When the trader entered through unsuccessful postcode lookup
-#    And entered valid registration number and doc reference number
-#    And the user on Private Keeper details page and entered through unsuccessful postcode lookup with failure data
-#    Then the user will be on confirmed transaction failure screen
