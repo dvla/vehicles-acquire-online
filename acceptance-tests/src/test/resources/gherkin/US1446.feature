@@ -1,4 +1,4 @@
-@workingBroken
+@Redundant
 Feature: Minimum happy path acceptance tests for VehiclesAcquireOnline
   Background:
     Given the user is on the Vehicle lookup page

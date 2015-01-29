@@ -101,7 +101,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     page.title should equal(BusinessKeeperDetailsPage.title)
   }
 
-  def goToSelectNewKeeperAddressPage() = {
+  def goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper() = {
     goToPrivateKeeperDetailsPage()
     click on PrivateKeeperDetailsPage.mr
     PrivateKeeperDetailsPage.firstNameTextBox enter FirstName
@@ -111,8 +111,18 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     page.title should equal(NewKeeperChooseYourAddressPage.title)
   }
 
+  def goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper() = {
+    goToBusinessKeeperDetailsPage()
+    BusinessKeeperDetailsPage.fleetNumberField enter "112233"
+    BusinessKeeperDetailsPage.businessNameField enter "test business"
+    BusinessKeeperDetailsPage.emailField enter "a@gmail.com"
+    BusinessKeeperDetailsPage.postcodeField enter Postcode
+    click on BusinessKeeperDetailsPage.next
+    page.title should equal(NewKeeperChooseYourAddressPage.title)
+  }
+
   def goToVehicleTaxOrSornPage() = {
-    goToSelectNewKeeperAddressPage()
+    goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
     click on NewKeeperChooseYourAddressPage.manualAddress
     page.title should equal(NewKeeperEnterAddressManuallyPage.title)
     EnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 highrate"
@@ -122,7 +132,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   }
 
   def goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps: Boolean = true) = {
-    if (callNavigationSteps) goToSelectNewKeeperAddressPage()
+    if (callNavigationSteps) goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
     NewKeeperChooseYourAddressPage.chooseAddress.value = "0"
     click on NewKeeperChooseYourAddressPage.select
     page.title should equal(VehicleTaxOrSornPage.title)
@@ -246,7 +256,12 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   @Given("^the user is on the New keeper choose your address page having selected a new private keeper$")
   def the_user_is_on_the_New_keeper_choose_your_address_page_having_selected_a_new_private_keeper() {
-    goToSelectNewKeeperAddressPage()
+    goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
+  }
+
+  @Given("^the user is on the New keeper choose your address page having selected a new business keeper$")
+  def the_user_is_on_the_New_keeper_choose_your_address_page_having_selected_a_new_business_keeper() {
+    goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper()
   }
 
   @Given("^the user is on the Vehicle tax or sorn page with keeper address entered manually$")

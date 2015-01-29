@@ -6,7 +6,9 @@ import org.junit.runner.RunWith
 
 @RunWith(classOf[Cucumber])
 @CucumberOptions(
-  features = Array("acceptance-tests/src/test/resources/gherkin/NewKeeperChooseYourAddress.feature"),
+  features = Array(
+    "acceptance-tests/src/test/resources/gherkin/NewKeeperChooseYourAddressFromPrivateKeeper.feature",
+    "acceptance-tests/src/test/resources/gherkin/NewKeeperChooseYourAddressFromBusinessKeeper.feature"),
   glue = Array("gov.uk.dvla.vehicles.acquire.stepdefs"),
   tags = Array("@working")
 )
