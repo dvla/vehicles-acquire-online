@@ -72,9 +72,8 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     page.title should equal(EnterAddressManuallyPage.title)
   }
 
-  def goToVehicleLookupPage() = {
+  def goToVehicleLookupPageAfterManuallyEnteringAddress() = {
     goToEnterAddressManuallyPage()
-    page.title should equal(EnterAddressManuallyPage.title)
     EnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 Long Road"
     EnterAddressManuallyPage.addressPostTown enter "Swansea"
     click on EnterAddressManuallyPage.next
@@ -82,7 +81,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   }
 
   def fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage() = {
-    goToVehicleLookupPage()
+    goToVehicleLookupPageAfterManuallyEnteringAddress()
     VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
     VehicleLookupPage.documentReferenceNumber enter ValidDocRefNum
   }
@@ -239,6 +238,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.consent
   }
 
+  @Given("^the user is on the Enter address manually page$")
+  def the_user_is_on_the_Enter_address_manually_page() {
+    goToEnterAddressManuallyPage()
+  }
+  
   @Given("^the user is on the Business choose your address page$")
   def the_user_is_on_the_Business_choose_your_address_page() {
     goToBusinessChooseYourAddressPage()
@@ -272,6 +276,18 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   @Given("^the user is on the Vehicle tax or sorn page with keeper address from lookup$")
   def the_user_is_on_the_Vehicle_tax_or_sorn_page_with_keeper_address_from_lookup() {
     goToVehicleTaxOrSornPageWithKeeperAddressFromLookup()
+  }
+
+  @When("^the user navigates forwards from enter address manually and there are no validation errors$")
+  def the_user_navigates_forwards_from_enter_address_manually_and_there_are_no_validation_errors() = {
+    EnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 Long Road"
+    EnterAddressManuallyPage.addressPostTown enter "Swansea"
+    click on EnterAddressManuallyPage.next
+  }
+
+  @When("^the user navigates backwards from the enter address manually page$")
+  def the_user_navigates_backwards_from_the_enter_address_manually_page() = {
+    click on EnterAddressManuallyPage.back
   }
 
   @When("^the user navigates forwards from business choose your address page and there are no validation errors$")
@@ -352,7 +368,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   @When("^the trader entered through unsuccessful postcode lookup$")
   def the_trader_entered_through_unsuccessful_postcode_lookup() {
-    goToVehicleLookupPage()
+    goToVehicleLookupPageAfterManuallyEnteringAddress()
   }
 
 /*

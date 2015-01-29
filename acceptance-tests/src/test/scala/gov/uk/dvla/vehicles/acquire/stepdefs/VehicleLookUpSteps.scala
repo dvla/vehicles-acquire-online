@@ -43,7 +43,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   @Given("^the user is on the Vehicle lookup page with trade address entered manually$")
   def the_user_is_on_the_Vehicle_lookup_page_with_trade_address_entered_manually() {
-    happyPath.goToVehicleLookupPage()
+    happyPath.goToVehicleLookupPageAfterManuallyEnteringAddress()
   }
 
   @Given("^the user is on the Enter business keeper details page$")
@@ -88,7 +88,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   @When("^the user fills in data for a vehicle which has not been disposed$")
   def the_user_fills_in_data_for_a_vehicle_which_has_not_been_disposed() {
-    happyPath.goToVehicleLookupPage()
+    happyPath.goToVehicleLookupPageAfterManuallyEnteringAddress()
     VehicleLookupPage.vehicleRegistrationNumber enter VehicleNotDisposedVrn
     VehicleLookupPage.documentReferenceNumber enter VehicleNotDisposedDocReferenceNumber
     happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
