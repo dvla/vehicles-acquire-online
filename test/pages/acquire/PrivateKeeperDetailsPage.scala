@@ -2,7 +2,13 @@ package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TelField, TextField, WebBrowserDSL, WebDriverFactory}
-import models.PrivateKeeperDetailsFormModel.Form.{DateOfBirthId, DriverNumberId, EmailId, FirstNameId, LastNameId, PostcodeId, TitleId}
+import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
+import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import models.PrivateKeeperDetailsFormModel.Form.EmailId
+import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import models.PrivateKeeperDetailsFormModel.Form.LastNameId
+import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import models.PrivateKeeperDetailsFormModel.Form.TitleId
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString.OtherTitleRadioValue
