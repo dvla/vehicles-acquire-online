@@ -120,6 +120,12 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     page.title should equal(NewKeeperChooseYourAddressPage.title)
   }
 
+  def goToNewKeeperEnterAddressManuallyAfterFillingInNewBusinessKeeper() = {
+    goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper()
+    click on NewKeeperChooseYourAddressPage.manualAddress
+    page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+  }
+
   def goToVehicleTaxOrSornPage() = {
     goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
     click on NewKeeperChooseYourAddressPage.manualAddress
@@ -268,6 +274,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper()
   }
 
+  @Given("^the user is on the New keeper enter address manually page$")
+  def the_user_is_on_the_New_keeper_enter_address_manually_page() {
+    goToNewKeeperEnterAddressManuallyAfterFillingInNewBusinessKeeper()
+  }
+
   @Given("^the user is on the Vehicle tax or sorn page with keeper address entered manually$")
   def the_user_is_on_the_Vehicle_tax_or_sorn_page() {
     goToVehicleTaxOrSornPage()
@@ -321,6 +332,18 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   @When("^the user navigates backwards from the new keeper choose your address$")
   def the_user_navigates_backwards_from_the_new_keeper_choose_your_address() = {
     click on NewKeeperChooseYourAddressPage.back
+  }
+
+  @When("^the user navigates forwards from new keeper enter address manually and there are no validation errors$")
+  def the_user_navigates_forwards_from_new_keeper_enter_address_manually_and_there_are_no_validation_errors() = {
+    NewKeeperEnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 Long Road"
+    NewKeeperEnterAddressManuallyPage.addressPostTown enter "Swansea"
+    click on NewKeeperEnterAddressManuallyPage.next
+  }
+
+  @When("^the user navigates backwards from the new keeper enter address manually page$")
+  def the_user_navigates_backwards_from_the_new_keeper_enter_address_manually_page() = {
+    click on NewKeeperEnterAddressManuallyPage.back
   }
 
   @When("^the user navigates forwards from the vehicle tax or sorn page and there are no validation errors$")
