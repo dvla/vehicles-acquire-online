@@ -44,7 +44,6 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   // Results in a transaction failure when used for both business name and private keeper first name
   private final val NameWhichResultsInTransactionFailure = "testcase1"
-  private final val NoAddressesPostcode = "qw78qw"
   private final val Postcode = "qq99qq"
   private final val FirstName = "joe"
   private final val LastName = "bloggs"
