@@ -244,6 +244,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToSetupTradeDetailsPage()
   }
 
+  @Given("^the user is on the New keeper choose your address page having selected a new private keeper$")
+  def the_user_is_on_the_New_keeper_choose_your_address_page_having_selected_a_new_private_keeper() {
+    goToSelectNewKeeperAddressPage()
+  }
+
   @Given("^the user is on the Vehicle tax or sorn page with keeper address entered manually$")
   def the_user_is_on_the_Vehicle_tax_or_sorn_page() {
     goToVehicleTaxOrSornPage()
@@ -269,6 +274,22 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   @When("^the user navigates backwards from the business choose your address page$")
   def the_user_navigates_backwards_from_the_business_choose_your_address_page() = {
     click on BusinessChooseYourAddressPage.back
+  }
+
+  @When("^the user navigates forwards from new keeper choose your address page$")
+  def the_user_navigates_forwards_from_new_keeper_choose_your_address_page() = {
+    NewKeeperChooseYourAddressPage.chooseAddress.value = "0"
+    click on NewKeeperChooseYourAddressPage.select
+  }
+
+  @When("^the user navigates forwards from new keeper choose your address to the new keeper enter address manually page$")
+  def the_user_navigates_forwards_from_new_keeper_choose_your_address_to_the_new_keeper_enter_address_manually_page() = {
+    click on NewKeeperChooseYourAddressPage.manualAddress
+  }
+
+  @When("^the user navigates backwards from the new keeper choose your address$")
+  def the_user_navigates_backwards_from_the_new_keeper_choose_your_address() = {
+    click on NewKeeperChooseYourAddressPage.back
   }
 
   @When("^the user navigates forwards from the vehicle tax or sorn page and there are no validation errors$")
