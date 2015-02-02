@@ -122,13 +122,30 @@ mandatory = Fields not labelled (optional) are mandatory
 
 #page 1 - Before You Start
 acquire_beforeyoustart.title = Buy a vehicle from the motor trade
-acquire_beforeyoustart.p1 = Before you start:
-acquire_beforeyoustart.listitem1 = You will need the document reference number from the latest vehicle registration certificate (V5C).
-acquire_beforeyoustart.listitem2 = If you need to change any vehicle details on the V5C e.g. tax class, you should not use this service. You will need to complete the V5C and tax the vehicle at the Post Office.
-acquire_beforeyoustart.listitem3.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
-acquire_beforeyoustart.listitem3.link = Apply to retain a vehicle registration number (V317)
-acquire_beforeyoustart.listitem3.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-acquire_beforeyoustart.listitem4 = This vehicle must be taxed before it can be driven on the road.  If you wish to keep this vehicle off the road you can declare SORN. You can tax or SORN your vehicle as part of this service.
+acquire_beforeyoustart.p0 = If a vehicle has been sold from the motor trader, the motor trader selling the vehicle can now tell DVLA online.
+acquire_beforeyoustart.p1 = This service must only be used by a member of the motor trade acting on behalf of a buyer.
+acquire_beforeyoustart.p2 = Before you start:
+acquire_beforeyoustart.p3 = To use this service you will need:
+acquire_beforeyoustart.p4 = Please note: this service updates our records immediately.
+acquire_beforeyoustart.p5 = Once you’ve finished:
+acquire_beforeyoustart.p6 = Other ways to apply:
+acquire_beforeyoustart.p7 = If you do not use the online service, you must complete the V5C and post it to DVLA, Swansea, SA99 1BA
+acquire_beforeyoustart.listitem1 = No vehicle or tax class changes can be made online
+acquire_beforeyoustart.listitem2.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
+acquire_beforeyoustart.listitem2.link = Apply to retain a vehicle registration number (V317)
+acquire_beforeyoustart.listitem2.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
+acquire_beforeyoustart.listitem3 = This vehicle must be taxed before it can be driven on the road. You can tax or SORN your vehicle on behalf of the buyer as part of this service.
+acquire_beforeyoustart.listitem4 = DVLA cannot record joint keepers
+acquire_beforeyoustart.listitem5 = This service is currently available Mon-Sat, 8am – 6pm
+acquire_beforeyoustart.listitem6 = The 11 digit document reference number from the latest registration certificate (V5C).
+acquire_beforeyoustart.listitem7 = The consent of the buyer of the vehicle to act on their behalf
+acquire_beforeyoustart.listitem8 = The new keeper (buyer) should receive a new V5C within 5 working days.
+acquire_beforeyoustart.listitem9 = The original V5C used to transact online must be destroyed and must not be sent to DVLA
+acquire_beforeyoustart.link1 = Motor traders: tell DVLA about the sale of a vehicle
+acquire_beforeyoustart.link2 = Vehicle tax changes
+
+
+
 acquire_beforeyoustart.button = Start now
 
 #page 2 - Setup trade details
