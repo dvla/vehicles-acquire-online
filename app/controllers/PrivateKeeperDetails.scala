@@ -8,7 +8,6 @@ import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import models.PrivateKeeperDetailsFormModel.Form.EmailId
 import models.PrivateKeeperDetailsFormModel.Form.LastNameId
 import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
-import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
 import play.api.data.{FormError, Form}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -53,8 +52,6 @@ class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: Client
   private def formWithReplacedErrors(form: Form[PrivateKeeperDetailsFormModel]) = {
     form.replaceError(
         LastNameId, FormError(key = LastNameId,message = "error.validLastName", args = Seq.empty)
-      ).replaceError(
-        DateOfBirthId, FormError(key = DateOfBirthId, message = "error.date.invalid", args = Seq.empty)
       ).replaceError(
         DriverNumberId, FormError(key = DriverNumberId, message = "error.validDriverNumber", args = Seq.empty)
       ).replaceError(

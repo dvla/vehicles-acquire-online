@@ -72,6 +72,7 @@
                 @valtechDeclareCheck(
                     data.form(ConsentId),
                     args = Map(
+                        'autofocus -> true,
                         '_showConstraints -> false,
                         '_label -> Messages("acquire_keeperdetailscomplete.consent")
                     )
@@ -83,7 +84,6 @@
                         '_showConstraints -> false,
                         'typeTel -> true,
                         'maxLength -> Mileage.MaxLength, // Must be set independently of the pattern as the pattern is only checked when the user submits.
-                        'autofocus -> true,
                         'optionalFieldKey -> true
                         //'title -> Messages("acquire_keeperdetailscomplete.mileage.validation")
                     ) ++
@@ -94,8 +94,7 @@
                     @inputDayMonthYearTextbox(
                         field = data.form(DateOfSaleId),
                         args = Map(
-                            '_label -> Messages("acquire_completeAndConfirm.dateofsale.label"),
-                            'autofocus -> true
+                            '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
                         ),
                         dateService = dateService,
                         showTodaysDateButton = true,
