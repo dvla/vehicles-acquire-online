@@ -1,10 +1,11 @@
 package utils.helpers
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getStringListProperty
-import uk.gov.dvla.vehicles.presentation.common.services.SEND.{EmailConfiguration, From}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common
+import common.ConfigProperties.{getOptionalProperty, booleanProp, intProp, stringProp, longProp}
+import common.ConfigProperties.getProperty
+import common.ConfigProperties.getStringListProperty
+import common.services.SEND.{EmailConfiguration, From}
+import common.webserviceclients.acquire.AcquireConfig
 
 class ConfigImpl extends Config {
 
@@ -26,7 +27,7 @@ class ConfigImpl extends Config {
   override val acquire = new AcquireConfig()
 
   override val ordnanceSurveyUseUprn: Boolean = getProperty[Boolean]("ordnancesurvey.useUprn")
-  
+
   // opening and closing times
   override val opening: Int = getProperty[Int]("openingTime")
   override val closing: Int = getProperty[Int]("closingTime")
