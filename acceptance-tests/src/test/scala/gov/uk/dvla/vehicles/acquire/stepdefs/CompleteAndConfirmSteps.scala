@@ -2,6 +2,7 @@ package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
+import org.joda.time.DateTime
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.CompleteAndConfirmPage
@@ -30,7 +31,7 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   @When("^the user clicks the secondary control labelled Back$")
   def the_user_clicks_the_secondary_control_labelled_back() {
-    happyPath.goToCompleteAndConfirmPageAndNavigateBackwards
+    happyPath.goToCompleteAndConfirmPageAndNavigateBackwards()
   }
 
   @When("^the user confirms the transaction$")
@@ -38,6 +39,18 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
     click on CompleteAndConfirmPage.next
   }
 
+  @When("^the user enters an invalid date of sale and submits the form$")
+  def the_user_enters_an_invalid_date_of_sale_and_submits_the_form() = {
+    happyPath.fillInCompleteAndConfirm(year = "201")
+    the_user_confirms_the_transaction()
+  }
+
+  @When("^the user enters a date of sale in the future and submits the form$")
+  def the_user_enters_a_date_of_sale_in_the_future_and_submits_the_form() = {
+    val nextYear = DateTime.now().plusDays(365)
+    happyPath.fillInCompleteAndConfirm(year = nextYear.getYear.toString)
+    the_user_confirms_the_transaction()
+  }
 
   @Then("^the user will be taken to the \"(.*?)\" page$")
   def the_user_will_be_taken_to_the_page(pageTitle: String) {

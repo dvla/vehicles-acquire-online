@@ -156,16 +156,19 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.back
   }
 
+  def fillInCompleteAndConfirm(day: String = "07", month: String = "08", year: String = "1999") = {
+    CompleteAndConfirmPage.dayDateOfSaleTextBox enter day
+    CompleteAndConfirmPage.monthDateOfSaleTextBox enter month
+    CompleteAndConfirmPage.yearDateOfSaleTextBox enter year
+    click on CompleteAndConfirmPage.consent
+  }
+
   def goToAcquireSuccessPage() = {
     goToCompleteAndConfirmPage()
-    CompleteAndConfirmPage.dayDateOfSaleTextBox enter "07"
-    CompleteAndConfirmPage.monthDateOfSaleTextBox enter "08"
-    CompleteAndConfirmPage.yearDateOfSaleTextBox enter "1999"
-    click on CompleteAndConfirmPage.consent
+    fillInCompleteAndConfirm()
     click on CompleteAndConfirmPage.next
     page.title should equal(AcquireSuccessPage.title)
   }
-
 
 ////
   /*
