@@ -243,8 +243,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       case _ => None
     }
 
-    KeeperDetailsDto(keeperTitle = buildTitle(newKeeperDetailsViewModel.title),
-      KeeperBusinessName = newKeeperDetailsViewModel.businessName,
+    KeeperDetailsDto(
+      keeperTitle = buildTitle(newKeeperDetailsViewModel.title),
+      keeperBusinessName = newKeeperDetailsViewModel.businessName,
       keeperForename = newKeeperDetailsViewModel.firstName,
       keeperSurname = newKeeperDetailsViewModel.lastName,
       keeperDateOfBirth = dateOfBirth,
@@ -252,7 +253,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       keeperPostTown = getPostTownFromAddress(keeperAddress).getOrElse(""),
       keeperPostCode = getPostCodeFromAddress(keeperAddress).getOrElse(""),
       keeperEmailAddress = newKeeperDetailsViewModel.email,
-      keeperDriverNumber = newKeeperDetailsViewModel.driverNumber)
+      keeperDriverNumber = newKeeperDetailsViewModel.driverNumber
+    )
   }
 
   def handleResponseCode(acquireResponseCode: String): Call =
@@ -297,7 +299,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     VssWebHeaderDto(transactionId = trackingId,
       originDateTime = new DateTime,
       applicationCode = config.applicationCode,
-      serviceTypeCode = config.serviceTypeCode,
+      serviceTypeCode = config.vssServiceTypeCode,
       buildEndUser())
   }
 
