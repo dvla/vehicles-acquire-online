@@ -10,3 +10,15 @@ Feature:
   Scenario: Enter private keeper details - Back
     When the user navigates backwards from private keeper details page
     Then the user is taken to the page entitled "Enter vehicle details"
+
+  Scenario: Date of birth - Invalid or incomplete
+    When the user enters an invalid date of birth and submits the form
+    Then there will be an error message displayed "Date of birth of new keeper - Please enter a valid date in the format DD MM YYYY for example 01 03 1976"
+
+  Scenario: Date of birth - More than 110 years in the past
+    When the user enters a date of birth more than 110 years in the past and submits the form
+    Then there will be an error message displayed "Date of birth of new keeper - Date of birth cannot be more than 110 years in the past"
+
+  Scenario: Date of birth - In the future
+    When the user enters a date of birth in the future and submits the form
+    Then there will be an error message displayed "Date of birth of new keeper - Date cannot be in the future"

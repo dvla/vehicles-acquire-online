@@ -2,6 +2,7 @@ package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
+import org.joda.time.DateTime
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.AcquireFailurePage
@@ -244,6 +245,17 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.consent
   }
 
+  private def fillInPrivateKeeperDetails(day: String = "01", month: String = "01", year: String = "2015") = {
+    click on PrivateKeeperDetailsPage.mr
+    PrivateKeeperDetailsPage.firstNameTextBox enter FirstName
+    PrivateKeeperDetailsPage.lastNameTextBox enter LastName
+    PrivateKeeperDetailsPage.postcodeTextBox enter Postcode
+    PrivateKeeperDetailsPage.dayDateOfBirthTextBox enter day
+    PrivateKeeperDetailsPage.monthDateOfBirthTextBox enter month
+    PrivateKeeperDetailsPage.yearDateOfBirthTextBox enter year
+    click on PrivateKeeperDetailsPage.next
+  }
+
   @Given("^the user is on the Enter address manually page$")
   def the_user_is_on_the_Enter_address_manually_page() {
     goToEnterAddressManuallyPage()
@@ -375,13 +387,29 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
 
   @When("^the user chooses private keeper and performs the vehicle lookup$")
-  def the_user_chooses_private_keeper_and_performs_the_vehicle_lookup(): Unit = {
+  def the_user_chooses_private_keeper_and_performs_the_vehicle_lookup() = {
     goToPrivateKeeperDetailsPage()
   }
 
   @When("^the user on Private Keeper details page and entered through successful postcode lookup$")
   def the_user_on_Private_Keeper_details_page_and_entered_through_successful_postcode_lookup() {
     PrivateKeeperDetailsPage.navigate()
+  }
+
+  @When("^the user enters an invalid date of birth and submits the form$")
+  def the_user_enters_an_invalid_date_of_birth_and_submits_the_form() = {
+    fillInPrivateKeeperDetails(year = "201")
+  }
+
+  @When("^the user enters a date of birth more than 110 years in the past and submits the form$")
+  def the_user_enters_a_date_of_birth_more_than_110_years_in_the_past_and_submits_the_form() = {
+    fillInPrivateKeeperDetails(year = "1800")
+  }
+
+  @When("^the user enters a date of birth in the future and submits the form$")
+  def the_user_enters_a_date_of_birth_in_the_future_and_submits_the_form() = {
+    val nextYear = DateTime.now().plusDays(365)
+    fillInPrivateKeeperDetails(year = nextYear.getYear.toString)
   }
 
   @When("^the user on Business Keeper details page and entered through successful postcode lookup$")
@@ -429,5 +457,10 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   @Then("^the user will be on confirmed transaction failure screen$") // todo remove confirmed
   def the_user_will_be_on_confirmed_transaction_failure_screen() {
     page.title should equal(AcquireFailurePage.title)
+  }
+
+  @Then("^there will be an error message displayed \"(.*?)\"$")
+  def there_will_be_an_error_message_displayed(errMsg: String) {
+    page.source should include(errMsg)
   }
 }
