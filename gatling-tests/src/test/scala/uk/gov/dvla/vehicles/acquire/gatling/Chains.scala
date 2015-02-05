@@ -119,7 +119,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .headers(headers_x_www_form_urlencoded)
           .formParam("disposal_businessChooseYourAddress_addressSelect", "0") // UPRN disabled for Northern Ireland
           .check(regex(VehicleLookupPageTitle).exists)
-          .check(regex(TraderPlayBackHeading).exists)
+//          .check(regex(TraderPlayBackHeading).exists)
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
           .check(regex( """<input type="hidden" name="csrf_prevention_token" value="(.*)"/>""").saveAs("csrf_prevention_token"))
@@ -138,7 +138,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .check(status.is(200))
           // Assertions
           .check(regex( """<input type="hidden" name="csrf_prevention_token" value="(.*)"/>""").saveAs("csrf_prevention_token"))
-          .check(regex(TraderPlayBackHeading).exists)
+//          .check(regex(TraderPlayBackHeading).exists)
           .check(regex(VehicleLookupPageTitle).exists)
           .check(regex("${expected_traderName}").exists)
       )
