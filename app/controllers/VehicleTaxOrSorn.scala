@@ -62,7 +62,6 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
       validForm => Redirect(routes.CompleteAndConfirm.present())
         .withCookie(validForm)
         .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")
-
     )
   }
 }

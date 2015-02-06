@@ -52,8 +52,21 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
     the_user_confirms_the_transaction()
   }
 
-  @Then("^the user will be taken to the \"(.*?)\" page$")
-  def the_user_will_be_taken_to_the_page(pageTitle: String) {
-     page.title should equal(pageTitle)
+  @When("^the user enters a date of sale before the date of disposal and submits the form$")
+  def the_user_enters_a_date_of_sale_before_the_date_of_disposal_and_submits_the_form() = {
+    happyPath.fillInCompleteAndConfirm(year = "2013")
+    the_user_confirms_the_transaction()
   }
+
+  @Then("^the user will be taken to the \"(.*?)\" page$")
+  def the_user_will_be_taken_to_the_page(pageTitle: String) = {
+    page.title should equal(pageTitle)
+  }
+
+  @Then("^the user will remain on the complete and confirm page and a warning will be displayed$")
+  def the_user_will_be_taken_to_the_page() = {
+    page.title should equal(CompleteAndConfirmPage.title)
+    page.source should include("<div class=\"popup-modal\">")
+  }
+
 }

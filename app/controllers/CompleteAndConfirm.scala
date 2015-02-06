@@ -37,7 +37,7 @@ import models.VehicleNewKeeperCompletionCacheKeys
 class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,
                                                                config: Config) extends Controller {
-  private val cookiesToBeDiscardeOnRedirectAway =
+  private val cookiesToBeDiscardedOnRedirectAway =
     VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
 
   private[controllers] val form = Form(
@@ -57,7 +57,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(),
             vehicleAndKeeperDetails,
             newKeeperDetails,
-            vehicleSorn),
+            vehicleSorn,
+            isSaleDateBeforeDisposalDate = false),
             dateService))
         case _ =>
           redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
@@ -65,7 +66,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
-  def submit = Action.async { implicit request =>
+  def submitWithDateCheck = Action.async { implicit request =>
     canPerformSubmit {
       form.bindFromRequest.fold(
         invalidForm => Future.successful {
@@ -78,7 +79,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
                   vehicleDetails,
                   newKeeperDetails,
-                  vehicleSorn),
+                  vehicleSorn,
+                  isSaleDateBeforeDisposalDate = false),
                 dateService)
               )
             case _ =>
@@ -94,44 +96,129 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
           val validFormResult =
             (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
-            case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails),
-            Some(traderDetails), Some(taxOrSorn)) =>
-              acquireAction(validForm,
-                newKeeperDetails,
-                vehicleLookup,
-                vehicleDetails,
-                traderDetails,
-                taxOrSorn,
-                request.cookies.trackingId())
+            case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
+
+                val keeperEndDate = vehicleDetails.keeperEndDate
+                val dateOfSale = validForm.dateOfSale
+                keeperEndDate match {
+                  case Some(ked) =>
+                    if (ked.toLocalDate.isAfter(dateOfSale)) {
+                      Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate (${ked.toLocalDate}) is after dateOfSale ($dateOfSale)")
+                      Future.successful {
+                        BadRequest(complete_and_confirm(
+                          CompleteAndConfirmViewModel(form.fill(validForm),
+                            vehicleDetails,
+                            newKeeperDetails,
+                            taxOrSorn,
+                            isSaleDateBeforeDisposalDate = true,
+                            submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck()),
+                          dateService)
+                        )
+                      }
+                    }
+                    else {
+                      Logger.debug(s"Complete-and-confirm date validation passed: keeperEndDate (${ked.toLocalDate}) is on or before dateOfSale ($dateOfSale)")
+                      acquireAction(validForm,
+                                    newKeeperDetails,
+                                    vehicleLookup,
+                                    vehicleDetails,
+                                    traderDetails,
+                                    taxOrSorn,
+                                    request.cookies.trackingId()).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
+                    }
+                  case None =>
+                    Logger.debug("Complete-and-confirm: no keeperEndDate found in cookie so just accepting the dale of sale with no check!")
+                    acquireAction(validForm,
+                      newKeeperDetails,
+                      vehicleLookup,
+                      vehicleDetails,
+                      traderDetails,
+                      taxOrSorn,
+                      request.cookies.trackingId()).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
+                }
             case (_, _, _, None, _) => Future.successful {
               Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
                 "now redirecting to SetUpTradeDetails...")
-              Redirect(routes.SetUpTradeDetails.present())
+              Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             }
             case _ => Future.successful {
               Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
-              Redirect(routes.VehicleLookup.present())
+              Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             }
           }
+          validFormResult
+        }
+      )
+    }
+  }
+
+  def submitNoDateCheck = Action.async { implicit request =>
+    canPerformSubmit {
+      form.bindFromRequest.fold(
+        invalidForm => Future.successful {
+          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
+          val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+          (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
+            case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
+              BadRequest(complete_and_confirm(
+                CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
+                  vehicleDetails,
+                  newKeeperDetails,
+                  vehicleSorn,
+                  isSaleDateBeforeDisposalDate = false),
+                dateService)
+              )
+            case _ =>
+              Logger.warn("Could not find expected data in cache on dispose submit - now redirecting...")
+              Redirect(routes.VehicleLookup.present()).discardingCookies()
+          }
+        },
+
+        validForm => {
+          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+          val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
+          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
+          val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
+          val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+          val validFormResult =
+            (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
+              case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
+                        acquireAction(validForm,
+                          newKeeperDetails,
+                          vehicleLookup,
+                          vehicleDetails,
+                          traderDetails,
+                          taxOrSorn,
+                          request.cookies.trackingId())
+              case (_, _, _, None, _) => Future.successful {
+                Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
+                  "now redirecting to SetUpTradeDetails...")
+                Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
+              }
+              case _ => Future.successful {
+                Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
+                Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
+              }
+            }
           validFormResult.map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
         }
       )
     }
   }
 
-  // The complete and confirm ca
-  private def canPerformPresent[R](action: => Result)(implicit request: Request[_]) =
+  private def canPerformPresent(action: => Result)(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
       Logger.warn(s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
-        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardeOnRedirectAway")
-      Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardeOnRedirectAway)
+        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
+      Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardedOnRedirectAway)
     }(c => action)
 
-  private def canPerformSubmit[R](action: => Future[Result])(implicit request: Request[_]) =
+  private def canPerformSubmit(action: => Future[Result])(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
       Logger.warn(s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
-        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardeOnRedirectAway")
-      Future.successful(Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardeOnRedirectAway))
+        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
+      Future.successful(Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardedOnRedirectAway))
     }(c => action)
 
   private def redirectToVehicleLookup(message: String) = {

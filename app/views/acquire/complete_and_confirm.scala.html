@@ -23,7 +23,11 @@
 
     <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/autofill-todays-date.js")" type="text/javascript"></script>
 
-    @form(action = CompleteAndConfirm.submit) {
+    @if(data.isSaleDateBeforeDisposalDate) {
+        <div class="site-overlay"></div>
+    }
+
+    @form(action = data.submitAction) {
 
     <div class="two-col clearfix acquire-complete-confirm">
         <div class="first-col">
@@ -68,6 +72,7 @@
         </div>
 
         <div class="second-col">
+
                 @csrfTokenHiddenField()
 
                 @valtechDeclareCheck(
@@ -90,6 +95,37 @@
                     ) ++
                     (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
                 )
+
+                @if(data.isSaleDateBeforeDisposalDate) {
+                    <div class="popup-modal">
+                        <p>We advise you that the date of sale is before the disposal date for this vehicle. But you can proceed with this if you like</p>
+                        <div id=@DateOfSaleId>
+                        @inputDayMonthYearTextbox(
+                            field = data.form(DateOfSaleId),
+                            args = Map(
+                                '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
+                            ),
+                            dateService = dateService,
+                            showTodaysDateButton = true,
+                            showTodaysDateButtonId = Some(TodaysDateId),
+                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
+                        )
+                        </div>
+
+                        <div class="form-steps">
+                            <button id="@SubmitId"
+                                type="submit"
+                                name="action"
+                                class="button">
+                                @Messages("acquire_completeAndConfirm.submitbutton")
+                            </button>
+                            <br/>
+                            <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.present()">
+                                @Messages("acquire_completeAndConfirm.backbutton")
+                            </a>
+                        </div>
+                    </div>
+                }
 
                 <div id=@DateOfSaleId>
                     @inputDayMonthYearTextbox(

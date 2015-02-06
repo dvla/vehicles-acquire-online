@@ -63,7 +63,8 @@ POST        /vehicle-tax-or-sorn                        @controllers.VehicleTaxO
 
 #page 8 - Complete and confirm
 GET         /complete-and-confirm                       @controllers.CompleteAndConfirm.present
-POST        /complete-and-confirm                       @controllers.CompleteAndConfirm.submit
+POST        /complete-and-confirm                       @controllers.CompleteAndConfirm.submitWithDateCheck
+POST        /complete-and-confirm/no-date-check         @controllers.CompleteAndConfirm.submitNoDateCheck
 
 #page 9 - Success
 GET         /acquire-success                            @controllers.AcquireSuccess.present
