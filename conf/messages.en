@@ -298,7 +298,7 @@ privatekeeper_dateofbirth = Date of birth of new keeper
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter business keeper details
-acquire_businesskeeperdetails.p1 = Enter the details of the business buying the vehicle.
+acquire_businesskeeperdetails.p1 = We will use these details to create the new vehicle registration details (V5C).
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
 acquire_businesskeeperdetails.p3 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
 acquire_businesskeeperdetails.vehicledetails = Vehicle details
@@ -307,13 +307,13 @@ acquire_businesskeeperdetails.vehiclemake = Make
 acquire_businesskeeperdetails.vehiclemodel = Model
 acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
-acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it to register this vehicle into their fleet e.g. 012345 or 54321-
-acquire_businesskeeperdetails.email = Business email
+acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has the DVLA fleet number, please provide it.
+acquire_businesskeeperdetails.email = Email address of new keeper
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
 acquire_businesskeeperdetails.consent = I have the consent of the party named above to notify DVLAabo.
 acquire_businesskeeperdetails.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
-acquire_businesskeeperdetails.postcodelabel = Business postcode
+acquire_businesskeeperdetails.postcodelabel = Postcode
 acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 businesskeeper_postcode = Business postcode
 businesskeeper_email = Business email
