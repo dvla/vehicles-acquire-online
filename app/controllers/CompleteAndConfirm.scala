@@ -146,7 +146,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
               Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             }
           }
-          validFormResult//.map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
+          validFormResult
         }
       )
     }
@@ -207,7 +207,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
-//  private def canPerformPresent[R](action: => Result)(implicit request: Request[_]) =
   private def canPerformPresent(action: => Result)(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
       Logger.warn(s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
