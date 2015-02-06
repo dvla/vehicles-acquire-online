@@ -130,7 +130,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
 
-      val result = completeAndConfirm.submit(request)
+      val result = completeAndConfirm.submitWithDateCheck(request)
       val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
@@ -147,7 +147,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val acquireSuccess = acquireController(acquireWebService =
         acquireWebService(acquireServiceResponse = Some(acquireResponseApplicationBeingProcessed)))
 
-      val result = acquireSuccess.submit(request)
+      val result = acquireSuccess.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
       }
@@ -165,7 +165,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val acquireSuccess = acquireController(acquireWebService =
         acquireWebService(acquireServiceResponse = Some(acquireResponseApplicationBeingProcessed)))
 
-      val result = acquireSuccess.submit(request)
+      val result = acquireSuccess.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
       }
@@ -178,7 +178,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
 
-      val result = completeAndConfirm.submit(request)
+      val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }

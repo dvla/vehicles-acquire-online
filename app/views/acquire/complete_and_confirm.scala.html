@@ -27,6 +27,8 @@
         <div class="site-overlay"></div>
     }
 
+    @form(action = data.submitAction) {
+
     <div class="two-col clearfix acquire-complete-confirm">
         <div class="first-col">
             <dl class="playback">
@@ -70,7 +72,7 @@
         </div>
 
         <div class="second-col">
-            @form(action = data.submitAction) {
+
                 @csrfTokenHiddenField()
 
                 @valtechDeclareCheck(
@@ -93,36 +95,38 @@
                     ) ++
                     (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil)
                 )
-@if(data.isSaleDateBeforeDisposalDate) {
-    <div class="popup-modal">
-        <p>We advise you that the date of sale is before the disposal date for this vehicle. But you can proceed with this if you like</p>
-        <div id=@DateOfSaleId>
-        @inputDayMonthYearTextbox(
-            field = data.form(DateOfSaleId),
-            args = Map(
-                '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
-            ),
-            dateService = dateService,
-            showTodaysDateButton = true,
-            showTodaysDateButtonId = Some(TodaysDateId),
-            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
-        )
-        </div>
 
-        <div class="form-steps">
-            <button id="@SubmitId"
-                type="submit"
-                name="action"
-                class="button">
-                @Messages("acquire_completeAndConfirm.submitbutton")
-            </button>
-            <br/>
-            <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.present()">
-                @Messages("acquire_completeAndConfirm.backbutton")
-            </a>
-        </div>
-    </div>
-}
+                @if(data.isSaleDateBeforeDisposalDate) {
+                    <div class="popup-modal">
+                        <p>We advise you that the date of sale is before the disposal date for this vehicle. But you can proceed with this if you like</p>
+                        <div id=@DateOfSaleId>
+                        @inputDayMonthYearTextbox(
+                            field = data.form(DateOfSaleId),
+                            args = Map(
+                                '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
+                            ),
+                            dateService = dateService,
+                            showTodaysDateButton = true,
+                            showTodaysDateButtonId = Some(TodaysDateId),
+                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
+                        )
+                        </div>
+
+                        <div class="form-steps">
+                            <button id="@SubmitId"
+                                type="submit"
+                                name="action"
+                                class="button">
+                                @Messages("acquire_completeAndConfirm.submitbutton")
+                            </button>
+                            <br/>
+                            <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.present()">
+                                @Messages("acquire_completeAndConfirm.backbutton")
+                            </a>
+                        </div>
+                    </div>
+                }
+
                 <div id=@DateOfSaleId>
                     @inputDayMonthYearTextbox(
                         field = data.form(DateOfSaleId),
@@ -148,8 +152,10 @@
                         @Messages("acquire_completeAndConfirm.backbutton")
                     </a>
                 </div>
-            }
         </div>
     </div>
+
+    }
+    
     <script src="@routes.Assets.at("javascripts/firefox-dont-cache-page.js")" type="text/javascript"></script>
 }

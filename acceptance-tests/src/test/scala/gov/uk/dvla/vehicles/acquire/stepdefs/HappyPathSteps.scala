@@ -156,7 +156,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.back
   }
 
-  def fillInCompleteAndConfirm(day: String = "07", month: String = "08", year: String = "1999") = {
+  def fillInCompleteAndConfirm(day: String = "01", month: String = "01", year: String = "2015") = {
     CompleteAndConfirmPage.dayDateOfSaleTextBox enter day
     CompleteAndConfirmPage.monthDateOfSaleTextBox enter month
     CompleteAndConfirmPage.yearDateOfSaleTextBox enter year
@@ -242,9 +242,9 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
     goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps = false)
     goToCompleteAndConfirmPage(callNavigationSteps = false)
-    CompleteAndConfirmPage.dayDateOfSaleTextBox enter "07"
-    CompleteAndConfirmPage.monthDateOfSaleTextBox enter "08"
-    CompleteAndConfirmPage.yearDateOfSaleTextBox enter "1999"
+    CompleteAndConfirmPage.dayDateOfSaleTextBox enter "01"
+    CompleteAndConfirmPage.monthDateOfSaleTextBox enter "01"
+    CompleteAndConfirmPage.yearDateOfSaleTextBox enter "2015"
     click on CompleteAndConfirmPage.consent
   }
 

@@ -54,7 +54,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
       (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
         case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails), Some(vehicleSorn)) =>
-println(s">>>>>>>>>>>>> keeperEndDate: ${vehicleAndKeeperDetails.keeperEndDate}")
           Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(),
             vehicleAndKeeperDetails,
             newKeeperDetails,
@@ -98,16 +97,13 @@ println(s">>>>>>>>>>>>> keeperEndDate: ${vehicleAndKeeperDetails.keeperEndDate}"
           val validFormResult =
             (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
             case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
-                println(s">>>>>>>>>> keeperEndDate = ${vehicleDetails.keeperEndDate}")
-                println(s">>>>>>>>>> dateOfSale = ${validForm.dateOfSale}")
 
                 val keeperEndDate = vehicleDetails.keeperEndDate
                 val dateOfSale = validForm.dateOfSale
                 keeperEndDate match {
                   case Some(ked) =>
                     if (ked.toLocalDate.isAfter(dateOfSale)) {
-                      println(s">>>>>> Validation failed: keeperEndDate (${ked.toLocalDate}) is after dateOfSale ($dateOfSale)")
-                      println(">>>>>>> creating a bad request...")
+                      Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate (${ked.toLocalDate}) is after dateOfSale ($dateOfSale)")
                       Future.successful {
                         BadRequest(complete_and_confirm(
                           CompleteAndConfirmViewModel(form.fill(validForm),
@@ -117,30 +113,28 @@ println(s">>>>>>>>>>>>> keeperEndDate: ${vehicleAndKeeperDetails.keeperEndDate}"
                             isSaleDateBeforeDisposalDate = true,
                             submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck()),
                           dateService)
-                        )//.withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")
+                        )
                       }
                     }
                     else {
-                      println(s">>>>>> Validation passed: keeperEndDate (${ked.toLocalDate}) is on or before dateOfSale ($dateOfSale)")
-//                      Future.successful {
-//                        Redirect(routes.VehicleTaxOrSorn.present())
-//                      }
-//                      /*
+                      Logger.debug(s"Complete-and-confirm date validation passed: keeperEndDate (${ked.toLocalDate}) is on or before dateOfSale ($dateOfSale)")
                       acquireAction(validForm,
                                     newKeeperDetails,
                                     vehicleLookup,
                                     vehicleDetails,
                                     traderDetails,
                                     taxOrSorn,
-                                    request.cookies.trackingId())
-//                      */
+                                    request.cookies.trackingId()).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
                     }
                   case None =>
-                    // TODO what do we do in this case when there is no keeperEndDate in the cookie?
-                    println("ERROR - no keeperEndDate found in cookie !!!!!!")
-                    Future.successful {
-                      Redirect(routes.VehicleTaxOrSorn.present())
-                    }
+                    Logger.debug("Complete-and-confirm: no keeperEndDate found in cookie so just accepting the dale of sale with no check!")
+                    acquireAction(validForm,
+                      newKeeperDetails,
+                      vehicleLookup,
+                      vehicleDetails,
+                      traderDetails,
+                      taxOrSorn,
+                      request.cookies.trackingId()).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
                 }
             case (_, _, _, None, _) => Future.successful {
               Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
@@ -207,40 +201,8 @@ println(s">>>>>>>>>>>>> keeperEndDate: ${vehicleAndKeeperDetails.keeperEndDate}"
                 Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
               }
             }
-          validFormResult//.map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
-        }
-
-      /*
-        validForm => {
-          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-          val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
-          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
-          val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
-          val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-          val validFormResult =
-            (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
-              case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails),
-              Some(traderDetails), Some(taxOrSorn)) =>
-                acquireAction(validForm,
-                  newKeeperDetails,
-                  vehicleLookup,
-                  vehicleDetails,
-                  traderDetails,
-                  taxOrSorn,
-                  request.cookies.trackingId())
-              case (_, _, _, None, _) => Future.successful {
-                Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
-                  "now redirecting to SetUpTradeDetails...")
-                Redirect(routes.SetUpTradeDetails.present())
-              }
-              case _ => Future.successful {
-                Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
-                Redirect(routes.VehicleLookup.present())
-              }
-            }
           validFormResult.map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
         }
-      */
       )
     }
   }
