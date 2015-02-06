@@ -1,3 +1,51 @@
+======== 1.4.3 ========
+Time of release binary creation:
+Weds Feb 04 14:00:22 UTC 2015
+
+User stories:
+84552d1 US2202 Added acceptance tests for the complete and confirm page for the date validation changes
+d8379d3        Set serviceTypeCode correctly.
+0956ad1 US2177 Rename a property in common that got changed as part of the code tidy up
+348f0d4 US1597 Removed the individual test runners and replaced with a single one. Also added WebBrowserHooks
+b327377 US2209 Change the before-you-start page
+51f25f4 US1597 Automated acceptance tests for acquire
+41b4c64 US2228 Enhance gatling tests for acquire
+713bdcc US2205 Editing title
+fe38952 US2213 Consent box title
+384f53e US2205 Rewording of TAX/SORN screen
+e4c64d5 US2197 Adding trader name hint text
+c92a86c US2198 Vehicles Details and Thank You page title change
+28adcfe US2214 Final page thank you message update
+ab57122 US2189 Check keeper end date instead of disposeFlag.
+71c2efb US2184 Removed post town length restriction, as it has now been applied across the board.
+cebf530 US2178 Replace vehicleLookup with vehicleAndKeeperLookup
+8e91f5f US2184 Pass a max length arg of 20 to the address widget for new keeper manual address entry.
+d359cf4 US1742 Changed GET to POST where csrf token is being posted
+0eeeef4 US2328 Reintroduce 'Help' link in black banner for acquire private beta
+b94b50e US2244 Make the end user dto an optional component of web header dto.
+3738cb8 US2244 Added config values for we header values.
+b9092e2 US2233 Add subject per exemplar to feedback
+246999f US2003 Remove title from page and translate messages
+e52d694        Fixing spelling - license to licence
+bf17760 US2201 Prefixed the cache keys with exemplar abbreviation to make the keys unique across all exemplars which will now use a common domain name
+8c98394 US2032 A simple refactoring to prove the concept of having base controllers in common
+0c9912d US2092 Remove the remote gatling project
+2f56ccc US2011 Changing feedback form to open by window.open
+Bugs:
+9291414 DE280 Return 503 in the MicroserviceErrorPage
+
+======== 1.4.2 ========
+Time of release binary creation:
+NOT FILLED IN
+
+User stories:
+00673e9 US2011 Removing H1 titles from individual pages
+b0a16fd US2092 Adding gatling tests to the project
+22f6d02 US2099 Make dateService available to date mapping call.
+97b94ca US2145 Moved FleetNumber constraint and mapping into the common library
+41498eb US1508 Moved BusinessKeeperName constraint and mapping into the common library. The common regex has been updated
+fc8e47d US2098 GDS styling advice requires us to remove Service title, Help and Feedback links from black banner as per disposal service
+
 ======== 1.4.1 ========
 Time of release binaries creation: 
 Fri Dec 19 12:09:19 UTC 2014
