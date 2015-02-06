@@ -36,6 +36,7 @@ config: utils.helpers.Config)
         </div>
 
         @valtechInputText(traderLookupForm(TraderEmailId),
+            hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")),
             args = Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
                 '_showConstraints -> false,
                 'maxLength -> EmailMaxLength,

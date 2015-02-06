@@ -45,8 +45,6 @@
                     @form(action = controllers.routes.VehicleLookup.submit()) {
                         @csrfTokenHiddenField()
 
-                        <h2>@Messages("acquire_vehiclelookup.p1")</h2>
-
                         @valtechInputText(viewModel.form(VehicleRegistrationNumberId), args =
                             Map('_label -> Messages("acquire_vehiclelookup.vrninputlabel"),
                                 'maxLength -> VehicleRegistrationNumber.MaxLength,
