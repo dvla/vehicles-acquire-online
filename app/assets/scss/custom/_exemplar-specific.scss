@@ -73,4 +73,32 @@
       }
   }
 
+  .popup-modal {
+        background: white;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50%;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        padding: 16px;
+        border-radius: 6px;
+        margin: auto;
+        box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
+  }
+  .popup-modal .form-item {
+        margin-bottom: 0;
+  }
+
+    .site-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0,0,0,0.65);
+        z-index: 9998;
+    }
+
 }
