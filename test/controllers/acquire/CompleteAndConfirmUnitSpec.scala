@@ -216,6 +216,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   private val config: Config = {
     val config = mock[Config]
     when(config.isPrototypeBannerVisible).thenReturn(true)
+    when(config.googleAnalyticsTrackingId).thenReturn(Some("trackingId"))
     when(config.acquire).thenReturn(new AcquireConfig)
     config
   }
