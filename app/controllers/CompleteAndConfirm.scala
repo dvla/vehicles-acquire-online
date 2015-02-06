@@ -95,30 +95,33 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           }
         },
         validForm => {
-          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-          val vehicleLookupOpt = request.cookies.getModel[VehicleLookupFormModel]
-          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
-          val traderDetailsOpt = request.cookies.getModel[TraderDetailsModel]
-          val taxOrSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-          val validFormResult =
-            (newKeeperDetailsOpt, vehicleLookupOpt, vehicleAndKeeperDetailsOpt, traderDetailsOpt, taxOrSornOpt) match {
-            case (Some(newKeeperDetails), Some(vehicleLookup), Some(vehicleDetails), Some(traderDetails), Some(taxOrSorn)) =>
-
+          request.cookies.getModel[TraderDetailsModel].fold {
+            Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
+              "now redirecting to SetUpTradeDetails...")
+            Future.successful {
+              Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
+            }
+          } { traderDetails =>
+            val result = for {
+              newKeeperDetails <- request.cookies.getModel[NewKeeperDetailsViewModel]
+              vehicleLookup <- request.cookies.getModel[VehicleLookupFormModel]
+              vehicleAndKeeperDetails <- request.cookies.getModel[VehicleAndKeeperDetailsModel]
+              taxOrSorn <- request.cookies.getModel[VehicleTaxOrSornFormModel]
+            } yield {
               val dateValidCall = acquireAction(
                 validForm,
                 newKeeperDetails,
                 vehicleLookup,
-                vehicleDetails,
+                vehicleAndKeeperDetails,
                 traderDetails,
                 taxOrSorn,
                 request.cookies.trackingId()
               ).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
 
-              println("######################## Config.googleAnalyticsTrackingId:" + config.googleAnalyticsTrackingId)
               val dateInvalidCall = Future.successful {
                 BadRequest(complete_and_confirm(
                   CompleteAndConfirmViewModel(form.fill(validForm),
-                    vehicleDetails,
+                    vehicleAndKeeperDetails,
                     newKeeperDetails,
                     taxOrSorn,
                     isSaleDateBeforeDisposalDate = true,
@@ -127,25 +130,20 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 )
               }
 
-              vehicleDetails.keeperEndDate.fold(dateValidCall)(keeperEndDate => {
+               vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall)(keeperEndDate => {
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
-                  Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate (${keeperEndDate.toLocalDate}) is after dateOfSale ($validForm.dateOfSale)")
+                  Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate " +
+                    s"(${keeperEndDate.toLocalDate}) is after dateOfSale ($validForm.dateOfSale)")
                   dateInvalidCall
                 }
                 else dateValidCall
               })
-
-            case (_, _, _, None, _) => Future.successful {
-              Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
-                "now redirecting to SetUpTradeDetails...")
-              Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             }
-            case _ => Future.successful {
+            result.getOrElse(Future.successful {
               Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
               Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
-            }
+            })
           }
-          validFormResult
         }
       )
     }
