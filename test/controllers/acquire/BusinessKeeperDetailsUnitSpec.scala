@@ -4,7 +4,7 @@ import controllers.acquire.Common.PrototypeHtml
 import controllers.BusinessKeeperDetails
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import org.mockito.Mockito.when
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}

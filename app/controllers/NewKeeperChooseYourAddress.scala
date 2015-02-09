@@ -4,8 +4,8 @@ import javax.inject.Inject
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.NewKeeperChooseYourAddressViewModel
-import models.BusinessKeeperDetailsFormModel
-import models.NewKeeperChooseYourAddressFormModel
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}

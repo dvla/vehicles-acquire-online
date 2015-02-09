@@ -3,7 +3,7 @@ package pages.acquire
 import org.openqa.selenium.WebDriver
 import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TextField, TelField, WebBrowserDSL, WebDriverFactory}
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 
 object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {

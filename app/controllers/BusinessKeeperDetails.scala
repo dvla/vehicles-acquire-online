@@ -6,10 +6,11 @@ import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import models.BusinessKeeperDetailsViewModel
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsViewModel
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.controllers.BusinessKeeperDetailsBase
 
 class BusinessKeeperDetails @Inject()()(implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
-                                            protected override val config: Config) extends BusinessKeeperDetailsBase {
+                                            val config: Config) extends BusinessKeeperDetailsBase {
   protected override def presentResult(model: BusinessKeeperDetailsViewModel)(implicit request: Request[_]): Result =
     Ok(views.html.acquire.business_keeper_details(model))
 

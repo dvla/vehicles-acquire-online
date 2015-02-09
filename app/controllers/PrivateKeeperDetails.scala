@@ -17,7 +17,7 @@ import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import utils.helpers.Config
-import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 
 class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        dateService: DateService,

@@ -6,7 +6,7 @@ import helpers.acquire.CookieFactoryForUISpecs
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel

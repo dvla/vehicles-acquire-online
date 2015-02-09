@@ -3,7 +3,7 @@ package controllers.acquire
 import composition.WithApplication
 import controllers.BusinessKeeperDetails
 import helpers.UnitSpec
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessKeeperName
 
