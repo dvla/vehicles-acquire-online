@@ -26,6 +26,7 @@ import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
+import views.html.acquire.complete_and_confirm_date_warning
 import common.webserviceclients.acquire.AcquireRequestDto
 import common.webserviceclients.acquire.AcquireResponseDto
 import common.webserviceclients.acquire.AcquireService
@@ -57,8 +58,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(),
             vehicleAndKeeperDetails,
             newKeeperDetails,
-            vehicleSorn,
-            isSaleDateBeforeDisposalDate = false),
+            vehicleSorn),
             dateService))
         case _ =>
           redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
@@ -85,8 +85,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
                   vehicleDetails,
                   newKeeperDetails,
-                  vehicleSorn,
-                  isSaleDateBeforeDisposalDate = false),
+                  vehicleSorn),
                 dateService)
               )
             case _ =>
@@ -118,22 +117,22 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 request.cookies.trackingId()
               ).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
 
-              val dateInvalidCall = Future.successful {
-                BadRequest(complete_and_confirm(
-                  CompleteAndConfirmViewModel(form.fill(validForm),
-                    vehicleAndKeeperDetails,
-                    newKeeperDetails,
-                    taxOrSorn,
-                    isSaleDateBeforeDisposalDate = true,
-                    submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck()),
-                  dateService)
-                )
-              }
 
-               vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall)(keeperEndDate => {
+              vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall)(keeperEndDate => {
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
                   Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate " +
-                    s"(${keeperEndDate.toLocalDate}) is after dateOfSale ($validForm.dateOfSale)")
+                  s"(${keeperEndDate.toLocalDate}) is after dateOfSale ($validForm.dateOfSale)")
+
+                  val dateInvalidCall = Future.successful {
+                    BadRequest(complete_and_confirm_date_warning(
+                      CompleteAndConfirmViewModel(form.fill(validForm),
+                        vehicleAndKeeperDetails,
+                        newKeeperDetails,
+                        taxOrSorn,
+                        dateOfDisposal = Some(keeperEndDate.toString("E, dd/MM/yyyy"))),
+                      dateService)
+                    )
+                  }
                   dateInvalidCall
                 }
                 else dateValidCall

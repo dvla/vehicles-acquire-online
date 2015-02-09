@@ -394,9 +394,10 @@ acquire_completeAndConfirm.p1 = Please provide the following optional details an
 acquire_completeAndConfirm.mileage.label = Vehicle mileage
 acquire_completeAndConfirm.submitbutton = Confirm new keeper
 acquire_completeAndConfirm.backbutton = Back
-acquire_privatekeeperdetailscomplete.mileage.validation  = You must enter a valid mileage between 0 and 999999
+acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 acquire_completeAndConfirm.dateofsale.label = Date of sale
 acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
+acquire_completeandconfirm.dateofsale.warning = The date of sale entered is before the date of disposal, which was on {0}. If this is correct please submit, if it is not please amend the date and re-submit.
 dateofsale = Date of sale
 privatekeeper_mileage = Mileage
 
