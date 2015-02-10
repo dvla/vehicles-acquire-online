@@ -132,11 +132,11 @@
                         @inputDayMonthYearTextbox(
                             field = data.form(DateOfSaleId),
                             args = Map(
+                                'tabindex -> -1,
                                 '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
                             ),
                             dateService = dateService,
                             showTodaysDateButton = true,
-                            canTabTo = false,
                             showTodaysDateButtonId = Some(TodaysDateId),
                             hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
                         )
