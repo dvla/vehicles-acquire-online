@@ -15,7 +15,37 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         $('html').addClass('ie10');
     }
 
+
+    var hideEmailOnOther= function(radioOtherId, emailId) {
+
+        if (!radioOtherId.length || !emailId.length) {
+            return;
+        }
+
+        var animDuration = 200; // 200 ms for the duration
+
+        var checkStateOfRadio = function(radioOtherId, emailId) {
+            if(!$(radioOtherId).attr('checked')) {
+                $(emailId).parent().hide(animDuration);
+                $(emailId).val('');
+            } else {
+                $(emailId).parent().show(animDuration);
+            }
+        };
+
+        checkStateOfRadio(radioOtherId, emailId);
+
+        $("input:radio" ).click(function() {
+            checkStateOfRadio(radioOtherId, emailId);
+        });
+
+    };
+
+
+
     $(function() {
+
+        hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
 
         //html5 autofocus fallback for browsers that do not support it natively
         //if form element autofocus is not active, autofocus
@@ -54,13 +84,13 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
         function updateCountdown() {
             // 500 is the max message length
-            var remaining = 500 - $('#feedback_field textarea').val().length;
+            var remaining = 500 - $('#feedback-form textarea').val().length;
             $('.character-countdown').text(remaining + ' characters remaining.');
         }
         $(document).ready(function($) {
             updateCountdown();
-            $('#feedback_field textarea').change(updateCountdown);
-            $('#feedback_field textarea').keyup(updateCountdown);
+            $('#feedback-form textarea').change(updateCountdown);
+            $('#feedback-form textarea').keyup(updateCountdown);
         });
 
     });

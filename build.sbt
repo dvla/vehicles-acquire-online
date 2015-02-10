@@ -42,8 +42,13 @@ lazy val gatlingTestsProject = Project("gatling-tests", file("gatling-tests"))
 libraryDependencies ++= Seq(
   cache,
   filters,
+<<<<<<< HEAD
   "dvla" %% "vehicles-presentation-common" % "2.13.999-SNAPSHOT" withSources() withJavadoc() exclude("junit", "junit-dep"),
   "dvla" %% "vehicles-presentation-common" % "2.13.999-SNAPSHOT" % "test" withSources() classifier "tests" withJavadoc() exclude("junit", "junit-dep"),
+=======
+  "dvla" %% "vehicles-presentation-common" % "2.14-SNAPSHOT" withSources() withJavadoc() exclude("junit", "junit-dep"),
+  "dvla" %% "vehicles-presentation-common" % "2.14-SNAPSHOT" % "test" withSources() classifier "tests" withJavadoc() exclude("junit", "junit-dep"),
+>>>>>>> 28e31b846f00571f1cda39e7849d516ec1eec093
   "com.google.guava" % "guava" % "15.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "org.seleniumhq.selenium" % "selenium-java" % "2.43.0" % "test" withSources() withJavadoc(),
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),

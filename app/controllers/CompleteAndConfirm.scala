@@ -26,7 +26,6 @@ import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
-import views.html.acquire.complete_and_confirm_date_warning
 import common.webserviceclients.acquire.AcquireRequestDto
 import common.webserviceclients.acquire.AcquireResponseDto
 import common.webserviceclients.acquire.AcquireService
@@ -58,7 +57,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(),
             vehicleAndKeeperDetails,
             newKeeperDetails,
-            vehicleSorn),
+            vehicleSorn,
+            isSaleDateBeforeDisposalDate = false),
             dateService))
         case _ =>
           redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
@@ -85,7 +85,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
                   vehicleDetails,
                   newKeeperDetails,
-                  vehicleSorn),
+                  vehicleSorn,
+                  isSaleDateBeforeDisposalDate = false),
                 dateService)
               )
             case _ =>
@@ -124,11 +125,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                   s"(${keeperEndDate.toLocalDate}) is after dateOfSale ($validForm.dateOfSale)")
 
                   val dateInvalidCall = Future.successful {
-                    BadRequest(complete_and_confirm_date_warning(
+                    BadRequest(complete_and_confirm(
                       CompleteAndConfirmViewModel(form.fill(validForm),
                         vehicleAndKeeperDetails,
                         newKeeperDetails,
                         taxOrSorn,
+                        isSaleDateBeforeDisposalDate = true,
+                        submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(),
                         dateOfDisposal = Some(keeperEndDate.toString("E, dd/MM/yyyy"))),
                       dateService)
                     )
