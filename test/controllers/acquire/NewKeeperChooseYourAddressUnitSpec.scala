@@ -12,7 +12,7 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.common.UprnNotFoundPage
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.NewKeeperChooseYourAddressFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
 import NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
 import NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey

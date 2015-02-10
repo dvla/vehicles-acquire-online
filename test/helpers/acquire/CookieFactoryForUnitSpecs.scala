@@ -15,12 +15,12 @@ import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFa
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.CompleteAndConfirmFormModel
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.NewKeeperChooseYourAddressFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
 import models.NewKeeperDetailsViewModel
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel

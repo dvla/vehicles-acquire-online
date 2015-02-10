@@ -2,7 +2,7 @@ package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import views.acquire.NewKeeperChooseYourAddress
 import NewKeeperChooseYourAddress.BackId
 import NewKeeperChooseYourAddress.EnterAddressManuallyButtonId

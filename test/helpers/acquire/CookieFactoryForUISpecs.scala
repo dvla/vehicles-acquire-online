@@ -2,7 +2,7 @@ package helpers.acquire
 
 import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel

@@ -9,7 +9,7 @@ import common.clientsidesession.{CacheKey, ClientSideSessionFactory}
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.model.AddressModel
 import common.mappings.{TitlePickerString, TitleType}
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 
 final case class NewKeeperDetailsViewModel(title: Option[TitleType],
                                            firstName: Option[String],

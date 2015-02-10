@@ -5,8 +5,8 @@ import play.api.mvc.{Request, Result}
 import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.models.BusinessKeeperDetailsViewModel
-import uk.gov.dvla.vehicles.presentation.common.k2kandacquire.controllers.BusinessKeeperDetailsBase
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsViewModel
+import uk.gov.dvla.vehicles.presentation.common.controllers.BusinessKeeperDetailsBase
 
 class BusinessKeeperDetails @Inject()()(implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
                                             val config: Config) extends BusinessKeeperDetailsBase {
