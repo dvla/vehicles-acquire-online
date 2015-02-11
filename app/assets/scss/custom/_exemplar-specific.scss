@@ -76,8 +76,7 @@
   .popup-modal {
         background: white;
         position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 10%;
         width: 50%;
         left: 0;
         right: 0;
@@ -86,19 +85,22 @@
         border-radius: 6px;
         margin: auto;
         box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
+        // we use calc so it only takes effect on modern browsers, for old browsers we want a different value
+        top: calc(100% - 50%);
+        transform: translateY(calc(1% - 51%));
   }
   .popup-modal .form-item {
-        margin-bottom: 0;
+    margin-bottom: 0;
   }
 
-    .site-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background: rgba(0,0,0,0.65);
-        z-index: 9998;
-    }
+  .site-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0,0,0,0.65);
+      z-index: 9998;
+  }
 
 }
