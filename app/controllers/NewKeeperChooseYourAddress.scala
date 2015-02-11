@@ -5,7 +5,7 @@ import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
-import models.CookiePrefix
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}

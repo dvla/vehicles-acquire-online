@@ -10,15 +10,15 @@ import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.CacheKeyPrefix
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 package object models {
-  implicit final val CookiePrefix = CacheKeyPrefix("acq-")
+  
   final val HelpCacheKey = s"${CookiePrefix}help"
   final val SeenCookieMessageCacheKey = "seen_cookie_message" // Same value across all exemplars
 

@@ -4,7 +4,7 @@ import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import models.CookiePrefix
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey

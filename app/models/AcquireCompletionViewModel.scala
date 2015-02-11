@@ -3,6 +3,7 @@ package models
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class AcquireCompletionViewModel(vehicleDetails: VehicleAndKeeperDetailsModel,
                                             traderDetails: TraderDetailsModel,

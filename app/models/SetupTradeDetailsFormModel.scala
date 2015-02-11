@@ -7,6 +7,7 @@ import common.clientsidesession.CacheKey
 import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
 import common.mappings.Postcode.postcode
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class SetupTradeDetailsFormModel(traderBusinessName: String,
                                             traderPostcode: String,

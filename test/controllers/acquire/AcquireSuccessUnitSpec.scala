@@ -13,7 +13,7 @@ import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import models.CookiePrefix
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.format.DateTimeFormat

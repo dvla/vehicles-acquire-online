@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.CookiePrefix
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import play.api.mvc.{Request, Result}
 import utils.helpers.Config
 import uk.gov.dvla.vehicles.presentation.common

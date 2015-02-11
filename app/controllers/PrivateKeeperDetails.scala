@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
-import models.CookiePrefix
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import models.PrivateKeeperDetailsFormModel.Form.EmailId

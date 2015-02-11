@@ -15,7 +15,7 @@ import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
 import NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
-import models.CookiePrefix
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import play.api.mvc.Cookies

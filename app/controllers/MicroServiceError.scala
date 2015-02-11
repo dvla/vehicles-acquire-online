@@ -2,12 +2,12 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.routes.VehicleLookup
-import models.CookiePrefix
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import utils.helpers.Config
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                         config: Config) extends Controller {
