@@ -9,7 +9,7 @@ final case class BusinessChooseYourAddressFormModel(uprnSelected: String)
 
 object BusinessChooseYourAddressFormModel {
   implicit val JsonFormat = Json.format[BusinessChooseYourAddressFormModel]
-  final val BusinessChooseYourAddressCacheKey = s"${CacheKeyPrefix}businessChooseYourAddress"
+  final val BusinessChooseYourAddressCacheKey = s"${CookiePrefix}businessChooseYourAddress"
   implicit val Key = CacheKey[BusinessChooseYourAddressFormModel](value = BusinessChooseYourAddressCacheKey)
 
   object Form {

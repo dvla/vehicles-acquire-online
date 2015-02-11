@@ -3,26 +3,27 @@ import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCache
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.CacheKeyPrefix
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 
 package object models {
-  final val CacheKeyPrefix = "acq-"
-  final val HelpCacheKey = s"${CacheKeyPrefix}help"
+  implicit final val CookiePrefix = CacheKeyPrefix("acq-")
+  final val HelpCacheKey = s"${CookiePrefix}help"
   final val SeenCookieMessageCacheKey = "seen_cookie_message" // Same value across all exemplars
 
   final val AcquireCacheKeys = Set(
-    NewKeeperChooseYourAddressCacheKey,
+    newKeeperChooseYourAddressCacheKey,
     BruteForcePreventionViewModelCacheKey
   )
 
@@ -44,14 +45,14 @@ package object models {
   final val PrivateKeeperDetailsCacheKeys = Set(
     PrivateKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
-    NewKeeperChooseYourAddressCacheKey,
+    newKeeperChooseYourAddressCacheKey,
     NewKeeperEnterAddressManuallyCacheKey
   )
 
   // Set of cookies related to all data entered for a business keeper
   final val BusinessKeeperDetailsCacheKeys = Set(
-    BusinessKeeperDetailsCacheKey,
-    NewKeeperChooseYourAddressCacheKey,
+    businessKeeperDetailsCacheKey,
+    newKeeperChooseYourAddressCacheKey,
     NewKeeperEnterAddressManuallyCacheKey
   )
 

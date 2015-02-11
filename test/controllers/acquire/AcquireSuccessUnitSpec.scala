@@ -12,7 +12,8 @@ import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import models.CookiePrefix
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.format.DateTimeFormat
@@ -142,7 +143,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
@@ -187,7 +188,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleTaxOrSornCacheKey, cookies)

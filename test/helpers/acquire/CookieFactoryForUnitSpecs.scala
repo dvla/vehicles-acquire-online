@@ -16,7 +16,8 @@ import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcode
 import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import models.CookiePrefix
 import models.CompleteAndConfirmFormModel
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -261,7 +262,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                                 businessName: String = BusinessNameValid,
                                 email: Option[String] = Some(EmailValid),
                                 postcode: String = PostcodeValid) : Cookie = {
-    val key = BusinessKeeperDetailsCacheKey
+    val key = businessKeeperDetailsCacheKey
     val value = BusinessKeeperDetailsFormModel(
       fleetNumber = fleetNumber,
       businessName = businessName,
@@ -272,13 +273,13 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   }
 
   def newKeeperChooseYourAddressUseUprn(uprnSelected: String = UprnValid.toString): Cookie = {
-    val key = NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+    val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
     val value = NewKeeperChooseYourAddressFormModel(uprnSelected = uprnSelected)
     createCookie(key, value)
   }
 
   def newKeeperChooseYourAddress(uprnSelected: String = "0"): Cookie = {
-    val key = NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+    val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
     val value = NewKeeperChooseYourAddressFormModel(uprnSelected = uprnSelected)
     createCookie(key, value)
   }

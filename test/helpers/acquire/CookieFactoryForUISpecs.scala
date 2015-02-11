@@ -3,7 +3,8 @@ package helpers.acquire
 import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import models.CookiePrefix
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
@@ -209,7 +210,7 @@ object CookieFactoryForUISpecs {
                             businessName: String = BusinessNameValid,
                             email: Option[String] = Some(EmailValid),
                             postcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
-    val key = BusinessKeeperDetailsCacheKey
+    val key = businessKeeperDetailsCacheKey
     val value = BusinessKeeperDetailsFormModel(
       fleetNumber = fleetNumber,
       businessName = businessName,

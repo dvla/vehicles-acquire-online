@@ -16,7 +16,6 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import utils.helpers.Config
 
 class BusinessKeeperDetailsUnitSpec extends UnitSpec {
-
   "present" should {
     "display the page" in new WithApplication {
       whenReady(present) { r =>

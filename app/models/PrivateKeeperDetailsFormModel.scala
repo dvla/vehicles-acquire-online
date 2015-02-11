@@ -18,17 +18,17 @@ import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePicker
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 
 case class PrivateKeeperDetailsFormModel(title: TitleType,
-                                         firstName: String, 
+                                         firstName: String,
                                          lastName: String,
                                          dateOfBirth: Option[LocalDate],
-                                         email: Option[String], 
+                                         email: Option[String],
                                          driverNumber: Option[String],
                                          postcode: String)
 
 object PrivateKeeperDetailsFormModel {
   implicit val JsonFormatTitleType = Json.format[TitleType]
   implicit val JsonFormat = Json.format[PrivateKeeperDetailsFormModel]
-  final val PrivateKeeperDetailsCacheKey = s"${CacheKeyPrefix}privateKeeperDetails"
+  final val PrivateKeeperDetailsCacheKey = s"${CookiePrefix}privateKeeperDetails"
   implicit val Key = CacheKey[PrivateKeeperDetailsFormModel](PrivateKeeperDetailsCacheKey)
   private val NameRegEx = """^[a-zA-Z0-9\s\-\"\,\.\']{1,}$""".r
 
