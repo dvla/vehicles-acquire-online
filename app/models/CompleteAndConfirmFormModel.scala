@@ -8,6 +8,7 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 case class CompleteAndConfirmFormModel(mileage: Option[Int],
                                        dateOfSale: LocalDate,
@@ -15,9 +16,9 @@ case class CompleteAndConfirmFormModel(mileage: Option[Int],
 
 object CompleteAndConfirmFormModel {
   implicit val JsonFormat = Json.format[CompleteAndConfirmFormModel]
-  final val AllowGoingToCompleteAndConfirmPageCacheKey = s"${CacheKeyPrefix}allowGoingToCompleteAndConfirmPage"
-  final val CompleteAndConfirmCacheKey = s"${CacheKeyPrefix}completeAndConfirm"
-  final val CompleteAndConfirmCacheTransactionIdCacheKey = s"${CacheKeyPrefix}completeAndConfirmTransactionId"
+  final val AllowGoingToCompleteAndConfirmPageCacheKey = s"${CookiePrefix}allowGoingToCompleteAndConfirmPage"
+  final val CompleteAndConfirmCacheKey = s"${CookiePrefix}completeAndConfirm"
+  final val CompleteAndConfirmCacheTransactionIdCacheKey = s"${CookiePrefix}completeAndConfirmTransactionId"
   implicit val Key = CacheKey[CompleteAndConfirmFormModel](CompleteAndConfirmCacheKey)
 
   object Form {

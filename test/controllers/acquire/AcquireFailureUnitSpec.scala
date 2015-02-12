@@ -6,7 +6,8 @@ import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, fetchCookiesFr
 import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import models.BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
@@ -91,7 +92,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
@@ -131,7 +132,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
         verifyCookieHasBeenDiscarded(TraderDetailsCacheKey, cookies)

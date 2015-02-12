@@ -5,13 +5,15 @@ import controllers.AcquireSuccess
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
-import models.{BusinessKeeperDetailsFormModel, PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
+import models.{PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
 import models.{VehicleLookupFormModel, CompleteAndConfirmFormModel}
 import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import BusinessKeeperDetailsFormModel.BusinessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
+import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.format.DateTimeFormat
@@ -141,7 +143,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
@@ -186,7 +188,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(BusinessKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleTaxOrSornCacheKey, cookies)

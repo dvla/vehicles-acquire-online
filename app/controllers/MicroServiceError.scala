@@ -2,12 +2,12 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.routes.VehicleLookup
-import models.CacheKeyPrefix
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import utils.helpers.Config
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                         config: Config) extends Controller {
@@ -28,5 +28,5 @@ class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideS
 }
 
 object MicroServiceError {
-  final val MicroServiceErrorRefererCacheKey = s"${CacheKeyPrefix}msError"
+  final val MicroServiceErrorRefererCacheKey = s"${CookiePrefix}msError"
 }

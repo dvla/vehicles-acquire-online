@@ -4,7 +4,8 @@ import controllers.acquire.Common.PrototypeHtml
 import controllers.BusinessKeeperDetails
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
-import models.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
 import org.mockito.Mockito.when
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
@@ -15,7 +16,6 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import utils.helpers.Config
 
 class BusinessKeeperDetailsUnitSpec extends UnitSpec {
-
   "present" should {
     "display the page" in new WithApplication {
       whenReady(present) { r =>

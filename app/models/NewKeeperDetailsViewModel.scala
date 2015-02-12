@@ -9,6 +9,8 @@ import common.clientsidesession.{CacheKey, ClientSideSessionFactory}
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.model.AddressModel
 import common.mappings.{TitlePickerString, TitleType}
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class NewKeeperDetailsViewModel(title: Option[TitleType],
                                            firstName: Option[String],
@@ -25,7 +27,7 @@ final case class NewKeeperDetailsViewModel(title: Option[TitleType],
 object NewKeeperDetailsViewModel {
   implicit val JsonFormatTitleType = Json.format[TitleType]
   implicit val JsonFormat = Json.format[NewKeeperDetailsViewModel]
-  final val NewKeeperDetailsCacheKey = s"${CacheKeyPrefix}newKeeperDetails"
+  final val NewKeeperDetailsCacheKey = s"${CookiePrefix}newKeeperDetails"
   implicit val Key = CacheKey[NewKeeperDetailsViewModel](value = NewKeeperDetailsCacheKey)
 
   def createNewKeeper(address: AddressModel)(implicit request: Request[_],

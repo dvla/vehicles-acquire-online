@@ -3,6 +3,7 @@ package models
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class AcquireCompletionViewModel(vehicleDetails: VehicleAndKeeperDetailsModel,
                                             traderDetails: TraderDetailsModel,
@@ -13,6 +14,6 @@ final case class AcquireCompletionViewModel(vehicleDetails: VehicleAndKeeperDeta
 
 object AcquireCompletionViewModel {
   implicit val JsonFormat = Json.format[CompleteAndConfirmResponseModel]
-  final val AcquireCompletionCacheKey = s"${CacheKeyPrefix}acquireCompletion"
+  final val AcquireCompletionCacheKey = s"${CookiePrefix}acquireCompletion"
   implicit val Key = CacheKey[CompleteAndConfirmResponseModel](AcquireCompletionCacheKey)
 }

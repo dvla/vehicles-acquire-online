@@ -1,7 +1,8 @@
 package controllers
 
 import com.google.inject.Inject
-import models.BusinessKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.NewKeeperDetailsViewModel.createNewKeeper
 import models.{NewKeeperEnterAddressManuallyViewModel, NewKeeperEnterAddressManuallyFormModel}
 import models.PrivateKeeperDetailsFormModel

@@ -7,6 +7,7 @@ import common.clientsidesession.CacheKey
 import common.mappings.BusinessName.businessNameMapping
 import common.mappings.Email.email
 import common.mappings.Postcode.postcode
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class SetupTradeDetailsFormModel(traderBusinessName: String,
                                             traderPostcode: String,
@@ -14,7 +15,7 @@ final case class SetupTradeDetailsFormModel(traderBusinessName: String,
 
 object SetupTradeDetailsFormModel {
   implicit val JsonFormat = Json.format[SetupTradeDetailsFormModel]
-  final val SetupTradeDetailsCacheKey = s"${CacheKeyPrefix}setupTraderDetails"
+  final val SetupTradeDetailsCacheKey = s"${CookiePrefix}setupTraderDetails"
   implicit val Key = CacheKey[SetupTradeDetailsFormModel](SetupTradeDetailsCacheKey)
 
   object Form {

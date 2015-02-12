@@ -3,6 +3,7 @@ package controllers
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import models.PrivateKeeperDetailsFormModel.Form.EmailId
@@ -15,9 +16,9 @@ import common.model.VehicleAndKeeperDetailsModel
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.views.helpers.FormExtensions.formBinding
 import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.services.DateService
+import common.services.DateService
 import utils.helpers.Config
-import models.NewKeeperChooseYourAddressFormModel.NewKeeperChooseYourAddressCacheKey
+import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 
 class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        dateService: DateService,
@@ -44,7 +45,7 @@ class PrivateKeeperDetails @Inject()()(implicit clientSideSessionFactory: Client
               views.html.acquire.private_keeper_details(vehicleAndKeeperDetails, formWithReplacedErrors(invalidForm))
             ),
             validForm => Redirect(routes.NewKeeperChooseYourAddress.present()).withCookie(validForm)
-                          .discardingCookie(NewKeeperChooseYourAddressCacheKey))
+                          .discardingCookie(newKeeperChooseYourAddressCacheKey))
         case _ => redirectToSetupTradeDetails(CookieErrorMessage)
       }
   }
