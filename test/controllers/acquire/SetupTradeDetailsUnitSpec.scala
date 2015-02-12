@@ -7,9 +7,10 @@ import helpers.JsonUtils.deserializeJsonToModel
 import helpers.common.CookieHelper
 import CookieHelper.fetchCookiesFromHeaders
 import helpers.UnitSpec
-import models.SetupTradeDetailsFormModel
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.SetupTradeDetailsFormModel
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
@@ -19,6 +20,8 @@ import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaul
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
 import utils.helpers.Config
+
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {
 
@@ -69,7 +72,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
         whenReady(result) { r =>
           r.header.headers.get(LOCATION) should equal(Some(BusinessChooseYourAddressPage.address))
           val cookies = fetchCookiesFromHeaders(r)
-          val cookieName = SetupTradeDetailsCacheKey
+          val cookieName = setupTradeDetailsCacheKey
           cookies.find(_.name == cookieName) match {
             case Some(cookie) =>
               val json = cookie.value

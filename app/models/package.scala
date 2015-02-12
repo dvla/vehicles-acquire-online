@@ -5,7 +5,7 @@ import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCa
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
@@ -28,7 +28,7 @@ package object models {
   )
 
   final val TraderDetailsCacheKeys = Set(
-    SetupTradeDetailsCacheKey,
+    setupTradeDetailsCacheKey,
     TraderDetailsCacheKey,
     BusinessChooseYourAddressCacheKey,
     EnterAddressManuallyCacheKey

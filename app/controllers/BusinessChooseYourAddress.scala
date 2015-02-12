@@ -6,7 +6,7 @@ import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
 import play.api.mvc.{Action, Controller, Request, Result}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models.{BusinessChooseYourAddressFormModel, SetupTradeDetailsFormModel}
+import models.BusinessChooseYourAddressFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -15,10 +15,13 @@ import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResu
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
 import common.model.AddressModel
 import common.model.TraderDetailsModel
+import common.model.SetupTradeDetailsFormModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.business_choose_your_address
+
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,

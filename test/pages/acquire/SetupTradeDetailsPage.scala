@@ -3,7 +3,8 @@ package pages.acquire
 import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
 import org.openqa.selenium.WebDriver
-import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
 import views.acquire.SetupTradeDetails.SubmitId
 
 object SetupTradeDetailsPage extends Page with WebBrowserDSL {
