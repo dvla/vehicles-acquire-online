@@ -22,8 +22,11 @@
     currentForm = Some(businessChooseYourAddressForm)
 ) {
 
+    <h1>@Messages("acquire_businessChooseYourAddress_title")</h1>
+
     @form(action = BusinessChooseYourAddress.submit()) {
         @csrfTokenHiddenField()
+
         <dl class="playback">
             <dt>@Messages("acquire_businessChooseYourAddress_businessName_label")</dt>
             <dd>@Messages("acquire_businessChooseYourAddress_businessName", traderBusinessName)</dd>
