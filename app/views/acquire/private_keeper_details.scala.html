@@ -27,6 +27,9 @@
     title = Messages("acquire_privatekeeperdetails.title"),
     currentForm = Some(privateKeeperDetailsForm)
 ) {
+
+   <h1>@Messages("acquire_privatekeeperdetails.title")</h1>
+
     @form(action = PrivateKeeperDetails.submit) {
         @csrfTokenHiddenField()
 

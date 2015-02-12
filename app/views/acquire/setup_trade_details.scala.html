@@ -21,6 +21,9 @@ config: utils.helpers.Config)
   title = Messages("acquire_setuptradedetails.title"),
   currentForm = Some(traderLookupForm)
 ) {
+
+    <h1>@Messages("acquire_setuptradedetails.title")</h1>
+
     @form(action = SetUpTradeDetails.submit) {
         @csrfTokenHiddenField()
 
