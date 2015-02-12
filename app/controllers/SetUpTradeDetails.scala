@@ -1,43 +1,26 @@
 package controllers
 
 import com.google.inject.Inject
-import models.SetupTradeDetailsFormModel
-import models.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderEmailId, TraderPostcodeId}
-import play.api.data.{Form, FormError}
-import play.api.mvc.{Action, Controller}
+import play.api.data.Form
+import play.api.mvc.{Result, Request}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichForm, RichResult}
-import common.views.helpers.FormExtensions.formBinding
+import common.controllers.SetUpTradeDetailsBase
+import common.model.SetupTradeDetailsFormModel
+
 import utils.helpers.Config
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                          config: Config) extends Controller {
+                                          config: Config) extends SetUpTradeDetailsBase {
 
-  private[controllers] val form = Form(
-    SetupTradeDetailsFormModel.Form.Mapping
-  )
+  override def presentResult(model: Form[SetupTradeDetailsFormModel])(implicit request: Request[_]): Result =
+    Ok(views.html.acquire.setup_trade_details(model))
 
-  def present = Action { implicit request =>
-    Ok(views.html.acquire.setup_trade_details(form.fill()))
-  }
+  override def invalidFormResult(model: Form[SetupTradeDetailsFormModel])(implicit request: Request[_]): Result =
+    BadRequest(views.html.acquire.setup_trade_details(model))
 
-  def submit = Action { implicit request =>
-    form.bindFromRequest.fold(
-      invalidForm => BadRequest(views.html.acquire.setup_trade_details(formWithReplacedErrors(invalidForm))),
-      validForm => Redirect(routes.BusinessChooseYourAddress.present()).withCookie(validForm)
-        .discardingCookie(BusinessChooseYourAddressCacheKey)
-    )
-  }
+  override def success(implicit request: Request[_]): Result =
+    Redirect(routes.BusinessChooseYourAddress.present())
 
-  private def formWithReplacedErrors(form: Form[SetupTradeDetailsFormModel]) = {
-    form.replaceError(
-      TraderNameId, FormError(key = TraderNameId, message = "error.validBusinessName", args = Seq.empty)
-    ).replaceError(
-        TraderEmailId,FormError(key = TraderEmailId, message = "error.email", args = Seq.empty)
-      ).replaceError(
-        TraderPostcodeId, FormError(key = TraderPostcodeId, message = "error.restricted.validPostcode", args = Seq.empty)
-      ).distinctErrors
-  }
 }
