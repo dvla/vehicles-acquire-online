@@ -2,7 +2,10 @@ package helpers.acquire
 
 import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.BusinessKeeperDetailsFormModel
+import common.model.SetupTradeDetailsFormModel
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmResponseModel
@@ -14,8 +17,6 @@ import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.SetupTradeDetailsFormModel
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
@@ -81,7 +82,7 @@ object CookieFactoryForUISpecs {
   def setupTradeDetails(traderBusinessName: String = TraderBusinessNameValid,
                         traderPostcode: String = PostcodeValid,
                         traderEmail: Option[String] = None)(implicit webDriver: WebDriver) = {
-    val key = SetupTradeDetailsCacheKey
+    val key = setupTradeDetailsCacheKey
     val value = SetupTradeDetailsFormModel(
       traderBusinessName,
       traderPostcode = traderPostcode,

@@ -13,7 +13,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsMod
 import uk.gov.dvla.vehicles.presentation.common.model._
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
-import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, SetupTradeDetailsFormModel, BusinessChooseYourAddressFormModel}
+import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, BusinessChooseYourAddressFormModel}
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
@@ -28,7 +28,7 @@ import models.NewKeeperEnterAddressManuallyFormModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.PrivateKeeperDetailsFormModel
 import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.VehicleTaxOrSornFormModel
@@ -84,7 +84,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   def setupTradeDetails(traderBusinessName: String = TraderBusinessNameValid,
                         traderPostcode: String = PostcodeValid,
                         traderEmail: Option[String] = None): Cookie = {
-    val key = SetupTradeDetailsCacheKey
+    val key = setupTradeDetailsCacheKey
     val value = SetupTradeDetailsFormModel(
       traderBusinessName = traderBusinessName,
       traderPostcode = traderPostcode,

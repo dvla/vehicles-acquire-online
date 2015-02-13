@@ -7,11 +7,14 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class KeeperStillOnRecordUnitSpec extends UnitSpec {
 
@@ -67,7 +70,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
 
         val cookies = fetchCookiesFromHeaders(r)
         val cookieNames = List(
-          SetupTradeDetailsCacheKey,
+          setupTradeDetailsCacheKey,
           BusinessChooseYourAddressCacheKey,
           VehicleLookupFormModelCacheKey,
           VehicleAndKeeperLookupDetailsCacheKey

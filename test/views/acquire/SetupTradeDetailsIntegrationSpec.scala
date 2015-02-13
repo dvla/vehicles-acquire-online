@@ -7,8 +7,8 @@ import helpers.tags.UiTag
 import pages.common.{Accessibility, ErrorPanel}
 import pages.acquire.SetupTradeDetailsPage.{happyPath, PostcodeValid, TraderBusinessNameValid}
 import pages.acquire.SetupTradeDetailsPage
-import models.SetupTradeDetailsFormModel
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel
 
 final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
