@@ -1,6 +1,6 @@
 package controllers.acquire
 
-import controllers.KeeperStillOnRecord
+import controllers.SuppressedV5C
 import helpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
@@ -9,7 +9,6 @@ import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 
@@ -36,7 +35,7 @@ class SuppressedV5CUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
-      val result = keeperStillOnRecord.buyAnotherVehicle(request)
+      val result = suppressedV5C.buyAnotherVehicle(request)
 
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
@@ -59,7 +58,7 @@ class SuppressedV5CUnitSpec extends UnitSpec {
 
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
-      val result = keeperStillOnRecord.finish(request)
+      val result = suppressedV5C.finish(request)
 
       whenReady(result) { r =>
         r.header.status should equal(SEE_OTHER)
@@ -67,7 +66,6 @@ class SuppressedV5CUnitSpec extends UnitSpec {
 
         val cookies = fetchCookiesFromHeaders(r)
         val cookieNames = List(
-          SetupTradeDetailsCacheKey,
           BusinessChooseYourAddressCacheKey,
           VehicleLookupFormModelCacheKey,
           VehicleAndKeeperLookupDetailsCacheKey
@@ -77,19 +75,19 @@ class SuppressedV5CUnitSpec extends UnitSpec {
     }
   }
 
-  private lazy val keeperStillOnRecord = {
-    injector.getInstance(classOf[KeeperStillOnRecord])
+  private lazy val suppressedV5C = {
+    injector.getInstance(classOf[SuppressedV5C])
   }
 
   private lazy val present = {
     val request = FakeRequest()
       .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
-    keeperStillOnRecord.present(request)
+    suppressedV5C.present(request)
   }
 
   private lazy val presentWithNoCookies = {
     val request = FakeRequest()
-    keeperStillOnRecord.present(request)
+    suppressedV5C.present(request)
   }
 }
