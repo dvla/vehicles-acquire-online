@@ -17,7 +17,7 @@ class SuppressedV5C @Inject()()(implicit clientSideSessionFactory: ClientSideSes
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
       case Some(vehicleAndKeeperDetails) =>
-        Ok(views.html.acquire.keeper_still_on_record(vehicleAndKeeperDetails))
+        Ok(views.html.acquire.suppressedV5C())
       case _ =>
         Logger.warn("Did not find VehicleDetailsModel cookie. Now redirecting to SetUpTradeDetails.")
         Redirect(routes.SetUpTradeDetails.present())
