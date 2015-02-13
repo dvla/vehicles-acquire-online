@@ -4,7 +4,7 @@
 
     @import controllers.routes.BeforeYouStart
     @import controllers.routes.VehicleLookup
-    @import views.acquire.KeeperStillOnRecord.{BuyAnotherVehicleId, FinishId}
+    @import views.acquire.suppressedV5C.{BuyAnotherVehicleId, FinishId}
     @import uk.gov.dvla.vehicles.presentation.common
     @import common.views.html.widgets.base.csrfTokenHiddenField
 
@@ -19,10 +19,10 @@
                 <div class="form-steps">
                     @csrfTokenHiddenField()
                     @{ /* Note the reverse routing syntax for the hyperlink */ }
-                    <a class="button" id="@BuyAnotherVehicleId" href="@controllers.routes.KeeperStillOnRecord.buyAnotherVehicle()">
+                    <a class="button" id="@BuyAnotherVehicleId" href="@controllers.routes.SuppressedV5C.buyAnotherVehicle()">
                     @Messages("error_suppressedV5C.button1")
                     </a>
-                    <a class="button-secondary" id="@FinishId" href="@controllers.routes.KeeperStillOnRecord.finish()">
+                    <a class="button-secondary" id="@FinishId" href="@controllers.routes.SuppressedV5C.finish()">
                     @Messages("error_suppressedV5C.button2")
                     </a>
                 </div>
