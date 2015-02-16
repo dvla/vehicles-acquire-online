@@ -73,11 +73,12 @@
       }
   }
 
-  .popup-modal {
+    .popup-modal {
         background: white;
         position: fixed;
-        top: 10%;
-        width: 50%;
+        top: 0;
+        width: 450px;
+        max-width: 90%;
         left: 0;
         right: 0;
         z-index: 9999;
@@ -85,22 +86,23 @@
         border-radius: 6px;
         margin: auto;
         box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
-        // we use calc so it only takes effect on modern browsers, for old browsers we want a different value
+        // we use calc so it only takes effect on modern browsers, old browsers can't have a centered box
         top: calc(100% - 50%);
         transform: translateY(calc(1% - 51%));
-  }
-  .popup-modal .form-item {
-    margin-bottom: 0;
-  }
+    }
+    
+    .popup-modal .form-item {
+        margin-bottom: 0;
+    }
 
-  .site-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: rgba(0,0,0,0.65);
-      z-index: 9998;
-  }
+    .site-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0,0,0,0.65);
+        z-index: 9998;
+    }
 
 }
