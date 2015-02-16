@@ -5,6 +5,7 @@ import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
+import uk.gov.dvla.vehicles.presentation.common.model.VmAddressModel
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
@@ -228,7 +229,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         val lookedUpAddress = lookedUpAddresses(indexSelected) match {
           case (index, address) => address
         }
-        val addressModel = AddressModel.from(lookedUpAddress)
+        val addressModel = VmAddressModel.from(lookedUpAddress)
         createNewKeeper(addressModel) match {
           case Some(newKeeperDetails) => nextPage(model, newKeeperDetails, addressModel)
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
