@@ -7,14 +7,17 @@ import helpers.UnitSpec
 import helpers.WithApplication
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import models.{BusinessKeeperDetailsCacheKeys, PrivateKeeperDetailsCacheKeys}
-import org.mockito.Matchers.any
+import org.mockito.Matchers._
 import org.mockito.Mockito.when
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 import pages.acquire.{EnterAddressManuallyPage, BusinessChooseYourAddressPage, BusinessKeeperDetailsPage, PrivateKeeperDetailsPage, SetupTradeDetailsPage, MicroServiceErrorPage}
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import common.clientsidesession.ClientSideSessionFactory
@@ -47,6 +50,10 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 
 final class VehicleLookupUnitSpec extends UnitSpec {
+  val healthStatsMock = mock[HealthStats]
+  when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+    override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+  })
 
   "present" should {
     "display the page" in new WithApplication {
@@ -240,9 +247,11 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       bruteForcePreventionWebService
     }
 
+
     new BruteForcePreventionServiceImpl(
       config = new TestBruteForcePreventionConfig,
       ws = bruteForcePreventionWebService,
+      healthStatsMock,
       dateService = new FakeDateServiceImpl
     )
   }
@@ -258,7 +267,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       }
       new FakeResponse(status = status, fakeJson = responseAsJson) // Any call to a webservice will always return this successful response.
     })
-    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(ws)
+    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(ws, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
@@ -276,7 +285,12 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     when(vehicleAndKeeperLookupWebService.invoke(any[VehicleAndKeeperDetailsRequest], any[String])).thenReturn(Future {
       throw new IllegalArgumentException
     })
-    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(vehicleAndKeeperLookupWebService)
+    val healthStatsMock = mock[HealthStats]
+    when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+      override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+    })
+
+    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(vehicleAndKeeperLookupWebService, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.

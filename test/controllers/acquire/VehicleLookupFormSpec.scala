@@ -6,6 +6,8 @@ import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
 import helpers.disposal_of_vehicle.ValidVRMFormat.allValidVrmFormats
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 import play.api.http.Status.OK
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -22,6 +24,7 @@ import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleReg
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.when
 import play.api.libs.json.{JsValue, Json}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import utils.helpers.Config
@@ -127,10 +130,14 @@ final class VehicleLookupFormSpec extends UnitSpec {
     val bruteForcePreventionWebService: BruteForcePreventionWebService = mock[BruteForcePreventionWebService]
     when(bruteForcePreventionWebService.callBruteForce(anyString())).
       thenReturn( Future.successful( new FakeResponse(status = OK) ))
-
+    val healthStatsMock = mock[HealthStats]
+    when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+      override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+    })
     new BruteForcePreventionServiceImpl(
       config = new TestBruteForcePreventionConfig,
       ws = bruteForcePreventionWebService,
+      healthStatsMock,
       dateService = new FakeDateServiceImpl
     )
   }
@@ -146,7 +153,11 @@ final class VehicleLookupFormSpec extends UnitSpec {
       }
       new FakeResponse(status = fullResponse._1, fakeJson = responseAsJson)// Any call to a webservice will always return this successful response.
     })
-    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(vehicleAndKeeperLookupWebService)
+    val healthStatsMock = mock[HealthStats]
+    when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+      override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+    })
+    val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(vehicleAndKeeperLookupWebService, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     new VehicleLookup(

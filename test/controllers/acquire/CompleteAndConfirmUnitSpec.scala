@@ -7,7 +7,9 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
 import org.joda.time.Instant
 import org.mockito.Mockito.when
-import org.mockito.Matchers.any
+import org.mockito.Matchers._
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.AcquireSuccessPage
@@ -17,6 +19,7 @@ import pages.acquire.VehicleLookupPage
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
 import play.api.libs.json.Json
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
@@ -222,7 +225,11 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   private def acquireController(acquireWebService: AcquireWebService): CompleteAndConfirm = {
-    val acquireService = new AcquireServiceImpl(config.acquire, acquireWebService)
+    val healthStatsMock = mock[HealthStats]
+    when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+      override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+    })
+    val acquireService = new AcquireServiceImpl(config.acquire, acquireWebService, healthStatsMock)
     acquireController(acquireWebService, acquireService)
   }
 
