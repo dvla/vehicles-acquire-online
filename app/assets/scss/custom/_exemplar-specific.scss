@@ -75,6 +75,7 @@
 
     .popup-modal {
         background: white;
+        display: inline-block;
         position: fixed;
         top: 0;
         width: 450px;
@@ -90,7 +91,7 @@
         top: calc(100% - 50%);
         transform: translateY(calc(1% - 51%));
     }
-    
+
     .popup-modal .form-item {
         margin-bottom: 0;
     }
