@@ -14,8 +14,6 @@ import models.HelpCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.SeenCookieMessageCacheKey
-import models.SetupTradeDetailsFormModel
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.VehicleTaxOrSornFormModel
@@ -31,6 +29,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBi
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.mappings.TitleType
 import common.model.AddressModel
@@ -43,6 +42,7 @@ import common.model.NewKeeperDetailsViewModel
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel
 import common.model.TraderDetailsModel
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel
@@ -89,7 +89,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   def setupTradeDetails(traderBusinessName: String = TraderBusinessNameValid,
                         traderPostcode: String = PostcodeValid,
                         traderEmail: Option[String] = None): Cookie = {
-    val key = SetupTradeDetailsCacheKey
+    val key = setupTradeDetailsCacheKey
     val value = SetupTradeDetailsFormModel(
       traderBusinessName = traderBusinessName,
       traderPostcode = traderPostcode,
@@ -196,7 +196,8 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                                    lastName: Option[String] = None,
                                    address: Option[AddressModel] = None,
                                    keeperEndDate: Option[DateTime] = None,
-                                   disposeFlag: Option[Boolean] = Some(false)): Cookie = {
+                                   disposeFlag: Option[Boolean] = Some(false),
+                                   suppressedV5CFlag: Option[Boolean] = Some(false)): Cookie = {
     val key = VehicleAndKeeperLookupDetailsCacheKey
     val value = VehicleAndKeeperDetailsModel(
       registrationNumber = registrationNumber,
@@ -207,7 +208,8 @@ object CookieFactoryForUnitSpecs extends TestComposition {
       lastName = lastName,
       address = address,
       keeperEndDate = keeperEndDate,
-      disposeFlag = disposeFlag
+      disposeFlag = disposeFlag,
+      suppressedV5Flag = suppressedV5CFlag
     )
     createCookie(key, value)
   }

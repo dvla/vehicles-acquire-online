@@ -20,6 +20,7 @@ import common.model.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 import common.model.NewKeeperChooseYourAddressFormModel
 import common.model.PrivateKeeperDetailsFormModel
 import common.model.VehicleAndKeeperDetailsModel
+import common.model.VmAddressModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -228,7 +229,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
         val lookedUpAddress = lookedUpAddresses(indexSelected) match {
           case (index, address) => address
         }
-        val addressModel = AddressModel.from(lookedUpAddress)
+        val addressModel = VmAddressModel.from(lookedUpAddress)
         createNewKeeper(addressModel) match {
           case Some(newKeeperDetails) => nextPage(model, newKeeperDetails, addressModel)
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")

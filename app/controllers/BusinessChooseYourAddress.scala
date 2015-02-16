@@ -6,19 +6,20 @@ import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
 import play.api.mvc.{Action, Controller, Request, Result}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models.{BusinessChooseYourAddressFormModel, SetupTradeDetailsFormModel}
+import models.BusinessChooseYourAddressFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
-import common.model.AddressModel
-import common.model.TraderDetailsModel
+import common.model.{VmAddressModel, AddressModel, TraderDetailsModel, SetupTradeDetailsFormModel}
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.business_choose_your_address
+
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -106,7 +107,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         val lookedUpAddress = lookedUpAddresses(indexSelected) match {
           case (index, address) => address
         }
-        val addressModel = AddressModel.from(lookedUpAddress)
+        val addressModel = VmAddressModel.from(lookedUpAddress)
         nextPage(model, setupBusinessDetailsForm.traderBusinessName, addressModel, setupBusinessDetailsForm.traderEmail)
       }
       else {

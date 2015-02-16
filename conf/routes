@@ -39,6 +39,11 @@ GET         /keeper-still-on-record                     @controllers.KeeperStill
 GET         /keeper-still-on-record/buy-another         @controllers.KeeperStillOnRecord.buyAnotherVehicle
 GET         /keeper-still-on-record/finish              @controllers.KeeperStillOnRecord.finish
 
+#error page when the user looks up a vehicle and it has a suppressed V5C
+GET         /suppressed-v5c                             @controllers.SuppressedV5C.present
+GET         /suppressed-v5c/buy-another                 @controllers.SuppressedV5C.buyAnotherVehicle
+GET         /suppressed-v5c/finish                      @controllers.SuppressedV5C.finish
+
 #page 5 - Private keeper details
 GET         /private-keeper-details                     @controllers.PrivateKeeperDetails.present
 POST        /private-keeper-details                     @controllers.PrivateKeeperDetails.submit

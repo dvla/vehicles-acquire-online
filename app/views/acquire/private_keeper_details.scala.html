@@ -94,8 +94,9 @@
                     )
                 </div>
 
-                @valtechInputText(privateKeeperDetailsForm(EmailId), args =
-                    Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
+                @valtechInputText(privateKeeperDetailsForm(EmailId), 
+                hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")),
+                args = Map('_label -> Messages("acquire_privatekeeperdetails.emaillabel"),
                         '_showConstraints -> false,
                         'maxLength -> EmailMaxLength,
                         'optionalFieldKey -> true

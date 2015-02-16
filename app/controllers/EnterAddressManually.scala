@@ -2,17 +2,19 @@ package controllers
 
 import com.google.inject.Inject
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.{EnterAddressManuallyFormModel, SetupTradeDetailsFormModel}
+import models.EnterAddressManuallyFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
-import common.model.{TraderDetailsModel, AddressModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{VmAddressModel, SetupTradeDetailsFormModel, TraderDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.enter_address_manually
+
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class EnterAddressManually @Inject()()
                                           (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -41,7 +43,7 @@ class EnterAddressManually @Inject()()
         },
       validForm => request.cookies.getModel[SetupTradeDetailsFormModel] match {
         case Some(setupTradeDetails) =>
-          val traderAddress = AddressModel.from(validForm.addressAndPostcodeModel,setupTradeDetails.traderPostcode)
+          val traderAddress = VmAddressModel.from(validForm.addressAndPostcodeModel,setupTradeDetails.traderPostcode)
           val traderDetailsModel = TraderDetailsModel(
             traderName = setupTradeDetails.traderBusinessName,
             traderAddress = traderAddress,

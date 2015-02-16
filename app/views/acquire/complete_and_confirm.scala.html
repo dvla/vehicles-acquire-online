@@ -26,19 +26,38 @@
 
     @if(data.isSaleDateBeforeDisposalDate) {
         <div class="site-overlay"></div>
-        <!-- The below code allows old IE browsers to have transparent color -->
+
+        <!-- INTERNET EXPLORER HACKS -->
+
+        <!-- The below code allows old IE browsers to have transparent bg without image -->
         <!--[if IE]>
-           
            <style type="text/css">
-
-           .site-overlay { 
-               background:transparent;
-               filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#50990000,endColorstr=#50990000); 
-               zoom: 1;
-            } 
-
+               .site-overlay { 
+                   background:transparent;
+                   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#A5000000,endColorstr=#A5000000); 
+                   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#A5000000,endColorstr=#A5000000); 
+                   zoom: 1;
+                } 
             </style>
+        <![endif]-->
 
+        <!-- The below code is CSS fixes for IE9 only -->
+        <!--[if IE 9]>
+           <style type="text/css">
+                .popup-modal {
+                    top: 0px !important;
+                }
+           </style>
+        <![endif]-->
+
+        <!-- The below code is CSS fixes for IE7 only -->
+        <!--[if IE 9]>
+           <style type="text/css">
+                .popup-modal {
+                    margin: 0 auto 0 50%;
+                    left: -225px;
+                }
+           </style>
         <![endif]-->
     }
 

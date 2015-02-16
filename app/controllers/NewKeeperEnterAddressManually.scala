@@ -1,7 +1,6 @@
 package controllers
 
 import com.google.inject.Inject
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.{NewKeeperEnterAddressManuallyViewModel, NewKeeperEnterAddressManuallyFormModel}
 import play.api.Logger
@@ -10,10 +9,10 @@ import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
-import common.model.AddressModel
 import common.model.NewKeeperDetailsViewModel.createNewKeeper
 import common.model.PrivateKeeperDetailsFormModel
-import common.model.VehicleAndKeeperDetailsModel
+import common.model.{VmAddressModel, BusinessKeeperDetailsFormModel, VehicleAndKeeperDetailsModel}
+
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
@@ -104,7 +103,7 @@ class NewKeeperEnterAddressManually @Inject()()
 
   private def handleValidForm(validForm: NewKeeperEnterAddressManuallyFormModel, postcode: String)
                              (implicit request: Request[_]): Result = {
-    createNewKeeper(AddressModel.from(
+    createNewKeeper(VmAddressModel.from(
       validForm.addressAndPostcodeModel,
       postcode
     )) match {

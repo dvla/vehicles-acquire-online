@@ -1,16 +1,14 @@
 package helpers.acquire
 
-import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
-import models.SetupTradeDetailsFormModel
-import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
@@ -41,6 +39,8 @@ import common.model.NewKeeperDetailsViewModel
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
@@ -81,7 +81,7 @@ object CookieFactoryForUISpecs {
   def setupTradeDetails(traderBusinessName: String = TraderBusinessNameValid,
                         traderPostcode: String = PostcodeValid,
                         traderEmail: Option[String] = None)(implicit webDriver: WebDriver) = {
-    val key = SetupTradeDetailsCacheKey
+    val key = setupTradeDetailsCacheKey
     val value = SetupTradeDetailsFormModel(
       traderBusinessName,
       traderPostcode = traderPostcode,
@@ -164,7 +164,8 @@ object CookieFactoryForUISpecs {
                               lastName: Option[String] = None,
                               address: Option[AddressModel] = None,
                               keeperEndDate: Option[DateTime] = None,
-                              disposeFlag: Option[Boolean] = Some(false))(implicit webDriver: WebDriver) = {
+                              disposeFlag: Option[Boolean] = Some(false),
+                              suppressedV5CFlag: Option[Boolean] = Some(false))(implicit webDriver: WebDriver) = {
     val key = VehicleAndKeeperLookupDetailsCacheKey
     val value = VehicleAndKeeperDetailsModel(
       registrationNumber = registrationNumber,
@@ -175,7 +176,8 @@ object CookieFactoryForUISpecs {
       lastName = lastName,
       address = address,
       keeperEndDate = keeperEndDate,
-      disposeFlag = disposeFlag
+      disposeFlag = disposeFlag,
+      suppressedV5Flag = suppressedV5CFlag
     )
     addCookie(key, value)
     this
