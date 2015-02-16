@@ -3,22 +3,22 @@ package controllers
 import javax.inject.Inject
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
-import models.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
-import models.PrivateKeeperDetailsFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
-import uk.gov.dvla.vehicles.presentation.common.model.AddressModel
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.ClientSideSessionFactory
+import common.model.AddressModel
+import common.model.BusinessKeeperDetailsFormModel
+import common.model.NewKeeperDetailsViewModel
+import common.model.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
+import common.model.NewKeeperChooseYourAddressFormModel
+import common.model.PrivateKeeperDetailsFormModel
 import common.model.VehicleAndKeeperDetailsModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding

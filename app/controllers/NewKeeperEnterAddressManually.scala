@@ -3,9 +3,7 @@ package controllers
 import com.google.inject.Inject
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import models.NewKeeperDetailsViewModel.createNewKeeper
 import models.{NewKeeperEnterAddressManuallyViewModel, NewKeeperEnterAddressManuallyFormModel}
-import models.PrivateKeeperDetailsFormModel
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
@@ -13,6 +11,8 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
 import common.model.AddressModel
+import common.model.NewKeeperDetailsViewModel.createNewKeeper
+import common.model.PrivateKeeperDetailsFormModel
 import common.model.VehicleAndKeeperDetailsModel
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config

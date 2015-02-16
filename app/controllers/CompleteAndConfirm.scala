@@ -1,38 +1,38 @@
 package controllers
 
 import com.google.inject.Inject
-import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import models.NewKeeperDetailsViewModel
-import models.CompleteAndConfirmResponseModel
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
+import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
+import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmViewModel
 import models.VehicleLookupFormModel
 import models.VehicleTaxOrSornFormModel
-import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
+import models.VehicleNewKeeperCompletionCacheKeys
 import org.joda.time.{LocalDate, DateTime}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import play.api.Logger
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.mappings.TitleType
-import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
-import utils.helpers.Config
-import views.html.acquire.complete_and_confirm
 import common.webserviceclients.acquire.AcquireRequestDto
 import common.webserviceclients.acquire.AcquireResponseDto
 import common.webserviceclients.acquire.AcquireService
 import common.webserviceclients.acquire.KeeperDetailsDto
 import common.webserviceclients.acquire.TitleTypeDto
 import common.webserviceclients.acquire.TraderDetailsDto
-import models.VehicleNewKeeperCompletionCacheKeys
+import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
+import utils.helpers.Config
+import views.html.acquire.complete_and_confirm
 
 class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,

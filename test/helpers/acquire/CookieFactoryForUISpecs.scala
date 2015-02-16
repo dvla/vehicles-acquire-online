@@ -1,22 +1,16 @@
 package helpers.acquire
 
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.NewKeeperDetailsViewModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
-import models.PrivateKeeperDetailsFormModel
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import models.SetupTradeDetailsFormModel
 import models.SetupTradeDetailsFormModel.SetupTradeDetailsCacheKey
-import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
@@ -36,15 +30,21 @@ import helpers.acquire.CookieFactoryForUnitSpecs.{ConsentTrue, VehicleLookupFail
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
-import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import uk.gov.dvla.vehicles.presentation.common
 import common.controllers.AlternateLanguages.{CyId, EnId}
 import common.mappings.TitleType
+import common.model.{AddressModel, BruteForcePreventionModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
+import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import common.model.BusinessKeeperDetailsFormModel
+import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import common.model.NewKeeperDetailsViewModel
+import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.PrivateKeeperDetailsFormModel
+import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
-import common.model.{BruteForcePreventionModel, VehicleAndKeeperDetailsModel, TraderDetailsModel, AddressModel}
-import TraderDetailsModel.TraderDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
-import BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
@@ -192,7 +192,7 @@ object CookieFactoryForUISpecs {
                            )),
                            driverNumber: Option[String] = Some(DriverNumberValid),
                            postcode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
-    val key = PrivateKeeperDetailsCacheKey
+    val key = privateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
@@ -231,7 +231,7 @@ object CookieFactoryForUISpecs {
                        email: Option[String] = None,
                        address: AddressModel = addressWithoutUprn,
                        isBusinessKeeper: Boolean = false)(implicit webDriver: WebDriver) = {
-    val key = NewKeeperDetailsCacheKey
+    val key = newKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
       title = title,
       firstName = firstName,

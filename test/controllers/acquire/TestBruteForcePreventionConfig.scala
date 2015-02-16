@@ -1,12 +1,8 @@
 package controllers.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.BruteForcePreventionConfig
 import scala.concurrent.duration.DurationInt
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.BruteForcePreventionConfig
 
-/**
- * Created by gerasimosarvanitis on 09/01/2015.
- */
 class TestBruteForcePreventionConfig extends BruteForcePreventionConfig {
 
   //  val baseUrl: String = getProperty("bruteForcePrevention.baseUrl", "NOT FOUND")
@@ -22,5 +18,4 @@ class TestBruteForcePreventionConfig extends BruteForcePreventionConfig {
   override lazy val nameHeader: String = ""
   override lazy val maxAttemptsHeader: Int = 3
   override lazy val expiryHeader: String = ""
-
 }

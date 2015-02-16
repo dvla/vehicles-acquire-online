@@ -6,24 +6,24 @@ import helpers.acquire.CookieFactoryForUISpecs
 import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.BusinessKeeperDetailsPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleLookupPage.{happyPath, back}
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.KeeperStillOnRecordPage
-import pages.acquire.BusinessKeeperDetailsPage
-import ProgressBar.progressStep
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import play.api.test.FakeApplication
+import ProgressBar.progressStep
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 
 final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
@@ -111,7 +111,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       CookieFactoryForUISpecs.privateKeeperDetails()
       happyPath(isVehicleSoldToPrivateIndividual = false)
-      webDriver.manage().getCookieNamed(PrivateKeeperDetailsCacheKey) should equal(null)
+      webDriver.manage().getCookieNamed(privateKeeperDetailsCacheKey) should equal(null)
     }
 
     "display one validation error message when no referenceNumber is entered" taggedAs UiTag in new WebBrowser {
