@@ -8,7 +8,10 @@ import helpers.UnitSpec
 import helpers.WithApplication
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
+import org.mockito.Matchers._
 import org.mockito.Mockito.when
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
@@ -18,11 +21,12 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
+import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
+import common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
@@ -30,6 +34,8 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
+
+import scala.concurrent.Future
 
 final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
   "present (use UPRN enabled)" should {
@@ -518,7 +524,11 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
     val responsePostcode = if (uprnFound) responseValidForPostcodeToAddress else responseValidForPostcodeToAddressNotFound
     val responseUprn = if (uprnFound) responseValidForUprnToAddress else responseValidForUprnToAddressNotFound
     val fakeWebService = new FakeAddressLookupWebServiceImpl(responsePostcode, responseUprn)
-    val addressLookupService = new AddressLookupServiceImpl(fakeWebService)
+    val healthStatsMock = mock[HealthStats]
+    when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+      override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+    })
+    val addressLookupService = new AddressLookupServiceImpl(fakeWebService, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.isPrototypeBannerVisible).thenReturn(isPrototypeBannerVisible) // Stub this config value.
