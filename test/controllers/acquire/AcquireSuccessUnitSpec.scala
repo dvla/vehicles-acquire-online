@@ -5,16 +5,10 @@ import controllers.AcquireSuccess
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
-import models.{PrivateKeeperDetailsFormModel, NewKeeperDetailsViewModel}
-import models.{VehicleLookupFormModel, CompleteAndConfirmFormModel}
-import CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
-import VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
-import PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.format.DateTimeFormat
 import org.mockito.Mockito.when
@@ -24,9 +18,13 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, Em
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionTimestampValid, TransactionIdValid}
@@ -141,8 +139,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 
         verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(newKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(privateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
@@ -186,8 +184,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 
         verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(NewKeeperDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(PrivateKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(newKeeperDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(privateKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(businessKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)

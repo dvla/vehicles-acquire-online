@@ -1,19 +1,20 @@
 package controllers
 
 import com.google.inject.Inject
-import models.VehicleNewKeeperCompletionCacheKeys
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.AcquireCompletionViewModel
+import models.AllCacheKeys
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel
-import models.NewKeeperDetailsViewModel
+import models.VehicleNewKeeperCompletionCacheKeys
 import models.VehicleTaxOrSornFormModel
-import models.AllCacheKeys
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.model.{TraderDetailsModel, VehicleAndKeeperDetailsModel}
+import common.model.NewKeeperDetailsViewModel
 import utils.helpers.Config
 
 class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,

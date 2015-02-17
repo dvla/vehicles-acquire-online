@@ -140,7 +140,7 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
     val suppressed = model.suppressedV5Flag.getOrElse(false)
 
     (disposed, suppressed) match {
-      case (true, true) => Redirect(routes.SuppressedV5C.present()).withCookie(model)
+      case (_, true) => Redirect(routes.SuppressedV5C.present()).withCookie(model)
       case (true, false) => vehicleDisposedResult(model, soldTo)
       case (false, _) => Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
     }

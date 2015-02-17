@@ -1,17 +1,17 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, TelField, TextField, WebBrowserDSL, WebDriverFactory}
-import models.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
-import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
-import models.PrivateKeeperDetailsFormModel.Form.EmailId
-import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
-import models.PrivateKeeperDetailsFormModel.Form.LastNameId
-import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
-import models.PrivateKeeperDetailsFormModel.Form.TitleId
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString.OtherTitleRadioValue
+import uk.gov.dvla.vehicles.presentation.common
+import common.helpers.webbrowser.{Element, Page, TelField, TextField, WebBrowserDSL, WebDriverFactory}
+import common.mappings.TitlePickerString.OtherTitleRadioValue
+import common.model.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
+import common.model.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailId
+import common.model.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.LastNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import common.model.PrivateKeeperDetailsFormModel.Form.TitleId
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {

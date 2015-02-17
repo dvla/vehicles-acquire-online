@@ -13,9 +13,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
-import common.model.AddressModel
-import common.model.TraderDetailsModel
-import common.model.SetupTradeDetailsFormModel
+import common.model.{VmAddressModel, AddressModel, TraderDetailsModel, SetupTradeDetailsFormModel}
 import common.webserviceclients.addresslookup.AddressLookupService
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -109,7 +107,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         val lookedUpAddress = lookedUpAddresses(indexSelected) match {
           case (index, address) => address
         }
-        val addressModel = AddressModel.from(lookedUpAddress)
+        val addressModel = VmAddressModel.from(lookedUpAddress)
         nextPage(model, setupBusinessDetailsForm.traderBusinessName, addressModel, setupBusinessDetailsForm.traderEmail)
       }
       else {

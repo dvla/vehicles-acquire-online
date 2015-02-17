@@ -1,21 +1,21 @@
-import uk.gov.dvla.vehicles.presentation.common
-import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
-import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
-import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
-import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
-import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import models.AcquireCacheKeyPrefix.CookiePrefix
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 
 package object models {
   
@@ -43,7 +43,7 @@ package object models {
 
   // Set of cookies related to all data entered for a private keeper
   final val PrivateKeeperDetailsCacheKeys = Set(
-    PrivateKeeperDetailsCacheKey,
+    privateKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
     newKeeperChooseYourAddressCacheKey,
     NewKeeperEnterAddressManuallyCacheKey
@@ -58,7 +58,7 @@ package object models {
 
   final val CompletionCacheKeys = Set(
     VehicleTaxOrSornCacheKey,
-    NewKeeperDetailsCacheKey,
+    newKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
     VehicleLookupResponseCodeCacheKey,
     AcquireCompletionResponseCacheKey

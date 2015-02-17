@@ -4,13 +4,8 @@ import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.PrivateKeeperDetailsFormModel.Form.PostcodeId
-import models.PrivateKeeperDetailsFormModel.Form.EmailId
-import models.PrivateKeeperDetailsFormModel.Form.FirstNameId
-import models.PrivateKeeperDetailsFormModel.Form.LastNameId
-import models.PrivateKeeperDetailsFormModel.Form.TitleId
-import models.PrivateKeeperDetailsFormModel.Form.DriverNumberId
 import org.mockito.Mockito.when
+import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
@@ -20,13 +15,19 @@ import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
 import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import play.api.i18n.Messages
-import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.{TitleType, TitlePickerString}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.mappings.{TitleType, TitlePickerString}
+import common.model.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailId
+import common.model.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.LastNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.TitleId
+import common.model.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import common.services.DateService
 import TitlePickerString.standardOptions
-import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import utils.helpers.Config
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {

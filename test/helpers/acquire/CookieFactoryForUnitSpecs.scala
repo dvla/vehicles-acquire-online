@@ -2,38 +2,24 @@ package helpers.acquire
 
 import composition.TestComposition
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
-import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
-import org.joda.time.{DateTime, LocalDate}
-import pages.acquire.{HelpPage, VehicleLookupPage}
-import play.api.libs.json.{Json, Writes}
-import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel._
-import uk.gov.dvla.vehicles.presentation.common.model._
-import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
-import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
-import models.{CompleteAndConfirmResponseModel, SeenCookieMessageCacheKey, BusinessChooseYourAddressFormModel}
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel
-import BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.BusinessChooseYourAddressFormModel
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.CompleteAndConfirmFormModel
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import models.CompleteAndConfirmResponseModel
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel
-import models.NewKeeperDetailsViewModel
-import models.NewKeeperDetailsViewModel.NewKeeperDetailsCacheKey
+import models.HelpCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel
 import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
-import models.PrivateKeeperDetailsFormModel
-import models.PrivateKeeperDetailsFormModel.PrivateKeeperDetailsCacheKey
-import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import models.SeenCookieMessageCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.VehicleTaxOrSornFormModel
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
-import TraderDetailsModel.TraderDetailsCacheKey
+import org.joda.time.{DateTime, LocalDate}
+import pages.acquire.{HelpPage, VehicleLookupPage}
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import play.api.mvc.Cookie
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
@@ -41,8 +27,28 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, Dr
 import pages.acquire.CompleteAndConfirmPage.MileageValid
 import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBirthValid, MonthDateOfBirthValid}
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
+import play.api.libs.json.{Json, Writes}
+import uk.gov.dvla.vehicles.presentation.common
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
+import common.mappings.TitleType
+import common.model.AddressModel
+import common.model.BruteForcePreventionModel
+import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import common.model.BusinessKeeperDetailsFormModel
+import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import common.model.NewKeeperChooseYourAddressFormModel
+import common.model.NewKeeperDetailsViewModel
+import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.PrivateKeeperDetailsFormModel
+import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel
+import common.model.TraderDetailsModel
+import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel
+import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleModelValid
@@ -52,7 +58,6 @@ import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.Registration
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleMakeValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionIdValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
-import models.HelpCacheKey
 
 object CookieFactoryForUnitSpecs extends TestComposition {
 
@@ -225,7 +230,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                                 email: Option[String] = Some(EmailValid),
                                 driverNumber: Option[String] = Some(DriverNumberValid),
                                 postcode: String = PostcodeValid): Cookie = {
-    val key = PrivateKeeperDetailsCacheKey
+    val key = privateKeeperDetailsCacheKey
     val value = PrivateKeeperDetailsFormModel(
       title = title,
       firstName = firstName,
@@ -300,7 +305,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                             line3: String = Line3Valid,
                             postTown: String = PostTownValid,
                             postcode: String = PostcodeValid): Cookie = {
-    val key = NewKeeperDetailsCacheKey
+    val key = newKeeperDetailsCacheKey
     val value = NewKeeperDetailsViewModel(
       title = title,
       firstName = firstName,

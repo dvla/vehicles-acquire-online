@@ -2,7 +2,6 @@ package composition
 
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
 import utils.helpers.Config
 
@@ -10,7 +9,6 @@ import utils.helpers.Config
  * Test configuration. This should be provided as the configuration, so we need to bind this to Config type.
  */
 class TestConfig extends Config {
-
 
   override lazy val acquire = new FakeAcquireConfig()
 
@@ -30,10 +28,9 @@ class TestConfig extends Config {
 
   def ordnanceSurveyUseUprn: Boolean = false
 
-
-  // opening and closing times
-  def opening: Int = 1
-  def closing: Int = 18
+  // Opening and closing times
+  def opening: Int = 0
+  def closing: Int = 24
 
   // Web headers
   def applicationCode: String = ""
@@ -53,5 +50,4 @@ class TestConfig extends Config {
     From("", "Feedback"),
     None
   )
-
 }

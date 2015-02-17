@@ -1,16 +1,18 @@
 package controllers
 
 import com.google.inject.Inject
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.NewKeeperEnterAddressManuallyFormModel
-import models.{NewKeeperDetailsViewModel, VehicleTaxOrSornViewModel, VehicleTaxOrSornFormModel}
+import models.{VehicleTaxOrSornViewModel, VehicleTaxOrSornFormModel}
 import play.api.Logger
 import play.api.data.Form
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
+import common.model.NewKeeperDetailsViewModel
+import common.model.VehicleAndKeeperDetailsModel
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
 

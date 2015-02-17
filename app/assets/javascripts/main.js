@@ -22,14 +22,12 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             return;
         }
 
-        var animDuration = 200; // 200 ms for the duration
-
         var checkStateOfRadio = function(radioOtherId, emailId) {
             if(!$(radioOtherId).attr('checked')) {
-                $(emailId).parent().hide(animDuration).removeClass('item-visible');
+                $(emailId).parent().hide().removeClass('item-visible');
                 $(emailId).val('');
             } else {
-                $(emailId).parent().show(animDuration).addClass('item-visible');
+                $(emailId).parent().show().addClass('item-visible');
             }
         };
 
@@ -108,4 +106,5 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         if (typeof v == 'undefined') return [];
         else return[v];
     }
-});
+
+}); // end require

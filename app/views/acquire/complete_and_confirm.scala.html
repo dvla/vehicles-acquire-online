@@ -25,26 +25,48 @@
     <script src="@routes.Assets.at("lib/vehicles-presentation-common/javascripts/autofill-todays-date.js")" type="text/javascript"></script>
 
     @if(data.isSaleDateBeforeDisposalDate) {
+
         <div class="site-overlay"></div>
-        <!-- The below code allows old IE browsers to have transparent color -->
+
+        <!-- INTERNET EXPLORER HACKS -->
+
+        <!-- The below code allows old IE browsers to have transparent bg without image -->
         <!--[if IE]>
-           
            <style type="text/css">
-
-           .site-overlay { 
-               background:transparent;
-               filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#50990000,endColorstr=#50990000); 
-               zoom: 1;
-            } 
-
+               .site-overlay { 
+                   background:transparent;
+                   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#A5000000,endColorstr=#A5000000); 
+                   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#A5000000,endColorstr=#A5000000); 
+                   zoom: 1;
+                } 
             </style>
-
         <![endif]-->
+
+        <!-- The below code is CSS fixes for IE9 only -->
+        <!--[if IE 9]>
+           <style type="text/css">
+                .popup-modal {
+                    top: 0px !important;
+                }
+           </style>
+        <![endif]-->
+
+        <!-- The below code is CSS fixes for IE7 only -->
+        <!--[if IE 9]>
+           <style type="text/css">
+                .popup-modal {
+                    margin: 0 auto 0 50% !important;
+                    left: -225px !important;
+                }
+           </style>
+        <![endif]-->
+
     }
 
     @form(action = data.submitAction) {
 
     <div class="two-col clearfix acquire-complete-confirm">
+    
         <div class="first-col">
             <dl class="playback">
                 <dt><h2>@Messages("acquire_completeandconfirm.taxOrSorn")</h2></dt>

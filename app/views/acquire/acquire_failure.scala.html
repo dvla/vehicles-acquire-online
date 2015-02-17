@@ -9,10 +9,10 @@ config: utils.helpers.Config)
 @import common.views.html.widgets.base.csrfTokenHiddenField
 
 @main(
-title = Messages("acquire_acquirefailure.title")
-) {
-
+    title = Messages("acquire_acquirefailure.title")
+){
 <div class="two-col clearfix">
+
     <div class="first-col">
         <dl class="playback">
             <h2>@Messages("acquire_failure.transaction_details.header")</h2>
@@ -33,8 +33,8 @@ title = Messages("acquire_acquirefailure.title")
         </div>
     </div>
 
-
     <div class="form-steps">
+
         <div class="step">
             <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">
                 @Messages("acquire_failure.buttonnavprint")
@@ -60,5 +60,6 @@ title = Messages("acquire_acquirefailure.title")
         </div>
 
     </div>
+
 </div>
 }
