@@ -23,7 +23,7 @@ import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDr
 /**
  *
  * Acquire screen flow
- * ==================
+ *
  * before-you-start
  * setup-trade-details
  *               |                  \
