@@ -3,11 +3,8 @@
 #{$htmlNamespace} {
 
     .acquire-complete-confirm {
-        .first-col,
-        .second-col {
-            .playback dd.tax-or-sorn {
-                @include long-text-wrap('word');
-            }
+        .playback dd.tax-or-sorn {
+            @include long-text-wrap('word');
         }
     }
 
@@ -17,21 +14,19 @@
                 margin-bottom: 2em;
             }
         }
-        .playback {
-            dd.tax-or-sorn-sub {
-                -ms-word-break: normal;
-                word-break: normal;
-                word-wrap: normal;
-                -webkit-hyphens: none;
-                -moz-hyphens: none;
-                hyphens: none;
-                color: $grey-1;
-                font-weight: normal;
-                text-transform: none;
-                &.transaction-details {
-                    background: $light-blue-25;
-                    padding: 1em;
-                }
+        .tax-or-sorn-sub {
+            -ms-word-break: normal;
+            word-break: normal;
+            word-wrap: normal;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            hyphens: none;
+            color: $grey-1;
+            font-weight: normal;
+            text-transform: none;
+            &.transaction-details {
+                background: $light-blue-25;
+                padding: 1em;
             }
         }
     }
