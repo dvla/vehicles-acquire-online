@@ -1,99 +1,64 @@
 //Exemplar specific
 
-
 #{$htmlNamespace} {
 
-  .acquire-complete-confirm {
-      .first-col,
-      .second-col {
-          .playback dd.tax-or-sorn {
-              @include long-text-wrap('word');
-          }
-      }
-  }
-
-  .acquire-success {
-    .first-col .playback,
-    .second-col .playback {
-        dd.tax-or-sorn {
-            padding-bottom: 0;
-        }
-        dd.tax-or-sorn-sub {
-            -ms-word-break: normal;
-            word-break: normal;
-            word-wrap: normal;
-            -webkit-hyphens: none;
-            -moz-hyphens: none;
-            hyphens: none;
-            color: $grey-1;
-            font-weight: normal;
-            text-transform: none;
-            font-size: 16px;
+    .acquire-complete-confirm {
+        .first-col,
+        .second-col {
+            .playback dd.tax-or-sorn {
+                @include long-text-wrap('word');
+            }
         }
     }
-  }
 
-  .acquire-success {
-      .first-col,
-      .second-col {
-          .related.mobile-only {
-              @media screen and (max-width:$device-medium) {
+    .acquire-success {
+        .related {
+            @media screen and (max-width:$device-medium) {
                 margin-bottom: 2em;
-              }
-          }
-
-          .playback.transaction-details {
-              background: $light-blue-25;
-              padding: 1em;
-          }
-      }
-
-      .first-col {
-          float: left;
-          width: 63%;
-          margin-top: 0;
-          @media screen and (max-width:$device-medium) {
-              width: 100%;
-          }
-      }
-      .second-col {
-          float: right;
-          width: 30%;
-
-          @media screen and (max-width:$device-medium) {
-              width: 100%;
-              display: none;
-          }
-          .playback {
-              dt,
-              dd {
-                  font-size: 16px;
-              }
-          }
-      }
-  }
+            }
+        }
+        .playback {
+            dd.tax-or-sorn-sub {
+                -ms-word-break: normal;
+                word-break: normal;
+                word-wrap: normal;
+                -webkit-hyphens: none;
+                -moz-hyphens: none;
+                hyphens: none;
+                color: $grey-1;
+                font-weight: normal;
+                text-transform: none;
+                &.transaction-details {
+                    background: $light-blue-25;
+                    padding: 1em;
+                }
+            }
+        }
+    }
 
     .popup-modal {
+        // appearance
         background: white;
-        display: inline-block;
-        position: fixed;
-        top: 0;
-        width: 600px;
-        max-width: 90%;
-        left: 0;
-        right: 0;
-        z-index: 9999;
+        box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
         padding: 16px;
         border-radius: 6px;
+        width: 600px;
+        max-width: 90%;
+        // behaviour/positioning
+        display: inline-block;
+        z-index: 9999;
         margin: auto;
-        box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
-        // we use calc so it only takes effect on modern browsers, old browsers can't have a centered box
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        // modern browser vertical centering
         top: calc(100% - 50%);
         transform: translateY(calc(1% - 51%));
-    }
-
-    .popup-modal .form-item {
-        margin-bottom: 0;
+        // modal-active style overrides
+        .form-item {
+            margin-bottom: 0;
+        }
     }
 
     .site-overlay {
@@ -106,4 +71,4 @@
         z-index: 9998;
     }
 
-}
+} // end $htmlNamespace
