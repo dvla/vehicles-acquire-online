@@ -1,6 +1,5 @@
 import de.johoop.jacoco4sbt.JacocoPlugin._
 import org.scalastyle.sbt.ScalastylePlugin
-import net.litola.SassPlugin
 import Common._
 import uk.gov.dvla.vehicles.sandbox
 import sandbox.ProjectDefinitions.{osAddressLookup, vehicleAndKeeperLookup, vehiclesAcquireFulfil, legacyStubs, gatlingTests}
@@ -28,15 +27,17 @@ credentials += sbtCredentials
 
 resolvers ++= projectResolvers
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala, SassPlugin, SbtWeb)
+pipelineStages := Seq(rjs, digest, gzip)
+
+lazy val root = (project in file(".")).enablePlugins(PlayScala, SbtWeb)
 
 lazy val acceptanceTestsProject = Project("acceptance-tests", file("acceptance-tests"))
   .dependsOn(root % "test->test")
-  .disablePlugins(PlayScala, SassPlugin, SbtWeb)
+  .disablePlugins(PlayScala, SbtWeb)
   .settings(net.virtualvoid.sbt.graph.Plugin.graphSettings:_*)
 
 lazy val gatlingTestsProject = Project("gatling-tests", file("gatling-tests"))
-  .disablePlugins(PlayScala, SassPlugin, SbtWeb)
+  .disablePlugins(PlayScala, SbtWeb)
   .enablePlugins(GatlingPlugin)
 
 libraryDependencies ++= Seq(
@@ -95,10 +96,10 @@ ScalastylePlugin.Settings
 net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 // ====================== Sandbox Settings ==========================
-lazy val osAddressLookupProject = osAddressLookup("0.11-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val vehicleAndKeeperLookupProject = vehicleAndKeeperLookup("0.7-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val vehiclesAcquireFulfilProject = vehiclesAcquireFulfil("0.8-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
-lazy val legacyStubsProject = legacyStubs("1.0-SNAPSHOT").disablePlugins(PlayScala, SassPlugin, SbtWeb)
+lazy val osAddressLookupProject = osAddressLookup("0.11-SNAPSHOT").disablePlugins(PlayScala, SbtWeb)
+lazy val vehicleAndKeeperLookupProject = vehicleAndKeeperLookup("0.7-SNAPSHOT").disablePlugins(PlayScala, SbtWeb)
+lazy val vehiclesAcquireFulfilProject = vehiclesAcquireFulfil("0.8-SNAPSHOT").disablePlugins(PlayScala, SbtWeb)
+lazy val legacyStubsProject = legacyStubs("1.0-SNAPSHOT").disablePlugins(PlayScala, SbtWeb)
 
 SandboxSettings.portOffset := 19000
 
