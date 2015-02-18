@@ -46,7 +46,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     happyPath.goToVehicleLookupPageAfterManuallyEnteringAddress()
   }
 
-  @Given("^the user is on the Enter business keeper details page$")
+  @Given("^the user is on the Enter new keeper details page$")
   def the_user_is_on_the_Enter_business_keeper_details_page() {
     gotoVehicleLookUpPageWithKnownAddress()
     the_user_fills_in_the_vrn_doc_ref_number_and_selects_businessKeeper()
