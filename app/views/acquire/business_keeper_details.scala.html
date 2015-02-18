@@ -69,8 +69,9 @@
                         )
                     </div>
 
-                    @valtechInputText(viewModel.form(EmailId), args =
-                        Map('_label -> Messages("acquire_businesskeeperdetails.email"),
+                    @valtechInputText(viewModel.form(EmailId), 
+                    hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")),
+                    args = Map('_label -> Messages("acquire_businesskeeperdetails.email"),
                             '_showConstraints -> false,
                             'maxLength -> EmailMaxLength,
                             'optionalFieldKey -> true
