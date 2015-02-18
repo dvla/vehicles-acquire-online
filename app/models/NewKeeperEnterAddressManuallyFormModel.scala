@@ -5,7 +5,7 @@ import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressAndPostcodeViewModel
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import mappings.ThreeAlphas.threeAlphasConstrain
+import mappings.ThreeAlphasConstraint.threeAlphasConstraint
 
 final case class NewKeeperEnterAddressManuallyFormModel(addressAndPostcodeModel: AddressAndPostcodeViewModel)
 
@@ -19,7 +19,7 @@ object NewKeeperEnterAddressManuallyFormModel {
 
     final val AddressAndPostcodeId = "addressAndPostcode"
     final val Mapping = mapping(
-    AddressAndPostcodeId -> AddressAndPostcodeViewModel.Form.Mapping.verifying(threeAlphasConstrain)
+    AddressAndPostcodeId -> AddressAndPostcodeViewModel.Form.Mapping.verifying(threeAlphasConstraint)
     )(NewKeeperEnterAddressManuallyFormModel.apply)(NewKeeperEnterAddressManuallyFormModel.unapply)
 
   }
