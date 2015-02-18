@@ -15,7 +15,7 @@ Feature:
   Scenario: The user chooses a new keeper type of business
     When the user fills in the vrn, doc ref number and selects businessKeeper
     And the user navigates forwards from the vehicle lookup page and there are no validation errors
-    Then the user is taken to the page entitled "Enter business keeper details"
+    Then the user is taken to the page entitled "Enter new keeper details"
 
   Scenario: The user navigates to the previous page
     When the user selects the control labelled VehicleLookUpBack button
