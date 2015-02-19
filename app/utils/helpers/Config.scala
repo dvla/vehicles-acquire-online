@@ -7,6 +7,8 @@ import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfig
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
 trait Config {
+  
+  def assetsUrl: Option[String]
 
   // Prototype message in html
   def isPrototypeBannerVisible: Boolean
