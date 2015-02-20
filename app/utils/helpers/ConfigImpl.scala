@@ -50,4 +50,6 @@ class ConfigImpl extends Config {
     From(getProperty[String]("email.feedbackAddress"), "Feedback"),
     getStringListProperty("email.whitelist")
   )
+
+  override def assetsUrl: Option[String] = getOptionalProperty[String]("assets.url")
 }

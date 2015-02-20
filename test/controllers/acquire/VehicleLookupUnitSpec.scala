@@ -271,6 +271,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
+    when(config.assetsUrl).thenReturn(None) // Stub this config value.
 
     new VehicleLookup(
       bruteForceService = bruteForceService,
@@ -294,6 +295,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
+    when(config.assetsUrl).thenReturn(None) // Stub this config value.
 
     new VehicleLookup(
       bruteForceService = bruteForceServiceImpl(permitted = permitted),
