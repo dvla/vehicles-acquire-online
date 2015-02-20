@@ -98,7 +98,7 @@ GET         /service-error/try-again                    @controllers.MicroServic
 
 # Brute force vrm locked
 GET         /vrm-locked                                 @controllers.VrmLocked.present
-POST        /vrm-locked/buy-another                     @controllers.VrmLocked.buyAnotherVehicle
+POST        /vrm-locked/buy-another                     @controllers.VrmLocked.tryAnother
 POST        /vrm-locked/exit                            @controllers.VrmLocked.exit
 
 GET         /error/:exceptionDigest                     @controllers.Error.present(exceptionDigest)
