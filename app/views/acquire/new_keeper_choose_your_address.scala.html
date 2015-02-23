@@ -8,13 +8,13 @@
 
 @import controllers.routes.NewKeeperChooseYourAddress
 @import uk.gov.dvla.vehicles.presentation.common
+@import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechSelect
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import views.acquire.NewKeeperChooseYourAddress.{BackId, EnterAddressManuallyButtonId, SelectId}
 @import views.html.acquire.main
 @import views.html.helper.form
-@import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 
 @main(
     progress = Some(Messages("acquire_progress_6")),
