@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, PrivateKeeperDetailsCacheKeys}
@@ -20,7 +21,7 @@ import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
-import common.webserviceclients.common.{DmsWebEndUserDto, DmsWebHeaderDto}
+import common.webserviceclients.common.DmsWebHeaderDto
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService

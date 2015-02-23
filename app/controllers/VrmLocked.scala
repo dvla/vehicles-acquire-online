@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.{AllCacheKeys, VehicleLookupCacheKeys, VrmLockedViewModel}
 import org.joda.time.DateTime
 import play.api.mvc.{Request, Result}

@@ -31,8 +31,9 @@ import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
 import common.controllers.AlternateLanguages.{CyId, EnId}
 import common.mappings.TitleType
-import common.model.{AddressModel, BruteForcePreventionModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
-import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import common.model.AddressModel
+import common.model.BruteForcePreventionModel
+import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
 import common.model.BusinessKeeperDetailsFormModel
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import common.model.NewKeeperDetailsViewModel
@@ -41,7 +42,9 @@ import common.model.PrivateKeeperDetailsFormModel
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.model.TraderDetailsModel
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
@@ -126,7 +129,7 @@ object CookieFactoryForUISpecs {
                                     maxAttempts: Int = MaxAttempts,
                                     dateTimeISOChronology: String = org.joda.time.DateTime.now().toString)
                                    (implicit webDriver: WebDriver) = {
-    val key = BruteForcePreventionViewModelCacheKey
+    val key = bruteForcePreventionViewModelCacheKey
     val value = BruteForcePreventionModel(
       permitted,
       attempts,
