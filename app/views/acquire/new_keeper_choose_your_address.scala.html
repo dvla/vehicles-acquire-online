@@ -1,4 +1,4 @@
-@(viewModel: models.NewKeeperChooseYourAddressViewModel,
+@(viewModel: uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressViewModel,
         newKeeperName: String,
         newKeeperPostcode: String,
         newKeeperEmail: Option[String],
@@ -29,11 +29,11 @@
         <dl class="playback">
             <dt><h2>@Messages("acquire_newKeeperChooseYourAddress.vehicledetails")</h2></dt>
             <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclereg")</dt>
-            <dd>@viewModel.vehicleAndKeeperDetails.registrationNumber</dd>
+            <dd>@viewModel.vehicleDetails.registrationNumber</dd>
             <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclemake")</dt>
-            <dd>@viewModel.vehicleAndKeeperDetails.make</dd>
+            <dd>@viewModel.vehicleDetails.make</dd>
             <dt>@Messages("acquire_newKeeperChooseYourAddress.vehiclemodel")</dt>
-            <dd>@viewModel.vehicleAndKeeperDetails.model</dd>
+            <dd>@viewModel.vehicleDetails.model</dd>
         </dl>
         <div class="alert-warning print-message">
             <p><strong>@Messages("acquire_newKeeperChooseYourAddress.p4")</strong></p>
