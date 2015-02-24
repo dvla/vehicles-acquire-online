@@ -316,7 +316,7 @@ acquire_failure.transaction_details.transaction_id = Transaction ID
 acquire_failure.transaction_details.transaction_date = Transaction date
 
 #business keeper details
-acquire_businesskeeperdetails.title = Enter business keeper details
+acquire_businesskeeperdetails.title = Enter new keeper details
 acquire_businesskeeperdetails.p1 = Enter the details of the person buying the vehicle.
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
 acquire_businesskeeperdetails.p3 = An email address is optional, and only used to send an optional receipt to the new keeper at the end of this transaction.
@@ -342,6 +342,9 @@ acquire_businesskeeperdetailscomplete.submitbutton = Add Keeper
 acquire_businesskeeperdetailscomplete.backbutton = Back
 acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 businesskeeper_mileage = Mileage
+
+newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
+change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
 
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input

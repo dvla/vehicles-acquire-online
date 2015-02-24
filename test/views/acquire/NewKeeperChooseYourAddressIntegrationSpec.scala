@@ -86,7 +86,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       page.title should equal(VehicleLookupPage.title)
     }
 
-    "redirect to vehicle lookup when no vehicle cookies are in cache but business keeper details exist" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicle lookup when no vehicle cookies are in cache but new keeper details exist" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -230,7 +230,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
-    "display business keeper details page when business keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
+    "display new keeper details page when business keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage

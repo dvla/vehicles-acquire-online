@@ -1,47 +1,38 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{VrmLockedViewModel, AllCacheKeys, VehicleLookupCacheKeys}
+import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.{AllCacheKeys, VehicleLookupCacheKeys, VrmLockedViewModel}
 import org.joda.time.DateTime
-import play.api.Logger
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import common.model.{TraderDetailsModel, BruteForcePreventionModel}
+import common.controllers.VrmLockedBase
+import common.model.BruteForcePreventionModel
+import common.model.TraderDetailsModel
 import utils.helpers.Config
 
-class VrmLocked @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                  config: Config) extends Controller {
+class VrmLocked @Inject()()(implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
+                            config: Config) extends VrmLockedBase {
 
-  def present = Action { implicit request =>
-    request.cookies.getModel[BruteForcePreventionModel] match {
-      case Some(viewModel) =>
-        Logger.debug(s"VrmLocked - Displaying the vrm locked error page")
-        Ok(
-          views.html.acquire.vrm_locked(
-            VrmLockedViewModel(
-              viewModel.dateTimeISOChronology,
-              DateTime.parse(viewModel.dateTimeISOChronology).getMillis
-            )
-          )
-        )
-      case None =>
-        Logger.debug("VrmLocked - Can't find cookie for BruteForcePreventionViewModel")
-        Redirect(routes.VehicleLookup.present())
-    }
-  }
+  protected override def presentResult(model: BruteForcePreventionModel)
+                                      (implicit request: Request[_]): Result =
+    Ok(views.html.acquire.vrm_locked(
+      VrmLockedViewModel(model.dateTimeISOChronology, DateTime.parse(model.dateTimeISOChronology).getMillis)
+    ))
 
-  def buyAnotherVehicle = Action { implicit request =>
+  protected override def missingBruteForcePreventionCookie(implicit request: Request[_]): Result =
+    Redirect(routes.VehicleLookup.present())
+
+  protected override def tryAnotherResult(implicit request: Request[_]): Result =
     request.cookies.getModel[TraderDetailsModel] match {
       case (Some(traderDetails)) =>
         Redirect(routes.VehicleLookup.present()).
           discardingCookies(VehicleLookupCacheKeys)
       case _ => Redirect(routes.SetUpTradeDetails.present())
     }
-  }
 
-  def exit = Action { implicit request =>
+  protected override def exitResult(implicit request: Request[_]): Result =
     Redirect(routes.BeforeYouStart.present()).discardingCookies(AllCacheKeys)
-  }
 }

@@ -1,8 +1,9 @@
 package controllers
 
 import com.google.inject.Inject
-import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.VehicleLookupFormModel
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import play.api.Logger
 import play.api.mvc.{Action, AnyContent, Controller, DiscardingCookie, Request}
 import uk.gov.dvla.vehicles.presentation.common

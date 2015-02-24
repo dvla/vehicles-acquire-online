@@ -50,4 +50,6 @@ class TestConfig extends Config {
     From("", "Feedback"),
     None
   )
+
+  override def assetsUrl: Option[String] = None
 }

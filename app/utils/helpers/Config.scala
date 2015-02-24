@@ -3,10 +3,13 @@ package utils.helpers
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getStringListProperty
+import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupConfig
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
-trait Config {
+trait Config extends VehicleLookupConfig {
+  
+  def assetsUrl: Option[String]
 
   // Prototype message in html
   def isPrototypeBannerVisible: Boolean
@@ -28,15 +31,6 @@ trait Config {
   // opening and closing times
   def opening: Int
   def closing: Int
-
-  // Web headers
-  def applicationCode: String
-  def vssServiceTypeCode: String
-  def dmsServiceTypeCode: String
-  def orgBusinessUnit: String
-  def channelCode: String
-  def contactId: Long
-
 
   def emailConfiguration: EmailConfiguration
 }

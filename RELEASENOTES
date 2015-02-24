@@ -1,3 +1,27 @@
+======== 1.4.4 ========
+Time of release binary creation
+Weds Feb 18
+
+User stories:
+0f20e46 US2468: changing 'my address' to 'address' in acquire
+a23688c US2471: improving CSS efficiency
+b068313 US2454: bind the health stats to the dev module
+3b1e0d2 US2349: Add constraint to address
+0c81d4e US2285: Refactored exemplar now there is a common controller for PrivateKeeperDetails
+10e5f74 US2439: AddressModel change should affect only VM
+f2e1f33 US2342: Use correct route mapping in error screen.
+ac512cb US2288: commonize the controller
+f8a7621 US2343: Use the new suppressed flag on vehicle lookup.
+6841a48 US2378: changing green slip text
+c2949b9 US2366: add javascript to hide the other textfield if the radio button is not selected
+52ce4af US2199: New message for lockup
+76ce344 US2284: moving along all the required classes for comonising BusinessKeeperDetails
+40bb762 US2340: Add email and name to feedback page
+3fe4fac US1268: Ensure that the date of acquisition entered by the customer is compatible with the date of disposal held on record - initial commit
+
+Bugs
+f436297 DE309: Removed title from sorn checkbox.
+
 ======== 1.4.3 ========
 Time of release binary creation:
 Weds Feb 04 14:00:22 UTC 2015

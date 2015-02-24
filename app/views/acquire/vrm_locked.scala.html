@@ -17,7 +17,7 @@ config: utils.helpers.Config)
     <p>@Messages("vrm_locked.text3.1")&nbsp;<strong>@Messages("vrm_locked.text3.2")</strong></p>
     <div class="form-steps">
         <div class="step">
-            @form(action = controllers.routes.VrmLocked.buyAnotherVehicle()) {
+            @form(action = controllers.routes.VrmLocked.tryAnother()) {
                 @csrfTokenHiddenField()
                 <button id="@BuyAnotherVehicleId" type="submit" class="button">@Messages("vrm_locked.buyanother.button")</button>
             }

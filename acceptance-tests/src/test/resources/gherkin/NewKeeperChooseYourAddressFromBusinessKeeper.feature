@@ -13,4 +13,4 @@ Feature:
 
   Scenario: New keeper choose your address - Back
     When the user navigates backwards from the new keeper choose your address
-    Then the user is taken to the page entitled "Enter business keeper details"
+    Then the user is taken to the page entitled "Enter new keeper details"

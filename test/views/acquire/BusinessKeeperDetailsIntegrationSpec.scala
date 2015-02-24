@@ -56,7 +56,7 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
   }
 
   "next button" should {
-    "go to the appropriate next page when all business keeper details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all new keeper details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()

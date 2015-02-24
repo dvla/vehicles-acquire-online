@@ -12,7 +12,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
   private final val BusinessChooseYourAddressPageTitle = "Select trader address"
   private final val TraderPlayBackHeading = "Vehicle being sold from"
   private final val VehicleLookupPageTitle = "Enter vehicle details"
-  private final val BusinessKeeperDetailsPageTitle = "Enter business keeper details"
+  private final val BusinessKeeperDetailsPageTitle = "Enter new keeper details"
   private final val PrivateKeeperDetailsPageTitle = "Enter new keeper details"
   private final val NewKeeperChooseYourAddressPageTitle = "Select new keeper address"
   private final val VehicleTaxOrSorn = "Vehicle tax or SORN"
@@ -205,7 +205,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
         http(chainTitle)
           .post(url)
           .headers(headers_x_www_form_urlencoded)
-          .formParam("acquire_newKeeperChooseYourAddress_addressSelect", "0") // UPRN disabled for Northern Ireland
+          .formParam("newKeeperChooseYourAddress_addressSelect", "0") // UPRN disabled for Northern Ireland
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
           // Assertions

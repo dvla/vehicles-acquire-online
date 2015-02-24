@@ -111,7 +111,6 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       content should include(VehicleMakeValid)
       content should include(VehicleModelValid)
       content should include(BusinessNameValid)
-      content should include(FleetNumberValid)
       content should include(EmailValid)
       content should include(YearDateOfSaleValid)
       content should include(MonthDateOfSaleValid)
