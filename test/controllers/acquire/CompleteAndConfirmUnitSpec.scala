@@ -5,33 +5,39 @@ import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
-import org.joda.time.Instant
-import org.mockito.Mockito.when
-import org.mockito.Matchers._
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.{DateTime, Instant}
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.Matchers.{any, anyString}
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.when
+import org.mockito.Mockito.verify
 import org.mockito.stubbing.Answer
+import pages.acquire.{SetupTradeDetailsPage, AcquireSuccessPage, VehicleLookupPage}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
+import pages.acquire.CompleteAndConfirmPage.MileageValid
+import pages.acquire.CompleteAndConfirmPage.ConsentTrue
+import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
-import pages.acquire.AcquireSuccessPage
-import pages.acquire.CompleteAndConfirmPage.{MileageValid, ConsentTrue}
-import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
-import pages.acquire.VehicleLookupPage
+import play.api.libs.json.Json
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
-import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import uk.gov.dvla.vehicles.presentation.common.views.models.DayMonthYear
-import utils.helpers.Config
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireRequestDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireResponseDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
+import utils.helpers.Config
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseSuccess, acquireResponseApplicationBeingProcessed}
 
@@ -124,21 +130,153 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "replace numeric mileage error message for with standard error message" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(mileage = "$$")
+    "redirect to SetUpTradeDetails when trader details cookie is missing" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
+      }
+    }
+
+    "redirect to VehicleLookup when new keeper details cookie data is missing" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
+      }
+    }
+
+    "redirect to VehicleLookup when vehicle lookup cookie data is missing" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
+      }
+    }
+
+    "redirect to VehicleLookup when vehicle and keeper details cookie data is missing" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
+      }
+    }
+
+    "redirect to VehicleLookup when tax or sorn cookie data is missing" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
+      }
+    }
+
+    "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new WithApplication {
+      // The date of acquisition is 19-10-2012
+      val disposalDate = DateTime.parse("20-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
-        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
 
       val result = completeAndConfirm.submitWithDateCheck(request)
-      val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
-      replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+        verify(acquireServiceMock, never()).invoke(any[AcquireRequestDto], anyString())
+      }
     }
 
-    "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
+    "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new WithApplication {
+      // The date of acquisition is 19-10-2012
+      val disposalDate = DateTime.parse("18-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
+
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
+        thenReturn(Future.successful {
+          (OK, Some(acquireResponseSuccess))
+      })
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
+        verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], anyString())
+      }
+    }
+
+    "call the micro service when the date of acquisition is the same as the date of disposal and redirect to the next page" in new WithApplication {
+      // The date of acquisition is 19-10-2012
+      val disposalDate = DateTime.parse("19-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
+
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
+        thenReturn(Future.successful {
+        (OK, Some(acquireResponseSuccess))
+      })
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
+        verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], anyString())
+      }
+    }
+
+    "redirect to next page when all fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -156,7 +294,21 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to next page when all fields are complete for new keeper" in new WithApplication {
+    "replace numeric mileage error message for with standard error message" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(mileage = "$$")
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
+      replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
+    }
+
+    "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -221,6 +373,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     when(config.isPrototypeBannerVisible).thenReturn(true)
     when(config.googleAnalyticsTrackingId).thenReturn(Some("trackingId"))
     when(config.acquire).thenReturn(new AcquireConfig)
+    when(config.assetsUrl).thenReturn(None)
     config
   }
 
@@ -230,14 +383,13 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
     })
     val acquireService = new AcquireServiceImpl(config.acquire, acquireWebService, healthStatsMock)
-    acquireController(acquireWebService, acquireService)
+    acquireController(acquireService)
   }
 
-  private def acquireController(acquireWebService: AcquireWebService, acquireService: AcquireService)
-                               (implicit config: Config = config, dateService: DateService = dateServiceStubbed()):
-  CompleteAndConfirm = {
-    implicit val clientSideSessionFacAB12AWRtory = injector.getInstance(classOf[ClientSideSessionFactory])
-
+  private def acquireController(acquireService: AcquireService)
+                               (implicit config: Config = config,
+                                dateService: DateService = dateServiceStubbed()): CompleteAndConfirm = {
+    implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     new CompleteAndConfirm(acquireService)
   }
 

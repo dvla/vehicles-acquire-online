@@ -8,13 +8,13 @@ import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
 import models.CompleteAndConfirmResponseModel
 import models.CompleteAndConfirmViewModel
 import models.VehicleLookupFormModel
-import models.VehicleTaxOrSornFormModel
 import models.VehicleNewKeeperCompletionCacheKeys
+import models.VehicleTaxOrSornFormModel
 import org.joda.time.{LocalDate, DateTime}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
-import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import play.api.Logger
+import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -66,8 +66,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
+  // The dates are valid if they are the same or if the disposal date is before the acquisition date
   def submitWithDateCheck = submitBase(
-    (keeperEndDate, dateOfSale) => keeperEndDate.toLocalDate.isBefore(dateOfSale)
+    (keeperEndDate, dateOfSale) =>
+      keeperEndDate.toLocalDate.isEqual(dateOfSale) || keeperEndDate.toLocalDate.isBefore(dateOfSale)
   )
 
   def submitNoDateCheck = submitBase((keeperEndDate, dateOfSale) => true)
@@ -96,7 +98,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         },
         validForm => {
           request.cookies.getModel[TraderDetailsModel].fold {
-            Logger.warn("Could not find either dealer details in cache on Acquire submit - " +
+            Logger.warn("Could not find trader details in cache on Acquire submit - " +
               "now redirecting to SetUpTradeDetails...")
             Future.successful {
               Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
@@ -108,24 +110,19 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
               vehicleAndKeeperDetails <- request.cookies.getModel[VehicleAndKeeperDetailsModel]
               taxOrSorn <- request.cookies.getModel[VehicleTaxOrSornFormModel]
             } yield {
-              val dateValidCall = acquireAction(
-                validForm,
+              vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall(validForm,
                 newKeeperDetails,
                 vehicleLookup,
                 vehicleAndKeeperDetails,
                 traderDetails,
-                taxOrSorn,
-                request.cookies.trackingId()
-              ).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
-
-
-              vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall)(keeperEndDate => {
+                taxOrSorn
+              ))(keeperEndDate => {
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
                   Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate " +
-                  s"(${keeperEndDate.toLocalDate}) is after dateOfSale ($validForm.dateOfSale)")
+                  s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
 
                   val dateInvalidCall = Future.successful {
-                    BadRequest(complete_and_confirm(
+                      BadRequest(complete_and_confirm(
                       CompleteAndConfirmViewModel(form.fill(validForm),
                         vehicleAndKeeperDetails,
                         newKeeperDetails,
@@ -138,11 +135,17 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                   }
                   dateInvalidCall
                 }
-                else dateValidCall
+                else dateValidCall(validForm,
+                  newKeeperDetails,
+                  vehicleLookup,
+                  vehicleAndKeeperDetails,
+                  traderDetails,
+                  taxOrSorn
+                )
               })
             }
             result.getOrElse(Future.successful {
-              Logger.warn("Could not find expected data in cache on dispose submit - now redirecting to VehicleLookup...")
+              Logger.warn("Could not find expected data in cache on acquire submit - now redirecting to VehicleLookup...")
               Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             })
           }
@@ -190,6 +193,24 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         FormError(key = MileageId, message = "acquire_privatekeeperdetailscomplete.mileage.validation", args = Seq.empty)
       ).distinctErrors
   }
+
+  private def dateValidCall(validForm: CompleteAndConfirmFormModel,
+                              newKeeperDetails: NewKeeperDetailsViewModel,
+                              vehicleLookup: VehicleLookupFormModel,
+                              vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
+                              traderDetails: TraderDetailsModel,
+                              taxOrSorn: VehicleTaxOrSornFormModel
+                               )
+                             (implicit request: Request[AnyContent]): Future[Result] =
+    acquireAction(
+      validForm,
+      newKeeperDetails,
+      vehicleLookup,
+      vehicleAndKeeperDetails,
+      traderDetails,
+      taxOrSorn,
+      request.cookies.trackingId()
+    ).map(_.discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey))
 
   private def acquireAction(completeAndConfirmForm: CompleteAndConfirmFormModel,
                             newKeeperDetailsView: NewKeeperDetailsViewModel,
