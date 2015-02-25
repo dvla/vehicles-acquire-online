@@ -11,8 +11,6 @@ import models.CompleteAndConfirmResponseModel
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.HelpCacheKey
-import models.NewKeeperEnterAddressManuallyFormModel
-import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.SeenCookieMessageCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
@@ -40,6 +38,8 @@ import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import common.model.NewKeeperChooseYourAddressFormModel
 import common.model.NewKeeperDetailsViewModel
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.NewKeeperEnterAddressManuallyFormModel
+import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.PrivateKeeperDetailsFormModel
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel
@@ -129,7 +129,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   }
 
   def newKeeperEnterAddressManually(): Cookie = {
-    val key = NewKeeperEnterAddressManuallyCacheKey
+    val key = newKeeperEnterAddressManuallyCacheKey
     val value = NewKeeperEnterAddressManuallyFormModel(
       addressAndPostcodeModel = AddressAndPostcodeViewModel(
         addressLinesModel = AddressLinesViewModel(

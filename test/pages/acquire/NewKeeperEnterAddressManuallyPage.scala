@@ -4,10 +4,11 @@ import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
 import views.acquire.EnterAddressManually
 import EnterAddressManually.{BackId, NextId}
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel
+import uk.gov.dvla.vehicles.presentation.common
+import common.views.models.AddressLinesViewModel
+import common.model.NewKeeperEnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import org.openqa.selenium.WebDriver
 import AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
-import models.NewKeeperEnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 
 object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {

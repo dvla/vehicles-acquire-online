@@ -4,7 +4,6 @@ import javax.inject.Inject
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.NewKeeperChooseYourAddressViewModel
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{AnyContent, Action, Controller, Request, Result}
@@ -18,6 +17,7 @@ import common.model.BusinessKeeperDetailsFormModel
 import common.model.NewKeeperDetailsViewModel
 import common.model.NewKeeperDetailsViewModel.{createNewKeeper, getTitle}
 import common.model.NewKeeperChooseYourAddressFormModel
+import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.PrivateKeeperDetailsFormModel
 import common.model.VehicleAndKeeperDetailsModel
 import common.model.VmAddressModel
@@ -209,7 +209,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
           createNewKeeper(addressViewModel) match {
           case Some(newKeeperDetails) =>
             Redirect(routes.VehicleTaxOrSorn.present())
-              .discardingCookie(NewKeeperEnterAddressManuallyCacheKey)
+              .discardingCookie(newKeeperEnterAddressManuallyCacheKey)
               .withCookie(model)
               .withCookie(newKeeperDetails)
           case _ => error("No new keeper details found in cache, redirecting to vehicle lookup")
@@ -250,7 +250,7 @@ class NewKeeperChooseYourAddress @Inject()(addressLookupService: AddressLookupSe
      1) we are not blocking threads
      2) the browser does not change page before the future has completed and written to the cache. */
     Redirect(routes.VehicleTaxOrSorn.present()).
-      discardingCookie(NewKeeperEnterAddressManuallyCacheKey).
+      discardingCookie(newKeeperEnterAddressManuallyCacheKey).
       withCookie(newKeeperDetailsmodel).
       withCookie(newKeeperDetailsChooseYourAddressModel)
   }
