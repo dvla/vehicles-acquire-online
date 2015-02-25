@@ -1,51 +1,43 @@
 package controllers
 
 import com.google.inject.Inject
-import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.VehicleLookupFormModel.{Key, JsonFormat}
+import models._
+import AcquireCacheKeyPrefix.CookiePrefix
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import models.{BusinessKeeperDetailsCacheKeys, EnterAddressManuallyFormModel, PrivateKeeperDetailsCacheKeys}
-import org.joda.time.DateTime
 import play.api.data.{Form, FormError}
-import play.api.mvc.{Action, Call, Request}
-import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.mvc.{Result, Action, Request}
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.controllers.VehicleLookupBase
-import common.controllers.VehicleLookupBase.LookupResult
-import common.controllers.VehicleLookupBase.VehicleFound
-import common.controllers.VehicleLookupBase.VehicleNotFound
+import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase1
 import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
-import common.webserviceclients.common.DmsWebHeaderDto
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
-class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService,
-                                    vehicleAndKeeperLookupService: VehicleAndKeeperLookupService,
-                                    dateService: DateService)
-                                   (implicit val clientSideSessionFactory: ClientSideSessionFactory,
-                                    config: Config) extends VehicleLookupBase {
+class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionService,
+                              vehicleAndKeeperLookupService: VehicleAndKeeperLookupService,
+                              dateService: DateService,
+                              clientSideSessionFactory: ClientSideSessionFactory,
+                              config: Config) extends VehicleLookupBase1[VehicleLookupFormModel] {
 
-  override val vrmLocked: Call = routes.VrmLocked.present()
-  override val microServiceError: Call = routes.MicroServiceError.present()
-  override val vehicleLookupFailure: Call = routes.VehicleLookupFailure.present()
+  override val form = Form(VehicleLookupFormModel.Form.Mapping)
   override val responseCodeCacheKey: String = VehicleLookupResponseCodeCacheKey
 
-  override type Form = VehicleLookupFormModel
+  override def vrmLocked: Result = Redirect(routes.VrmLocked.present())
 
-  private[controllers] val form = Form(
-    VehicleLookupFormModel.Form.Mapping
-  )
+  override def microServiceError: Result = Redirect(routes.MicroServiceError.present())
 
-  def present = Action { implicit request =>
+  override def vehicleLookupFailure: Result = Redirect(routes.VehicleLookupFailure.present())
+
+  override def presentResult(implicit request: Request[_]) =
     request.cookies.getModel[TraderDetailsModel] match {
       case Some(traderDetails) =>
         Ok(views.html.acquire.vehicle_lookup(
@@ -55,55 +47,25 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
             traderDetails.traderAddress.address,
             traderDetails.traderEmail
           )))
-      case None =>
-        Redirect(routes.SetUpTradeDetails.present())
+      case None => Redirect(routes.SetUpTradeDetails.present())
     }
-  }
 
-  def submit = Action.async { implicit request =>
-    form.bindFromRequest.fold(
-      invalidForm =>
-        Future {
-          request.cookies.getModel[TraderDetailsModel] match {
-            case Some(traderDetails) =>
-              val formWithReplacedErrors = invalidForm.replaceError(
-                VehicleLookupFormModel.Form.VehicleRegistrationNumberId,
-                FormError(
-                  key = VehicleLookupFormModel.Form.VehicleRegistrationNumberId,
-                  message = "error.restricted.validVrnOnly",
-                  args = Seq.empty
-                )
-              ).replaceError(
-                  VehicleLookupFormModel.Form.VehicleSoldToId,
-                  FormError(
-                    key = VehicleLookupFormModel.Form.VehicleSoldToId,
-                    message = "error.restricted.validKeeperOption",
-                    args = Seq.empty)
-              ).replaceError(
-                  VehicleLookupFormModel.Form.DocumentReferenceNumberId,
-                  FormError(
-                    key = VehicleLookupFormModel.Form.DocumentReferenceNumberId,
-                    message = "error.validDocumentReferenceNumber",
-                    args = Seq.empty)
-                ).distinctErrors
-
-              BadRequest(views.html.acquire.vehicle_lookup(
-                VehicleLookupViewModel(
-                  formWithReplacedErrors,
-                  traderDetails.traderName,
-                  traderDetails.traderAddress.address,
-                  traderDetails.traderEmail
-              )))
-            case None => Redirect(routes.SetUpTradeDetails.present())
-          }
-        },
-      validForm => {
-        bruteForceAndLookup(
-          validForm.registrationNumber,
-          validForm.referenceNumber,
-          validForm)
-      }
-    )
+  override def invalidFormResult(invalidForm: Form[VehicleLookupFormModel])
+                                (implicit request: Request[_]): Future[Result] = Future.successful {
+    request.cookies.getModel[TraderDetailsModel] match {
+      case Some(traderDetails) =>
+        BadRequest(
+          views.html.acquire.vehicle_lookup(
+            VehicleLookupViewModel(
+              formWithReplacedErrors(invalidForm),
+              traderDetails.traderName,
+              traderDetails.traderAddress.address,
+              traderDetails.traderEmail
+            )
+          )
+        )
+      case None => Redirect(routes.SetUpTradeDetails.present())
+    }
   }
 
   def back = Action { implicit request =>
@@ -114,40 +76,22 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
     }
   }
 
-  override protected def callLookupService(trackingId: String, form: Form)(implicit request: Request[_]): Future[LookupResult] = {
-    val vehicleAndKeeperDetailsRequest = VehicleAndKeeperDetailsRequest(
-      dmsHeader = buildHeader(trackingId),
-      referenceNumber = form.referenceNumber,
-      registrationNumber = form.registrationNumber,
-      transactionTimestamp = new DateTime
-    )
-
-    vehicleAndKeeperLookupService.invoke(vehicleAndKeeperDetailsRequest, trackingId) map { response =>
-      response.responseCode match {
-        case Some(responseCode) =>
-          VehicleNotFound(responseCode)
-        case None =>
-          response.vehicleAndKeeperDetailsDto match {
-            case Some(dto) => VehicleFound(vehicleFoundResult(dto, form.vehicleSoldTo))
-            case None => throw new RuntimeException("No vehicleAndKeeperDetailsDto found")
-          }
-      }
-    }
-  }
-
-  private def vehicleFoundResult(vehicleAndKeeperDetailsDto: VehicleAndKeeperDetailsDto, soldTo: String)(implicit request: Request[_]) = {
+  override def vehicleFoundResult(vehicleAndKeeperDetailsDto: VehicleAndKeeperDetailsDto,
+                                  formModel: VehicleLookupFormModel)
+                                 (implicit request: Request[_]): Result = {
     val model = VehicleAndKeeperDetailsModel.from(vehicleAndKeeperDetailsDto)
     val disposed = model.keeperEndDate.isDefined
     val suppressed = model.suppressedV5Flag.getOrElse(false)
 
     (disposed, suppressed) match {
       case (_, true) => Redirect(routes.SuppressedV5C.present()).withCookie(model)
-      case (true, false) => vehicleDisposedResult(model, soldTo)
+      case (true, false) => vehicleDisposedResult(model, formModel.vehicleSoldTo)
       case (false, _) => Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
     }
   }
 
-  private def vehicleDisposedResult(vehicleAndKeeperDetailsModel: VehicleAndKeeperDetailsModel, soldTo: String)(implicit request: Request[_]) = {
+  private def vehicleDisposedResult(vehicleAndKeeperDetailsModel: VehicleAndKeeperDetailsModel,
+                                    soldTo: String)(implicit request: Request[_]) = {
     val (call, discardedCookies) =
       if (soldTo == VehicleSoldTo_Private)
         (routes.PrivateKeeperDetails.present(), BusinessKeeperDetailsCacheKeys)
@@ -159,17 +103,27 @@ class VehicleLookup @Inject()(val bruteForceService: BruteForcePreventionService
       withCookie(vehicleAndKeeperDetailsModel)
   }
 
-  private def buildHeader(trackingId: String): DmsWebHeaderDto = {
-    val alwaysLog = true
-    val englishLanguage = "EN"
-    DmsWebHeaderDto(conversationId = trackingId,
-      originDateTime = new DateTime,
-      applicationCode = config.applicationCode,
-      channelCode = config.channelCode,
-      contactId = config.contactId,
-      eventFlag = alwaysLog,
-      serviceTypeCode = config.dmsServiceTypeCode,
-      languageCode = englishLanguage,
-      endUser = None)
-  }
+  private def formWithReplacedErrors(invalidForm: Form[VehicleLookupFormModel]) =
+    invalidForm.replaceError(
+      VehicleLookupFormModel.Form.VehicleRegistrationNumberId,
+      FormError(
+        key = VehicleLookupFormModel.Form.VehicleRegistrationNumberId,
+        message = "error.restricted.validVrnOnly",
+        args = Seq.empty
+      )
+    ).replaceError(
+        VehicleLookupFormModel.Form.VehicleSoldToId,
+        FormError(
+          key = VehicleLookupFormModel.Form.VehicleSoldToId,
+          message = "error.restricted.validKeeperOption",
+          args = Seq.empty
+        )
+      ).replaceError(
+        VehicleLookupFormModel.Form.DocumentReferenceNumberId,
+        FormError(
+          key = VehicleLookupFormModel.Form.DocumentReferenceNumberId,
+          message = "error.validDocumentReferenceNumber",
+          args = Seq.empty
+        )
+      ).distinctErrors
 }
