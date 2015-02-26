@@ -27,6 +27,7 @@ import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.healthstats.HealthStats
+import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
@@ -528,7 +529,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
       override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
     })
-    val addressLookupService = new AddressLookupServiceImpl(fakeWebService, healthStatsMock)
+    val addressLookupService = new AddressLookupServiceImpl(fakeWebService, new DateServiceImpl, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.isPrototypeBannerVisible).thenReturn(isPrototypeBannerVisible) // Stub this config value.
