@@ -12,7 +12,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase1
+import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase
 import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
@@ -26,7 +26,7 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
                               vehicleAndKeeperLookupService: VehicleAndKeeperLookupService,
                               dateService: DateService,
                               clientSideSessionFactory: ClientSideSessionFactory,
-                              config: Config) extends VehicleLookupBase1[VehicleLookupFormModel] {
+                              config: Config) extends VehicleLookupBase[VehicleLookupFormModel] {
 
   override val form = Form(VehicleLookupFormModel.Form.Mapping)
   override val responseCodeCacheKey: String = VehicleLookupResponseCodeCacheKey
