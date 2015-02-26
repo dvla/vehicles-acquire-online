@@ -1,9 +1,7 @@
 package pages
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
-
 package object acquire {
-  private final val applicationContext = "/"
+   final val applicationContext = "/"
 
   def buildAppUrl(urlPart: String) = {
     val appContextWithSlash = if (!applicationContext.endsWith("/")) s"$applicationContext/" else applicationContext

@@ -7,7 +7,7 @@ import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.BruteForcePreventionModel.BruteForcePreventionViewModelCacheKey
+import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
@@ -24,7 +24,7 @@ package object models {
 
   final val AcquireCacheKeys = Set(
     newKeeperChooseYourAddressCacheKey,
-    BruteForcePreventionViewModelCacheKey
+    bruteForcePreventionViewModelCacheKey
   )
 
   final val TraderDetailsCacheKeys = Set(

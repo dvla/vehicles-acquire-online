@@ -160,9 +160,12 @@ final class VehicleLookupFormSpec extends UnitSpec {
     val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(vehicleAndKeeperLookupWebService, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
-    new VehicleLookup(
+    new VehicleLookup()(
       bruteForceService = bruteForceServiceImpl,
-      vehicleAndKeeperLookupService = vehicleAndKeeperLookupServiceImpl, dateService
+      vehicleAndKeeperLookupService = vehicleAndKeeperLookupServiceImpl,
+      dateService,
+      clientSideSessionFactory,
+      config
     )
   }
 

@@ -351,6 +351,8 @@ acquire_newKeeperChooseYourAddress.vehiclereg = Registration
 acquire_newKeeperChooseYourAddress.vehiclemake = Make
 acquire_newKeeperChooseYourAddress.vehiclemodel = Model
 acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please contact the DVLA, Swansea, SA99 1DZ
+newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
+change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
 
 #[optional] - new keeper manual address entry
 acquire_newKeeperEnterAddressManually.title = Enter keeper address

@@ -273,10 +273,12 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
     when(config.assetsUrl).thenReturn(None) // Stub this config value.
 
-    new VehicleLookup(
+    new VehicleLookup()(
       bruteForceService = bruteForceService,
       vehicleAndKeeperLookupService = vehicleAndKeeperLookupServiceImpl,
-      dateService = dateService
+      dateService = dateService,
+      clientSideSessionFactory,
+      config
     )
   }
 
@@ -297,17 +299,18 @@ final class VehicleLookupUnitSpec extends UnitSpec {
     when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
     when(config.assetsUrl).thenReturn(None) // Stub this config value.
 
-    new VehicleLookup(
+    new VehicleLookup()(
       bruteForceService = bruteForceServiceImpl(permitted = permitted),
       vehicleAndKeeperLookupService = vehicleAndKeeperLookupServiceImpl,
-      dateService = dateService
+      dateService = dateService,
+      clientSideSessionFactory,
+      config
     )
   }
 
   private def buildCorrectlyPopulatedRequest(referenceNumber: String = ReferenceNumberValid,
                                              registrationNumber: String = RegistrationNumberValid,
-                                             soldTo: String = VehicleSoldTo_Private
-                                              ) = {
+                                             soldTo: String = VehicleSoldTo_Private) = {
     FakeRequest().withFormUrlEncodedBody(
       DocumentReferenceNumberId -> referenceNumber,
       VehicleRegistrationNumberId -> registrationNumber,

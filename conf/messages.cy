@@ -343,6 +343,9 @@ acquire_businesskeeperdetailscomplete.backbutton = Back
 acquire_businesskeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 businesskeeper_mileage = Mileage
 
+newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
+change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
+
 #date of birth field
 dateOfBirthInput.pageTitle = Date Of Birth Input
 dateOfBirthInput.label = Date of Birth
