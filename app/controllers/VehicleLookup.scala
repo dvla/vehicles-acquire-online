@@ -13,7 +13,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase1
-import common.model.{VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
@@ -31,11 +31,17 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
   override val form = Form(VehicleLookupFormModel.Form.Mapping)
   override val responseCodeCacheKey: String = VehicleLookupResponseCodeCacheKey
 
-  override def vrmLocked: Result = Redirect(routes.VrmLocked.present())
+  override def vrmLocked(bruteForcePreventionModel: BruteForcePreventionModel, formModel: VehicleLookupFormModel)
+                        (implicit request: Request[_]): Result =
+    Redirect(routes.VrmLocked.present())
 
-  override def microServiceError: Result = Redirect(routes.MicroServiceError.present())
+  override def microServiceError(t: Throwable, formModel: VehicleLookupFormModel)
+                                (implicit request: Request[_]): Result =
+    Redirect(routes.MicroServiceError.present())
 
-  override def vehicleLookupFailure: Result = Redirect(routes.VehicleLookupFailure.present())
+  override def vehicleLookupFailure(responseCode: String, formModel: VehicleLookupFormModel)
+                                   (implicit request: Request[_]): Result =
+    Redirect(routes.VehicleLookupFailure.present())
 
   override def presentResult(implicit request: Request[_]) =
     request.cookies.getModel[TraderDetailsModel] match {
