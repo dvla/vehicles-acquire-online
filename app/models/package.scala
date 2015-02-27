@@ -3,7 +3,6 @@ import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheK
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
@@ -12,6 +11,7 @@ import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCache
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
@@ -46,14 +46,14 @@ package object models {
     privateKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
     newKeeperChooseYourAddressCacheKey,
-    NewKeeperEnterAddressManuallyCacheKey
+    newKeeperEnterAddressManuallyCacheKey
   )
 
   // Set of cookies related to all data entered for a business keeper
   final val BusinessKeeperDetailsCacheKeys = Set(
     businessKeeperDetailsCacheKey,
     newKeeperChooseYourAddressCacheKey,
-    NewKeeperEnterAddressManuallyCacheKey
+    newKeeperEnterAddressManuallyCacheKey
   )
 
   final val CompletionCacheKeys = Set(

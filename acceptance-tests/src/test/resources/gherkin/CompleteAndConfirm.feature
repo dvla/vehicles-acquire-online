@@ -24,3 +24,11 @@ Feature:
     Then the user will remain on the complete and confirm page and a warning will be displayed
     Then the user confirms the transaction
     Then the user will be taken to the "Summary" page
+
+  Scenario: Complet and Confirm - Confirm new keeper with a date of sale same as date of disposal
+    When the user enters a date of sale same as date of disposal and submits the form
+    Then the user will be taken to the "Summary" page
+
+  Scenario: Complet and Confirm - Confirm new keeper with a date of sale after the date of disposal
+    When the user enters a date of sale after the date of disposal and submits the form
+    Then the user will be taken to the "Summary" page

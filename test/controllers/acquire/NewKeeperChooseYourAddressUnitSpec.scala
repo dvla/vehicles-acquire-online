@@ -1,3 +1,5 @@
+
+
 package controllers.acquire
 
 import controllers.acquire.Common.PrototypeHtml
@@ -7,7 +9,6 @@ import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeen
 import helpers.UnitSpec
 import helpers.WithApplication
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import models.NewKeeperEnterAddressManuallyFormModel.NewKeeperEnterAddressManuallyCacheKey
 import org.mockito.Matchers._
 import org.mockito.Mockito.when
 import org.mockito.invocation.InvocationOnMock
@@ -23,10 +24,12 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.TraderDetailsModel.TraderDetailsCacheKey
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.healthstats.HealthStats
+import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
@@ -326,11 +329,11 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
         cookies.map(_.name) should contain allOf(
-          NewKeeperEnterAddressManuallyCacheKey,
+          newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
           newKeeperDetailsCacheKey
           )
-        verifyCookieHasBeenDiscarded(NewKeeperEnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(newKeeperEnterAddressManuallyCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperChooseYourAddressCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperDetailsCacheKey, cookies)
       }
@@ -344,11 +347,11 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
         cookies.map(_.name) should contain allOf(
-          NewKeeperEnterAddressManuallyCacheKey,
+          newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
           newKeeperDetailsCacheKey
           )
-        verifyCookieHasBeenDiscarded(NewKeeperEnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(newKeeperEnterAddressManuallyCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperChooseYourAddressCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperDetailsCacheKey, cookies)
       }
@@ -362,7 +365,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = r.header.headers.get(SET_COOKIE).toSeq.flatMap(Cookies.decode)
         cookies.map(_.name) should contain noneOf(
-          NewKeeperEnterAddressManuallyCacheKey,
+          newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
           TraderDetailsCacheKey
           )
@@ -474,11 +477,11 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
         cookies.map(_.name) should contain allOf(
-          NewKeeperEnterAddressManuallyCacheKey,
+          newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
           newKeeperDetailsCacheKey
           )
-        verifyCookieHasBeenDiscarded(NewKeeperEnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(newKeeperEnterAddressManuallyCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperChooseYourAddressCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperDetailsCacheKey, cookies)
       }
@@ -492,11 +495,11 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
         cookies.map(_.name) should contain allOf(
-          NewKeeperEnterAddressManuallyCacheKey,
+          newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
           newKeeperDetailsCacheKey
           )
-        verifyCookieHasBeenDiscarded(NewKeeperEnterAddressManuallyCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(newKeeperEnterAddressManuallyCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperChooseYourAddressCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(newKeeperDetailsCacheKey, cookies)
       }
@@ -510,7 +513,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = r.header.headers.get(SET_COOKIE).toSeq.flatMap(Cookies.decode)
         cookies.map(_.name) should contain noneOf(
-          NewKeeperEnterAddressManuallyCacheKey,
+          newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
           TraderDetailsCacheKey
           )
@@ -528,7 +531,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
       override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
     })
-    val addressLookupService = new AddressLookupServiceImpl(fakeWebService, healthStatsMock)
+    val addressLookupService = new AddressLookupServiceImpl(fakeWebService, new DateServiceImpl, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
     when(config.isPrototypeBannerVisible).thenReturn(isPrototypeBannerVisible) // Stub this config value.
