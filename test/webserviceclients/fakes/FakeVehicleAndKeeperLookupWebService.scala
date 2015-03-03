@@ -40,6 +40,7 @@ object FakeVehicleAndKeeperLookupWebService {
   final val VrmNotFound = "vehicle_lookup_vrm_not_found"
   final val DocumentRecordMismatch = "vehicle_lookup_document_record_mismatch"
   final val TransactionTimestampValid = new DateTime()
+  final val UnhandledException = "unhandled_exception"
 
   // TODO : Use proper values here
   private def vehicleDetails(disposeFlag: Boolean = true) =
@@ -79,6 +80,10 @@ object FakeVehicleAndKeeperLookupWebService {
 
   val vehicleDetailsResponseNotFoundResponseCode: (Int, Option[VehicleAndKeeperDetailsResponse]) = {
     (OK, Some(VehicleAndKeeperDetailsResponse(responseCode = None, None)))
+  }
+
+  val vehicleDetailsResponseUnhandledException: (Int, Option[VehicleAndKeeperDetailsResponse]) = {
+    (OK, Some(VehicleAndKeeperDetailsResponse(responseCode = Some(DocumentRecordMismatch), None)))
   }
 
   val vehicleDetailsServerDown: (Int, Option[VehicleAndKeeperDetailsResponse]) = {

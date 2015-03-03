@@ -11,7 +11,7 @@ import org.mockito.Matchers._
 import org.mockito.Mockito.when
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import pages.acquire.{EnterAddressManuallyPage, BusinessChooseYourAddressPage, BusinessKeeperDetailsPage, PrivateKeeperDetailsPage, SetupTradeDetailsPage, MicroServiceErrorPage}
+import pages.acquire._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
 import play.api.test.FakeRequest
@@ -40,9 +40,7 @@ import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.TraderBusinessNameValid
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ReferenceNumberValid
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.vehicleDetailsResponseSuccess
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseFirstAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseSecondAttempt
@@ -191,6 +189,13 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(MicroServiceErrorPage.address))
       }
+    }
+
+    "redirect to VehicleLookupFailure after a submit and unhandled exception returned by the fake microservice" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+      val result = vehicleLookupResponseGenerator(vehicleDetailsResponseUnhandledException).submit(request)
+
+      result.futureValue.header.headers.get(LOCATION) should equal(Some(VehicleLookupFailurePage.address))
     }
 
     "remove all business keeper cookies when private keeper is selected" in new WithApplication {
