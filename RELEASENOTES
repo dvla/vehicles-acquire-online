@@ -1,3 +1,27 @@
+======== 1.4.5 ========
+Time of release binary creation
+Wed Mar 04 12:52:00 UTC 2015
+
+User stories:
+5771e41 DE352 - bugfix
+e7bf6df US2563: Redirect to the unsuccessful lookup page on an unhandled exception from the microservice.
+3d3cd05 US2290 Made the changes to the exemplar to use the common VehicleLookupFailure controller
+1f54811 US2454 Enable debug in the healthstats
+57d777c DE292 moving inline languge to messages.en
+a439e8f US2287: Common controller new keeper enter address manually.
+21f7294 US1831: remove monit
+519403b US2408 - removing old feedback import
+0fa7aba US2287: Common controller new keeper enter address manually.
+a8460d1 US1268-[acquire] date of acquisition entered is compatible with date of disposal on record
+eacfeaa DE333/US2561 This commit covers both defect and story. The defect was the micro service was still being called when displaying the date warning, resulting in it being called
+238a9ca US2189 check previous keeper end date befor proccessing acquire transaction
+803ecc2 US2289 using the new version of the VehiclesLookup common controller
+0c613a7 US2287: move models and create base controller
+a650fe3 US2317 Made the changes to the exemplar to use the common VrmLocked controller
+00ad920 US2277: Allow to serve assets from a different domain
+02282bb US1519: Enable asset versioning
+7376d79 US2468 - changing business route title
+
 ======== 1.4.4 ========
 Time of release binary creation
 Weds Feb 18
