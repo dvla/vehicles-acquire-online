@@ -129,7 +129,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                         taxOrSorn,
                         isSaleDateBeforeDisposalDate = true,
                         submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(),
-                        dateOfDisposal = Some(keeperEndDate.toString("E, dd/MM/yyyy"))),
+                        dateOfDisposal = Some(keeperEndDate.toString("dd/MM/yyyy"))),
                       dateService)
                     )
                   }
