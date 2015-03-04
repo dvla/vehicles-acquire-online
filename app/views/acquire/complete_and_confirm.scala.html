@@ -121,18 +121,6 @@
                     ), data.isSaleDateBeforeDisposalDate)
                 )
 
-                @valtechInputText(
-                    data.form(MileageId),
-                    args = modify(Map('_label -> Messages("acquire_completeAndConfirm.mileage.label"),
-                        '_showConstraints -> false,
-                        'typeTel -> true,
-                        'maxLength -> Mileage.MaxLength, // Must be set independently of the pattern as the pattern is only checked when the user submits.
-                        'optionalFieldKey -> true
-                        //'title -> Messages("acquire_keeperdetailscomplete.mileage.validation")
-                    ) ++
-                    (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil), data.isSaleDateBeforeDisposalDate)
-                )
-
                 @if(data.isSaleDateBeforeDisposalDate) {
                     <div class="popup-modal">
                         <p>@Messages("acquire_completeandconfirm.dateofsale.warning", data.dateOfDisposal.getOrElse("NOT FOUND"))</p>
@@ -191,6 +179,18 @@
                         )
                     }
                 </div>
+
+                @valtechInputText(
+                    data.form(MileageId),
+                    args = modify(Map('_label -> Messages("acquire_completeAndConfirm.mileage.label"),
+                        '_showConstraints -> false,
+                        'typeTel -> true,
+                        'maxLength -> Mileage.MaxLength, // Must be set independently of the pattern as the pattern is only checked when the user submits.
+                        'optionalFieldKey -> true
+                        //'title -> Messages("acquire_keeperdetailscomplete.mileage.validation")
+                    ) ++
+                            (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil), data.isSaleDateBeforeDisposalDate)
+                )
 
                 <div class="form-steps">
                     <button id="@SubmitId"
