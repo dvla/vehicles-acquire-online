@@ -179,6 +179,7 @@ object CookieFactoryForUISpecs {
       lastName = lastName,
       address = address,
       keeperEndDate = keeperEndDate,
+      keeperChangeDate = None,
       disposeFlag = disposeFlag,
       suppressedV5Flag = suppressedV5CFlag
     )
