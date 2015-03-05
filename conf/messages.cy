@@ -272,7 +272,7 @@ acquire_keeperdetailscomplete.consentError = You must have the consent of the ne
 #acquire success
 acquire_success.complete.header = Thank You
 acquire_success.complete.p1 = The application is being processed
-acquire_success.complete.p2 = Please print this page and pass it to the customer along with the V5c/2 slip from the vehicle registration certificate (V5C)
+acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C.
 acquire_success.transaction_details.header = Transaction details
 acquire_success.transaction_details.transaction_id = Transaction ID
 acquire_success.transaction_details.transaction_date = Transaction date

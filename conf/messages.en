@@ -410,7 +410,7 @@ acquire_completeAndConfirm.backbutton = Back
 acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 acquire_completeAndConfirm.dateofsale.label = Date of sale
 acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
-acquire_completeandconfirm.dateofsale.warning = The date of sale entered is before the date of disposal, which was on {0}. If this is correct please submit, if it is not please amend the date and re-submit.
+acquire_completeandconfirm.dateofsale.warning = The date of sale entered is before the date of disposal, which was {0}. If this is correct please confirm, if it is not correct please change the date and confirm.
 dateofsale = Date of sale
 privatekeeper_mileage = Mileage
 
@@ -420,7 +420,7 @@ acquire_keeperdetailscomplete.consentError = You must have the consent of the ne
 #acquire success
 acquire_success.complete.header = Thank You
 acquire_success.complete.p1 = The application is being processed
-acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the V5C.
+acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C.
 acquire_success.transaction_details.header = Transaction details
 acquire_success.transaction_details.transaction_id = Transaction ID
 acquire_success.transaction_details.transaction_date = Transaction date
