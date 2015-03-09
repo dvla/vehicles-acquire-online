@@ -4,8 +4,9 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.ConfigProperties.{getOptionalProperty, booleanProp, intProp, stringProp, longProp}
 import common.ConfigProperties.getProperty
 import common.ConfigProperties.getStringListProperty
-import common.services.SEND.{EmailConfiguration, From}
+import common.services.SEND.EmailConfiguration
 import common.webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.From
 
 class ConfigImpl extends Config {
 
@@ -40,6 +41,10 @@ class ConfigImpl extends Config {
   override val channelCode: String = getProperty[String]("webHeader.channelCode")
   override val contactId: Long = getProperty[Long]("webHeader.contactId")
 
+  override val emailServiceMicroServiceUrlBase: String =
+    getOptionalProperty[String]("emailServiceMicroServiceUrlBase").getOrElse(notFound)
+  override val emailServiceMsRequestTimeout: Int =
+    getOptionalProperty[Int]("emailService.ms.requesttimeout").getOrElse(10000)
 
   override val emailConfiguration: EmailConfiguration = EmailConfiguration(
     getProperty[String]("smtp.host"),

@@ -1,8 +1,9 @@
 package composition
 
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
-import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
+import uk.gov.dvla.vehicles.presentation.common.services.SEND.EmailConfiguration
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.From
 import utils.helpers.Config
 
 /**
@@ -40,6 +41,8 @@ class TestConfig extends Config {
   def channelCode: String = ""
   def contactId: Long = 0
 
+  def emailServiceMicroServiceUrlBase: String = "NOT FOUND"
+  def emailServiceMsRequestTimeout: Int = 10000
 
   def emailConfiguration: EmailConfiguration = EmailConfiguration(
     "",
