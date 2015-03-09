@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import email.EmailMessageBuilder
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
@@ -22,7 +23,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.mappings.TitleType
 import common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
-import common.services.DateService
+import uk.gov.dvla.vehicles.presentation.common.services.{SEND, DateService}
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.acquire.AcquireRequestDto
 import common.webserviceclients.acquire.AcquireResponseDto
@@ -228,7 +229,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
-          Some(Redirect(nextPage(httpResponseCode, response)))
+          Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView)))
             .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
             .map(_.withCookie(completeAndConfirmForm))
             .get
@@ -239,10 +240,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
-  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
+  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(vehicleDetails: VehicleAndKeeperDetailsModel,
+                                                                            keeperDetails: NewKeeperDetailsViewModel) =
     response match {
       case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
-      case _ => handleHttpStatusCode(httpResponseCode)
+      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails)
     }
 
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
@@ -320,9 +322,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         routes.MicroServiceError.present()
     }
 
-  def handleHttpStatusCode(statusCode: Int): Call =
+  def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
+                                            keeperDetails: NewKeeperDetailsViewModel): Call =
     statusCode match {
       case OK =>
+        println(s"""++++++++++++++ ${keeperDetails.email.getOrElse("NO EMAIL")} ++++++++++++++++++++++++""")
+        createAndSendEmail(vehicleDetails, keeperDetails)
         routes.AcquireSuccess.present()
       case _ =>
         routes.MicroServiceError.present()
@@ -358,4 +363,25 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   private def buildEndUser(): VssWebEndUserDto = {
     VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
   }
+
+  /**
+   * Calling this method on a successful submission, will send an email if we have the new keeper details.
+   * @param keeperDetails the keeper model from the cookie.
+   * @return
+   */
+  def createAndSendEmail(vehicleDetails: VehicleAndKeeperDetailsModel, keeperDetails: NewKeeperDetailsViewModel) =
+    keeperDetails.email match {
+      case Some(emailAddr) =>
+        import scala.language.postfixOps
+
+        import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
+
+        implicit val emailConfiguration = config.emailConfiguration
+        val template = EmailMessageBuilder.buildWith()
+
+        // This sends the email.
+        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send
+
+      case None => Logger.info(s"tried to send an email with no keeper details")
+    }
 }
