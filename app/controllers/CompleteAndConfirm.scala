@@ -11,7 +11,7 @@ import models.CompleteAndConfirmViewModel
 import models.VehicleLookupFormModel
 import models.VehicleNewKeeperCompletionCacheKeys
 import models.VehicleTaxOrSornFormModel
-import org.joda.time.{LocalDate, DateTime}
+import org.joda.time.{DateTime, LocalDate}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.Logger
@@ -60,7 +60,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
             newKeeperDetails,
             vehicleSorn,
             isSaleDateBeforeDisposalDate = false),
-            dateService))
+            dateService)
+          )
         case _ =>
           redirectToVehicleLookup(NoCookiesFoundMessage).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
       }
@@ -98,27 +99,30 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
           }
         },
         validForm => {
+          // Check to see if the TraderDetailsModel cookie is present
           request.cookies.getModel[TraderDetailsModel].fold {
             Logger.warn("Could not find trader details in cache on Acquire submit - " +
               "now redirecting to SetUpTradeDetails...")
             Future.successful {
               Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             }
-          } { traderDetails =>
+          } { traderDetails => // The TraderDetailsModel cookie is present
             val result = for {
               newKeeperDetails <- request.cookies.getModel[NewKeeperDetailsViewModel]
               vehicleLookup <- request.cookies.getModel[VehicleLookupFormModel]
               vehicleAndKeeperDetails <- request.cookies.getModel[VehicleAndKeeperDetailsModel]
               taxOrSorn <- request.cookies.getModel[VehicleTaxOrSornFormModel]
             } yield {
-              vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall(validForm,
+              // Check to see if the keeperEndDate option is present. This is the date of disposal
+              vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall(validForm, // Here the date is missing so we call the acquire service and move to the next page
                 newKeeperDetails,
                 vehicleLookup,
                 vehicleAndKeeperDetails,
                 traderDetails,
                 taxOrSorn
-              ))(keeperEndDate => {
+              ))(keeperEndDate => { // keeperEndDate is present so we use it to see if the dateOfSale is valid
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
+                  // Date of sale is invalid so send a bad request back to the submitting page
                   Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate " +
                   s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
 
@@ -128,15 +132,15 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                         vehicleAndKeeperDetails,
                         newKeeperDetails,
                         taxOrSorn,
-                        isSaleDateBeforeDisposalDate = true,
-                        submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(),
-                        dateOfDisposal = Some(keeperEndDate.toString("dd/MM/yyyy"))),
+                        isSaleDateBeforeDisposalDate = true, // This will tell the page to display the date warning
+                        submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(), // Next time the submit will not perform any date check
+                        dateOfDisposal = Some(keeperEndDate.toString("dd/MM/yyyy"))), // Pass the dateOfDisposal so we can tell the user in the warning
                       dateService)
                     )
                   }
-                  dateInvalidCall
+                  dateInvalidCall // Return the bad request
                 }
-                else dateValidCall(validForm,
+                else dateValidCall(validForm, // Date of sale is valid so call the acquire service and move to the next page
                   newKeeperDetails,
                   vehicleLookup,
                   vehicleAndKeeperDetails,
@@ -145,6 +149,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 )
               })
             }
+            // For comprehension drops out to here if any of the cookies are missing
             result.getOrElse(Future.successful {
               Logger.warn("Could not find expected data in cache on acquire submit - now redirecting to VehicleLookup...")
               Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
@@ -183,7 +188,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
-  private def formWithReplacedErrors(form: Form[CompleteAndConfirmFormModel]) = {
+  private def formWithReplacedErrors(form: Form[CompleteAndConfirmFormModel]) =
     form.replaceError(
       ConsentId,
       "error.required",
@@ -193,7 +198,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         "error.number",
         FormError(key = MileageId, message = "acquire_privatekeeperdetailscomplete.mileage.validation", args = Seq.empty)
       ).distinctErrors
-  }
 
   private def dateValidCall(validForm: CompleteAndConfirmFormModel,
                               newKeeperDetails: NewKeeperDetailsViewModel,
@@ -229,7 +233,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
-          Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView)))
+          Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView, trackingId)))
             .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
             .map(_.withCookie(completeAndConfirmForm))
             .get
@@ -241,10 +245,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   }
 
   def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(vehicleDetails: VehicleAndKeeperDetailsModel,
-                                                                            keeperDetails: NewKeeperDetailsViewModel) =
+                                                                            keeperDetails: NewKeeperDetailsViewModel,
+                                                                            trackingId: String) =
     response match {
       case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
-      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails)
+      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, trackingId)
     }
 
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
@@ -323,27 +328,24 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
 
   def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
-                                            keeperDetails: NewKeeperDetailsViewModel): Call =
+                                            keeperDetails: NewKeeperDetailsViewModel,
+                                            trackingId: String): Call =
     statusCode match {
       case OK =>
-        println(s"""++++++++++++++ ${keeperDetails.email.getOrElse("NO EMAIL")} ++++++++++++++++++++++++""")
-        createAndSendEmail(vehicleDetails, keeperDetails)
+        createAndSendEmail(vehicleDetails, keeperDetails, trackingId)
         routes.AcquireSuccess.present()
       case _ =>
         routes.MicroServiceError.present()
     }
 
-  def checkboxValueToBoolean (checkboxValue: String): Boolean = {
+  def checkboxValueToBoolean (checkboxValue: String): Boolean =
     checkboxValue == "true"
-  }
 
-  def getPostCodeFromAddress (address: Seq[String]): Option[String] = {
+  def getPostCodeFromAddress (address: Seq[String]): Option[String] =
     Option(address.last.replace(" ",""))
-  }
 
-  def getPostTownFromAddress (address: Seq[String]): Option[String] = {
+  def getPostTownFromAddress (address: Seq[String]): Option[String] =
     Option(address.takeRight(2).head)
-  }
 
   def getAddressLines(address: Seq[String], lines: Int): Seq[String] = {
     val excludeLines = 2
@@ -352,24 +354,23 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
   }
 
   private def buildWebHeader(trackingId: String): VssWebHeaderDto =
-  {
     VssWebHeaderDto(transactionId = trackingId,
       originDateTime = new DateTime,
       applicationCode = config.applicationCode,
       serviceTypeCode = config.vssServiceTypeCode,
       buildEndUser())
-  }
 
-  private def buildEndUser(): VssWebEndUserDto = {
+  private def buildEndUser(): VssWebEndUserDto =
     VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
-  }
 
   /**
    * Calling this method on a successful submission, will send an email if we have the new keeper details.
    * @param keeperDetails the keeper model from the cookie.
    * @return
    */
-  def createAndSendEmail(vehicleDetails: VehicleAndKeeperDetailsModel, keeperDetails: NewKeeperDetailsViewModel) =
+  def createAndSendEmail(vehicleDetails: VehicleAndKeeperDetailsModel,
+                         keeperDetails: NewKeeperDetailsViewModel,
+                         trackingId: String) =
     keeperDetails.email match {
       case Some(emailAddr) =>
         import scala.language.postfixOps
@@ -380,7 +381,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         val template = EmailMessageBuilder.buildWith()
 
         // This sends the email.
-        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send
+        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send(trackingId)
 
       case None => Logger.info(s"tried to send an email with no keeper details")
     }

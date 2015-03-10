@@ -59,6 +59,7 @@ object FakeVehicleAndKeeperLookupWebService {
       keeperPostcode = Some("a"),
       disposeFlag = Some(disposeFlag),
       keeperEndDate = if (disposeFlag) Some(new DateTime()) else None,
+      keeperChangeDate = None,
       suppressedV5Flag = None
     )
 

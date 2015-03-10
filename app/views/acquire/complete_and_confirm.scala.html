@@ -28,39 +28,6 @@
 
         <div class="site-overlay"></div>
 
-        <!-- INTERNET EXPLORER HACKS -->
-
-        <!-- The below code allows old IE browsers to have transparent bg without image -->
-        <!--[if IE]>
-           <style type="text/css">
-               .site-overlay { 
-                   background:transparent;
-                   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#A5000000,endColorstr=#A5000000); 
-                   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#A5000000,endColorstr=#A5000000); 
-                   zoom: 1;
-                } 
-            </style>
-        <![endif]-->
-
-        <!-- The below code is CSS fixes for IE9 only -->
-        <!--[if IE 9]>
-           <style type="text/css">
-                .popup-modal {
-                    top: 0px !important;
-                }
-           </style>
-        <![endif]-->
-
-        <!-- The below code is CSS fixes for IE7 only -->
-        <!--[if IE 9]>
-           <style type="text/css">
-                .popup-modal {
-                    margin: 0 auto 0 50% !important;
-                    left: -225px !important;
-                }
-           </style>
-        <![endif]-->
-
     }
 
     @form(action = data.submitAction) {
@@ -152,6 +119,7 @@
                         </div>
                     </div>
                 }
+
                 <div id=@DateOfSaleId class="form-steps">
                     @if(data.isSaleDateBeforeDisposalDate) {
                         @inputDayMonthYearTextbox(
@@ -188,7 +156,7 @@
                         'optionalFieldKey -> true
                         //'title -> Messages("acquire_keeperdetailscomplete.mileage.validation")
                     ) ++
-                            (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil), data.isSaleDateBeforeDisposalDate)
+                    (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil), data.isSaleDateBeforeDisposalDate)
                 )
 
                 <div class="form-steps">
@@ -200,14 +168,14 @@
                         @Messages("acquire_completeAndConfirm.submitbutton")
                     </button>
                     <br/>
-                    <a class="back" id="@BackId" @if(data.isSaleDateBeforeDisposalDate) {tabindex="-1"}
-                       href="@controllers.routes.VehicleTaxOrSorn.present()">
+                    <a class="back" id="@BackId"
+                        @if(data.isSaleDateBeforeDisposalDate) {tabindex="-1"}
+                        href="@controllers.routes.VehicleTaxOrSorn.present()">
                         @Messages("acquire_completeAndConfirm.backbutton")
                     </a>
                 </div>
         </div>
     </div>
-
     }
     
     <script src="@controllers.StaticAssets.versioned(config.assetsUrl)("javascripts/firefox-dont-cache-page.js")" type="text/javascript"></script>

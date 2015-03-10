@@ -1,10 +1,7 @@
 package utils.helpers
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getProperty
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getStringListProperty
 import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupConfig
-import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
+import uk.gov.dvla.vehicles.presentation.common.services.SEND.EmailConfiguration
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
 
 trait Config extends VehicleLookupConfig {
@@ -31,6 +28,9 @@ trait Config extends VehicleLookupConfig {
   // opening and closing times
   def opening: Int
   def closing: Int
+
+  def emailServiceMicroServiceUrlBase: String
+  def emailServiceMsRequestTimeout: Int
 
   def emailConfiguration: EmailConfiguration
 }
