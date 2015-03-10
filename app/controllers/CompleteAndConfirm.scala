@@ -16,6 +16,7 @@ import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.Logger
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
+import webserviceclients.emailservice.EmailService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -35,7 +36,7 @@ import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
-class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class CompleteAndConfirm @Inject()(webService: AcquireService, emailService: EmailService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,
                                                                config: Config) extends Controller {
   private val cookiesToBeDiscardedOnRedirectAway =
@@ -378,10 +379,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
         import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
 
         implicit val emailConfiguration = config.emailConfiguration
+        implicit val implicitEmailService = implicitly[EmailService](emailService)
+
         val template = EmailMessageBuilder.buildWith()
 
         // This sends the email.
-        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send(trackingId)
+        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send trackingId
 
       case None => Logger.info(s"tried to send an email with no keeper details")
     }
