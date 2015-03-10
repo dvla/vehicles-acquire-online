@@ -1,7 +1,7 @@
 package composition
 
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
-import uk.gov.dvla.vehicles.presentation.common.services.SEND.{From, EmailConfiguration}
+import uk.gov.dvla.vehicles.presentation.common.services.SEND.{EmailConfiguration, From}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
 import utils.helpers.Config
 
@@ -29,8 +29,8 @@ class TestConfig extends Config {
   def ordnanceSurveyUseUprn: Boolean = false
 
   // Opening and closing times
-  def opening: Int = 0
-  def closing: Int = 24
+  def opening: Int = getOptionalProperty[Int]("openingTime").getOrElse(0)
+  def closing: Int = getOptionalProperty[Int]("closingTime").getOrElse(24)
 
   // Web headers
   def applicationCode: String = ""
