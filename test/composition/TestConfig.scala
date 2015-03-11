@@ -32,6 +32,7 @@ class TestConfig extends Config {
   // Opening and closing times
   def opening: Int = getOptionalProperty[Int]("openingTime").getOrElse(0)
   def closing: Int = getOptionalProperty[Int]("closingTime").getOrElse(24)
+  def closingWarnPeriodMins: Int = getOptionalProperty[Int]("closingWarnPeriodMins").getOrElse(0)
 
   // Web headers
   def applicationCode: String = ""

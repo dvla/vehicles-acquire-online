@@ -25,9 +25,10 @@ trait Config extends VehicleLookupConfig {
 
   def ordnanceSurveyUseUprn: Boolean
   
-  // opening and closing times
+  // Opening and closing times
   def opening: Int
   def closing: Int
+  def closingWarnPeriodMins: Int
 
   def emailServiceMicroServiceUrlBase: String
   def emailServiceMsRequestTimeout: Int
