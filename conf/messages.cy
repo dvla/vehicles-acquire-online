@@ -254,7 +254,7 @@ privatekeeper_email = Email
 privatekeeper_firstname = First name
 privatekeeper_lastname = Last name
 privatekeeper_drivernumber = Driver number
-acquire_privatekeeperdetails.drivernumberlabel = Driving license number of new keeper
+acquire_privatekeeperdetails.drivernumberlabel = Driving licence number of new keeper
 acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 acquire_privatekeeperdetails.drivernumber.error = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 

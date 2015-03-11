@@ -107,6 +107,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     PrivateKeeperDetailsPage.firstNameTextBox enter FirstName
     PrivateKeeperDetailsPage.lastNameTextBox enter LastName
     PrivateKeeperDetailsPage.postcodeTextBox enter Postcode
+    click on PrivateKeeperDetailsPage.emailInvisible
     click on PrivateKeeperDetailsPage.next
     page.title should equal(NewKeeperChooseYourAddressPage.title)
   }
@@ -115,6 +116,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToBusinessKeeperDetailsPage()
     BusinessKeeperDetailsPage.fleetNumberField enter "112233"
     BusinessKeeperDetailsPage.businessNameField enter "test business"
+    click on BusinessKeeperDetailsPage.emailVisible
     BusinessKeeperDetailsPage.emailField enter "a@gmail.com"
     BusinessKeeperDetailsPage.postcodeField enter Postcode
     click on BusinessKeeperDetailsPage.next
@@ -237,6 +239,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     PrivateKeeperDetailsPage.firstNameTextBox enter NameWhichResultsInTransactionFailure
     PrivateKeeperDetailsPage.lastNameTextBox enter LastName
     PrivateKeeperDetailsPage.postcodeTextBox enter Postcode
+    click on PrivateKeeperDetailsPage.emailInvisible
     click on PrivateKeeperDetailsPage.next
     page.title should equal(NewKeeperChooseYourAddressPage.title)
 
@@ -256,6 +259,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     PrivateKeeperDetailsPage.dayDateOfBirthTextBox enter day
     PrivateKeeperDetailsPage.monthDateOfBirthTextBox enter month
     PrivateKeeperDetailsPage.yearDateOfBirthTextBox enter year
+    click on PrivateKeeperDetailsPage.emailInvisible
     click on PrivateKeeperDetailsPage.next
   }
 

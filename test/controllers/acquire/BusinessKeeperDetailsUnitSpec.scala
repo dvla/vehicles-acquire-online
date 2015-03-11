@@ -5,7 +5,8 @@ import controllers.BusinessKeeperDetails
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.Form._
 import org.mockito.Mockito.when
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
@@ -121,6 +122,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
     FakeRequest().withFormUrlEncodedBody(
       FleetNumberId -> fleetNumber,
       BusinessNameId -> businessName,
+      EmailOptionId -> OptionalToggle.Invisible,
       EmailId -> email,
       PostcodeId -> postcode
     )
