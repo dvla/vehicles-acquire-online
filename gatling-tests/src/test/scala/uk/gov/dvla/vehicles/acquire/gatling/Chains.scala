@@ -100,6 +100,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
             .headers(headers_accept_html)
             .formParam("traderName", "${traderName}")
             .formParam("traderPostcode", "${traderPostcode}")
+            .formParam("traderEmailOption", "invisible")
             .formParam("csrf_prevention_token", "${csrf_prevention_token}")
             .formParam("action", "")
             // Assertions

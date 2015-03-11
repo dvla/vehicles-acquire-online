@@ -7,7 +7,7 @@ config: utils.helpers.Config)
 @import views.html.acquire.main
 @import views.html.helper.form
 @import uk.gov.dvla.vehicles.presentation.common
-@import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+@import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
 @import common.views.helpers.LabelHelper.optionalFieldKey
 @import common.mappings.Postcode
 @import common.mappings.Email.EmailMaxLength
@@ -15,6 +15,7 @@ config: utils.helpers.Config)
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.optionalToggle
 
 @main(
   progress = Some(Messages("acquire_progress_2")),
@@ -37,16 +38,21 @@ config: utils.helpers.Config)
             )
         )
         </div>
-
-        @valtechInputText(traderLookupForm(TraderEmailId),
-            hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")),
-            args = Map('_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
-                '_showConstraints -> false,
-                'maxLength -> EmailMaxLength,
-                'optionalFieldKey -> true
+            @optionalToggle(
+                traderLookupForm(TraderEmailOptionId),
+                Messages("change_keeper_vehiclelookup.traderemailoption"),
+                Messages("change_keeper_vehiclelookup.traderemailoption.yes"),
+                Messages("change_keeper_vehiclelookup.traderemailoption.no"),
+                valtechInputText(traderLookupForm(TraderEmailId),
+                    hintText = None,
+                    args = Map(
+                        '_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
+                        '_showConstraints -> false,
+                        'maxLength -> EmailMaxLength,
+                        'NO_OPTIONAL_LABEL -> false
+                    )
+                )
             )
-        )
-
         <div class="uppercase-input">
             @valtechInputText(traderLookupForm(TraderPostcodeId),
                 hintText = Some(Messages("acquire_setuptradedetails.traderpostcode.hint")),

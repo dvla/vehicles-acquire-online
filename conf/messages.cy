@@ -136,7 +136,6 @@ acquire_setuptradedetails.tradernamelabel = Trader name
 acquire_setuptradedetails.traderpostcodelabel = Postcode
 acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
 acquire_setuptradedetails.traderemaillabel = Trader email address
-acquire_setuptradedetails.traderemail.hint = e.g. example@example.co.uk
 acquire_setuptradedetails.button = Find address
 traderName = Trader name
 traderPostcode = Postcode

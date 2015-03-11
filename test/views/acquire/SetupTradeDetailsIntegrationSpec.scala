@@ -55,7 +55,7 @@ final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
     }
 
     "display one summary validation error message when an incorrectly email is entered" taggedAs UiTag in new WebBrowser {
-      happyPath(traderBusinessEmail = "email_with_no_at_symbol")
+      happyPath(traderBusinessEmail = Some("email_with_no_at_symbol"))
       ErrorPanel.numberOfErrors should equal(1)
     }
 

@@ -29,6 +29,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     happyPath.goToSetupTradeDetailsPage()
     SetupTradeDetailsPage.traderName enter "VA12SU"
     SetupTradeDetailsPage.traderPostcode enter "qq99qq"
+    click on SetupTradeDetailsPage.emailVisible
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     BusinessChooseYourAddressPage.chooseAddress.value = "0"
