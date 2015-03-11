@@ -241,7 +241,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
   def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
     response match {
-      case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
+      case Some(r) if r.responseCode.isDefined => successReturn
       case _ => handleHttpStatusCode(httpResponseCode)
     }
 
@@ -309,24 +309,15 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     )
   }
 
-  def handleResponseCode(acquireResponseCode: String): Call =
-    acquireResponseCode match {
-      case "ms.vehiclesService.error.generalError" =>
-        Logger.warn("Acquire soap endpoint redirecting to acquire failure page")
-        routes.AcquireFailure.present()
-      case _ =>
-        Logger.warn(s"Acquire micro-service failed so now redirecting to micro service error page. " +
-          s"Code returned from ms was $acquireResponseCode")
-        routes.MicroServiceError.present()
-    }
-
   def handleHttpStatusCode(statusCode: Int): Call =
     statusCode match {
-      case OK =>
-        routes.AcquireSuccess.present()
-      case _ =>
-        routes.MicroServiceError.present()
+      case OK => successReturn
+      case _ => routes.MicroServiceError.present()
     }
+
+  private def successReturn: Call = {
+    routes.AcquireSuccess.present()
+  }
 
   def checkboxValueToBoolean (checkboxValue: String): Boolean = {
     checkboxValue == "true"
