@@ -10,7 +10,7 @@ import helpers.UnitSpec
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.SetupTradeDetailsFormModel
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel.Form._
 import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
@@ -18,7 +18,7 @@ import play.api.test.FakeRequest
 import play.api.test.WithApplication
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.BusinessName
+import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, BusinessName}
 import utils.helpers.Config
 
 import models.AcquireCacheKeyPrefix.CookiePrefix
@@ -112,11 +112,13 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
 
   private def buildCorrectlyPopulatedRequest(dealerName: String = TraderBusinessNameValid,
                                              dealerPostcode: String = PostcodeValid,
-                                             dealerEmail: String = TraderEmailValid) = {
-    FakeRequest().withFormUrlEncodedBody(
+                                             dealerEmail: Option[String] = Some(TraderEmailValid)) = {
+    FakeRequest().withFormUrlEncodedBody(Seq(
       TraderNameId -> dealerName,
-      TraderPostcodeId -> dealerPostcode,
-      TraderEmailId -> dealerEmail)
+      TraderPostcodeId -> dealerPostcode
+    ) ++ dealerEmail.fold(Seq(TraderEmailOptionId -> OptionalToggle.Invisible)) { email =>
+      Seq(TraderEmailOptionId -> OptionalToggle.Visible, TraderEmailId -> email)
+    }:_*)
   }
 
   private lazy val setUpTradeDetails = {
