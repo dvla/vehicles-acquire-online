@@ -251,7 +251,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                                                                             keeperDetails: NewKeeperDetailsViewModel,
                                                                             trackingId: String) =
     response match {
-      case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
+      case Some(r) if r.responseCode.isDefined => successReturn(vehicleDetails, keeperDetails, trackingId)
       case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, trackingId)
     }
 
@@ -319,27 +319,20 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     )
   }
 
-  def handleResponseCode(acquireResponseCode: String): Call =
-    acquireResponseCode match {
-      case "ms.vehiclesService.error.generalError" =>
-        Logger.warn("Acquire soap endpoint redirecting to acquire failure page")
-        routes.AcquireFailure.present()
-      case _ =>
-        Logger.warn(s"Acquire micro-service failed so now redirecting to micro service error page. " +
-          s"Code returned from ms was $acquireResponseCode")
-        routes.MicroServiceError.present()
-    }
-
   def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
                                             keeperDetails: NewKeeperDetailsViewModel,
                                             trackingId: String): Call =
     statusCode match {
-      case OK =>
-        createAndSendEmail(vehicleDetails, keeperDetails, trackingId)
-        routes.AcquireSuccess.present()
-      case _ =>
-        routes.MicroServiceError.present()
+      case OK => successReturn(vehicleDetails, keeperDetails, trackingId)
+      case _ => routes.MicroServiceError.present()
     }
+
+  private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
+                            keeperDetails: NewKeeperDetailsViewModel,
+                            trackingId: String): Call = {
+    createAndSendEmail(vehicleDetails, keeperDetails, trackingId)
+    routes.AcquireSuccess.present()
+  }
 
   def checkboxValueToBoolean (checkboxValue: String): Boolean =
     checkboxValue == "true"

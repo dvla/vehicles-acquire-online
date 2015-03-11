@@ -5,4 +5,4 @@ Feature:
 
   Scenario: Complete and confirm - Next
     When the user confirms the transaction
-    Then the user will be taken to the "Buy a vehicle from the motor trade: failure" page
+    Then the user will be taken to the "Summary" page
