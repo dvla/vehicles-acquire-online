@@ -14,7 +14,8 @@
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import views.html.helper.form
-@import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+@import common.views.html.widgets.optionalToggle
+@import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, EmailOptionId, PostcodeId}
 @main(
     progress = Some(Messages("acquire_progress_5")),
     title = Messages("acquire_businesskeeperdetails.title"),
@@ -70,12 +71,19 @@
                         (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
                     )
 
-                    @valtechInputText(viewModel.form(EmailId), 
-                    hintText = Some(Messages("acquire_setuptradedetails.traderemail.hint")),
-                    args = Map('_label -> Messages("acquire_businesskeeperdetails.email"),
-                            '_showConstraints -> false,
-                            'maxLength -> EmailMaxLength,
-                            'optionalFieldKey -> true
+                    @optionalToggle(
+                        viewModel.form(EmailOptionId),
+                        Messages("acquire_businesskeeperdetails.traderemailoption"),
+                        Messages("acquire_businesskeeperdetails.traderemailoption.yes"),
+                        Messages("acquire_businesskeeperdetails.traderemailoption.no"),
+                        valtechInputText(
+                            viewModel.form(EmailId),
+                            hintText = None,
+                            args = Map('_label -> Messages("acquire_businesskeeperdetails.email"),
+                                '_showConstraints -> false,
+                                'maxLength -> EmailMaxLength,
+                                'NO_OPTIONAL_LABEL -> false
+                            )
                         )
                     )
 

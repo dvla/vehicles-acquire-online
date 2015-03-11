@@ -82,7 +82,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
     "go to the appropriate next page when mandatory private keeper details are entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      navigate(email = "")
+      navigate(email = None)
       page.title should equal(NewKeeperChooseYourAddressPage.title)
     }
 
@@ -96,7 +96,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
     "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      navigate(email = EmailInvalid)
+      navigate(email = Some(EmailInvalid))
       ErrorPanel.numberOfErrors should equal(1)
     }
 

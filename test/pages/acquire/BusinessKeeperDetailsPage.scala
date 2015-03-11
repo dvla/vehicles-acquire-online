@@ -1,10 +1,9 @@
 package pages.acquire
 
 import org.openqa.selenium.WebDriver
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, TextField, TelField, WebBrowserDSL, WebDriverFactory}
-import uk.gov.dvla.vehicles.presentation.common
-import common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, PostcodeId}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser._
+import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle._
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.Form._
 import views.acquire.BusinessKeeperDetails.{BackId, NextId}
 
 object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
@@ -22,6 +21,12 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def businessNameField(implicit driver: WebDriver): TextField = textField(id(BusinessNameId))
 
+  def emailVisible(implicit driver: WebDriver): RadioButton =
+    radioButton(id(s"${EmailOptionId}_$Visible"))
+
+  def emailInvisible(implicit driver: WebDriver): RadioButton =
+    radioButton(id(s"${EmailOptionId}_$Invisible"))
+
   def emailField(implicit driver: WebDriver): TextField = textField(id(EmailId))
 
   def postcodeField(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
@@ -32,13 +37,16 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
 
   def navigate(fleetNumber: String = FleetNumberValid,
                businessName: String = BusinessNameValid,
-               email: String = EmailValid,
+               email: Option[String] = Some(EmailValid),
                postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to BusinessKeeperDetailsPage
 
     fleetNumberField enter fleetNumber
     businessNameField enter businessName
-    emailField enter email
+    email.fold(click on emailInvisible){emailAddress =>
+      click on emailVisible
+      emailField enter emailAddress
+    }
     postcodeField enter postcode
 
     click on next

@@ -80,7 +80,7 @@ final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness
     "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
       cacheSetup()
-      navigate(email = "aaa.com")
+      navigate(email = Some("aaa.com"))
       ErrorPanel.numberOfErrors should equal(1)
     }
   }
