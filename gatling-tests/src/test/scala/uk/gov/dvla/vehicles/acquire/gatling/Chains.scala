@@ -21,7 +21,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
   private final val KeeperDetailsPlaybackHeading = "New keeper details"
   private final val SummaryPageTitle = "Summary"
   private final val TransactionDetailsPlaybackHeading = "Transaction details"
-  private final val VehicleLookupFailurePageTitle = "Look-up was unsuccessful"
+  private final val VehicleLookupFailurePageTitle = "Unable to find a vehicle record"
 
   def verifyAssetsAreAccessible =
     exec(http("screen.min.css")
