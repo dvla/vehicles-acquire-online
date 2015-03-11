@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import email.EmailMessageBuilder
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
@@ -15,6 +16,7 @@ import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.Logger
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
+import webserviceclients.emailservice.EmailService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -22,7 +24,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.mappings.TitleType
 import common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
-import common.services.DateService
+import uk.gov.dvla.vehicles.presentation.common.services.{SEND, DateService}
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.acquire.AcquireRequestDto
 import common.webserviceclients.acquire.AcquireResponseDto
@@ -34,7 +36,9 @@ import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
-class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class CompleteAndConfirm @Inject()(webService: AcquireService,
+                                   emailService: EmailService)
+                                  (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,
                                                                config: Config) extends Controller {
   private val cookiesToBeDiscardedOnRedirectAway =
@@ -123,10 +127,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
                   // Date of sale is invalid so send a bad request back to the submitting page
                   Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate " +
-                  s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
+                    s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
 
                   val dateInvalidCall = Future.successful {
-                      BadRequest(complete_and_confirm(
+                    BadRequest(complete_and_confirm(
                       CompleteAndConfirmViewModel(form.fill(validForm),
                         vehicleAndKeeperDetails,
                         newKeeperDetails,
@@ -199,13 +203,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
       ).distinctErrors
 
   private def dateValidCall(validForm: CompleteAndConfirmFormModel,
-                              newKeeperDetails: NewKeeperDetailsViewModel,
-                              vehicleLookup: VehicleLookupFormModel,
-                              vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
-                              traderDetails: TraderDetailsModel,
-                              taxOrSorn: VehicleTaxOrSornFormModel
-                               )
-                             (implicit request: Request[AnyContent]): Future[Result] =
+                            newKeeperDetails: NewKeeperDetailsViewModel,
+                            vehicleLookup: VehicleLookupFormModel,
+                            vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
+                            traderDetails: TraderDetailsModel,
+                            taxOrSorn: VehicleTaxOrSornFormModel
+                             )
+                           (implicit request: Request[AnyContent]): Future[Result] =
     acquireAction(
       validForm,
       newKeeperDetails,
@@ -232,10 +236,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
-          Some(Redirect(nextPage(httpResponseCode, response)))
-            .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
-            .map(_.withCookie(completeAndConfirmForm))
-            .get
+        Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView, trackingId)))
+          .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
+          .map(_.withCookie(completeAndConfirmForm))
+          .get
     }.recover {
       case e: Throwable =>
         Logger.warn(s"Acquire micro-service call failed.", e)
@@ -243,10 +247,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     }
   }
 
-  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto]) =
+  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(vehicleDetails: VehicleAndKeeperDetailsModel,
+                                                                            keeperDetails: NewKeeperDetailsViewModel,
+                                                                            trackingId: String) =
     response match {
-      case Some(r) if r.responseCode.isDefined => handleResponseCode(r.responseCode.get)
-      case _ => handleHttpStatusCode(httpResponseCode)
+      case Some(r) if r.responseCode.isDefined => successReturn(vehicleDetails, keeperDetails, trackingId)
+      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, trackingId)
     }
 
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
@@ -313,24 +319,20 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
     )
   }
 
-  def handleResponseCode(acquireResponseCode: String): Call =
-    acquireResponseCode match {
-      case "ms.vehiclesService.error.generalError" =>
-        Logger.warn("Acquire soap endpoint redirecting to acquire failure page")
-        routes.AcquireFailure.present()
-      case _ =>
-        Logger.warn(s"Acquire micro-service failed so now redirecting to micro service error page. " +
-          s"Code returned from ms was $acquireResponseCode")
-        routes.MicroServiceError.present()
+  def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
+                                            keeperDetails: NewKeeperDetailsViewModel,
+                                            trackingId: String): Call =
+    statusCode match {
+      case OK => successReturn(vehicleDetails, keeperDetails, trackingId)
+      case _ => routes.MicroServiceError.present()
     }
 
-  def handleHttpStatusCode(statusCode: Int): Call =
-    statusCode match {
-      case OK =>
-        routes.AcquireSuccess.present()
-      case _ =>
-        routes.MicroServiceError.present()
-    }
+  private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
+                            keeperDetails: NewKeeperDetailsViewModel,
+                            trackingId: String): Call = {
+    createAndSendEmail(vehicleDetails, keeperDetails, trackingId)
+    routes.AcquireSuccess.present()
+  }
 
   def checkboxValueToBoolean (checkboxValue: String): Boolean =
     checkboxValue == "true"
@@ -356,4 +358,29 @@ class CompleteAndConfirm @Inject()(webService: AcquireService)(implicit clientSi
 
   private def buildEndUser(): VssWebEndUserDto =
     VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
+
+  /**
+   * Calling this method on a successful submission, will send an email if we have the new keeper details.
+   * @param keeperDetails the keeper model from the cookie.
+   * @return
+   */
+  def createAndSendEmail(vehicleDetails: VehicleAndKeeperDetailsModel,
+                         keeperDetails: NewKeeperDetailsViewModel,
+                         trackingId: String) =
+    keeperDetails.email match {
+      case Some(emailAddr) =>
+        import scala.language.postfixOps
+
+        import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
+
+        implicit val emailConfiguration = config.emailConfiguration
+        implicit val implicitEmailService = implicitly[EmailService](emailService)
+
+        val template = EmailMessageBuilder.buildWith()
+
+        // This sends the email.
+        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send trackingId
+
+      case None => Logger.info(s"tried to send an email with no keeper details")
+    }
 }

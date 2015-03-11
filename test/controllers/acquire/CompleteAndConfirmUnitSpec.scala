@@ -25,6 +25,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
+import webserviceclients.emailservice.{EmailServiceSendResponse, EmailServiceSendRequest, EmailService}
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
@@ -40,6 +41,7 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.He
 import utils.helpers.Config
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseSuccess, acquireResponseApplicationBeingProcessed}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
@@ -239,7 +241,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
         thenReturn(Future.successful {
-          (OK, Some(acquireResponseSuccess))
+        (OK, Some(acquireResponseSuccess))
       })
 
       val result = completeAndConfirm.submitWithDateCheck(request)
@@ -390,7 +392,12 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
                                (implicit config: Config = config,
                                 dateService: DateService = dateServiceStubbed()): CompleteAndConfirm = {
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
-    new CompleteAndConfirm(acquireService)
+
+    val emailServiceMock: EmailService = mock[EmailService]
+    when(emailServiceMock.invoke(any[EmailServiceSendRequest](), anyString())).
+      thenReturn(Future(EmailServiceSendResponse()))
+
+    new CompleteAndConfirm(acquireService, emailServiceMock)
   }
 
   private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,
