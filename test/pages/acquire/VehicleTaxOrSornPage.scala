@@ -1,8 +1,8 @@
 package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Checkbox, Element, Page, WebBrowserDSL, WebDriverFactory}
-import models.VehicleTaxOrSornFormModel.Form.SornVehicleId
+import helpers.webbrowser.{RadioButton, Checkbox, Element, Page, WebBrowserDSL, WebDriverFactory}
+import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SornId}
 import org.openqa.selenium.WebDriver
 import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
 
@@ -15,10 +15,13 @@ object VehicleTaxOrSornPage extends Page with WebBrowserDSL {
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
+  def sornSelect(implicit driver: WebDriver): Element = find(id(SornId)).get
+
   def sornVehicle(implicit driver: WebDriver): Checkbox = checkbox(id(SornVehicleId))
 
   def navigate()(implicit driver: WebDriver) = {
     go to VehicleTaxOrSornPage
+    click on sornSelect
     click on sornVehicle
     click on next
   }

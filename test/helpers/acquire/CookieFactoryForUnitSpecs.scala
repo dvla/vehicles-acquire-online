@@ -336,7 +336,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
 
   def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None): Cookie = {
     val key = VehicleTaxOrSornCacheKey
-    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle, select = "S")
     createCookie(key, value)
   }
 

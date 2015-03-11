@@ -148,6 +148,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   def goToCompleteAndConfirmPage(callNavigationSteps: Boolean = true) = {
     if (callNavigationSteps) goToVehicleTaxOrSornPage()
+    click on VehicleTaxOrSornPage.sornSelect
     click on VehicleTaxOrSornPage.sornVehicle
     click on VehicleTaxOrSornPage.next
     page.title should equal(CompleteAndConfirmPage.title)

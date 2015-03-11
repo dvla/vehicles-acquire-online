@@ -5,16 +5,16 @@ import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.{VehicleTaxOrSornViewModel, VehicleTaxOrSornFormModel}
 import play.api.Logger
-import play.api.data.Form
+import play.api.data.{FormError, Form}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.model.NewKeeperDetailsViewModel
-import common.model.NewKeeperEnterAddressManuallyFormModel
-import common.model.VehicleAndKeeperDetailsModel
+import common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId}
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
+import common.views.helpers.FormExtensions.formBinding
 
 class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                           config: Config) extends Controller {
@@ -57,7 +57,8 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
         val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
         (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt) match {
           case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails)) =>
-            BadRequest(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleAndKeeperDetails, newKeeperDetails)))
+            BadRequest(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(formWithReplacedErrors(invalidForm),
+              vehicleAndKeeperDetails, newKeeperDetails, error = true)))
           case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
         }
       },
@@ -65,5 +66,13 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
         .withCookie(validForm)
         .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")
     )
+  }
+
+  private def formWithReplacedErrors(form: Form[VehicleTaxOrSornFormModel]): Form[VehicleTaxOrSornFormModel] = {
+    form.replaceError(
+      SornVehicleId, FormError(key = SornVehicleId,message = "error.sornVehicleid", args = Seq.empty)
+    ).replaceError(
+        SelectId, FormError(key = SelectId, message = "error.sornselectid", args = Seq.empty)
+    ).distinctErrors
   }
 }

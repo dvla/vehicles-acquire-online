@@ -9,6 +9,7 @@ import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberVa
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{RegistrationNumberValid, VehicleMakeValid, VehicleModelValid}
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId}
 
 class VehicleTaxOrSornUnitSpec extends UnitSpec {
 
@@ -100,7 +101,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
 
   "submit" should {
     "redirect to next page without sorning the vehicle" in new WithApplication {
-      val request = FakeRequest().
+      val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
@@ -111,7 +112,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     }
 
     "redirect to next page with sorning the vehicle" in new WithApplication {
-      val request = FakeRequest().
+      val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel(sornVehicle = Some("true")))
@@ -122,6 +123,12 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
     }
   }
 
+  private def buildCorrectlyPopulatedRequest() = {
+    FakeRequest().withFormUrlEncodedBody(
+      SornVehicleId -> "true",
+      SelectId -> "S"
+    )
+  }
   private lazy val vehicleTaxOrSorn = {
     injector.getInstance(classOf[VehicleTaxOrSorn])
   }

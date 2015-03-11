@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 @CucumberOptions(
   features = Array("acceptance-tests/src/test/resources/gherkin"),
   glue = Array("gov.uk.dvla.vehicles.acquire.stepdefs"),
-  tags = Array("@working")
+  tags = Array("@working","~@Ignore")
 )
 class AcquireAcceptanceTestRunner {
 }

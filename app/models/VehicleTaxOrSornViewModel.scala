@@ -6,5 +6,6 @@ import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsMod
 
 case class VehicleTaxOrSornViewModel(form: Form[models.VehicleTaxOrSornFormModel],
                                      vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
-                                     keeperDetails: NewKeeperDetailsViewModel)
+                                     keeperDetails: NewKeeperDetailsViewModel,
+                                     error: Boolean = false)
 
