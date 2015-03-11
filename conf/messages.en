@@ -158,9 +158,13 @@ acquire_setuptradedetails.traderpostcodelabel = Postcode
 acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
 acquire_setuptradedetails.traderemaillabel = Trader email address
 acquire_setuptradedetails.button = Find address
+acquire_setuptradedetails.traderemailoption = Do you want an email confirmation of the sale?
+acquire_setuptradedetails.traderemailoption.yes = Yes
+acquire_setuptradedetails.traderemailoption.no = No
 traderName = Trader name
 traderPostcode = Postcode
 traderEmail = Trader email address
+traderEmailOption = Email confirmation
 
 #page 3 - Business Choose Your Address
 disposal_businessChooseYourAddress_addressSelect = Select trader address
