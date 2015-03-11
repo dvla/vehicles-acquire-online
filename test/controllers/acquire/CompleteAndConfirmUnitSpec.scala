@@ -214,19 +214,19 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
-      val (acquireServiceMock, emailServiceMock, completeAndConfirm) = createMocks
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
 
       val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
         verify(acquireServiceMock, never()).invoke(any[AcquireRequestDto], anyString())
-        verify(emailServiceMock, never()).invoke(any[EmailServiceSendRequest], anyString())
       }
     }
 
     "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new WithApplication {
       // The date of acquisition is 19-10-2012
-      val disposalDate = DateTime.parse("20-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      val disposalDate = DateTime.parse("18-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -236,25 +236,18 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
-      //val (acquireServiceMock, emailServiceMock, completeAndConfirm) = createMocks
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
 
-      val acquireServiceMock: AcquireService = mock[AcquireService]
       when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
         thenReturn(Future.successful {
         (OK, Some(acquireResponseSuccess))
       })
 
-      val emailServiceMock: EmailService = mock[EmailService]
-      when(emailServiceMock.invoke(any[EmailServiceSendRequest](), anyString())).
-        thenReturn(Future(EmailServiceSendResponse()))
-
-      val completeAndConfirm = acquireController(acquireServiceMock, emailServiceMock)
-
       val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
         verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], anyString())
-        //verify(emailServiceMock, times(1)).invoke(any[EmailServiceSendRequest], anyString())
       }
     }
 
@@ -264,20 +257,24 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(email = Some(EmailValid)))
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
 
-      val (acquireServiceMock, emailServiceMock, completeAndConfirm) = createMocks
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
+        thenReturn(Future.successful {
+        (OK, Some(acquireResponseSuccess))
+      })
 
       val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
         verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], anyString())
-        verify(emailServiceMock, times(1)).invoke(any[EmailServiceSendRequest], anyString())
       }
     }
 
@@ -388,37 +385,19 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
     })
     val acquireService = new AcquireServiceImpl(config.acquire, acquireWebService, healthStatsMock)
-
-    val emailServiceMock = mock[EmailService]
-    when(emailServiceMock.invoke(any[EmailServiceSendRequest](), anyString())).
-      thenReturn(Future(EmailServiceSendResponse()))
-
-    acquireController(acquireService, emailServiceMock)
+    acquireController(acquireService)
   }
 
-  private def acquireController(acquireService: AcquireService,  emailService: EmailService)
+  private def acquireController(acquireService: AcquireService)
                                (implicit config: Config = config,
                                 dateService: DateService = dateServiceStubbed()): CompleteAndConfirm = {
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
-    new CompleteAndConfirm(acquireService, emailService)
-  }
-
-  private def createMocks: (AcquireService, EmailService, CompleteAndConfirm) = {
-
-    val acquireServiceMock: AcquireService = mock[AcquireService]
-    when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
-      thenReturn(Future.successful {
-      (OK, Some(acquireResponseSuccess))
-    })
 
     val emailServiceMock: EmailService = mock[EmailService]
     when(emailServiceMock.invoke(any[EmailServiceSendRequest](), anyString())).
       thenReturn(Future(EmailServiceSendResponse()))
 
-    val completeAndConfirm = acquireController(acquireServiceMock, emailServiceMock)
-
-    (acquireServiceMock, emailServiceMock, completeAndConfirm)
-
+    new CompleteAndConfirm(acquireService, emailServiceMock)
   }
 
   private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,

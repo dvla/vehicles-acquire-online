@@ -36,7 +36,9 @@ import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
-class CompleteAndConfirm @Inject()(webService: AcquireService, emailService: EmailService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class CompleteAndConfirm @Inject()(webService: AcquireService,
+                                   emailService: EmailService)
+                                  (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                                                dateService: DateService,
                                                                config: Config) extends Controller {
   private val cookiesToBeDiscardedOnRedirectAway =
@@ -125,10 +127,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService, emailService: Ema
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
                   // Date of sale is invalid so send a bad request back to the submitting page
                   Logger.debug(s"Complete-and-confirm date validation failed: keeperEndDate " +
-                  s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
+                    s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
 
                   val dateInvalidCall = Future.successful {
-                      BadRequest(complete_and_confirm(
+                    BadRequest(complete_and_confirm(
                       CompleteAndConfirmViewModel(form.fill(validForm),
                         vehicleAndKeeperDetails,
                         newKeeperDetails,
@@ -201,13 +203,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService, emailService: Ema
       ).distinctErrors
 
   private def dateValidCall(validForm: CompleteAndConfirmFormModel,
-                              newKeeperDetails: NewKeeperDetailsViewModel,
-                              vehicleLookup: VehicleLookupFormModel,
-                              vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
-                              traderDetails: TraderDetailsModel,
-                              taxOrSorn: VehicleTaxOrSornFormModel
-                               )
-                             (implicit request: Request[AnyContent]): Future[Result] =
+                            newKeeperDetails: NewKeeperDetailsViewModel,
+                            vehicleLookup: VehicleLookupFormModel,
+                            vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
+                            traderDetails: TraderDetailsModel,
+                            taxOrSorn: VehicleTaxOrSornFormModel
+                             )
+                           (implicit request: Request[AnyContent]): Future[Result] =
     acquireAction(
       validForm,
       newKeeperDetails,
@@ -234,10 +236,10 @@ class CompleteAndConfirm @Inject()(webService: AcquireService, emailService: Ema
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
-          Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView, trackingId)))
-            .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
-            .map(_.withCookie(completeAndConfirmForm))
-            .get
+        Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView, trackingId)))
+          .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
+          .map(_.withCookie(completeAndConfirmForm))
+          .get
     }.recover {
       case e: Throwable =>
         Logger.warn(s"Acquire micro-service call failed.", e)
