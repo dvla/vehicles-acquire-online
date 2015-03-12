@@ -62,7 +62,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
 
   "submit" should {
     "redirect to next page when only mandatory fields are filled in" in new WithApplication {
-      val request = buildRequest(fleetNumber = "", email = "")
+      val request = buildRequest(fleetNumber = None, email = "")
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
@@ -80,7 +80,7 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
     }
 
     "redirect to setup trade details when no cookie is present with invalid submission" in new WithApplication {
-      val request = buildRequest(fleetNumber = "-12345")
+      val request = buildRequest(fleetNumber = Some("-12345"))
       val result = businessKeeperDetails.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -115,17 +115,18 @@ class BusinessKeeperDetailsUnitSpec extends UnitSpec {
     }
   }
 
-  private def buildRequest(fleetNumber: String = FleetNumberValid,
+  private def buildRequest(fleetNumber: Option[String] = Some(FleetNumberValid),
                            businessName: String = BusinessNameValid,
                            email: String = EmailValid,
                            postcode: String = PostcodeValid) = {
-    FakeRequest().withFormUrlEncodedBody(
-      FleetNumberId -> fleetNumber,
+    FakeRequest().withFormUrlEncodedBody(Seq(
       BusinessNameId -> businessName,
       EmailOptionId -> OptionalToggle.Invisible,
       EmailId -> email,
       PostcodeId -> postcode
-    )
+    ) ++ fleetNumber.fold(Map(FleetNumberOptionId -> OptionalToggle.Invisible)) { fleetNumber =>
+      Map(FleetNumberOptionId -> OptionalToggle.Visible, FleetNumberId -> fleetNumber)
+    }:_*)
   }
 
   private lazy val businessKeeperDetails = {

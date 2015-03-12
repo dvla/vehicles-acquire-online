@@ -17,6 +17,12 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   final val PostcodeValid = "QQ99QQ"
   final val PostcodeInvalid = "XX99XX"
 
+  def fleetNumberVisible(implicit driver: WebDriver): RadioButton =
+    radioButton(id(s"${FleetNumberOptionId}_$Visible"))
+
+  def fleetNumberInvisible(implicit driver: WebDriver): RadioButton =
+    radioButton(id(s"${FleetNumberOptionId}_$Invisible"))
+
   def fleetNumberField(implicit driver: WebDriver): TelField = telField(id(FleetNumberId))
 
   def businessNameField(implicit driver: WebDriver): TextField = textField(id(BusinessNameId))
@@ -30,18 +36,21 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   def emailField(implicit driver: WebDriver): TextField = textField(id(EmailId))
 
   def postcodeField(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
-  
+
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
   def next(implicit driver: WebDriver): Element = find(id(NextId)).get
 
-  def navigate(fleetNumber: String = FleetNumberValid,
+  def navigate(fleetNumber: Option[String] = Some(FleetNumberValid),
                businessName: String = BusinessNameValid,
                email: Option[String] = Some(EmailValid),
                postcode: String = PostcodeValid)(implicit driver: WebDriver) = {
     go to BusinessKeeperDetailsPage
 
-    fleetNumberField enter fleetNumber
+    fleetNumber.fold(click on  fleetNumberInvisible) {fleetNumber =>
+      click on  fleetNumberVisible
+      fleetNumberField enter fleetNumber
+    }
     businessNameField enter businessName
     email.fold(click on emailInvisible){emailAddress =>
       click on emailVisible

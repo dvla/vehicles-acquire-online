@@ -15,13 +15,13 @@
 @import common.views.html.widgets.base.valtechInputText
 @import views.html.helper.form
 @import common.views.html.widgets.optionalToggle
-@import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, BusinessNameId, EmailId, EmailOptionId, PostcodeId}
+@import common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, FleetNumberOptionId, BusinessNameId, EmailId, EmailOptionId, PostcodeId}
 @main(
     progress = Some(Messages("acquire_progress_5")),
     title = Messages("acquire_businesskeeperdetails.title"),
     currentForm = Some(viewModel.form)
 ) {
-    
+
     <h1>@Messages("acquire_businesskeeperdetails.title")</h1>
 
     <div class="two-col clearfix">
@@ -60,15 +60,22 @@
                         )
                     </div>
 
-                    @valtechInputText(viewModel.form(FleetNumberId),
-                        hintText = Some(Messages("acquire_businesskeeperdetails.businessname.hint")), args =
-                                Map('_label -> Messages("acquire_businesskeeperdetails.fleetnumber"),
-                                    'maxLength -> FleetNumber.MaxLength,
-                                    'typeFleetNumber -> true,
-                                    '_showConstraints -> false,
-                                    'optionalFieldKey -> true
-                                ) ++
-                        (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
+                    @optionalToggle(
+                        viewModel.form(FleetNumberOptionId),
+                        Messages("acquire_businesskeeperdetails.fleetnumberoption"),
+                        Messages("acquire_businesskeeperdetails.fleetnumberoption.yes"),
+                        Messages("acquire_businesskeeperdetails.fleetnumberoption.no"),
+                        valtechInputText(
+                            viewModel.form(FleetNumberId),
+                            hintText = Some(Messages("acquire_businesskeeperdetails.businessname.hint")),
+                            args = Map(
+                                '_label -> Messages("acquire_businesskeeperdetails.fleetnumber"),
+                                'maxLength -> FleetNumber.MaxLength,
+                                'typeFleetNumber -> true,
+                                '_showConstraints -> false,
+                                'NO_OPTIONAL_LABEL -> false
+                            ) ++ (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
+                        )
                     )
 
                     @optionalToggle(
