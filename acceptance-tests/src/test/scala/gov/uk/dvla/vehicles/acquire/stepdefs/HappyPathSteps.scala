@@ -115,6 +115,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   def goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper() = {
     goToBusinessKeeperDetailsPage()
+    click on BusinessKeeperDetailsPage.fleetNumberVisible
     BusinessKeeperDetailsPage.fleetNumberField enter "112233"
     BusinessKeeperDetailsPage.businessNameField enter "test business"
     click on BusinessKeeperDetailsPage.emailVisible
