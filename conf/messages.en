@@ -398,6 +398,7 @@ acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a SORN made when 
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
 acquire_vehicleTaxOrSorn.p2 = Or
 acquire_vehicleTaxOrSorn.taxText = This will open up a new window. Once taxing is completed please return to this page and continue with acquiring the vehicle.
+acquire_vehicleTaxOrSorn.sornText = Make a Statutory Off Road Notification (SORN) as part of this service. Please select 'Next' to continue
 acquire_vehicleTaxOrSorn.neitherText = Please remind the new keeper that it is their responsibility to ensure the vehicle is taxed if it is driven on the road. If the vehicle is being kept off road, the new keeper must make a SORN.
 acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off Road Notification (SORN) now as part of this service?
 acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
