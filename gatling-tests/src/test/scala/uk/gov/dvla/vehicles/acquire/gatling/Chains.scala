@@ -21,7 +21,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
   private final val KeeperDetailsPlaybackHeading = "New keeper details"
   private final val SummaryPageTitle = "Summary"
   private final val TransactionDetailsPlaybackHeading = "Transaction details"
-  private final val VehicleLookupFailurePageTitle = "Look-up was unsuccessful"
+  private final val VehicleLookupFailurePageTitle = "Unable to find a vehicle record"
 
   def verifyAssetsAreAccessible =
     exec(http("screen.min.css")
@@ -100,6 +100,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
             .headers(headers_accept_html)
             .formParam("traderName", "${traderName}")
             .formParam("traderPostcode", "${traderPostcode}")
+            .formParam("traderEmailOption", "invisible")
             .formParam("csrf_prevention_token", "${csrf_prevention_token}")
             .formParam("action", "")
             // Assertions

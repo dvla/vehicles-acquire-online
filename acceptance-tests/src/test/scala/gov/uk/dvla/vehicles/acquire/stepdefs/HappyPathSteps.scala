@@ -62,6 +62,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToSetupTradeDetailsPage()
     SetupTradeDetailsPage.traderName enter "VA12SU"
     SetupTradeDetailsPage.traderPostcode enter Postcode
+    click on SetupTradeDetailsPage.emailVisible
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     page.title should equal(BusinessChooseYourAddressPage.title)
@@ -268,7 +269,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   def the_user_is_on_the_Enter_address_manually_page() {
     goToEnterAddressManuallyPage()
   }
-  
+
   @Given("^the user is on the Business choose your address page$")
   def the_user_is_on_the_Business_choose_your_address_page() {
     goToBusinessChooseYourAddressPage()

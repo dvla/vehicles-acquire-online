@@ -15,6 +15,8 @@ global.buttonnavcancel = Cancel
 global.buttonnavupdate = Update
 global.buttonnavprint = Print
 
+global.serviceCloseWarning = The service will close soon - the time now is {0} the service will close at {1}:00:00
+
 #footer
 footer.builtbyintro = Built by
 footer.builtby = Driver & Vehicle Licensing Agency
@@ -63,7 +65,7 @@ error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, et
 error.postTown.characterInvalid = Town or city contains invalid characters
 error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
-error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss etc and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
+error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss/Other and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
 error.threeAlphas = Must have at least 3 letters
 
 datePlaceholder.day=Day
@@ -155,11 +157,14 @@ acquire_setuptradedetails.tradername.hint = Name of the company that the vehicle
 acquire_setuptradedetails.traderpostcodelabel = Postcode
 acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
 acquire_setuptradedetails.traderemaillabel = Trader email address
-acquire_setuptradedetails.traderemail.hint = This may help us resolve problems later
 acquire_setuptradedetails.button = Find address
+acquire_setuptradedetails.traderemailoption = Do you want to provide your email address, this may help us resolve any problems later?
+acquire_setuptradedetails.traderemailoption.yes = Yes
+acquire_setuptradedetails.traderemailoption.no = No
 traderName = Trader name
 traderPostcode = Postcode
 traderEmail = Trader email address
+traderEmailOption = Email confirmation
 
 #page 3 - Business Choose Your Address
 disposal_businessChooseYourAddress_addressSelect = Select trader address
@@ -219,16 +224,19 @@ acquire_uprnnotfound.manualaddressbutton = Set-up trade details
 acquire_uprnnotfound.setuptradedetailsbutton = Manually enter address
 
 #vehicle lookup failure
-acquire_vehiclelookupfailure.title = Look-up was unsuccessful
-acquire_vehiclelookupfailure.p1 = The service is temporarily unavailable. Please try again later or send a completed V5C/3 to DVLA, Swansea, SA99 1BD
+acquire_vehiclelookupfailure.title = Unable to find a vehicle record
+acquire_vehiclelookupfailure.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
 acquire_vehiclelookupfailure.button = Try again
 acquire_vehiclelookupfailure.button2 = Exit
-vehicle_and_keeper_lookup_vrm_not_found.p1 = The V5C document reference number and/or the vehicle registration number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
-vehicle_and_keeper_lookup_vrm_not_found.p2 = For each vehicle registration number, only a limited number of attempts can be made to retrieve the vehicle details.
-vehicle_and_keeper_lookup_document_reference_mismatch.p1 = The V5C document reference number and/or the vehicle registration number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
-vehicle_and_keeper_lookup_document_reference_mismatch.p2 = For each vehicle registration number, only a limited number of attempts can be made to retrieve the vehicle details.
-unhandled_exception.p1 = The V5C document reference number and/or the vehicle registration number entered is either not valid or does not come from the most recent V5C issued for this vehicle.
-unhandled_exception.p2 = For each vehicle registration number, only a limited number of attempts can be made to retrieve the vehicle details.
+vehicle_and_keeper_lookup_vrm_not_found.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
+vehicle_and_keeper_lookup_vrm_not_found.p2 = If you are sure that these details have been entered correctly then please send your completed V5C to DVLA, Swansea, SA99 1BD
+vehicle_and_keeper_lookup_vrm_not_found.p3 = Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.
+vehicle_and_keeper_lookup_document_reference_mismatch.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
+vehicle_and_keeper_lookup_document_reference_mismatch.p2 = If you are sure that these details have been entered correctly then please send your completed V5C to DVLA, Swansea, SA99 1BD
+vehicle_and_keeper_lookup_document_reference_mismatch.p3 = Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.
+unhandled_exception.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
+unhandled_exception.p2 = If you are sure that these details have been entered correctly then please send your completed V5C to DVLA, Swansea, SA99 1BD
+unhandled_exception.p3 = Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.
 
 #page 3 [optional] - manual address entry
 acquire_enteraddressmanually.title = Enter address

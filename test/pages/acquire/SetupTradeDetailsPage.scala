@@ -1,10 +1,10 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId}
+import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle._
 import views.acquire.SetupTradeDetails.SubmitId
 
 object SetupTradeDetailsPage extends Page with WebBrowserDSL {
@@ -26,15 +26,24 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
 
   def lookup(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
+  def emailVisible(implicit driver: WebDriver): RadioButton =
+    radioButton(id(s"${TraderEmailOptionId}_$Visible"))
+
+  def emailInvisible(implicit driver: WebDriver): RadioButton =
+    radioButton(id(s"${TraderEmailOptionId}_$Invisible"))
+
 
   def happyPath(traderBusinessName: String = TraderBusinessNameValid,
                 traderBusinessPostcode: String = PostcodeValid,
-                traderBusinessEmail: String = TraderEmailValid)
+                traderBusinessEmail: Option[String] = Some(TraderEmailValid))
                (implicit driver: WebDriver) = {
     go to SetupTradeDetailsPage
     traderName enter traderBusinessName
     traderPostcode enter traderBusinessPostcode
-    traderEmail enter traderBusinessEmail
+    traderBusinessEmail.fold(click on emailInvisible) { email =>
+      click on emailVisible
+      traderEmail enter email
+    }
     click on lookup
   }
 
@@ -42,6 +51,7 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
     go to SetupTradeDetailsPage
     traderName enter TraderBusinessNameValid
     traderPostcode enter PostcodeWithoutAddresses
+    click on emailInvisible
     click on lookup
   }
 }

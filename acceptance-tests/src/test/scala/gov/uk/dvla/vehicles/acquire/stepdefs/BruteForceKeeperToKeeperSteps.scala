@@ -20,6 +20,7 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver) extends 
     page.title shouldEqual SetupTradeDetailsPage.title
     SetupTradeDetailsPage.traderName enter "trader"
     SetupTradeDetailsPage.traderPostcode enter "qq99qq"
+    click on SetupTradeDetailsPage.emailInvisible
     click on SetupTradeDetailsPage.lookup
     BusinessChooseYourAddressPage.chooseAddress.value = "0"
     click on BusinessChooseYourAddressPage.select
