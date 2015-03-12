@@ -300,7 +300,7 @@ acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address of new keeper
 acquire_privatekeeperdetails.p1 = We will use these details to create the new vehicle registration details (V5C).
 acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_privatekeeperdetails.p3 = If the details above do not match, the vehicle to be sold. Send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
+acquire_privatekeeperdetails.p3 = If the details above do not match the vehicle to be sold, please send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
 privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
@@ -323,7 +323,7 @@ mandatory-alternative.not-selected = This field is mandatory. Please select one 
 acquire_businesskeeperdetails.title = Enter new keeper details
 acquire_businesskeeperdetails.p1 = We will use these details to create the new vehicle registration details (V5C).
 acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5C).
-acquire_businesskeeperdetails.p3 = If the details above do not match, the vehicle to be sold. Send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
+acquire_businesskeeperdetails.p3 = If the details above do not match the vehicle to be sold, please send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
 acquire_businesskeeperdetails.vehicledetails = Vehicle details
 acquire_businesskeeperdetails.vehiclereg = Registration
 acquire_businesskeeperdetails.vehiclemake = Make
@@ -367,7 +367,7 @@ acquire_newKeeperChooseYourAddress.vehicledetails = Vehicle details
 acquire_newKeeperChooseYourAddress.vehiclereg = Registration
 acquire_newKeeperChooseYourAddress.vehiclemake = Make
 acquire_newKeeperChooseYourAddress.vehiclemodel = Model
-acquire_newKeeperChooseYourAddress.p4 = If the details above do not match, the vehicle to be sold. Send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
+acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
 newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
 change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
 
@@ -379,7 +379,7 @@ acquire_newKeeperEnterAddressManually.vehicleDetails = Vehicle details
 acquire_newKeeperEnterAddressManually.vehicleReg = Registration
 acquire_newKeeperEnterAddressManually.vehicleMake = Make
 acquire_newKeeperEnterAddressManually.vehicleModel = Model
-acquire_newKeeperEnterAddressManually.p4 = If the details above do not match, the vehicle to be sold. Send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
+acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
 
 #vehicle tax or sorn
 acquire_vehicleTaxOrSorn_title = Vehicle tax or SORN
