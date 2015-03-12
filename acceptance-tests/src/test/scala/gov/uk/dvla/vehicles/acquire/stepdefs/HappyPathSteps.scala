@@ -44,7 +44,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
   // Results in a transaction failure when used for both business name and private keeper first name
-  private final val NameWhichResultsInTransactionFailure = "testcase1"
+  private final val NameWhichResultsInTransactionFailure = "testcase"
   private final val Postcode = "qq99qq"
   private final val FirstName = "joe"
   private final val LastName = "bloggs"
