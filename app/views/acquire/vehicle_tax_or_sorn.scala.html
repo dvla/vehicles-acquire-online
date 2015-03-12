@@ -85,17 +85,17 @@
             </div>
 
             <!-- Shown when tax is selected -->
-            <div class="tax-text">
-                <div id="tax_details">
+            <div class="tax-text panel-indent-wrapper">
+                <div id="tax_details" class="panel-indent">
                     <a class="large" href="https://www.gov.uk/tax-disc" target="_blank">@Messages("acquire_vehicleTaxOrSorn.link")</a>
-                    <span class="form-hint"><em>This will open up a new window, once taxing is completed please return to this page and continue with acquiring the vehicle.</em></span>
+                    <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.taxText")</p>
                 </div>
             </div>
 
             <!-- Shown when sorn is selected -->
-            <div class="sorn-text">
-                <div id="sorn_details">
-                    Make a Statutory Off Road Notification (SORN) as part of this service. Please select 'Next' to continue
+            <div class="sorn-text panel-indent-wrapper">
+                <div id="sorn_details" class="panel-indent">
+                    <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.sornText")</p>
                     @valtechDeclareCheck(viewModel.form(SornVehicleId),
                         args = Map(
                             '_showConstraints -> false,
@@ -108,22 +108,21 @@
             </div>
 
             <!-- Shown when neither is selected -->
-            <div class="neither-text">
-                <div id="neither_details">
-                    <p class="form-hint">Please remind the new keeper that it is their responsibility to ensure the vehicle is taxed if it is driven on the road.
-                        If the vehicle is being ketp off road, the new keeper must make a SORN.</p>
+            <div class="neither-text panel-indent-wrapper">
+                <div id="neither_details" class="panel-indent">
+                    <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.neitherText")</p>
                 </div>
             </div>
 
             <!-- Next and back buttons -->
             <div class="form-steps">
-                <button id="@SubmitId" type="submit" name="action" class="button">
-                    @Messages("acquire_vehicleTaxOrSorn.submitbutton")
-                </button>
-                <br/>
-                <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.back()">
-                    @Messages("acquire_vehicleTaxOrSorn.backbutton")
-                </a>
+                    <button id="@SubmitId" type="submit" name="action" class="button">
+                        @Messages("acquire_vehicleTaxOrSorn.submitbutton")
+                    </button>
+                    <br/>
+                    <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.back()">
+                        @Messages("acquire_vehicleTaxOrSorn.backbutton")
+                    </a>
             </div>
         }
     </div>

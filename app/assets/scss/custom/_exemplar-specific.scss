@@ -42,8 +42,13 @@
 
     .sorn-text, .tax-text, .neither-text {
       width: 100%;
-      display: inline-block;
+      display: block;
       margin-bottom: 20px;
+      float: left;
+
+      .panel-indent {
+        float: left;
+      }
 
       .form-item {
         margin: 10px 0;
