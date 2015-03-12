@@ -65,7 +65,7 @@
             @csrfTokenHiddenField()
 
             <!-- option group -->
-            <div class="expandable-optional @if(viewModel.error) {form-item validation}">
+            <div class="expandable-optional @if(viewModel.error) {form-item validation} sorn-tax-radio-wrapper">
             @if(viewModel.error) {<p class="error">@Messages("acquire_vehicleTaxOrSorn.selectidError")</p>}
                 <fieldset>
                     <div class="radio" id="select">
