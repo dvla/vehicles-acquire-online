@@ -37,6 +37,22 @@
             padding: 0;
           }
         }
+
     }
+
+    .sorn-text, .tax-text, .neither-text {
+      width: 100%;
+      display: inline-block;
+      margin-bottom: 20px;
+
+      .form-item {
+        margin: 10px 0;
+      }
+
+      .ie7 & {
+        margin-top: 20px;
+      }
+    }
+
 
 } // end $htmlNamespace

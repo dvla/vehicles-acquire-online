@@ -274,7 +274,7 @@ object CookieFactoryForUISpecs {
 
   def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None)(implicit webDriver: WebDriver) = {
     val key = VehicleTaxOrSornCacheKey
-    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle)
+    val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle, select = "S")
     addCookie(key, value)
     this
   }

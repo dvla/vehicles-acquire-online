@@ -269,6 +269,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .headers(headers_x_www_form_urlencoded)
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
+          .formParam("select", "S")
           // Assertions
           .check(regex( """<input type="hidden" name="csrf_prevention_token" value="(.*)"/>""").saveAs("csrf_prevention_token"))
           .check(regex(CompleteAndConfirmPageTitle).exists)

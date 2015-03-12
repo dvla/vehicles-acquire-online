@@ -3,7 +3,7 @@ package controllers.acquire
 import composition.WithApplication
 import controllers.VehicleTaxOrSorn
 import helpers.UnitSpec
-import models.VehicleTaxOrSornFormModel.Form.SornVehicleId
+import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SelectId}
 
 final class VehicleTaxOrSornFormSpec extends UnitSpec {
 
@@ -24,7 +24,8 @@ final class VehicleTaxOrSornFormSpec extends UnitSpec {
     injector.getInstance(classOf[VehicleTaxOrSorn])
       .form.bind(
         Map(
-          SornVehicleId -> sornVehicle
+          SornVehicleId -> sornVehicle,
+          SelectId -> "S"
         )
       )
   }

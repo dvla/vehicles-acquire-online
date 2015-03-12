@@ -43,6 +43,10 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
         hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
 
+        hideEmailOnOther('#tax', '#tax_details');
+        hideEmailOnOther('#sorn', '#sorn_details');
+        hideEmailOnOther('#neither', '#neither_details');
+
         //html5 autofocus fallback for browsers that do not support it natively
         //if form element autofocus is not active, autofocus
         $('[autofocus]:not(:focus)').eq(0).focus();
