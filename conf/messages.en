@@ -340,10 +340,14 @@ acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 acquire_businesskeeperdetails.traderemailoption = Does the new keeper want an email confirmation of the sale?
 acquire_businesskeeperdetails.traderemailoption.yes = Yes
 acquire_businesskeeperdetails.traderemailoption.no = No
+acquire_businesskeeperdetails.fleetnumberoption = Does the new keeper have a DVLA fleet number?
+acquire_businesskeeperdetails.fleetnumberoption.yes = Yes
+acquire_businesskeeperdetails.fleetnumberoption.no = No
 businesskeeper_postcode = Business postcode
 businesskeeper_email = Business email
 businessName = Business name
 acquire_email_not_entered = Not entered
+fleetNumberOption = Fleet number
 
 #new keeper choose your address
 acquire_newKeeperChooseYourAddress_title = Select new keeper address
