@@ -39,6 +39,8 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     };
 
+
+
     $(function() {
 
         hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
@@ -46,6 +48,14 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         hideEmailOnOther('#tax', '#tax_details');
         hideEmailOnOther('#sorn', '#sorn_details');
         hideEmailOnOther('#neither', '#neither_details');
+
+        // SORN form reset
+        $('.sorn-tax-radio-wrapper label input').on('click', function() {
+            var targetSorn = $(this).attr('id');
+            if (targetSorn != "sorn") {
+                $('#sornVehicle').removeAttr("checked");
+            }
+        });
 
         //html5 autofocus fallback for browsers that do not support it natively
         //if form element autofocus is not active, autofocus

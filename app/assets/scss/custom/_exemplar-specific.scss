@@ -46,6 +46,10 @@
       margin-bottom: 20px;
       float: left;
 
+      p {
+        display: inline-block;
+        width: 100%;
+      }
       .panel-indent {
         float: left;
       }

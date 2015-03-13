@@ -53,8 +53,8 @@ error.validBusinessKeeperName = Must be between 2 and 30 characters and only con
 error.email = Enter a valid email address up to 254 characters
 error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
-error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
-error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.validFirstName = Must contain between 1 and 25 characters from the following A-Z, hyphen, apostrophe, full stop and space.
+error.validLastName = Must contain between 1 and 25 characters from the following A-Z, hyphen, apostrophe, full stop and space.
 error.date.inTheFuture = Must be a valid date DD MM YYYY and not be in the future.
 error.date.invalid = Must be a valid date DD MM YYYY and not be in the future.
 error.dateOfBirth.inTheFuture = Must be a valid date DD MM YYYY and not be in the future.
@@ -346,10 +346,14 @@ acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 acquire_businesskeeperdetails.traderemailoption = Does the new keeper want an email confirmation of the sale?
 acquire_businesskeeperdetails.traderemailoption.yes = Yes
 acquire_businesskeeperdetails.traderemailoption.no = No
+acquire_businesskeeperdetails.fleetnumberoption = Does the new keeper have a DVLA fleet number?
+acquire_businesskeeperdetails.fleetnumberoption.yes = Yes
+acquire_businesskeeperdetails.fleetnumberoption.no = No
 businesskeeper_postcode = Business postcode
 businesskeeper_email = Business email
 businessName = Business name
 acquire_email_not_entered = Not entered
+fleetNumberOption = Fleet number
 
 #new keeper choose your address
 acquire_newKeeperChooseYourAddress_title = Select new keeper address
@@ -403,7 +407,9 @@ acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a SORN made when 
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
 acquire_vehicleTaxOrSorn.p2 = Or
 acquire_vehicleTaxOrSorn.taxText = This will open up a new window. Once taxing is completed please return to this page and continue with acquiring the vehicle.
-acquire_vehicleTaxOrSorn.sornText = Make a Statutory Off Road Notification (SORN) as part of this service. Please select 'Next' to continue
+acquire_vehicleTaxOrSorn.sornText = Make a Statutory Off Road Notification (SORN) as part of this service.
+acquire_vehicleTaxOrSorn.sornText-p1 =  Please select 'Next' to continue
+
 acquire_vehicleTaxOrSorn.neitherText = Please remind the new keeper that it is their responsibility to ensure the vehicle is taxed if it is driven on the road. If the vehicle is being kept off road, the new keeper must make a SORN.
 acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off Road Notification (SORN) now as part of this service?
 acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
@@ -525,8 +531,8 @@ titlePicker.textLabel = 'Other' title
 titlePicker.textHint = (10 characters maximum)
 error.title.unknownOption = Other - This is a required field
 error.title.missing = Other - This is a required field
-error.title.tooLong = Other - The text must contain characters in A to Z format only.
-error.title.illegalCharacters = Other - The text must contain characters in A to Z format only.
+error.title.tooLong = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
+error.title.illegalCharacters = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
 
 # micro-service response codes
 ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful

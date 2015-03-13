@@ -65,9 +65,8 @@
             @csrfTokenHiddenField()
 
             <!-- option group -->
-            <div class="expandable-optional @if(viewModel.errorType != NoError) {form-item validation}">
-            @if(viewModel.errorType == NoSelection) {<p class="error">@Messages("acquire_vehicleTaxOrSorn.selectidError")</p>}
-            @if(viewModel.errorType == NoSorn) {<p class="error">@Messages("error.sornVehicleid")</p>}
+            <div class="expandable-optional @if(viewModel.error) {form-item validation} sorn-tax-radio-wrapper">
+            @if(viewModel.error) {<p class="error">@Messages("acquire_vehicleTaxOrSorn.selectidError")</p>}
                 <fieldset>
                     <div class="radio" id="select">
                         <div class="form-item">
@@ -75,7 +74,7 @@
                             <input id="tax" class="option-visible" name="select" type="radio" aria-required="true" value="T"/><span>Tax Vehicle</span>
                         </label>
                         <label class="form-radio selectable" for="sorn">
-                            <input id="sorn" class="option-visible" name="select" type="radio" aria-required="true" value="S"/><span>Sorn now</span>
+                            <input id="sorn" class="option-visible" name="select" type="radio" aria-required="true" value="S"/><span>SORN now</span>
                         </label>
                         <label class="form-radio selectable" for="neither">
                             <input id="neither" class="option-visible span" name="select" type="radio" aria-required="true" value="N"/><span>Neither</span>
@@ -105,6 +104,7 @@
                             '_label -> Messages("acquire_vehicleTaxOrSorn.sornVehicle")
                         )
                     )
+                    <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.sornText-p1")</p>
                 </div>
             </div>
 
