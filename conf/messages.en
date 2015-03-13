@@ -68,6 +68,11 @@ error.validDriverNumber = The Driver Number that you have entered does not appea
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss/Other and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
 error.threeAlphas = Must have at least 3 letters
+select = TAX/SORN
+VehicleTaxOrSornFormModel = SORN Now
+error.sornformerror = You must accept the SORN option.
+error.sornselectid = One of the options must be selected.
+acquire_vehicleTaxOrSorn.selectidError = One of the options must be selected.
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month

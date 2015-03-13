@@ -7,6 +7,8 @@ import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
 import models.AcquireCacheKeyPrefix.CookiePrefix
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
 
 final case class VehicleTaxOrSornFormModel(sornVehicle: Option[String], select: String)
 
@@ -17,6 +19,7 @@ object VehicleTaxOrSornFormModel {
 
   object Form {
 
+    final val SornFormError = "VehicleTaxOrSornFormModel"
     final val TaxId = "tax"
     final val SornId = "sorn"
     final val NeitherId = "neither"
@@ -27,6 +30,8 @@ object VehicleTaxOrSornFormModel {
     final val Mapping = mapping(
       SornVehicleId -> optional(text),
       SelectId -> nonEmptyText
-    )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply)
+    )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply).verifying(SornFormError, form =>
+      form.select == "S" && form.sornVehicle.isDefined || form.select != "S"
+      )
   }
 }
