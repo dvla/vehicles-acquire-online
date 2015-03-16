@@ -13,12 +13,12 @@ Feature:
 
   Scenario: Date of birth - Invalid or incomplete
     When the user enters an invalid date of birth and submits the form
-    Then there will be an error message displayed "Date of birth of new keeper - Must be a valid date DD MM YYYY and not be in the future."
+    Then there will be an error message displayed "Date of Birth - Must be a valid date DD MM YYYY and not be in the future."
 
   Scenario: Date of birth - More than 110 years in the past
     When the user enters a date of birth more than 110 years in the past and submits the form
-    Then there will be an error message displayed "Date of birth of new keeper - Date of birth cannot be more than 110 years in the past"
+    Then there will be an error message displayed "Date of Birth - Date of birth cannot be more than 110 years in the past"
 
   Scenario: Date of birth - In the future
     When the user enters a date of birth in the future and submits the form
-    Then there will be an error message displayed "Date of birth of new keeper - Must be a valid date DD MM YYYY and not be in the future."
+    Then there will be an error message displayed "Date of Birth - Must be a valid date DD MM YYYY and not be in the future."
