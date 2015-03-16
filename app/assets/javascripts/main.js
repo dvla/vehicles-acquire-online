@@ -39,6 +39,35 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     };
 
+    var openFeedback = function(inputId, event) {
+        var element = document.getElementById(inputId);
+        if (element) {
+            if (element.addEventListener) {
+                // addEventListener is a W3 standard that is implemented in the majority of other browsers (FF, Webkit, Opera, IE9+)
+                element.addEventListener(event, function (e) {
+                    console.log("openFeedback addEventListener id: " + inputId + ", event " + event);
+                    //window.open(url,'_blank');
+                    window.open(this.href, '_blank');
+                    e.preventDefault();
+                });
+            } else if (element.attachEvent) {
+                // attachEvent can only be used on older trident rendering engines ( IE5+ IE5-8*)
+                element.attachEvent(event, function (e) {
+                    // console.log("openFeedback addEventListener id: " + inputId + ", event " + event);
+                    //window.open(url,'_blank');
+                    window.open(this.href, '_blank');
+                    e.preventDefault();
+                });
+            } else {
+                console.error("element does not support addEventListener or attachEvent");
+                return false;
+            }
+        } else {
+            console.error("element id: " + inputId + " not found on page");
+            return false;
+        }
+    };
+
 
 
     $(function() {
@@ -48,6 +77,8 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         hideEmailOnOther('#tax', '#tax_details');
         hideEmailOnOther('#sorn', '#sorn_details');
         hideEmailOnOther('#neither', '#neither_details');
+
+        openFeedback('feedback-open', 'click');
 
         // SORN form reset
         $('.sorn-tax-radio-wrapper label input').on('click', function() {
