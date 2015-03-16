@@ -51,6 +51,9 @@
         width: 100%;
       }
       .panel-indent {
+        .ie7 & {
+          float: none;
+        }
         float: left;
       }
 
