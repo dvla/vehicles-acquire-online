@@ -406,7 +406,8 @@ acquire_vehicleTaxOrSorn.vehicleModel = Model
 acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a SORN made when it is purchased.
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
 acquire_vehicleTaxOrSorn.p2 = Or
-acquire_vehicleTaxOrSorn.taxText = This will open up a new window. Once taxing is completed please return to this page and continue with acquiring the vehicle.
+acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from V5C/2 (green slip) section of the registration certificate.
+acquire_vehicleTaxOrSorn.taxText-2 = Once taxing is completed please return to this page and select 'Next' to continue.
 acquire_vehicleTaxOrSorn.sornText = Make a Statutory Off Road Notification (SORN) as part of this service.
 acquire_vehicleTaxOrSorn.sornText-p1 =  Please select 'Next' to continue
 
