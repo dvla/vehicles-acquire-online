@@ -1,3 +1,34 @@
+======== 1.4.6 ========
+Time of release binary creation
+Tue Mar 17 15:02:18 UTC 2015
+
+User stories:
+US2212  [Technical] add a timeout configuration to the Vehicle & Keeper Lookup service as for all other services
+US2379  [Technical] - Remove java script from widgets, add into a library
+US2382  Tweak error message for Date of Sale
+US2574  Move 'Business Name' field to Top of Page and [All services] Move 'Mileage' capture fild to bottom of screen for all services
+US2576  Enhance Trader & New Keepers Email capture for java on/off users
+US2577  Move Title Radio Buttons to sit Horizontally instead of vertically
+US2578  Enhance 'Fleet Number' Capture using Java Script
+US2579  Provide New keeper with Email confirmation
+US2585  Add the words 'rest of the' to the Green Summary banner message
+US2601  Redirect Error codes Appropriately
+US2629  Notify Customers that service is closing shortly
+US2631  Amend wording on date warning message
+US2643  Send emails via the micro service
+US2645  Amend Allowable characters in first name / last name / Other title fields for Private Individual
+US2651  Amend Unsuccessful lookup Screen with wording changes
+US2653  Change error message to include 'other'
+US2661  Allow for all transactions recieved via the Acquire online service to be accepted (Green success screen)
+US2669  Change Licensing Message when option 2 or 3 is selected on previous page
+US2670  Redesign Vehicle Tax or SORN screen
+US2672  Bullets summary page.
+US2673  Add licensing content to BUYERS email from both services
+US2676  Remove 'Help' link from Black Banner at top of screen for Acquire Public Beta Release
+US2677  Enhance info message if vehicle do not match
+US2685  Amend Summary Page for Acquire
+US2689  Tweak error message for Date of Birth
+
 ======== 1.4.5 ========
 Time of release binary creation
 Wed Mar 04 12:52:00 UTC 2015
