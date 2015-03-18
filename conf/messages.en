@@ -71,6 +71,7 @@ error.threeAlphas = Must have at least 3 letters
 select = TAX/SORN
 VehicleTaxOrSornFormModel = SORN Now
 error.sornformerror = You must accept the SORN option.
+error.nosornformerror = you must select the SORN now option.
 error.sornselectid = One of the options must be selected.
 acquire_vehicleTaxOrSorn.selectidError = One of the options must be selected.
 
