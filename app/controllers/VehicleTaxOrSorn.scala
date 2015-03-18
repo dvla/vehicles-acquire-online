@@ -64,32 +64,34 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
         }
       },
       validForm => {
-//        val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-//        val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
-//        if (validForm.select == "S" && validForm.sornVehicle.isDefined) {
           Redirect(routes.CompleteAndConfirm.present())
             .withCookie(validForm)
             .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")
-//        }else {
-//          (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt) match {
-//            case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails)) =>
-//              BadRequest(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(formWithReplacedErrors(form),
-//              vehicleAndKeeperDetails, newKeeperDetails, error = false)))
-//            case _ => redirectToVehicleLookup(NoCookiesFoundMessage)
-//          }
-//        }
+
       }
     )
   }
 
   private def formWithReplacedErrors(form: Form[VehicleTaxOrSornFormModel]): (Form[VehicleTaxOrSornFormModel], ErrorType) = {
 
-    (form.replaceError(
-      SornVehicleId, FormError(key = SornVehicleId,message = "error.sornVehicleid", args = Seq.empty)
-    ).replaceError(
-        SelectId, FormError(key = SelectId, message = "error.sornselectid", args = Seq.empty)
-      ).replaceError(
-        "",  FormError(key = SornFormError, message = "error.sornformerror", args = Seq.empty)
-    ).distinctErrors, if (form.globalError.isDefined) NoSorn else NoSelection)
+    (
+      if ( form.data.get("select").exists(_ == "S") && form.globalError.isDefined) {
+        form.replaceError(
+          "", FormError(key = SornFormError, message = "error.sornformerror", args = Seq.empty)
+        ).replaceError(
+            SornVehicleId, FormError(key = SornVehicleId,message = "error.sornVehicleid", args = Seq.empty)
+          ).replaceError(
+            SelectId, FormError(key = SelectId, message = "error.sornselectid", args = Seq.empty)
+          ).distinctErrors
+      } else {
+        form.replaceError(
+          "", FormError(key = SornFormError, message = "error.nosornformerror", args = Seq.empty)
+        ).replaceError(
+            SornVehicleId, FormError(key = SornVehicleId,message = "error.sornVehicleid", args = Seq.empty)
+          ).replaceError(
+            SelectId, FormError(key = SelectId, message = "error.sornselectid", args = Seq.empty)
+          ).distinctErrors
+      }
+      , if (form.globalError.isDefined) NoSorn else NoSelection)
   }
 }

@@ -35,7 +35,9 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
-      content should not include "checked" // Sorn checkbox value
+      val checkbox = content.split("sornVehicle").last
+
+      checkbox should not include "checked"
     }
 
     "redirect to vehicle lookup when no new keeper details cookie is in cache" in new WithApplication {
