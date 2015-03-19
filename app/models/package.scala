@@ -14,7 +14,7 @@ import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddre
 import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 
 package object models {
@@ -29,7 +29,7 @@ package object models {
 
   final val TraderDetailsCacheKeys = Set(
     setupTradeDetailsCacheKey,
-    TraderDetailsCacheKey,
+    traderDetailsCacheKey,
     BusinessChooseYourAddressCacheKey,
     EnterAddressManuallyCacheKey
   )

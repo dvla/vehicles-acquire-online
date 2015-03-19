@@ -23,7 +23,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
@@ -144,7 +144,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
-          cookies.find(_.name == TraderDetailsCacheKey) should be(None)
+          cookies.find(_.name == traderDetailsCacheKey) should be(None)
       }
     }
 

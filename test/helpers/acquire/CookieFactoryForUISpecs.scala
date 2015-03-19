@@ -43,7 +43,7 @@ import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
@@ -118,7 +118,7 @@ object CookieFactoryForUISpecs {
   }
 
   def dealerDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
-    val key = TraderDetailsCacheKey
+    val key = traderDetailsCacheKey
     val value = TraderDetailsModel(traderName = TraderBusinessNameValid, traderAddress = address)
     addCookie(key, value)
     this

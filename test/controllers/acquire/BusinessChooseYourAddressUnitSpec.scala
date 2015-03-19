@@ -22,7 +22,7 @@ import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.TraderDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
@@ -33,6 +33,7 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 import scala.concurrent.Future
 
@@ -209,10 +210,10 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
         cookies.map(_.name) should contain allOf(
           BusinessChooseYourAddressCacheKey,
           EnterAddressManuallyCacheKey,
-          TraderDetailsCacheKey)
+          traderDetailsCacheKey)
         verifyCookieHasBeenDiscarded(EnterAddressManuallyCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(BusinessChooseYourAddressCacheKey, cookies)
-        verifyCookieHasNotBeenDiscarded(TraderDetailsCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(traderDetailsCacheKey, cookies)
       }
     }
   }
@@ -279,20 +280,20 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
         cookies.map(_.name) should contain allOf(
           BusinessChooseYourAddressCacheKey,
           EnterAddressManuallyCacheKey,
-          TraderDetailsCacheKey)
+          traderDetailsCacheKey)
         verifyCookieHasBeenDiscarded(EnterAddressManuallyCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(BusinessChooseYourAddressCacheKey, cookies)
-        verifyCookieHasNotBeenDiscarded(TraderDetailsCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(traderDetailsCacheKey, cookies)
       }
     }
 
     "does not write cookie when uprn not found" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(addressSelected = addressIndex).
+        val request = buildCorrectlyPopulatedRequest(addressSelected = addressIndex).
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController(uprnFound = false, ordnanceSurveyUseUprn = false).submit(request)
       whenReady(result) { r =>
         val cookies = r.header.headers.get(SET_COOKIE).toSeq.flatMap(Cookies.decode)
-        cookies.map(_.name) should contain noneOf(BusinessChooseYourAddressCacheKey, TraderDetailsCacheKey)
+        cookies.map(_.name) should contain noneOf(BusinessChooseYourAddressCacheKey, traderDetailsCacheKey)
       }
     }
   }

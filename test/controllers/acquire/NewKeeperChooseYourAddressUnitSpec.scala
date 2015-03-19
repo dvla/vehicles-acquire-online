@@ -26,7 +26,7 @@ import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.healthstats.HealthStats
 import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
@@ -367,7 +367,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         cookies.map(_.name) should contain noneOf(
           newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
-          TraderDetailsCacheKey
+          traderDetailsCacheKey
           )
       }
     }
@@ -515,7 +515,7 @@ final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         cookies.map(_.name) should contain noneOf(
           newKeeperEnterAddressManuallyCacheKey,
           newKeeperChooseYourAddressCacheKey,
-          TraderDetailsCacheKey
+          traderDetailsCacheKey
           )
       }
     }

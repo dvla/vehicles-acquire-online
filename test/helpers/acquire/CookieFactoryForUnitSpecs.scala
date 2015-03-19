@@ -44,7 +44,7 @@ import common.model.PrivateKeeperDetailsFormModel
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel
 import common.model.TraderDetailsModel
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel
 import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
@@ -150,7 +150,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                          postTown: String = PostTownValid,
                          traderPostcode: String = PostcodeValid,
                          traderEmail: String = EmailValid): Cookie = {
-    val key = TraderDetailsCacheKey
+    val key = traderDetailsCacheKey
     val value = TraderDetailsModel(
       traderName = TraderBusinessNameValid,
       traderAddress = AddressModel(
