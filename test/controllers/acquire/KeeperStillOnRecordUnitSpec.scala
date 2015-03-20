@@ -8,7 +8,7 @@ import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPa
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
@@ -45,7 +45,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
         val cookies = fetchCookiesFromHeaders(r)
         cookies.size should equal(3)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(vehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupResponseCodeCacheKey, cookies)
 
         r.header.status should equal(SEE_OTHER)
@@ -73,7 +73,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
           setupTradeDetailsCacheKey,
           BusinessChooseYourAddressCacheKey,
           VehicleLookupFormModelCacheKey,
-          VehicleAndKeeperLookupDetailsCacheKey
+          vehicleAndKeeperLookupDetailsCacheKey
         )
         cookieNames.foreach(verifyCookieHasBeenDiscarded(_, cookies))
       }

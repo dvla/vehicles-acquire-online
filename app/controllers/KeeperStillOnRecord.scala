@@ -2,6 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.{AllCacheKeys, VehicleLookupCacheKeys}
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import play.api.mvc.{Action, Controller}
 import play.api.Logger
 import uk.gov.dvla.vehicles.presentation.common

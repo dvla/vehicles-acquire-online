@@ -15,7 +15,7 @@ import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddress
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel.traderDetailsCacheKey
-import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 
 package object models {
   
@@ -37,7 +37,7 @@ package object models {
   // Set of cookies related to looking up a vehicle
   final val VehicleLookupCacheKeys = Set(
     VehicleLookupFormModelCacheKey,
-    VehicleAndKeeperLookupDetailsCacheKey,
+    vehicleAndKeeperLookupDetailsCacheKey,
     VehicleLookupResponseCodeCacheKey
   )
 

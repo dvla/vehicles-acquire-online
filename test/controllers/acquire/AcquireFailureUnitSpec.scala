@@ -21,7 +21,7 @@ import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.TraderDetailsModel.traderDetailsCacheKey
-import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionIdValid, TransactionTimestampValid}
 
@@ -89,7 +89,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
 
-        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(vehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(newKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(privateKeeperDetailsCacheKey, cookies)
@@ -129,7 +129,7 @@ final class AcquireFailureUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
 
-        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(vehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(newKeeperDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(privateKeeperDetailsCacheKey, cookies)

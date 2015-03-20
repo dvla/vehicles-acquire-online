@@ -46,7 +46,7 @@ import common.model.SetupTradeDetailsFormModel
 import common.model.TraderDetailsModel
 import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel
-import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
@@ -198,7 +198,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                                    keeperEndDate: Option[DateTime] = None,
                                    disposeFlag: Option[Boolean] = Some(false),
                                    suppressedV5CFlag: Option[Boolean] = Some(false)): Cookie = {
-    val key = VehicleAndKeeperLookupDetailsCacheKey
+    val key = vehicleAndKeeperLookupDetailsCacheKey
     val value = VehicleAndKeeperDetailsModel(
       registrationNumber = registrationNumber,
       make = vehicleMake,
