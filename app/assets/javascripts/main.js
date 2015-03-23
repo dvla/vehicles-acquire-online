@@ -76,10 +76,6 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         $('#submit').on('click', function(e) {
             var runTimes;
 
-            // todo: Remove preventDefault!!!
-            e.preventDefault();
-            // todo: Remove preventDefault!!!
-
             $(this).html('Loading').addClass('loading-action');
             runTimes = 0;
             setInterval(function() {
