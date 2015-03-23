@@ -17,8 +17,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.model.TraderDetailsModel
-import TraderDetailsModel.TraderDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.{CacheKeyPrefix, TraderDetailsModel}
+import TraderDetailsModel.traderDetailsCacheKey
 import common.views.helpers.FormExtensions
 import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config
@@ -28,10 +28,12 @@ import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 import scala.concurrent.Future
 
 final class EnterAddressManuallyUnitSpec extends UnitSpec {
+
   "present" should {
     "display the page" in new WithApplication {
       whenReady(present) { r =>
@@ -124,11 +126,11 @@ final class EnterAddressManuallyUnitSpec extends UnitSpec {
         cookies.map(_.name) should contain allOf(
           BusinessChooseYourAddressCacheKey,
           EnterAddressManuallyCacheKey,
-          TraderDetailsCacheKey
+          traderDetailsCacheKey
           )
         verifyCookieHasBeenDiscarded(BusinessChooseYourAddressCacheKey, cookies)
         verifyCookieHasNotBeenDiscarded(EnterAddressManuallyCacheKey, cookies)
-        verifyCookieHasNotBeenDiscarded(TraderDetailsCacheKey, cookies)
+        verifyCookieHasNotBeenDiscarded(traderDetailsCacheKey, cookies)
       }
     }
 
@@ -246,7 +248,7 @@ final class EnterAddressManuallyUnitSpec extends UnitSpec {
       val result = enterAddressManually.submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
-        cookies.map(_.name) should contain(TraderDetailsCacheKey)
+        cookies.map(_.name) should contain(traderDetailsCacheKey)
       }
     }
 
@@ -277,7 +279,7 @@ final class EnterAddressManuallyUnitSpec extends UnitSpec {
     injector.getInstance(classOf[EnterAddressManually])
   }
 
-  private val traderDetailsCookieName = "traderDetails"
+  private val traderDetailsCookieName = "acq-traderDetails"
 
   private def validateAddressCookieValues(result: Future[Result], buildingName: String, line2: String,
                                           line3: String, postTown: String, postCode: String = PostcodeValid) = {

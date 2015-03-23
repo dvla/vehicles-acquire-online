@@ -7,10 +7,11 @@ import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class SuppressedV5CUnitSpec extends UnitSpec {
 
@@ -41,7 +42,7 @@ class SuppressedV5CUnitSpec extends UnitSpec {
         val cookies = fetchCookiesFromHeaders(r)
         cookies.size should equal(3)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(VehicleAndKeeperLookupDetailsCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(vehicleAndKeeperLookupDetailsCacheKey, cookies)
         verifyCookieHasBeenDiscarded(VehicleLookupResponseCodeCacheKey, cookies)
 
         r.header.status should equal(SEE_OTHER)
@@ -68,7 +69,7 @@ class SuppressedV5CUnitSpec extends UnitSpec {
         val cookieNames = List(
           BusinessChooseYourAddressCacheKey,
           VehicleLookupFormModelCacheKey,
-          VehicleAndKeeperLookupDetailsCacheKey
+          vehicleAndKeeperLookupDetailsCacheKey
         )
         cookieNames.foreach(verifyCookieHasBeenDiscarded(_, cookies))
       }

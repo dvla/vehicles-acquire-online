@@ -43,9 +43,9 @@ import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel
-import common.model.TraderDetailsModel.TraderDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel
-import common.model.VehicleAndKeeperDetailsModel.VehicleAndKeeperLookupDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
@@ -118,7 +118,7 @@ object CookieFactoryForUISpecs {
   }
 
   def dealerDetails(address: AddressModel = addressWithoutUprn)(implicit webDriver: WebDriver) = {
-    val key = TraderDetailsCacheKey
+    val key = traderDetailsCacheKey
     val value = TraderDetailsModel(traderName = TraderBusinessNameValid, traderAddress = address)
     addCookie(key, value)
     this
@@ -169,7 +169,7 @@ object CookieFactoryForUISpecs {
                               keeperEndDate: Option[DateTime] = None,
                               disposeFlag: Option[Boolean] = Some(false),
                               suppressedV5CFlag: Option[Boolean] = Some(false))(implicit webDriver: WebDriver) = {
-    val key = VehicleAndKeeperLookupDetailsCacheKey
+    val key = vehicleAndKeeperLookupDetailsCacheKey
     val value = VehicleAndKeeperDetailsModel(
       registrationNumber = registrationNumber,
       make = vehicleMake,
