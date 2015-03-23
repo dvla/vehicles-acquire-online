@@ -126,7 +126,9 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         hideEmailOnOther('#sorn', '#sorn_details');
         hideEmailOnOther('#neither', '#neither_details');
 
-        openFeedback('feedback-open', 'click');
+        if ($('#feedback-open').length) {
+            openFeedback('feedback-open', 'click');
+        }
 
         // SORN form reset
         $('.sorn-tax-radio-wrapper label input').on('click', function() {
