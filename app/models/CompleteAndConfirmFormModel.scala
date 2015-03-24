@@ -3,6 +3,8 @@ package models
 import mappings.Consent.consent
 import org.joda.time.LocalDate
 import play.api.data.Forms.mapping
+import play.api.data.validation.{Valid, ValidationError, Invalid, Constraint}
+import play.api.i18n.Messages
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
@@ -22,6 +24,14 @@ object CompleteAndConfirmFormModel {
   implicit val Key = CacheKey[CompleteAndConfirmFormModel](CompleteAndConfirmCacheKey)
 
   object Form {
+
+    def notOne(message: String = Messages("error.date.notOne"),
+               name: String = "constraint.notOne" ) = Constraint[LocalDate](name) {
+      case d: LocalDate =>
+        if (d.getYear ==  0) Invalid(ValidationError(message))
+        else Valid
+    }
+
     final val MileageId = "mileage"
     final val DateOfSaleId = "dateofsale"
     final val TodaysDateId = "todays_date"
@@ -29,7 +39,7 @@ object CompleteAndConfirmFormModel {
 
     final def detailMapping(implicit dateService: DateService) = mapping(
       MileageId -> mileage,
-      DateOfSaleId -> dateMapping.verifying(notInTheFuture()),
+      DateOfSaleId -> dateMapping.verifying(notInTheFuture()).verifying(notOne()),
       ConsentId -> consent
     )(CompleteAndConfirmFormModel.apply)(CompleteAndConfirmFormModel.unapply)
   }

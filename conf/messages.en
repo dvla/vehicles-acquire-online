@@ -545,6 +545,7 @@ error.title.unknownOption = Please enter the title of the new keeper
 error.title.missing = Please enter the title of the new keeper
 error.title.tooLong = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
 error.title.illegalCharacters = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
+error.date.notOne = Year cannot be 0000
 
 # micro-service response codes
 ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful
