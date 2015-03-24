@@ -14,6 +14,7 @@
 @import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
 @import views.html.acquire.main
 @import views.html.helper.form
+@import views.html.common.vehicle_detail_playback
 
 @main(
     progress = Some(Messages("acquire_progress_7")),
@@ -46,15 +47,7 @@
                 }
             }
         </dl>
-        <dl class="playback">
-            <dt><h2>@Messages("acquire_vehicleTaxOrSorn.vehicleDetails")</h2></dt>
-            <dt>@Messages("acquire_vehicleTaxOrSorn.vehicleReg")</dt>
-            <dd>@viewModel.vehicleAndKeeperDetails.registrationNumber</dd>
-            <dt>@Messages("acquire_vehicleTaxOrSorn.vehicleMake")</dt>
-            <dd>@viewModel.vehicleAndKeeperDetails.make</dd>
-            <dt>@Messages("acquire_vehicleTaxOrSorn.vehicleModel")</dt>
-            <dd>@viewModel.vehicleAndKeeperDetails.model</dd>
-        </dl>
+        @vehicle_detail_playback(viewModel.vehicleAndKeeperDetails)
     </div>
 
     <div class="second-col">

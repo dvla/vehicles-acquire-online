@@ -7,6 +7,7 @@ config: utils.helpers.Config)
 @import views.acquire.KeeperStillOnRecord.{BuyAnotherVehicleId, FinishId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import views.html.common.vehicle_detail_playback
 
 @main(
     title = Messages("acquire_keeperstillonrecord.title")
@@ -16,15 +17,7 @@ config: utils.helpers.Config)
 
     <div class="two-col clearfix">
         <div class="first-col">
-            <h2>@Messages("acquire_keeperstillonrecord.vehicledetails")</h2>
-            <dl class="playback">
-                <dt>@Messages("acquire_keeperstillonrecord.vehiclereg")</dt>
-                <dd>@data.registrationNumber</dd>
-                <dt>@Messages("acquire_keeperstillonrecord.vehiclemake")</dt>
-                <dd>@data.make</dd>
-                <dt>@Messages("acquire_keeperstillonrecord.vehiclemodel")</dt>
-                <dd>@data.model</dd>
-            </dl>
+            @vehicle_detail_playback(data)
         </div>
         <div class="second-col">
             <p>@Messages("acquire_keeperstillonrecord.text1")</p>

@@ -13,6 +13,7 @@
 @import common.views.helpers.LabelHelper.optionalFieldKey
 @import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId, DateOfSaleId, TodaysDateId}
 @import views.acquire.CompleteAndConfirm.{BackId, SubmitId, modify}
+@import views.html.common.vehicle_detail_playback
 
 @main(
     progress = Some(Messages("acquire_progress_8")),
@@ -64,15 +65,7 @@
                     }
                 }
             </dl>
-            <dl class="playback">
-                <dt><h2>@Messages("acquire_completeandconfirm.vehicleDetails")</h2></dt>
-                <dt>@Messages("acquire_completeandconfirm.vehicleReg")</dt>
-                <dd>@data.vehicleAndKeeperDetails.registrationNumber</dd>
-                <dt>@Messages("acquire_completeandconfirm.vehicleMake")</dt>
-                <dd>@data.vehicleAndKeeperDetails.make</dd>
-                <dt>@Messages("acquire_completeandconfirm.vehicleModel")</dt>
-                <dd>@data.vehicleAndKeeperDetails.model</dd>
-            </dl>
+            @vehicle_detail_playback(data.vehicleAndKeeperDetails)
         </div>
 
         <div class="second-col">

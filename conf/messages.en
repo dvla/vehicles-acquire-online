@@ -40,6 +40,13 @@ errorsummary.title = Please correct the details below
 errorsummary.p1 = Please fix the following:
 widget.optional = (optional)
 
+#vehicle details playback
+acquire_playback.vehicledetails = Vehicle details
+acquire_playback.vehiclereg = Registration number
+acquire_playback.vehiclemake = Make
+acquire_playback.vehiclemodel = Model
+
+
 #customer validation messages
 error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C

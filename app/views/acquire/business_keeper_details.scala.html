@@ -16,6 +16,9 @@
 @import views.html.helper.form
 @import common.views.html.widgets.optionalToggle
 @import common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, FleetNumberOptionId, BusinessNameId, EmailId, EmailOptionId, PostcodeId}
+@import views.html.common.vehicle_detail_playback
+
+
 @main(
     progress = Some(Messages("acquire_progress_5")),
     title = Messages("acquire_businesskeeperdetails.title"),
@@ -26,15 +29,8 @@
 
     <div class="two-col clearfix">
         <div class="first-col">
-            <dl class="playback">
-                <dt><h2>@Messages("acquire_businesskeeperdetails.vehicledetails")</h2></dt>
-                <dt>@Messages("acquire_businesskeeperdetails.vehiclereg")</dt>
-                <dd>@viewModel.vehicleAndKeeperDetails.registrationNumber</dd>
-                <dt>@Messages("acquire_businesskeeperdetails.vehiclemake")</dt>
-                <dd>@viewModel.vehicleAndKeeperDetails.make</dd>
-                <dt>@Messages("acquire_businesskeeperdetails.vehiclemodel")</dt>
-                <dd>@viewModel.vehicleAndKeeperDetails.model</dd>
-            </dl>
+            @vehicle_detail_playback(viewModel.vehicleAndKeeperDetails)
+
             <div class="alert-warning print-message">
               <p><strong>@Messages("acquire_businesskeeperdetails.p3")</strong></p>
             </div>
