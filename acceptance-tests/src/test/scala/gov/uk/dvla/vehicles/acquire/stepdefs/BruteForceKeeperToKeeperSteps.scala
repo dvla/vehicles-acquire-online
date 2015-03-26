@@ -33,7 +33,7 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
     page.title shouldEqual VehicleLookupPage.title
   }
 
-  def bruteForceUnsuccesfullPage() {
+  def bruteForceUnsuccessfulPage() {
     VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.vrm
     VehicleLookupPage.documentReferenceNumber enter  RandomVrmGenerator.docRef
     click on VehicleLookupPage.vehicleSoldToPrivateIndividual
@@ -51,7 +51,7 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
   @Given("^the user has submitted invalid combination of VRN & DRN on vehicle lookup screen$")
   def the_user_has_submitted_invalid_combination_of_VRN_DRN_on_vehicle_lookup_screen() {
     goToVehicleLookUpPage()
-    bruteForceUnsuccesfullPage()
+    bruteForceUnsuccessfulPage()
   }
 
   @Given("^the user has submitted invalid combination of VRN & DRN on vehicle lookup screen to get locked message$")
@@ -64,7 +64,7 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
   def the_number_of_sequential_attempts_for_that_VRN_is_less_than_four_times() {
     click on VehicleLookupFailurePage.vehicleLookup
     for (a <- 1 to 2) {
-      bruteForceUnsuccesfullPage()
+      bruteForceUnsuccessfulPage()
       if (a != 2)
         click on VehicleLookupFailurePage.vehicleLookup
     }
