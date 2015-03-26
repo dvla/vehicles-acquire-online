@@ -5,17 +5,22 @@ import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
-import pages.acquire._
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
+import pages.acquire.BeforeYouStartPage
+import pages.acquire.BusinessChooseYourAddressPage
+import pages.acquire.SetupTradeDetailsPage
+import pages.acquire.VehicleLookupFailurePage
+import pages.acquire.VehicleLookupPage
+import pages.acquire.VrmLockedPage
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
 
-class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
+  extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
   private final val vrmno = RandomVrmGenerator.vrm
   private final val docRef = RandomVrmGenerator.docRef
 
-  def goToVehicleLookUpPage()={
+  def goToVehicleLookUpPage() {
     go to SetupTradeDetailsPage
     page.title shouldEqual SetupTradeDetailsPage.title
     SetupTradeDetailsPage.traderName enter "trader"
@@ -43,13 +48,13 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver) extends 
     click on VehicleLookupPage.next
   }
 
-  @Given("^the user  has submitted invalid combination of VRN & DRN on vehicle lookup screen$")
+  @Given("^the user has submitted invalid combination of VRN & DRN on vehicle lookup screen$")
   def the_user_has_submitted_invalid_combination_of_VRN_DRN_on_vehicle_lookup_screen() {
     goToVehicleLookUpPage()
     bruteForceUnsuccesfullPage()
   }
 
-  @Given("^the user  has submitted invalid combination of VRN & DRN on vehicle lookup screen to get locked message$")
+  @Given("^the user has submitted invalid combination of VRN & DRN on vehicle lookup screen to get locked message$")
   def the_user_has_submitted_invalid_combination_of_VRN_DRN_on_vehicle_lookup_screen_to_get_locked_message() {
     goToVehicleLookUpPage()
     bruteForceLockedPage()
@@ -78,9 +83,9 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver) extends 
 
   @Then("^the secondary action control is to \"(.*?)\" the service which will take the user to the GDS driving page$")
   def the_secondary_action_control_is_to_the_service_which_will_take_the_user_to_the_GDS_driving_page(D: String) {
-    /*page.title shouldEqual VrmLockedPage.title
+    page.title shouldEqual VrmLockedPage.title
     click on VrmLockedPage.exit
-    page.title shouldEqual BeforeYouStartPage.title*/
+    page.title shouldEqual BeforeYouStartPage.title
   }
 
   @When("^the number of sequential attempts for that VRN is more than three times$")
@@ -96,7 +101,6 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver) extends 
 
   @Then("^there will be an error message display see error message \"(.*?)\"$")
   def there_will_be_an_error_message_display_see_error_message(msg: String): Unit = {
-     //bruteforce does not support in local environment so commented  out below test case
-    // page.title shouldEqual VrmLockedPage.title
+     page.title shouldEqual VrmLockedPage.title
   }
 }
