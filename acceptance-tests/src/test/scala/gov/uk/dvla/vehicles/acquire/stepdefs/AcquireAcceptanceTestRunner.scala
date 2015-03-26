@@ -1,7 +1,7 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
-import cucumber.api.junit.Cucumber
 import cucumber.api.CucumberOptions
+import cucumber.api.junit.Cucumber
 import org.junit.runner.RunWith
 
 @RunWith(classOf[Cucumber])

@@ -1,2 +1,2 @@
 traderName,traderEmail,traderPostcode,expected_traderName,vehicleRegistrationNumber,documentReferenceNumber,vehicleSoldTo
-sudo,,qq99qq,SUDO,A1,22222222222,Business
+sudo,,qq99qq,SUDO,A2,22222222222,Business
