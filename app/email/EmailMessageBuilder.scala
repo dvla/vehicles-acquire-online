@@ -36,23 +36,29 @@ object EmailMessageBuilder {
        |<p>
        |Since 1st October 2014, the vehicle tax can no longer be transferred as part of the sale.
        |This is because the seller will automatically receive a refund of any remaining tax.
-       |Buyers must now get the vehicle taxed before it can be used.
+       |</p>
+       |<p>
+       |<b>
+       |
+       |<p>You must tax this vehicle before it is driven on the road.
+       |<br />
+       |<a href="https://www.gov.uk/vehicle-tax">Tax now?</a>
        |</p>
        |
+       |<p>If you do not want to tax you can make a SORN declaration.
+       |<br />
+       |<a href="https://www.gov.uk/make-a-sorn">SORN now ?</a>
+       |</p>
+       |
+       |</b>
+       |</p>
        |<p>
        |You should receive your registration certificate (V5C) within 2 weeks.
        |If you do not receive your V5C within this time or this information is incorrect then please contact DVLA on
+       |
        |<a href="callto:03007906802">0300 790 6802</a>
        |</p>
-       |
        |<p>
-       |For more information on driving and transport go to <a href="https://www.gov.uk/browse/driving">
-       |https://www.gov.uk/browse/driving</a>
-       |</p>
-       |
-       |<p>Thank You</p>
-       |</body>
-       |</html>
       """.stripMargin
 
   private def buildText(): String =
@@ -65,7 +71,12 @@ object EmailMessageBuilder {
        |
        |Since 1st October 2014, the vehicle tax can no longer be transferred as part of the sale.
        |This is because the seller will automatically receive a refund of any remaining tax.
-       |Buyers must now get the vehicle taxed before it can be used.
+       |
+       |You must tax this vehicle before it is driven on the road.
+       |Tax now? Go to https://www.gov.uk/vehicle-tax
+       |
+       |If you do not want to tax you can make a SORN declaration.
+       |SORN now? Go to https://www.gov.uk/make-a-sorn
        |
        |You should receive your registration certificate (V5C) within 2 weeks. If you do not receive your V5C within
        |this time or this information is incorrect then please contact DVLA on 0300 790 6802
