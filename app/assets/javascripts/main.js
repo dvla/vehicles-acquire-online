@@ -72,8 +72,26 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     $(function() {
 
+        //Tracking events for Tax/SORN interactions
+        if ($('#tax_details a').length) {
+
+            var taxLink = $('#tax_details a');
+            taxLink.on('click', function() {
+                _gaq.push(['_setCustomVar', 1, 'taxsorn', 'tax_through', 3]);
+                _gaq.push(['_trackEvent', 'taxsorn', 'tax_through']);
+            });
+        }
+
         // Enabling loading class/js animation on submit's CTAs
         $(':submit').on('click', function(e) {
+
+            //Tracking events for SORN checkbox submit
+            var sornInputChecked = $('#sornVehicle').is(':checked');
+            if (sornInputChecked) {
+                _gaq.push(['_setCustomVar', 1, 'taxsorn', 'sorn', 3]);
+                _gaq.push(['_trackEvent', 'taxsorn', 'sorn']);
+            }
+
             var runTimes;
 
             if ( $(this).hasClass("disabled") ) {
