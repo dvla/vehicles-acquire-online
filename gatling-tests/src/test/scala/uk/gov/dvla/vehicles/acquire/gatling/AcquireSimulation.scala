@@ -9,7 +9,7 @@ class AcquireSimulation extends Simulation {
   private val oneUser = atOnceUsers(1)
 
   setUp(
-    verifyAssetsAreAccessible.inject(oneUser),
+    //verifyAssetsAreAccessible.inject(oneUser),
     newBusinessKeeperBuysAVehicleFromTheTrade.inject(oneUser),
     newBusinessKeeperBuysAVehicleFromTheTradeWithAllOptionalDataFilledIn.inject(oneUser),
     newPrivateKeeperBuysAVehicleFromTheTrade.inject(oneUser),
