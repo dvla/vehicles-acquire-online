@@ -1,3 +1,36 @@
+======== 1.5 ========
+Time of release binary creation
+Wed Apr 01 14:23:30 UTC 2015
+
+DE298 latest V5 Doc Ref No allows invalid characters
+DE342 Complete and confirm box not greyed out in IE
+DE356 DISPOSAL, ACQUIRE AND KEEPER TO KEEPER WRAPPING OF NAME/ADDRESS PLAYBACK DETAILS
+DE363 using invalid characters in manual address
+DE366 name validation error
+DE367 unrecoverable error from we are sorry page
+DE379 DIFFERING ERROR MESSAGE POST TOWN BLANK
+DE380 DIFFERING ERROR MESSAGES TITLE
+DE405 TAX/SORN selection not retained when back button is pressed from Complete & Confirm.
+DE409 date of sale 17/03/0000
+DE410 we are sorry page with 0000 as a year in complete and confirm page
+DE412 Feedback does not decrease the amount of characters allowed - IE 7,8,9
+DE413 Details missing in the playback blue box
+DE416 CsrfPreventionFilter throwsNoSuchElementException exception in tests if request doesn't have a content type.
+US2232 The 'We are sorry page' needs to be brought inline with the new styling
+US2522 Upgrade play framework to 2.38
+US2635 Add application prefixes to all the common cookie names
+US2636 Create BruteForce prevention acceptance tests for all the applications
+US2637 Use the tracking ID in as many log messages as possible
+US2639 Add titles back to VM services
+US2682 Create 'Application Processing Graphic' to Help Customers
+US2683 'Automatic Tabbing' on all date capture fields
+US2716 Style Service Closing Shortly Message
+US2718 Change the way TAX/SORN screen works when Java script not enabled.
+US2762 Update Buyers Email messsage content to provide link to EVL
+US2779 DIFFERING ERROR MESSAGES TITLE
+US2780 DIFFERING ERROR MESSAGE POST TOWN BLANK
+US2785 Record/Tag in GA how many users go off to EVL in the Acquire
+
 ======== 1.4.6 ========
 Time of release binary creation
 Tue Mar 17 15:02:18 UTC 2015
