@@ -239,7 +239,7 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       val result = vehicleLookupController.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
-//        verify(bruteForceWebServiceMock, times(1)).callBruteForce(anyString())
+        verify(bruteForceWebServiceMock, times(1)).callBruteForce(anyString())
         verify(vehicleLookupMicroServiceMock, times(1)).invoke(any[VehicleAndKeeperDetailsRequest], anyString())
       }
     }
@@ -289,13 +289,14 @@ final class VehicleLookupUnitSpec extends UnitSpec {
       bruteForcePreventionWebServiceMock
     }
 
+    val bruteForcePreventionWebServiceMock = bruteForcePreventionWebService
     val bruteForcePreventionService = new BruteForcePreventionServiceImpl(
       config = new TestBruteForcePreventionConfig,
-      ws = bruteForcePreventionWebService,
+      ws = bruteForcePreventionWebServiceMock,
       healthStatsMock,
       dateService = new FakeDateServiceImpl
     )
-    (bruteForcePreventionService, bruteForcePreventionWebService)
+    (bruteForcePreventionService, bruteForcePreventionWebServiceMock)
   }
 
   private def vehicleLookupControllerAndMocks(fullResponse: (Int, Option[VehicleAndKeeperDetailsResponse]) = vehicleDetailsResponseSuccess,
