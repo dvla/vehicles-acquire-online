@@ -1,9 +1,11 @@
 package controllers
 
 import com.google.inject.Inject
+import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.BusinessKeeperDetailsCacheKeys
+import models.PrivateKeeperDetailsCacheKeys
+import models.EnterAddressManuallyFormModel
 import models.VehicleLookupFormModel.{Key, JsonFormat}
-import models._
-import AcquireCacheKeyPrefix.CookiePrefix
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import play.api.data.{Form, FormError}
@@ -12,8 +14,10 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupBase
-import uk.gov.dvla.vehicles.presentation.common.model.{BruteForcePreventionModel, VehicleAndKeeperDetailsModel, TraderDetailsModel}
+import common.controllers.VehicleLookupBase
+import common.model.BruteForcePreventionModel
+import common.model.TraderDetailsModel
+import common.model.VehicleAndKeeperDetailsModel
 import common.services.DateService
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
