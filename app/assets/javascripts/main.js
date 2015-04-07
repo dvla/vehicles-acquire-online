@@ -72,6 +72,14 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     $(function() {
 
+        // Images hints toogles
+
+        $('.hint-image-wrap > .panel-indent-wrapper').hide();
+
+        $('.hint-image-wrap > p').on('click', function() {
+            $(this).siblings().toggle();
+        });
+
         //Tracking events for Tax/SORN interactions
         if ($('#tax_details a').length) {
 
