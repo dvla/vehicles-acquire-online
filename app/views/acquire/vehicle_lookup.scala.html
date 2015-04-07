@@ -70,6 +70,16 @@
                             </div>
                         </div>
 
+
+                        <div class="hint-image-wrap img-wrap img-wrap-mobile">
+                            <p>@Messages("acquire_vehiclelookup.img.hint")</p>
+                            <div class="panel-indent-wrapper">
+                                <div class="panel-indent">
+                                    <img class="hint-image" src="@controllers.StaticAssets.versioned(config.assetsUrl)("images/document-reference-number.png")" alt="@Messages("acquire_vehiclelookup.img.alt")" />
+                                </div>
+                            </div>
+                        </div>
+
                         @listRadioGroup(field = viewModel.form(VehicleSoldToId),
                             args = Map(
                                 'items -> Seq(
@@ -79,11 +89,6 @@
                                 '_label -> Messages("acquire_vehiclelookup.vehiclesoldto.label")
                             )
                         )
-
-                        <div class="img-wrap img-wrap-mobile">
-                            <h2>@Messages("acquire_vehiclelookup.img.h2")</h2>
-                            <img src="@controllers.StaticAssets.versioned(config.assetsUrl)("images/document-reference-number.png")" alt="@Messages("acquire_vehiclelookup.img.alt")" />
-                        </div>
 
                         <div class="form-steps">
                             <button id="@SubmitId" type="submit" name="action" class="button">
