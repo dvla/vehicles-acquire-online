@@ -9,16 +9,15 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.model.{VmAddressModel, SetupTradeDetailsFormModel, TraderDetailsModel}
+import common.model.{VmAddressModel, SetupTradeDetailsFormModel, TraderDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.enter_address_manually
 
 import models.AcquireCacheKeyPrefix.CookiePrefix
 
-class EnterAddressManually @Inject()()
-                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                           config: Config) extends Controller {
+class EnterAddressManually @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+                                       config: Config) extends Controller {
 
   private[controllers] val form = Form(
     EnterAddressManuallyFormModel.Form.Mapping

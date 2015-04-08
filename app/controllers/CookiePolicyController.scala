@@ -29,5 +29,4 @@ class CookiePolicyController @Inject()(implicit clientSideSessionFactory: Client
   def present = Action { implicit request =>
     Ok(views.html.acquire.cookie_policy(cookies))
   }
-
 }

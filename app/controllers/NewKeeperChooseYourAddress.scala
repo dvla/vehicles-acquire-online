@@ -2,23 +2,18 @@ package controllers
 
 import javax.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
-
-import play.api.data.{Form, FormError}
-import play.api.mvc.{ Request, Result}
-import uk.gov.dvla.vehicles.presentation.common.controllers.NewKeeperChooseYourAddressBase
+import play.api.mvc.{Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model._
+import common.controllers.NewKeeperChooseYourAddressBase
+import common.model.NewKeeperChooseYourAddressViewModel
 import common.webserviceclients.addresslookup.AddressLookupService
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
 
-
-
 class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupService: AddressLookupService)
                                           (implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends NewKeeperChooseYourAddressBase(addressLookupService) {
-
 
   override protected def ordnanceSurveyUseUprn: Boolean = config.ordnanceSurveyUseUprn
 
@@ -28,7 +23,7 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
                                            email: Option[String],
                                            addresses: Seq[(String, String)],
                                            isBusinessKeeper: Boolean = false,
-                                           fleetNumber: Option[String] = None)(implicit request: Request[_]): Result = {
+                                           fleetNumber: Option[String] = None)(implicit request: Request[_]): Result =
     BadRequest(new_keeper_choose_your_address(
       model,
       name,
@@ -36,8 +31,6 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
       email,
       addresses
     ))
-  }
-
 
   override protected def presentView(model: NewKeeperChooseYourAddressViewModel,
                                      name: String,
@@ -45,12 +38,10 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
                                      email: Option[String],
                                      addresses: Seq[(String, String)],
                                      isBusinessKeeper: Boolean = false,
-                                     fleetNumber: Option[String] = None)(implicit request: Request[_]): Result = {
-
+                                     fleetNumber: Option[String] = None)(implicit request: Request[_]): Result =
     Ok(views.html.acquire.new_keeper_choose_your_address(
       model, name, postcode, email, addresses)
     )
-  }
 
   override protected def privateKeeperDetailsRedirect(implicit request: Request[_]) =
     Redirect(routes.PrivateKeeperDetails.present())
@@ -64,8 +55,4 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
     Redirect(routes.VehicleTaxOrSorn.present())
 
   override protected def upnpNotFoundRedirect(implicit request: Request[_]) = Redirect(routes.UprnNotFound.present())
-
-
-
-
 }

@@ -16,7 +16,6 @@ import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.Logger
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
-import webserviceclients.emailservice.EmailService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -24,7 +23,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.mappings.TitleType
 import common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
-import uk.gov.dvla.vehicles.presentation.common.services.{SEND, DateService}
+import common.services.{SEND, DateService}
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.acquire.AcquireRequestDto
 import common.webserviceclients.acquire.AcquireResponseDto
@@ -35,6 +34,7 @@ import common.webserviceclients.acquire.TraderDetailsDto
 import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
+import webserviceclients.emailservice.EmailService
 
 class CompleteAndConfirm @Inject()(webService: AcquireService,
                                    emailService: EmailService)

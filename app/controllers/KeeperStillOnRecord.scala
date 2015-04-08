@@ -1,15 +1,14 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{AllCacheKeys, VehicleLookupCacheKeys}
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import play.api.mvc.{Action, Controller}
+import models.{AllCacheKeys, VehicleLookupCacheKeys}
 import play.api.Logger
+import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.RichResult
+import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.model.VehicleAndKeeperDetailsModel
-import common.clientsidesession.CookieImplicits.RichCookies
 import utils.helpers.Config
 
 class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,

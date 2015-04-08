@@ -1,5 +1,3 @@
-
-
 package controllers.acquire
 
 import controllers.acquire.Common.PrototypeHtml
@@ -9,7 +7,7 @@ import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeen
 import helpers.UnitSpec
 import helpers.WithApplication
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import org.mockito.Matchers._
+import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.when
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
@@ -20,6 +18,7 @@ import pages.common.UprnNotFoundPage
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
@@ -27,9 +26,9 @@ import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddre
 import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.TraderDetailsModel.traderDetailsCacheKey
+import common.services.DateServiceImpl
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.healthstats.HealthStats
-import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
@@ -37,8 +36,6 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-
-import scala.concurrent.Future
 
 final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
   "present (use UPRN enabled)" should {

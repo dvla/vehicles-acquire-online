@@ -3,21 +3,25 @@ package controllers
 import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import models._
-import play.api.Logger
+import models.ErrorType
+import models.NoSelection
+import models.NoSorn
+import models.VehicleTaxOrSornFormModel
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId, SornFormError}
+import models.VehicleTaxOrSornViewModel
 import play.api.data.{FormError, Form}
+import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
-import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId, SornFormError}
+import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
-import common.views.helpers.FormExtensions.formBinding
 
 class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                          config: Config) extends Controller {
+                                   config: Config) extends Controller {
 
   private[controllers] val form = Form(
     VehicleTaxOrSornFormModel.Form.Mapping

@@ -9,7 +9,8 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm}
 import common.model.NewKeeperEnterAddressManuallyFormModel
 import uk.gov.dvla.vehicles.presentation.common.controllers.NewKeeperEnterAddressManuallyBase
-import uk.gov.dvla.vehicles.presentation.common.model._
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperEnterAddressManuallyViewModel
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
@@ -34,5 +35,4 @@ class NewKeeperEnterAddressManually @Inject()()
 
   protected override def success(implicit request: Request[_]): Result =
           Redirect(routes.VehicleTaxOrSorn.present())
-
 }

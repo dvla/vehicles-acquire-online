@@ -5,10 +5,10 @@ import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCach
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import utils.helpers.{CookieHelper, Config}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichResult
+import utils.helpers.{CookieHelper, Config}
 
-final class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                               config: Config) extends Controller {
 
   def present(exceptionDigest: String) = Action { implicit request =>

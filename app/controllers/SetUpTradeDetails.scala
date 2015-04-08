@@ -1,15 +1,14 @@
 package controllers
 
 import com.google.inject.Inject
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import play.api.data.Form
 import play.api.mvc.{Result, Request}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.controllers.SetUpTradeDetailsBase
 import common.model.SetupTradeDetailsFormModel
-
 import utils.helpers.Config
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                           config: Config) extends SetUpTradeDetailsBase {
@@ -22,5 +21,4 @@ class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSid
 
   override def success(implicit request: Request[_]): Result =
     Redirect(routes.BusinessChooseYourAddress.present())
-
 }
