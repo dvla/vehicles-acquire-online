@@ -33,4 +33,3 @@ object FakeResponse {
             fakeJson: Option[JsValue] = None) =
     new FakeResponse(status, statusText, headers, fakeBody, fakeXml, fakeJson)
 }
-

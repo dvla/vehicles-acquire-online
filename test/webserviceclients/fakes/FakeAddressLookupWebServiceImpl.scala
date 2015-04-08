@@ -9,7 +9,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.model.AddressModel
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.AddressLookupWebService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.gds.domain.{Address, Details, Location, Presentation}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.gds.domain.Address
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.gds.domain.Details
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.gds.domain.Location
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.gds.domain.Presentation
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.PostcodeToAddressResponseDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnAddressPairDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnToAddressResponseDto
