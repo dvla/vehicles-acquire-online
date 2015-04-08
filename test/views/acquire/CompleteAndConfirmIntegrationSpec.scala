@@ -41,6 +41,7 @@ import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 
 final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -349,7 +350,7 @@ import play.api.test.FakeApplication
       .preventGoingToCompleteAndConfirmPageCookie()
 
   class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowser(
-    app = FakeApplication(withGlobal = Some(mockAcquireServiceCompositionGlobal(webService)))
+    app = LightFakeApplication.create(mockAcquireServiceCompositionGlobal(webService))
   )
 
   val failingWebService = new FakeAcquireWebServiceImpl {

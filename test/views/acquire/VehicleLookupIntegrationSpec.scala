@@ -24,6 +24,7 @@ import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 
 final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
@@ -182,11 +183,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       setupTradeDetails()
       .dealerDetails()
 
-  private val fakeAppWithHtml5ValidationEnabledConfig = FakeApplication(
-    withGlobal = Some(TestGlobal),
-    additionalConfiguration = Map("html5Validation.enabled" -> true))
+  private val fakeAppWithHtml5ValidationEnabledConfig = LightFakeApplication.create(global, Map("html5Validation.enabled" -> true))
 
-  private val fakeAppWithHtml5ValidationDisabledConfig = FakeApplication(
-    withGlobal = Some(TestGlobal),
-    additionalConfiguration = Map("html5Validation.enabled" -> false))
+  private val fakeAppWithHtml5ValidationDisabledConfig = LightFakeApplication.create(global, Map("html5Validation.enabled" -> false))
 }
