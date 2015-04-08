@@ -16,7 +16,8 @@ import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import play.api.i18n.Messages
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.{FakeRequest}
+import composition.WithApplication
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, TitleType, TitlePickerString}

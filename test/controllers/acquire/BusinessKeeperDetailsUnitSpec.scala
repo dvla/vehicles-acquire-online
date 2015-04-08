@@ -12,7 +12,7 @@ import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid, PostcodeValid}
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.FakeRequest
-import play.api.test.WithApplication
+import composition.WithApplication
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 

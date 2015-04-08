@@ -6,7 +6,8 @@ import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.{FakeRequest}
+import composition.WithApplication
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey

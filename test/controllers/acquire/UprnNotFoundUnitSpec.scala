@@ -4,7 +4,8 @@ import controllers.UprnNotFound
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import org.mockito.Mockito.when
-import play.api.test.{WithApplication, FakeRequest}
+import play.api.test.{FakeRequest}
+import composition.WithApplication
 import play.api.test.Helpers.{OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config

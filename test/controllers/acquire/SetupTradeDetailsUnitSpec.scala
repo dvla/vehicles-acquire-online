@@ -15,7 +15,7 @@ import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
 import play.api.test.FakeRequest
-import play.api.test.WithApplication
+import composition.WithApplication
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, BusinessName}
