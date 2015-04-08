@@ -1,17 +1,18 @@
 package webserviceclients.fakes
 
+import pages.acquire.SetupTradeDetailsPage.{PostcodeWithoutAddresses, PostcodeValid}
 import play.api.http.Status.OK
 import play.api.i18n.Lang
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.model.AddressModel
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.AddressLookupWebService
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.gds.domain.{Address, Details, Location, Presentation}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.{PostcodeToAddressResponseDto, UprnAddressPairDto, UprnToAddressResponseDto}
-import pages.acquire.SetupTradeDetailsPage.{PostcodeWithoutAddresses, PostcodeValid}
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.PostcodeToAddressResponseDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnAddressPairDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnToAddressResponseDto
 
 final class FakeAddressLookupWebServiceImpl(responseOfPostcodeWebService: Future[WSResponse],
                                             responseOfUprnWebService: Future[WSResponse]) extends AddressLookupWebService {

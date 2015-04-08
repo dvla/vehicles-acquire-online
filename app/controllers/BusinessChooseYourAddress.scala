@@ -1,25 +1,24 @@
 package controllers
 
 import javax.inject.Inject
-import play.api.Logger
+import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.BusinessChooseYourAddressFormModel
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import play.api.data.{Form, FormError}
 import play.api.i18n.Lang
+import play.api.Logger
 import play.api.mvc.{Action, Controller, Request, Result}
-import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
-import models.BusinessChooseYourAddressFormModel
-import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
-import common.model.{VmAddressModel, AddressModel, TraderDetailsModel, SetupTradeDetailsFormModel}
-import common.webserviceclients.addresslookup.AddressLookupService
+import common.model.{AddressModel, SetupTradeDetailsFormModel, TraderDetailsModel, VmAddressModel}
 import common.views.helpers.FormExtensions.formBinding
+import common.webserviceclients.addresslookup.AddressLookupService
 import utils.helpers.Config
 import views.html.acquire.business_choose_your_address
-
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -58,10 +57,10 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
             fetchAddresses(setupTradeDetails, showBusinessName = Some(true)).map { addresses =>
               if (config.ordnanceSurveyUseUprn) {
                 BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
-                  setupTradeDetails.traderBusinessName,
-                  setupTradeDetails.traderPostcode,
-                  setupTradeDetails.traderEmail,
-                  addresses))
+                    setupTradeDetails.traderBusinessName,
+                    setupTradeDetails.traderPostcode,
+                    setupTradeDetails.traderEmail,
+                    addresses))
               } else {
                 BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
                   setupTradeDetails.traderBusinessName,

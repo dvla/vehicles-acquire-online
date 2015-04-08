@@ -2,28 +2,35 @@ package controllers.acquire
 
 import controllers.BusinessChooseYourAddress
 import controllers.acquire.Common.PrototypeHtml
-import helpers.WithApplication
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.common.CookieHelper.verifyCookieHasBeenDiscarded
 import helpers.common.CookieHelper.verifyCookieHasNotBeenDiscarded
 import helpers.UnitSpec
-import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import helpers.WithApplication
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import org.mockito.Matchers._
+import org.mockito.Matchers.{any, anyString}
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.when
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
+import pages.acquire.{SetupTradeDetailsPage, VehicleLookupPage}
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import pages.common.UprnNotFoundPage
+import play.api.i18n.Lang
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK, SET_COOKIE}
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.AddressLookupWebService
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
@@ -33,9 +40,6 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForP
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
-import models.AcquireCacheKeyPrefix.CookiePrefix
-
-import scala.concurrent.Future
 
 class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   final val addressIndex = "0"
@@ -92,6 +96,16 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       ).present(request)
       contentAsString(result) should not include PrototypeHtml
     }
+
+    "fetch the addresses for the trader's postcode from the address lookup micro service" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
+      val result = controller.present(request)
+      whenReady(result) { r =>
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+      }
+    }
   }
 
   "present (with UPRN not enabled)" should {
@@ -146,6 +160,16 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       ).present(request)
       contentAsString(result) should not include PrototypeHtml
     }
+
+    "fetch the addresses for the trader's postcode from the address lookup micro service" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = false)
+      val result = controller.present(request)
+      whenReady(result) { r =>
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+      }
+    }
   }
 
   "submit (with UPRN enabled)" should {
@@ -158,7 +182,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "return a bad request if not address selected" in new WithApplication {
+    "return a bad request if no address selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(addressSelected = "").
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController(uprnFound = true, ordnanceSurveyUseUprn = true).submit(request)
@@ -200,7 +224,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "write cookies and remove enter address manually cookie when uprn found" in new WithApplication {
+    "write cookies and remove enter address manually cookie when UPRN found" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails()).
         withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
@@ -216,6 +240,27 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
         verifyCookieHasNotBeenDiscarded(traderDetailsCacheKey, cookies)
       }
     }
+
+    "not call the micro service to lookup the address by UPRN when an invalid submission is made" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = true)
+      val result = controller.submit(request)
+      whenReady(result, timeout) { r =>
+        r.header.status should equal(BAD_REQUEST)
+        verify(addressServiceMock, never()).callUprnWebService(anyString(), anyString())(any[Lang])
+      }
+    }
+
+    "call the micro service to lookup the address by UPRN when a valid submission is made" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = true)
+      val result = controller.submit(request)
+      whenReady(result) { r =>
+        verify(addressServiceMock, times(1)).callUprnWebService(anyString(), anyString())(any[Lang])
+      }
+    }
   }
 
   "submit (with UPRN not enabled)" should {
@@ -228,7 +273,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "return a bad request if not address selected" in new WithApplication {
+    "return a bad request if no address selected" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(addressSelected = "").
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController(uprnFound = true, ordnanceSurveyUseUprn = false).submit(request)
@@ -296,6 +341,27 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
         cookies.map(_.name) should contain noneOf(BusinessChooseYourAddressCacheKey, traderDetailsCacheKey)
       }
     }
+
+    "still call the micro service to fetch back addresses even though an invalid submission is made" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = false)
+      val result = controller.submit(request)
+      whenReady(result, timeout) { r =>
+        r.header.status should equal(BAD_REQUEST)
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+      }
+    }
+
+    "call the micro service to lookup the address by postcode when a valid submission is made" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest().
+        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = false)
+      val result = controller.submit(request)
+      whenReady(result) { r =>
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+      }
+    }
   }
 
   private def buildCorrectlyPopulatedRequest(addressSelected: String = UprnValid.toString) = {
@@ -322,6 +388,35 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     when(config.assetsUrl).thenReturn(None) // Stub this config value.
 
     new BusinessChooseYourAddress(addressLookupService)
+  }
+
+  private def businessChooseYourAddressControllerAndMocks(uprnFound: Boolean = true,
+                                        isPrototypeBannerVisible: Boolean = true,
+                                        ordnanceSurveyUseUprn: Boolean): (BusinessChooseYourAddress, AddressLookupWebService) = {
+    val responsePostcode = if (uprnFound) responseValidForPostcodeToAddress else responseValidForPostcodeToAddressNotFound
+    val responseUprn = if (uprnFound) responseValidForUprnToAddress else responseValidForUprnToAddressNotFound
+
+    val addressLookupWebServiceMock = mock[AddressLookupWebService]
+    when(addressLookupWebServiceMock.callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])).
+      thenReturn(responsePostcode)
+    when(addressLookupWebServiceMock.callUprnWebService(anyString(), anyString())(any[Lang])).
+      thenReturn(responseUprn)
+
+    val healthStatsMock = mock[HealthStats]
+    when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
+      override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]
+    })
+
+    val addressLookupService = new AddressLookupServiceImpl(addressLookupWebServiceMock, new DateServiceImpl, healthStatsMock)
+
+    implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
+    implicit val config: Config = mock[Config]
+    when(config.isPrototypeBannerVisible).thenReturn(isPrototypeBannerVisible) // Stub this config value.
+    when(config.ordnanceSurveyUseUprn).thenReturn(ordnanceSurveyUseUprn) // Stub this config value.
+    when(config.googleAnalyticsTrackingId).thenReturn(None) // Stub this config value.
+    when(config.assetsUrl).thenReturn(None) // Stub this config value.
+
+    (new BusinessChooseYourAddress(addressLookupService), addressLookupWebServiceMock)
   }
 
   private def present(ordnanceSurveyUseUprn: Boolean) = {
