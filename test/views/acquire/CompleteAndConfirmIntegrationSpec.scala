@@ -350,7 +350,7 @@ import play.api.test.FakeApplication
       .preventGoingToCompleteAndConfirmPageCookie()
 
   class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowser(
-    app = LightFakeApplication.create(mockAcquireServiceCompositionGlobal(webService))
+    app = LightFakeApplication(mockAcquireServiceCompositionGlobal(webService))
   )
 
   val failingWebService = new FakeAcquireWebServiceImpl {
