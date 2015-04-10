@@ -17,7 +17,8 @@ import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSale
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid, EmailValid}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid}
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.{FakeRequest}
+import composition.WithApplication
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey

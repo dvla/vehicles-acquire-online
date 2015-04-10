@@ -5,7 +5,8 @@ import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
 import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
-import play.api.test.{WithApplication, FakeRequest}
+import play.api.test.{ FakeRequest}
+import composition.WithApplication
 import play.api.test.Helpers.{OK, LOCATION, contentAsString, defaultAwaitTimeout, status}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config

@@ -24,7 +24,8 @@ import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.{FakeRequest}
+import composition.WithApplication
 import webserviceclients.emailservice.{EmailServiceSendResponse, EmailServiceSendRequest, EmailService}
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
