@@ -25,7 +25,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
 import play.api.test.{FakeRequest, WithApplication}
-import webserviceclients.emailservice.{EmailServiceSendResponse, EmailServiceSendRequest, EmailService}
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
@@ -39,9 +39,9 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.Acquir
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
+import webserviceclients.emailservice.{EmailServiceSendResponse, EmailServiceSendRequest, EmailService}
 import webserviceclients.fakes.FakeResponse
 import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseSuccess, acquireResponseApplicationBeingProcessed}
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 

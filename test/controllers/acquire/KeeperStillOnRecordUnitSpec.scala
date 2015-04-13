@@ -1,20 +1,19 @@
 package controllers.acquire
 
 import controllers.KeeperStillOnRecord
+import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
-import helpers.acquire.CookieFactoryForUnitSpecs
+import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
+import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
-import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class KeeperStillOnRecordUnitSpec extends UnitSpec {
 

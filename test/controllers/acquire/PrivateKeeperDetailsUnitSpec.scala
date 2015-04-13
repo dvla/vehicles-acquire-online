@@ -15,12 +15,18 @@ import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
 import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import play.api.i18n.Messages
-import play.api.test.Helpers._
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
 import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, TitleType, TitlePickerString}
-import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.Form._
+import common.mappings.{OptionalToggle, TitleType, TitlePickerString}
+import common.model.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailOptionId
+import common.model.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.LastNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import common.model.PrivateKeeperDetailsFormModel.Form.TitleId
 import common.services.DateService
 import TitlePickerString.standardOptions
 import utils.helpers.Config

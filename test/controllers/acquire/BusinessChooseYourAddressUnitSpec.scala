@@ -12,12 +12,9 @@ import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import org.mockito.Matchers.{any, anyString}
-import org.mockito.Mockito.never
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.when
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.Matchers.{any, anyString}
+import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.Answer
 import pages.acquire.{SetupTradeDetailsPage, VehicleLookupPage}
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid

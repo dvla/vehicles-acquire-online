@@ -6,27 +6,26 @@ import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
 import helpers.disposal_of_vehicle.ValidVRMFormat.allValidVrmFormats
+import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.Matchers.{any, anyString}
+import org.mockito.Mockito.when
 import org.mockito.stubbing.Answer
+import play.api.libs.json.{JsValue, Json}
 import play.api.http.Status.OK
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.services.DateServiceImpl
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsResponse
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
-import common.webserviceclients.bruteforceprevention.BruteForcePreventionConfig
+import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
-import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
-import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
-import org.mockito.Matchers.{any, anyString}
-import org.mockito.Mockito.when
-import play.api.libs.json.{JsValue, Json}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import common.webserviceclients.healthstats.HealthStats
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsRequest
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsResponse
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ConsentValid
@@ -35,7 +34,7 @@ import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.Registration
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.vehicleDetailsResponseSuccess
 import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
 
-final class VehicleLookupFormSpec extends UnitSpec {
+class VehicleLookupFormSpec extends UnitSpec {
 
   "form" should {
     "accept when all fields contain valid responses" in new WithApplication {

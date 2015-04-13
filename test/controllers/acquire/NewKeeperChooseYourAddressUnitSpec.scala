@@ -7,13 +7,13 @@ import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeen
 import helpers.UnitSpec
 import helpers.WithApplication
 import models.AcquireCacheKeyPrefix.CookiePrefix
+import org.mockito.invocation.InvocationOnMock
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{never, times, verify, when}
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
-import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
+import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
+import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
 import pages.common.UprnNotFoundPage
 import play.api.i18n.Lang
 import play.api.mvc.Cookies
@@ -39,7 +39,8 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForU
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
-final class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
+class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
+
   "present (use UPRN enabled)" should {
     "display the page if private new keeper details cached" in new WithApplication {
       whenReady(presentWithPrivateNewKeeper(ordnanceSurveyUseUprn = true), timeout) { r =>

@@ -1,10 +1,10 @@
 package controllers.acquire
 
-import controllers.NewKeeperEnterAddressManually
 import controllers.acquire.Common.PrototypeHtml
-import helpers.JsonUtils.deserializeJsonToModel
-import helpers.common.CookieHelper.fetchCookiesFromHeaders
+import controllers.NewKeeperEnterAddressManually
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.common.CookieHelper.fetchCookiesFromHeaders
+import helpers.JsonUtils.deserializeJsonToModel
 import helpers.{UnitSpec, WithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
@@ -12,7 +12,7 @@ import org.mockito.Mockito.when
 import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.NewKeeperDetailsViewModel
@@ -29,7 +29,7 @@ import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 
 import scala.concurrent.Future
 
-final class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
+class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
   "present" should {
     "display the page when new business keeper has been chosen" in new WithApplication {
       whenReady(presentWithBusinessNewKeeper) { r =>

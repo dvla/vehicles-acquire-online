@@ -1,7 +1,7 @@
 package controllers.acquire
 
-import controllers.VehicleLookupFailure
 import Common.PrototypeHtml
+import controllers.VehicleLookupFailure
 import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when
@@ -11,7 +11,7 @@ import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 
-final class VehicleLookupFailureUnitSpec extends UnitSpec {
+class VehicleLookupFailureUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {

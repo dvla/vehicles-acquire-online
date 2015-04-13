@@ -3,11 +3,11 @@ package controllers.acquire
 import controllers.AcquireFailure
 import controllers.acquire.Common.PrototypeHtml
 import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, fetchCookiesFromHeaders}
-import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
+import helpers.{UnitSpec, WithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
+import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import org.joda.time.format.DateTimeFormat
 import org.mockito.Mockito.when
@@ -16,16 +16,16 @@ import pages.acquire.{BeforeYouStartPage, VehicleLookupPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
-import common.clientsidesession.ClientSideSessionFactory
 import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionIdValid, TransactionTimestampValid}
 
-final class AcquireFailureUnitSpec extends UnitSpec {
+class AcquireFailureUnitSpec extends UnitSpec {
   "present" should {
     "display the page" in new WithApplication {
       whenReady(present) { r =>

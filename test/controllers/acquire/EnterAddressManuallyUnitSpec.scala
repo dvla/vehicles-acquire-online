@@ -1,24 +1,26 @@
 package controllers.acquire
 
-import controllers.EnterAddressManually
 import controllers.acquire.Common.PrototypeHtml
-import helpers.JsonUtils.deserializeJsonToModel
+import controllers.EnterAddressManually
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
+import helpers.JsonUtils.deserializeJsonToModel
 import helpers.{UnitSpec, WithApplication}
+import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import org.mockito.Mockito.when
 import pages.acquire.{VehicleLookupPage, SetupTradeDetailsPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.{CacheKeyPrefix, TraderDetailsModel}
-import TraderDetailsModel.traderDetailsCacheKey
+import common.model.TraderDetailsModel
+import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.views.helpers.FormExtensions
 import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config
@@ -28,11 +30,8 @@ import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
-import scala.concurrent.Future
-
-final class EnterAddressManuallyUnitSpec extends UnitSpec {
+class EnterAddressManuallyUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page" in new WithApplication {

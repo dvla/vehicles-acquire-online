@@ -3,25 +3,23 @@ package controllers.acquire
 import controllers.acquire.Common.PrototypeHtml
 import controllers.SetUpTradeDetails
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.JsonUtils.deserializeJsonToModel
-import helpers.common.CookieHelper
-import CookieHelper.fetchCookiesFromHeaders
 import helpers.UnitSpec
-import uk.gov.dvla.vehicles.presentation.common
-import common.model.SetupTradeDetailsFormModel
-import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel.Form._
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import org.mockito.Mockito.when
 import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
 import play.api.test.FakeRequest
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
 import play.api.test.WithApplication
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, BusinessName}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.mappings.{OptionalToggle, BusinessName}
+import common.model.SetupTradeDetailsFormModel
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderEmailId, TraderEmailOptionId, TraderPostcodeId}
 import utils.helpers.Config
-
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {
 

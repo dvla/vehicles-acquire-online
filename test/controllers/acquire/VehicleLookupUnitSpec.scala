@@ -55,7 +55,7 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.VrmThrows
 import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 
-final class VehicleLookupUnitSpec extends UnitSpec {
+class VehicleLookupUnitSpec extends UnitSpec {
   val healthStatsMock = mock[HealthStats]
   when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
     override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]

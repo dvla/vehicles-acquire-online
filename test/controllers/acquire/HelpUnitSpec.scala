@@ -1,10 +1,9 @@
 package controllers.acquire
 
-import controllers.Help
 import controllers.acquire.Common.PrototypeHtml
-import helpers.common.CookieHelper
-import CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
+import controllers.Help
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.{UnitSpec, WithApplication}
 import models.HelpCacheKey
 import org.mockito.Mockito.when
@@ -14,7 +13,8 @@ import play.api.test.Helpers.{LOCATION, OK, REFERER, contentAsString, defaultAwa
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 
-final class HelpUnitSpec extends UnitSpec {
+class HelpUnitSpec extends UnitSpec {
+
   "present" should {
     "display the help page" in new WithApplication {
       status(present) should equal(OK)
