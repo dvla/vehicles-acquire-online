@@ -1,5 +1,6 @@
 package controllers.acquire
 
+import composition.WithApplication
 import controllers.PrivateKeeperDetails
 import controllers.acquire.Common.PrototypeHtml
 import helpers.UnitSpec
@@ -15,8 +16,8 @@ import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
 import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
 import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import play.api.i18n.Messages
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
-import play.api.test.{FakeRequest, WithApplication}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.mappings.{OptionalToggle, TitleType, TitlePickerString}

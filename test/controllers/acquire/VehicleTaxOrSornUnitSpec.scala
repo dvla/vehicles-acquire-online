@@ -4,7 +4,8 @@ import controllers.VehicleTaxOrSorn
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.{FakeRequest}
+import composition.WithApplication
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}

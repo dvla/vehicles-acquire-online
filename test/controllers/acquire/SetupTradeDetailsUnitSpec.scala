@@ -1,5 +1,6 @@
 package controllers.acquire
 
+import composition.WithApplication
 import controllers.acquire.Common.PrototypeHtml
 import controllers.SetUpTradeDetails
 import helpers.acquire.CookieFactoryForUnitSpecs
@@ -12,7 +13,6 @@ import pages.acquire.BusinessChooseYourAddressPage
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid, TraderEmailValid}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
-import play.api.test.WithApplication
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.mappings.{OptionalToggle, BusinessName}

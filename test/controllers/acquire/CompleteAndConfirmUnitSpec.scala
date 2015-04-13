@@ -1,5 +1,6 @@
 package controllers.acquire
 
+import composition.WithApplication
 import controllers.acquire.Common.PrototypeHtml
 import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
 import helpers.UnitSpec
@@ -23,8 +24,8 @@ import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
 import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.libs.json.Json
-import play.api.test.Helpers.{LOCATION, BAD_REQUEST, OK, contentAsString, defaultAwaitTimeout}
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
