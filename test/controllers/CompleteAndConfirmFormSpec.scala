@@ -1,16 +1,11 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.CompleteAndConfirm
 import helpers.UnitSpec
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.LocalDate
-import pages.acquire.CompleteAndConfirmPage.ConsentTrue
-import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
-import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
-import pages.acquire.CompleteAndConfirmPage.MileageValid
-import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.{ConsentTrue, DayDateOfSaleValid, MileageValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import play.api.data.Form
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 

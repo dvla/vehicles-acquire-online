@@ -1,28 +1,24 @@
-package controllers.acquire
+package controllers
 
-import controllers.BusinessChooseYourAddress
-import controllers.acquire.Common.PrototypeHtml
+import Common.PrototypeHtml
+import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.common.CookieHelper.fetchCookiesFromHeaders
-import helpers.common.CookieHelper.verifyCookieHasBeenDiscarded
-import helpers.common.CookieHelper.verifyCookieHasNotBeenDiscarded
-import helpers.UnitSpec
-import helpers.WithApplication
+import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{never, times, verify, when}
+import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import pages.acquire.{SetupTradeDetailsPage, VehicleLookupPage}
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
+import pages.acquire.{SetupTradeDetailsPage, VehicleLookupPage}
 import pages.common.UprnNotFoundPage
 import play.api.i18n.Lang
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK, SET_COOKIE}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey

@@ -1,7 +1,6 @@
-package controllers.acquire
+package controllers
 
-import controllers.acquire.Common.PrototypeHtml
-import controllers.EnterAddressManually
+import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}

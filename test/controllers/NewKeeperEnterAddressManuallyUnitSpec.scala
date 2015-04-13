@@ -1,24 +1,27 @@
-package controllers.acquire
+package controllers
 
-import controllers.acquire.Common.PrototypeHtml
-import controllers.NewKeeperEnterAddressManually
+import Common.PrototypeHtml
+import helpers.JsonUtils.deserializeJsonToModel
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.fetchCookiesFromHeaders
-import helpers.JsonUtils.deserializeJsonToModel
 import helpers.{UnitSpec, WithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import org.mockito.Mockito.when
-import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
+import pages.acquire.{VehicleLookupPage, VehicleTaxOrSornPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.model.NewKeeperDetailsViewModel
-import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
-import common.views.helpers.FormExtensions
-import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import scala.concurrent.Future
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.AddressLinesId
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.Line2Id
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.Line3Id
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.PostTownId
 import utils.helpers.Config
 import views.acquire.EnterAddressManually.PostcodeId
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
@@ -26,8 +29,6 @@ import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
-
-import scala.concurrent.Future
 
 class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
   "present" should {

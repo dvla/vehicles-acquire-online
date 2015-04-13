@@ -1,6 +1,5 @@
-package controllers.acquire
+package controllers
 
-import controllers.VehicleLookup
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
@@ -56,6 +55,7 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 
 class VehicleLookupUnitSpec extends UnitSpec {
+
   val healthStatsMock = mock[HealthStats]
   when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
     override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]

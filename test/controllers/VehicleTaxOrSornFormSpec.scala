@@ -1,11 +1,10 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.VehicleTaxOrSorn
 import helpers.UnitSpec
 import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SelectId}
 
-final class VehicleTaxOrSornFormSpec extends UnitSpec {
+class VehicleTaxOrSornFormSpec extends UnitSpec {
 
   final val SornSelected = "true"
   final val SornNotSelected = ""

@@ -1,8 +1,7 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.acquire.Common.PrototypeHtml
-import controllers.SetUpTradeDetails
+import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.JsonUtils.deserializeJsonToModel

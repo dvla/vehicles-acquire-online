@@ -1,15 +1,14 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.acquire.Common.PrototypeHtml
-import controllers.BusinessKeeperDetails
-import helpers.acquire.CookieFactoryForUnitSpecs
+import Common.PrototypeHtml
 import helpers.UnitSpec
+import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, EmailValid, FleetNumberValid, PostcodeValid}
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.Form.BusinessNameId

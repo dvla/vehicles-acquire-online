@@ -1,9 +1,8 @@
-package controllers.acquire
+package controllers
 
-import controllers.AcquireFailure
-import controllers.acquire.Common.PrototypeHtml
-import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, fetchCookiesFromHeaders}
+import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.{UnitSpec, WithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
@@ -11,17 +10,16 @@ import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import org.joda.time.format.DateTimeFormat
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, LastNameValid, FirstNameValid}
+import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, FirstNameValid, LastNameValid}
 import pages.acquire.{BeforeYouStartPage, VehicleLookupPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
-import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
-import common.model.TraderDetailsModel.traderDetailsCacheKey
-import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import utils.helpers.Config
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionIdValid, TransactionTimestampValid}
 

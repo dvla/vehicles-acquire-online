@@ -1,7 +1,6 @@
-package controllers.acquire
+package controllers
 
-import controllers.acquire.Common.PrototypeHtml
-import controllers.Help
+import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.{UnitSpec, WithApplication}

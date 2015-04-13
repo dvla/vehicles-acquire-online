@@ -1,4 +1,4 @@
-package controllers.acquire
+package controllers
 
 import scala.concurrent.duration.DurationInt
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.BruteForcePreventionConfig

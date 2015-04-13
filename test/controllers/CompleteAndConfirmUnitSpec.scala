@@ -1,31 +1,23 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.acquire.Common.PrototypeHtml
-import controllers.{PrivateKeeperDetails, CompleteAndConfirm}
+import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import models.CompleteAndConfirmFormModel.Form.{MileageId, DateOfSaleId, ConsentId}
+import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{DateTime, Instant}
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.Matchers.{any, anyString}
-import org.mockito.Mockito.never
-import org.mockito.Mockito.times
-import org.mockito.Mockito.when
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.{never, times, verify, when}
+import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import pages.acquire.{SetupTradeDetailsPage, AcquireSuccessPage, VehicleLookupPage}
-import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
-import pages.acquire.CompleteAndConfirmPage.MileageValid
-import pages.acquire.CompleteAndConfirmPage.ConsentTrue
-import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
-import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
-import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
+import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, EmailValid, FleetNumberValid}
+import pages.acquire.CompleteAndConfirmPage.{ConsentTrue, DayDateOfSaleValid, MileageValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
+import pages.acquire.{AcquireSuccessPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
@@ -40,9 +32,9 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.Acquir
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
-import webserviceclients.emailservice.{EmailServiceSendResponse, EmailServiceSendRequest, EmailService}
+import webserviceclients.emailservice.{EmailService, EmailServiceSendRequest, EmailServiceSendResponse}
+import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseApplicationBeingProcessed, acquireResponseSuccess}
 import webserviceclients.fakes.FakeResponse
-import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseSuccess, acquireResponseApplicationBeingProcessed}
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 

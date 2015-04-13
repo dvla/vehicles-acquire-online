@@ -1,6 +1,6 @@
-package controllers.acquire
+package controllers
 
-import controllers.KeeperStillOnRecord
+import composition.WithApplication
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
@@ -10,11 +10,10 @@ import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
-import play.api.test.{FakeRequest}
-import composition.WithApplication
+import play.api.test.FakeRequest
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 
 class KeeperStillOnRecordUnitSpec extends UnitSpec {
 

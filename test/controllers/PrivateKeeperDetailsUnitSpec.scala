@@ -1,35 +1,21 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.PrivateKeeperDetails
-import controllers.acquire.Common.PrototypeHtml
+import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when
+import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid, MonthDateOfBirthValid, PostcodeValid, YearDateOfBirthValid}
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
-import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
-import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
-import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
-import pages.acquire.PrivateKeeperDetailsPage.EmailValid
-import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
-import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
-import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
-import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.mappings.{OptionalToggle, TitleType, TitlePickerString}
-import common.model.PrivateKeeperDetailsFormModel.Form.DriverNumberId
-import common.model.PrivateKeeperDetailsFormModel.Form.EmailId
-import common.model.PrivateKeeperDetailsFormModel.Form.EmailOptionId
-import common.model.PrivateKeeperDetailsFormModel.Form.FirstNameId
-import common.model.PrivateKeeperDetailsFormModel.Form.LastNameId
-import common.model.PrivateKeeperDetailsFormModel.Form.PostcodeId
-import common.model.PrivateKeeperDetailsFormModel.Form.TitleId
-import common.services.DateService
-import TitlePickerString.standardOptions
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString.standardOptions
+import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, TitlePickerString, TitleType}
+import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, EmailOptionId, FirstNameId, LastNameId, PostcodeId, TitleId}
+import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import utils.helpers.Config
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {

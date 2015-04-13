@@ -1,13 +1,12 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.acquire.Common.PrototypeHtml
-import controllers.BeforeYouStart
+import Common.PrototypeHtml
 import helpers.UnitSpec
 import org.mockito.Mockito.when
 import pages.acquire.SetupTradeDetailsPage
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout, LOCATION, OK, status}
+import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout, status}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import utils.helpers.Config
 

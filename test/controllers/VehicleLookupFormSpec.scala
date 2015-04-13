@@ -1,7 +1,6 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.VehicleLookup
 import helpers.UnitSpec
 import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats

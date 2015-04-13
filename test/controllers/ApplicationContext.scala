@@ -1,4 +1,4 @@
-package controllers.acquire
+package controllers
 
 object ApplicationContext {
   val applicationContext = ""

@@ -1,7 +1,6 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.EnterAddressManually
 import helpers.UnitSpec
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.AddressLinesId

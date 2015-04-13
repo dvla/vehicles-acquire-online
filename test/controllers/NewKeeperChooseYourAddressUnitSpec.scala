@@ -1,36 +1,33 @@
-package controllers.acquire
+package controllers
 
-import controllers.acquire.Common.PrototypeHtml
-import controllers.NewKeeperChooseYourAddress
+import Common.PrototypeHtml
+import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
-import helpers.UnitSpec
-import helpers.WithApplication
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{never, times, verify, when}
+import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
-import pages.acquire.{VehicleTaxOrSornPage, VehicleLookupPage}
+import pages.acquire.{VehicleLookupPage, VehicleTaxOrSornPage}
 import pages.common.UprnNotFoundPage
 import play.api.i18n.Lang
 import play.api.mvc.Cookies
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, LOCATION, BAD_REQUEST, SET_COOKIE, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
-import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
-import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
-import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
-import common.model.TraderDetailsModel.traderDetailsCacheKey
-import common.services.DateServiceImpl
-import common.webserviceclients.addresslookup.AddressLookupWebService
-import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
-import common.webserviceclients.healthstats.HealthStats
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
+import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.AddressLookupWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress

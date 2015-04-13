@@ -1,15 +1,13 @@
-package controllers.acquire
+package controllers
 
 import composition.WithApplication
-import controllers.NewKeeperChooseYourAddress
 import helpers.UnitSpec
-import org.mockito.invocation.InvocationOnMock
+import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.when
+import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
@@ -21,7 +19,9 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForU
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import utils.helpers.Config
 
-class NewKeeperChooseYourAddressFormSpec extends UnitSpec {
+import scala.concurrent.Future
+
+class BusinessChooseYourAddressFormSpec extends UnitSpec {
   "form" should {
     "accept when all fields contain valid responses" in new WithApplication {
       formWithValidDefaults().get.uprnSelected should equal(UprnValid.toString)
@@ -49,7 +49,7 @@ class NewKeeperChooseYourAddressFormSpec extends UnitSpec {
     val addressLookupService = new AddressLookupServiceImpl(fakeWebService, new DateServiceImpl, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
     implicit val config: Config = mock[Config]
-    new NewKeeperChooseYourAddress(addressLookupService)
+    new BusinessChooseYourAddress(addressLookupService)
   }
 
   private def formWithValidDefaults(addressSelected: String = UprnValid.toString) = {

@@ -1,4 +1,4 @@
-package controllers.acquire
+package controllers
 
 import Common.PrototypeHtml
 import controllers.MicroServiceError

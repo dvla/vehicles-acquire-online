@@ -1,7 +1,6 @@
-package controllers.acquire
+package controllers
 
 import Common.PrototypeHtml
-import controllers.VehicleLookupFailure
 import helpers.{UnitSpec, WithApplication}
 import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when

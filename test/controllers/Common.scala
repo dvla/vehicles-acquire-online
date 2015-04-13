@@ -1,4 +1,4 @@
-package controllers.acquire
+package controllers
 
 object Common {
   final val PrototypeHtml = """<div class="prototype">"""

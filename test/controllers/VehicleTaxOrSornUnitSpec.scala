@@ -1,4 +1,4 @@
-package controllers.acquire
+package controllers
 
 import controllers.VehicleTaxOrSorn
 import helpers.UnitSpec
