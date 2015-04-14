@@ -1,12 +1,14 @@
 package controllers
 
+import java.util.TimeZone
+
 import composition.WithApplication
 import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{DateTime, Instant}
+import org.joda.time.{DateTimeZone, DateTime, Instant}
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.invocation.InvocationOnMock
@@ -17,7 +19,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.{AcquireSuccessPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
@@ -332,6 +334,36 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
+    }
+
+    "Render dates in the correct timezone" in new WithApplication {
+      timeZoneFixture {
+        val disposalDate = DateTime.parse("2015-04-02T00:00.000+01:00")
+
+        val request = buildCorrectlyPopulatedRequest()
+          .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+          .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+          .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
+          .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+          .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+          .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+        val result = completeAndConfirm.submitWithDateCheck(request)
+        contentAsString(result) should include("02/04/2015")
+      }
+    }
+  }
+
+  private def timeZoneFixture(test: => Unit): Unit = {
+    val defaultJodaTimeZone = DateTimeZone.getDefault
+    val defaultTimeZone = TimeZone.getDefault
+    try {
+      DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"))
+      TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"))
+      test
+    } finally {
+      DateTimeZone.setDefault(defaultJodaTimeZone)
+      TimeZone.setDefault(defaultTimeZone)
     }
   }
 
