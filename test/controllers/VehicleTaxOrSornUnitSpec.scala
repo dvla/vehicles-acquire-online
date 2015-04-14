@@ -1,16 +1,15 @@
 package controllers
 
-import controllers.VehicleTaxOrSorn
-import helpers.UnitSpec
-import helpers.acquire.CookieFactoryForUnitSpecs
-import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
-import play.api.test.{FakeRequest}
 import composition.WithApplication
+import helpers.acquire.CookieFactoryForUnitSpecs
+import helpers.UnitSpec
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId}
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
+import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{RegistrationNumberValid, VehicleMakeValid, VehicleModelValid}
-import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId}
 
 class VehicleTaxOrSornUnitSpec extends UnitSpec {
 

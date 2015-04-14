@@ -1,7 +1,6 @@
 package controllers
 
 import Common.PrototypeHtml
-import controllers.MicroServiceError
 import controllers.MicroServiceError.MicroServiceErrorRefererCacheKey
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
