@@ -21,3 +21,9 @@
 .transaction-details.desktop-only {
     display: none;
 }
+
+.mobile-only {
+    &.vehicle-sold-by {
+        display: none;
+    }
+}
