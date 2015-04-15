@@ -1,3 +1,4 @@
+
 require.config({
     paths: {
         'jquery' : '../lib/jquery/jquery',
@@ -5,7 +6,7 @@ require.config({
         'header-footer-only': '../lib/vehicles-presentation-common/javascripts/header-footer-only',
         'global-helpers': '../lib/vehicles-presentation-common/javascripts/global-helpers',
         'page-init': '../lib/vehicles-presentation-common/javascripts/page-init',
-        'form-checked-selection': 'form-checked-selection',
+        //'form-checked-selection': 'form-checked-selection',
         'acquire-page-init': 'acquire-page-init'
     },
     // Make jquery-migrate depend on the loading of jquery
@@ -35,12 +36,13 @@ require.config({
 
 require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selection"],function($) {
 
+    // ALREADY IN COMMON
     var IE10 = (navigator.userAgent.match(/(MSIE 10.0)/g) ? true : false);
     if (IE10) {
         $('html').addClass('ie10');
     }
 
-    // THIS HAS BEEN MOVED
+    // THIS HAS BEEN MOVED TO ACQUIRE INIT
     var hideEmailOnOther = function(radioOtherId, emailId) {
 
         if (!radioOtherId.length || !emailId.length) {
@@ -105,6 +107,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             $(this).siblings().toggle();
         });
 
+        // MOVED TO ACQUIRE INIT
         //Tracking events for Tax/SORN interactions
         if ($('#tax_details a').length) {
 
@@ -144,7 +147,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             }, 1000);
         });
 
-
+        // ALREADY IN PRESENTATION-COMMON BUT WITH ADDITIONAL SELECTORS
         // Auto-tab for date format forms
         $('.form-date input').one('focus', function() {
 
@@ -202,12 +205,14 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             return false;
         });
 
+        //THIS IS IN COMMON
         // Print button
         $('.print-button').click(function() {
             window.print();
             return false;
         });
 
+        //THIS IS IN COMMON
         // smooth scroll
         $('a[href^="#"]').bind('click.smoothscroll', function (e) {
             e.preventDefault();
@@ -226,8 +231,8 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         //   return true;
         //});
 
+        // THIS IS IN COMMON
         // Feedback form character countdown
-
         function updateCountdown() {
             // 500 is the max message length
             var remaining = 500 - $('#feedback-form textarea').val().length;
@@ -255,6 +260,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             $('#feedback-form textarea').keyup(updateCountdown);
         });
 
+        // THIS IS IN COMMON
         // Radio button toggle visible widget
         $('.optional-field').hide();
 
