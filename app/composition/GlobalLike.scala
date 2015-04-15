@@ -1,8 +1,9 @@
 package composition
 
 import java.io.File
-import java.util.UUID
+import java.util.{TimeZone, UUID}
 import com.typesafe.config.ConfigFactory
+import org.joda.time.DateTimeZone
 import play.api.Play.current
 import play.api.i18n.Lang
 import play.api.mvc.Results.NotFound
@@ -47,6 +48,8 @@ trait GlobalLike extends WithFilters with GlobalSettings with Composition {
 
   override def onStart(app: Application) {
     Logger.info("vehicles-acquire Started") // used for operations, do not remove
+    TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"))
+    DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"))
   }
 
   override def onStop(app: Application) {
