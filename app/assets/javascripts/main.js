@@ -1,5 +1,30 @@
 require.config({
     paths: {
+        'jquery' : '../lib/jquery/jquery',
+        'jquery-migrate': '../lib/jquery-migrate/jquery-migrate',
+        'header-footer-only': '../lib/vehicles-presentation-common/javascripts/header-footer-only',
+        'global-helpers': '../lib/vehicles-presentation-common/javascripts/global-helpers',
+        'page-init': '../lib/vehicles-presentation-common/javascripts/page-init',
+        'form-checked-selection': 'form-checked-selection',
+        'acquire-page-init': 'acquire-page-init'
+    },
+    // Make jquery-migrate depend on the loading of jquery
+    "shim": {
+        'jquery-migrate': ['jquery']
+    }
+});
+
+require(["acquire-page-init"],function(acquirePageInit) {
+    $(function() {
+        acquirePageInit.init();
+    });
+});
+
+
+
+/*
+require.config({
+    paths: {
         'jquery': 'lib/jquery/jquery-1.9.1.min',
         'jquery-migrate': 'lib/jquery/jquery-migrate-1.2.1.min',
         'header-footer-only': 'header-footer-only',
@@ -15,7 +40,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         $('html').addClass('ie10');
     }
 
-
+    // THIS HAS BEEN MOVED
     var hideEmailOnOther = function(radioOtherId, emailId) {
 
         if (!radioOtherId.length || !emailId.length) {
@@ -261,3 +286,4 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
     }
 
 }); // end require
+*/
