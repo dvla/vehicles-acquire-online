@@ -1,4 +1,3 @@
-
 require.config({
     paths: {
         'jquery' : '../lib/jquery/jquery',
@@ -6,7 +5,6 @@ require.config({
         'header-footer-only': '../lib/vehicles-presentation-common/javascripts/header-footer-only',
         'global-helpers': '../lib/vehicles-presentation-common/javascripts/global-helpers',
         'page-init': '../lib/vehicles-presentation-common/javascripts/page-init',
-        //'form-checked-selection': 'form-checked-selection',
         'acquire-page-init': 'acquire-page-init'
     },
     // Make jquery-migrate depend on the loading of jquery
@@ -15,7 +13,7 @@ require.config({
     }
 });
 
-require(["acquire-page-init"],function(acquirePageInit) {
+require(["acquire-page-init"], function(acquirePageInit) {
     $(function() {
         acquirePageInit.init();
     });
@@ -66,6 +64,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     };
 
+    // ALREADY IN COMMON
     var openFeedback = function(inputId, event) {
         var element = document.getElementById(inputId);
         if (element) {
@@ -99,7 +98,8 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     $(function() {
 
-        // Images hints toogles
+        //MOVED TO ACQUIRE INIT
+        // Images hints toggles
 
         $('.hint-image-wrap > .panel-indent-wrapper').hide();
 
@@ -118,6 +118,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             });
         }
 
+        // MOVED TO ACQUIRE INIT
         // Enabling loading class/js animation on submit's CTAs
         $('button[type="submit"]').on('click', function(e) {
 
@@ -178,16 +179,18 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             });
         });
 
+        // THIS IS IN ACQUIRE INIT
         hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
-
         hideEmailOnOther('#tax', '#tax_details');
         hideEmailOnOther('#sorn', '#sorn_details');
         hideEmailOnOther('#neither', '#neither_details');
 
+        // THIS IN COMMON
         if ($('#feedback-open').length) {
             openFeedback('feedback-open', 'click');
         }
 
+        // THIS IS IN ACQUIRE INIT
         // SORN form reset
         $('.sorn-tax-radio-wrapper label input').on('click', function() {
             var targetSorn = $(this).attr('id');
@@ -196,10 +199,12 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
             }
         });
 
+        // THIS IS IN COMMON
         //html5 autofocus fallback for browsers that do not support it natively
         //if form element autofocus is not active, autofocus
         $('[autofocus]:not(:focus)').eq(0).focus();
 
+        // THIS IS IN COMMON
         // Disabled clicking on disabled buttons
         $('.button-not-implemented').click(function() {
             return false;
@@ -275,6 +280,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
 
     });
 
+    // THIS IS IN COMMON GLOBAL HELPERS
     function areCookiesEnabled(){
         var cookieEnabled = (navigator.cookieEnabled) ? true : false;
 
@@ -286,6 +292,7 @@ require(["jquery", "jquery-migrate", "header-footer-only", "form-checked-selecti
         return (cookieEnabled);
     }
 
+    // THIS IS IN COMMON GLOBAL HELPERS
     function opt(v){
         if (typeof v == 'undefined') return [];
         else return[v];
