@@ -48,6 +48,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         // TODO: Gio to review what's been done here
         $('button[type="submit"]').off('click');
         $('button[type="submit"]').on('click', function(e) {
+            console.log("acquire disable submit");
 
             //Tracking events for SORN checkbox submit
             var sornInputChecked = $('#sornVehicle').is(':checked');
@@ -55,7 +56,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                 _gaq.push(['_setCustomVar', 1, 'taxsorn', 'sorn', 3]);
                 _gaq.push(['_trackEvent', 'taxsorn', 'sorn']);
             }
-
+/*
             if ( $(this).hasClass("disabled") ) {
                 return false;
             }
@@ -71,6 +72,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                     $('button[type="submit"]').html('Loading');
                 }
             }, 1000);
+*/
         });
     };
 
