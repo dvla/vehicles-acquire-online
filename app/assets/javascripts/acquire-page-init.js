@@ -12,11 +12,11 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         }
     };
 
-    var disableSubmitOnClick = function() {
+    var enableSendingGaEventsOnSubmit = function() {
         // Remove all click handlers and replace with the one below
         // This is a workaround to having common add a click handler that prevents this one from submitting any page
         // TODO: Gio to review what's been done here
-        $('button[type="submit"]').off('click');
+//        $('button[type="submit"]').off('click');
         $('button[type="submit"]').on('click', function(e) {
             console.log("acquire disable submit");
 
@@ -48,8 +48,8 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
 
     return {
         init: function() {
-            // Call initAll on the pageInit object to run all the common js in vehicles-presentation-common
-            pageInit.initAll();
+            enableSendingGaEventsOnSubmit();
+
             // Run the common code that is not common to all but this one needs
             pageInit.hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
             pageInit.hideEmailOnOther('#tax', '#tax_details');
@@ -60,7 +60,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
 
             addGoogleAnalyticsEventToTaxLink();
 
-            disableSubmitOnClick();
 
             // SORN form reset
             $('.sorn-tax-radio-wrapper label input').on('click', function() {
@@ -69,6 +68,9 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                     $('#sornVehicle').removeAttr("checked");
                 }
             });
+
+            // Call initAll on the pageInit object to run all the common js in vehicles-presentation-common
+            pageInit.initAll();
         }
     }
 });
