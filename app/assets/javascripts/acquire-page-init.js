@@ -1,28 +1,6 @@
 // Define the dependency to page-init in common
 define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pageInit) {
 
-    var hideEmailOnOther = function(radioOtherId, emailId) {
-        if (!radioOtherId.length || !emailId.length) {
-            return;
-        }
-
-        var checkStateOfRadio = function(radioOtherId, emailId) {
-            //console.log("Selected radio box: " + $(radioOtherId).attr('id') + " selected;" + $(radioOtherId).attr('checked'))
-            if(!$(radioOtherId).attr('checked')) {
-                $(emailId).parent().hide().removeClass('item-visible');
-                $(emailId).val('');
-            } else {
-                $(emailId).parent().show().addClass('item-visible');
-            }
-        };
-
-        checkStateOfRadio(radioOtherId, emailId);
-
-        $("input:radio" ).click(function() {
-            checkStateOfRadio(radioOtherId, emailId);
-        });
-    };
-
     var addGoogleAnalyticsEventToTaxLink = function() {
         //Tracking events for Tax/SORN interactions
         if ($('#tax_details a').length) {
@@ -32,14 +10,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                 _gaq.push(['_trackEvent', 'taxsorn', 'tax_through']);
             });
         }
-    };
-
-    var imageHintToggles = function() {
-        $('.hint-image-wrap > .panel-indent-wrapper').hide();
-
-        $('.hint-image-wrap > p').on('click', function() {
-            $(this).siblings().toggle();
-        });
     };
 
     var disableSubmitOnClick = function() {
@@ -80,15 +50,15 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         init: function() {
             // Call initAll on the pageInit object to run all the common js in vehicles-presentation-common
             pageInit.initAll();
+            // Run the common code that is not common to all but this one needs
+            pageInit.hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
+            pageInit.hideEmailOnOther('#tax', '#tax_details');
+            pageInit.hideEmailOnOther('#sorn', '#sorn_details');
+            pageInit.hideEmailOnOther('#neither', '#neither_details');
+
+            pageInit.imageHintToggles();
 
             addGoogleAnalyticsEventToTaxLink();
-
-            hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
-            hideEmailOnOther('#tax', '#tax_details');
-            hideEmailOnOther('#sorn', '#sorn_details');
-            hideEmailOnOther('#neither', '#neither_details');
-
-            imageHintToggles();
 
             disableSubmitOnClick();
 
