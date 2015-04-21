@@ -11,10 +11,10 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupFailurePage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VrmLockedPage
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WithClue, WebBrowserDSL, WebBrowserDriver}
 
 class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
-  extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+  extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue{
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
   private final val vrmno = RandomVrmGenerator.vrm
@@ -101,6 +101,6 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
 
   @Then("^there will be an error message display see error message \"(.*?)\"$")
   def there_will_be_an_error_message_display_see_error_message(msg: String): Unit = {
-     page.title shouldEqual VrmLockedPage.title
+     page.title shouldEqual VrmLockedPage.title withClue trackingId
   }
 }
