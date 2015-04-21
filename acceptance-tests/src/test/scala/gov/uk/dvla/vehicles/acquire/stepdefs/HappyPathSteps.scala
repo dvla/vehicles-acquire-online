@@ -19,6 +19,7 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleTaxOrSornPage
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
 /**
  *
@@ -48,7 +49,6 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   private final val Postcode = "qq99qq"
   private final val FirstName = "joe"
   private final val LastName = "bloggs"
-  private final val ValidVrn = "A1"
   private final val ValidDocRefNum = "1" * 11
 
   def goToSetupTradeDetailsPage() = {
@@ -84,7 +84,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   def fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage() = {
     goToVehicleLookupPageAfterManuallyEnteringAddress()
-    VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
+    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
     VehicleLookupPage.documentReferenceNumber enter ValidDocRefNum
   }
 

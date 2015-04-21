@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire._
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
 class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
@@ -13,7 +14,6 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   lazy val happyPath = new HappyPathSteps(webBrowserDriver)
 
-  private final val ValidVrn = "A1"
   private final val VehicleNotDisposedVrn = "AA11AAE"
   private final val VehicleNotDisposedDocReferenceNumber = "88888888885"
   // Will result in the legacy stubs throwing a GetVehicleAndKeeperDetailsVehicleNotFoundException
@@ -58,7 +58,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   @When("^the user fills in the vrn, doc ref number and selects privateKeeper$")
   def the_user_fill_in_the_vrn_doc_ref_number_and_selects_privateKeeper() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
+    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
     VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
     happyPath.click on VehicleLookupPage.vehicleSoldToPrivateIndividual
   }
@@ -66,15 +66,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   @When("^the user fills in the vrn, doc ref number and selects businessKeeper$")
   def the_user_fills_in_the_vrn_doc_ref_number_and_selects_businessKeeper() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
-    VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
-    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
-  }
-
-  @When("^the user fills in data that results in vrn not found error from the micro service$")
-  def the_user_fills_in_data_that_results_in_a_vrn_not_found_error_from_the_micro_service() {
-    happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter VrnNotFound
+    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
     VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
     happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
@@ -82,7 +74,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   @When("^the user fills in data that results in document reference mismatch error from the micro service$")
   def the_user_fills_in_data_that_results_in_document_reference_mismatch_error_from_the_micro_service() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter ValidVrn
+    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
     VehicleLookupPage.documentReferenceNumber enter InvalidDocReferenceNumber
     happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
   }
