@@ -21,12 +21,6 @@ Feature:
     When the user selects the control labelled VehicleLookUpBack button
     Then the user is taken to the page entitled "Select trader address"
 
-  Scenario: vehicle lookup fails because the vrn is not found
-    When the user fills in data that results in vrn not found error from the micro service
-    And the user performs the lookup
-    Then the user will be redirected to the vehicle lookup failure page
-    Then the page will contain text "Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct."
-
   Scenario: vehicle lookup fails because the document reference number returned from the search does not match
     When the user fills in data that results in document reference mismatch error from the micro service
     And the user performs the lookup
