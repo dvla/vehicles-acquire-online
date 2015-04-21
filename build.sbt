@@ -9,6 +9,7 @@ import sandbox.SandboxSettings
 import sandbox.Tasks
 import io.gatling.sbt.GatlingPlugin
 import GatlingPlugin.Gatling
+import com.typesafe.sbt.rjs.Import.RjsKeys.webJarCdns
 
 name := "vehicles-acquire-online"
 
@@ -97,6 +98,8 @@ sources in doc in Compile := List()
 ScalastylePlugin.Settings
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
+
+webJarCdns := Map()
 
 // ====================== Sandbox Settings ==========================
 lazy val osAddressLookupProject = osAddressLookup("0.14-SNAPSHOT").disablePlugins(PlayScala, SbtWeb)
