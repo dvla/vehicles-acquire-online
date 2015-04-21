@@ -33,7 +33,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             pageInit.hideEmailOnOther('#sorn', '#sorn_details');
             pageInit.hideEmailOnOther('#neither', '#neither_details');
 
-            pageInit.imageHintToggles();
 
             addGaEventToTaxLink();
 
