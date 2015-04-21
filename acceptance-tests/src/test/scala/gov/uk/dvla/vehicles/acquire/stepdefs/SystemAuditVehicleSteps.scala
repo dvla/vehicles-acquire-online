@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.{VehicleLookupPage, BusinessChooseYourAddressPage, SetupTradeDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
 class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
 
@@ -33,7 +34,7 @@ class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   @When("^the user submits vehicles details$")
   def the_user_submits_vehicles_details()  {
-    VehicleLookupPage.vehicleRegistrationNumber enter "AA11AAH"
+    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
     VehicleLookupPage.documentReferenceNumber enter "88888888881"
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
