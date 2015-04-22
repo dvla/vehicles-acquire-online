@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.{BusinessChooseYourAddressPage, SetupTradeDetailsPage, VehicleLookupPage, BusinessKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
+import helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver,WithClue}
 
-class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -29,7 +29,7 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
   @Given("^the user is in vehicle lookup page$")
   def the_user_is_in_vehicle_lookup_page()  {
     goToVehicleLookUpPage()
-    page.title shouldEqual VehicleLookupPage.title
+    page.title shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @When("^the user  enter the vehicle details which has a supression flag and click on submit$")
@@ -38,8 +38,8 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
     VehicleLookupPage.documentReferenceNumber enter "88888888881"
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
-    page.source should include ("Buy another vehicle")
-    page.source should include ("Finish")
+    page.source should include ("Buy another vehicle") withClue trackingId
+    page.source should include ("Finish") withClue trackingId
   }
 
   @When("^the user enters the vehicle details which does not have a supression flag and click on Next button without any validation errors$")
@@ -52,6 +52,6 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
 
   @Then("^the user will successfully navigate to the next page$")
   def the_user_will_successfully_navigate_to_the_next_page()  {
-     page.title shouldEqual BusinessKeeperDetailsPage.title
+     page.title shouldEqual BusinessKeeperDetailsPage.title withClue trackingId
   }
 }

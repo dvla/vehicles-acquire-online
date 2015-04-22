@@ -5,9 +5,9 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.{BusinessKeeperDetailsPage, BusinessChooseYourAddressPage, SetupTradeDetailsPage, VehicleLookupPage}
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WithClue,WebBrowserDriver}
 
-class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -28,7 +28,7 @@ class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: We
   @Given("^the user is on the Vehicle LookUp page$")
   def the_user_is_on_the_Vehicle_LookUp_page()  {
     gotoVehicleLookUpPageWithKnownAddress()
-    page.title shouldEqual VehicleLookupPage.title
+    page.title shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @When("^the user has submitted a vehicle lookup request and a matching record is returned$")
@@ -54,7 +54,7 @@ class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: We
 
   @Then("^the user will navigate to next page successfully$")
   def the_user_will_navigate_to_next_page_successfully()  {
-    page.title shouldEqual BusinessKeeperDetailsPage.title
+    page.title shouldEqual BusinessKeeperDetailsPage.title withClue trackingId
   }
 
 }

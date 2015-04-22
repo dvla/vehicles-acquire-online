@@ -5,10 +5,10 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire._
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WithClue, WebBrowserDSL}
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
-class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -52,7 +52,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     gotoVehicleLookUpPageWithKnownAddress()
     the_user_fills_in_the_vrn_doc_ref_number_and_selects_businessKeeper()
     click on VehicleLookupPage.next
-    page.title should equal(BusinessKeeperDetailsPage.title)
+    page.title should equal(BusinessKeeperDetailsPage.title) withClue trackingId
   }
 
   @When("^the user fills in the vrn, doc ref number and selects privateKeeper$")
@@ -124,21 +124,21 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   @Then("^the user remains on the VehicleLookPage$")
   def the_user_remains_on_the_VehicleLookPage() {
-    page.title should equal(VehicleLookupPage.title)
+    page.title shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @Then("^the user is taken to the page entitled \"(.*?)\"$")
   def the_user_is_taken_to_the_page_entitled(title: String) {
-    page.title should equal(title)
+    page.title shouldEqual title withClue trackingId
   }
 
   @Then("^the user will be redirected to the vehicle lookup failure page$")
   def the_user_will_be_redirected_to_the_VehicleLookupFailure_page() {
-    page.title should equal(VehicleLookupFailurePage.title)
+    page.title shouldEqual VehicleLookupFailurePage.title withClue trackingId
   }
 
   @Then("^the page will contain text \"(.*?)\"$")
   def the_page_will_contain_text(text: String) {
-    page.source should include(text)
+    page.source should include(text) withClue trackingId
   }
 }
