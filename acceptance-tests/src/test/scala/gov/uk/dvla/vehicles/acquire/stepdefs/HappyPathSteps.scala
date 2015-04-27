@@ -18,7 +18,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleTaxOrSornPage
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver,WithClue, WebBrowserDSL}
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
 /**
@@ -40,7 +40,7 @@ import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
  * acquire-success    acquire-failure
  *
  */
-class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -53,9 +53,9 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   def goToSetupTradeDetailsPage() = {
     go to BeforeYouStartPage
-    page.title should equal(BeforeYouStartPage.title)
+    page.title shouldEqual BeforeYouStartPage.title withClue trackingId
     click on BeforeYouStartPage.startNow
-    page.title should equal(SetupTradeDetailsPage.title)
+    page.title shouldEqual SetupTradeDetailsPage.title withClue trackingId
   }
 
   def goToBusinessChooseYourAddressPage() = {
@@ -65,13 +65,13 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on SetupTradeDetailsPage.emailVisible
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
-    page.title should equal(BusinessChooseYourAddressPage.title)
+    page.title shouldEqual BusinessChooseYourAddressPage.title withClue trackingId
   }
 
   def goToEnterAddressManuallyPage() = {
     goToBusinessChooseYourAddressPage()
     click on BusinessChooseYourAddressPage.manualAddress
-    page.title should equal(EnterAddressManuallyPage.title)
+    page.title shouldEqual EnterAddressManuallyPage.title withClue trackingId
   }
 
   def goToVehicleLookupPageAfterManuallyEnteringAddress() = {
@@ -79,7 +79,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     EnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 Long Road"
     EnterAddressManuallyPage.addressPostTown enter "Swansea"
     click on EnterAddressManuallyPage.next
-    page.title should equal(VehicleLookupPage.title)
+    page.title shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   def fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage() = {
@@ -92,14 +92,14 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     click on VehicleLookupPage.vehicleSoldToPrivateIndividual
     click on VehicleLookupPage.next
-    page.title should equal(PrivateKeeperDetailsPage.title)
+    page.title shouldEqual PrivateKeeperDetailsPage.title withClue trackingId
   }
 
   def goToBusinessKeeperDetailsPage() = {
     fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
-    page.title should equal(BusinessKeeperDetailsPage.title)
+    page.title shouldEqual BusinessKeeperDetailsPage.title withClue trackingId
   }
 
   def goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper() = {
@@ -110,7 +110,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     PrivateKeeperDetailsPage.postcodeTextBox enter Postcode
     click on PrivateKeeperDetailsPage.emailInvisible
     click on PrivateKeeperDetailsPage.next
-    page.title should equal(NewKeeperChooseYourAddressPage.title)
+    page.title shouldEqual NewKeeperChooseYourAddressPage.title withClue trackingId
   }
 
   def goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper() = {
@@ -122,30 +122,30 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     BusinessKeeperDetailsPage.emailField enter "a@gmail.com"
     BusinessKeeperDetailsPage.postcodeField enter Postcode
     click on BusinessKeeperDetailsPage.next
-    page.title should equal(NewKeeperChooseYourAddressPage.title)
+    page.title shouldEqual NewKeeperChooseYourAddressPage.title withClue trackingId
   }
 
   def goToNewKeeperEnterAddressManuallyAfterFillingInNewBusinessKeeper() = {
     goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper()
     click on NewKeeperChooseYourAddressPage.manualAddress
-    page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+    page.title shouldEqual NewKeeperEnterAddressManuallyPage.title withClue trackingId
   }
 
   def goToVehicleTaxOrSornPage() = {
     goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
     click on NewKeeperChooseYourAddressPage.manualAddress
-    page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+    page.title shouldEqual NewKeeperEnterAddressManuallyPage.title withClue trackingId
     EnterAddressManuallyPage.addressBuildingNameOrNumber enter "1 highrate"
     EnterAddressManuallyPage.addressPostTown enter "swansea"
     click on EnterAddressManuallyPage.next
-    page.title should equal(VehicleTaxOrSornPage.title)
+    page.title shouldEqual VehicleTaxOrSornPage.title withClue trackingId
   }
 
   def goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps: Boolean = true) = {
     if (callNavigationSteps) goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
     NewKeeperChooseYourAddressPage.chooseAddress.value = "0"
     click on NewKeeperChooseYourAddressPage.select
-    page.title should equal(VehicleTaxOrSornPage.title)
+    page.title shouldEqual VehicleTaxOrSornPage.title withClue trackingId
   }
 
   def goToCompleteAndConfirmPage(callNavigationSteps: Boolean = true) = {
@@ -153,7 +153,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on VehicleTaxOrSornPage.sornSelect
     click on VehicleTaxOrSornPage.sornVehicle
     click on VehicleTaxOrSornPage.next
-    page.title should equal(CompleteAndConfirmPage.title)
+    page.title shouldEqual CompleteAndConfirmPage.title withClue trackingId
   }
 
   def goToCompleteAndConfirmPageAndNavigateBackwards() = {
@@ -172,7 +172,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToCompleteAndConfirmPage()
     fillInCompleteAndConfirm()
     click on CompleteAndConfirmPage.next
-    page.title should equal(AcquireSuccessPage.title)
+    page.title shouldEqual AcquireSuccessPage.title withClue trackingId
   }
 
 ////
@@ -461,16 +461,16 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   @Then("^the user is taken to the Private Keeper details page$")
   def the_user_is_taken_to_the_private_keeper_details_page() {
-    page.title should equal(PrivateKeeperDetailsPage.title)
+    page.title shouldEqual PrivateKeeperDetailsPage.title withClue trackingId
   }
 
   @Then("^the user will be on confirmed transaction failure screen$") // todo remove confirmed
   def the_user_will_be_on_confirmed_transaction_failure_screen() {
-    page.title should equal(AcquireFailurePage.title)
+    page.title shouldEqual AcquireFailurePage.title withClue trackingId
   }
 
   @Then("^there will be an error message displayed \"(.*?)\"$")
   def there_will_be_an_error_message_displayed(errMsg: String) {
-    page.source should include(errMsg)
+    page.source should include(errMsg) withClue trackingId
   }
 }

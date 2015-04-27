@@ -5,10 +5,10 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import pages.acquire.{VehicleLookupPage, BusinessChooseYourAddressPage, SetupTradeDetailsPage}
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WebBrowserDriver}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WithClue, WebBrowserDSL, WebBrowserDriver}
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
-class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers {
+class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -29,7 +29,7 @@ class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
   @Given("^the user is on the vehicle lookup page$")
   def the_user_is_on_the_vehicle_lookup_page()  {
     goToVehicleLookUpPage()
-    page.title shouldEqual VehicleLookupPage.title
+    page.title shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @When("^the user submits vehicles details$")
@@ -42,7 +42,7 @@ class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   @Then("^the user will see \"(.*?)\" screen$")
   def the_user_will_see_screen(unSuccessfulText:String)  {
-    page.source should include(unSuccessfulText)
+    page.source should include(unSuccessfulText) withClue trackingId
   }
 
 }
