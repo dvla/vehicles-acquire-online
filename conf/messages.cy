@@ -17,6 +17,10 @@ global.buttonnavcancel = Cancel
 global.buttonnavupdate = Update
 global.buttonnavprint = Print
 
+global.serviceCloseWarning = Bydd y gwasanaeth yn cau cyn bo hir - yr amser bellach yn {0} bydd y gwasanaeth yn cau am {1}:00:00
+global.serviceCloseWarning.fiveMinutes = Mae''r gwasanaeth hwn ar gael {0}:00-{1}:00, mae gennych
+global.serviceCloseWarning.fiveMinutes.p2 = i gwblhau'r gwasanaeth hwn.
+
 footer.builtbyintro = Built by
 footer.builtby = Driver & Vehicle Licensing Agency
 footer.text1 = All content is available under the
