@@ -22,6 +22,10 @@ global-please-wait-p1 = Hyn o bryd rydym yn derbyn nifer fawr o geisiadau sydd w
 global-please-wait-p2 = Bydd y dudalen hon yn diweddaru yn awtomatig, peidiwch cau eich porwr.
 global-please-wait-close = Cau''r neges hon
 
+global.serviceCloseWarning = Bydd y gwasanaeth yn cau cyn bo hir - yr amser bellach yn {0} bydd y gwasanaeth yn cau am {1}:00:00
+global.serviceCloseWarning.fiveMinutes = Mae''r gwasanaeth hwn ar gael {0}:00-{1}:00, mae gennych
+global.serviceCloseWarning.fiveMinutes.p2 = i gwblhau'r gwasanaeth hwn.
+
 footer.builtbyintro = Built by
 footer.builtby = Driver & Vehicle Licensing Agency
 footer.text1 = All content is available under the
