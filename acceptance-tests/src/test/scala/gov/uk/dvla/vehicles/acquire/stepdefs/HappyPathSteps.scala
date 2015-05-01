@@ -64,6 +64,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     SetupTradeDetailsPage.traderPostcode enter Postcode
     click on SetupTradeDetailsPage.emailVisible
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderConfirmEmail enter "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     page.title shouldEqual BusinessChooseYourAddressPage.title withClue trackingId
   }
@@ -120,6 +121,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     BusinessKeeperDetailsPage.businessNameField enter "test business"
     click on BusinessKeeperDetailsPage.emailVisible
     BusinessKeeperDetailsPage.emailField enter "a@gmail.com"
+    BusinessKeeperDetailsPage.emailConfirmField enter "a@gmail.com"
     BusinessKeeperDetailsPage.postcodeField enter Postcode
     click on BusinessKeeperDetailsPage.next
     page.title shouldEqual NewKeeperChooseYourAddressPage.title withClue trackingId

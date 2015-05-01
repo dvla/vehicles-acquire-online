@@ -4,6 +4,7 @@ import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
+import common.mappings.Email.{EmailId, EmailVerifyId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle._
 import views.acquire.SetupTradeDetails.SubmitId
 
@@ -22,7 +23,9 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
 
   def traderPostcode(implicit driver: WebDriver): TextField = textField(id(TraderPostcodeId))
 
-  def traderEmail(implicit driver: WebDriver): TextField = textField(id(TraderEmailId))
+  def traderEmail(implicit driver: WebDriver): TextField = textField(id(s"${TraderEmailId}_$EmailId"))
+
+  def traderConfirmEmail(implicit driver: WebDriver): TextField = textField(id(s"${TraderEmailId}_$EmailVerifyId"))
 
   def lookup(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
@@ -43,6 +46,7 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
     traderBusinessEmail.fold(click on emailInvisible) { email =>
       click on emailVisible
       traderEmail enter email
+      traderConfirmEmail enter email
     }
     click on lookup
   }

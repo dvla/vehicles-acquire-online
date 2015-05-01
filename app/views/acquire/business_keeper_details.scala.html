@@ -14,6 +14,7 @@
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.valtechInputText
 @import views.html.helper.form
+@import common.views.html.widgets.email
 @import common.views.html.widgets.optionalToggle
 @import common.model.BusinessKeeperDetailsFormModel.Form.{FleetNumberId, FleetNumberOptionId, BusinessNameId, EmailId, EmailOptionId, PostcodeId}
 @import views.html.common.vehicle_detail_playback
@@ -79,14 +80,11 @@
                         Messages("acquire_businesskeeperdetails.traderemailoption"),
                         Messages("acquire_businesskeeperdetails.traderemailoption.yes"),
                         Messages("acquire_businesskeeperdetails.traderemailoption.no"),
-                        valtechInputText(
+                        email(
                             viewModel.form(EmailId),
+                            labelText = Messages("acquire_businesskeeperdetails.email"),
                             hintText = None,
-                            args = Map('_label -> Messages("acquire_businesskeeperdetails.email"),
-                                '_showConstraints -> false,
-                                'maxLength -> EmailMaxLength,
-                                'NO_OPTIONAL_LABEL -> false
-                            )
+                            args = Map('maxLength -> EmailMaxLength)
                         )
                     )
 

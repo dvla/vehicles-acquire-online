@@ -20,6 +20,7 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
     SetupTradeDetailsPage.traderPostcode enter "qq99qq"
     click on SetupTradeDetailsPage.emailVisible
     SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderConfirmEmail enter "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     BusinessChooseYourAddressPage.chooseAddress.value = "0"
     click on BusinessChooseYourAddressPage.select

@@ -13,6 +13,7 @@ config: utils.helpers.Config)
 @import common.mappings.Email.EmailMaxLength
 @import common.mappings.BusinessName
 @import common.views.helpers.BaseTemplate.fieldConstructor
+@import common.views.html.widgets.email
 @import common.views.html.widgets.base.valtechInputText
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.html.widgets.optionalToggle
@@ -43,14 +44,10 @@ config: utils.helpers.Config)
                 Messages("acquire_setuptradedetails.traderemailoption"),
                 Messages("acquire_setuptradedetails.traderemailoption.yes"),
                 Messages("acquire_setuptradedetails.traderemailoption.no"),
-                valtechInputText(traderLookupForm(TraderEmailId),
+                email(traderLookupForm(TraderEmailId),
+                    labelText = Messages("acquire_setuptradedetails.traderemaillabel"),
                     hintText = None,
-                    args = Map(
-                        '_label -> Messages("acquire_setuptradedetails.traderemaillabel"),
-                        '_showConstraints -> false,
-                        'maxLength -> EmailMaxLength,
-                        'NO_OPTIONAL_LABEL -> false
-                    )
+                    args = Map('maxLength -> EmailMaxLength)
                 )
             )
         <div class="uppercase-input">

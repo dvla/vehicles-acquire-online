@@ -11,11 +11,18 @@ import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitlePickerString.standardOptions
-import uk.gov.dvla.vehicles.presentation.common.mappings.{OptionalToggle, TitlePickerString, TitleType}
-import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.Form.{DriverNumberId, EmailId, EmailOptionId, FirstNameId, LastNameId, PostcodeId, TitleId}
-import uk.gov.dvla.vehicles.presentation.common.services.DateService
+import common.clientsidesession.ClientSideSessionFactory
+import common.mappings.TitlePickerString.standardOptions
+import common.mappings.{OptionalToggle, TitlePickerString, TitleType}
+import common.mappings.Email.{EmailId => EmailEnterId, EmailVerifyId}
+import common.model.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailOptionId
+import common.model.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.LastNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import common.model.PrivateKeeperDetailsFormModel.Form.TitleId
+import common.services.DateService
 import utils.helpers.Config
 
 class PrivateKeeperDetailsUnitSpec extends UnitSpec {
@@ -143,7 +150,11 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         DriverNumberId -> driverNumber,
         PostcodeId -> postcode
       ) ++ email.fold(Seq(EmailOptionId -> OptionalToggle.Invisible)) { e =>
-        Seq(EmailOptionId -> OptionalToggle.Visible, EmailId -> e)
+        Seq(
+          EmailOptionId -> OptionalToggle.Visible,
+          s"$EmailId.$EmailEnterId" -> e,
+          s"$EmailId.$EmailVerifyId" -> e
+        )
       }:_*
     )
   }

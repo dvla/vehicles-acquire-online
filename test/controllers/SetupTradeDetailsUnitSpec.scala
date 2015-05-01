@@ -16,6 +16,7 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.mappings.{OptionalToggle, BusinessName}
 import common.model.SetupTradeDetailsFormModel
+import common.mappings.Email.{EmailId, EmailVerifyId}
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderEmailId, TraderEmailOptionId, TraderPostcodeId}
 import utils.helpers.Config
@@ -114,7 +115,11 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       TraderNameId -> dealerName,
       TraderPostcodeId -> dealerPostcode
     ) ++ dealerEmail.fold(Seq(TraderEmailOptionId -> OptionalToggle.Invisible)) { email =>
-      Seq(TraderEmailOptionId -> OptionalToggle.Visible, TraderEmailId -> email)
+      Seq(
+        TraderEmailOptionId -> OptionalToggle.Visible,
+        s"$TraderEmailId.$EmailId" -> email,
+        s"$TraderEmailId.$EmailVerifyId" -> email
+      )
     }:_*)
   }
 

@@ -5,6 +5,7 @@ import org.scalatest.Matchers
 import uk.gov.dvla.vehicles.presentation.common
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser._
 import common.mappings.TitlePickerString.OtherTitleRadioValue
+import common.mappings.Email.{EmailId => EmailEnterId, EmailVerifyId}
 import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle._
 import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.Form._
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
@@ -48,7 +49,9 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
   def emailInvisible(implicit driver: WebDriver): RadioButton =
     radioButton(id(s"${EmailOptionId}_$Invisible"))
 
-  def emailTextBox(implicit driver: WebDriver): TextField = textField(id(EmailId))
+  def emailTextBox(implicit driver: WebDriver): TextField = textField(id(s"${EmailId}_$EmailEnterId"))
+
+  def emailConfirmTextBox(implicit driver: WebDriver): TextField = textField(id(s"${EmailId}_$EmailVerifyId"))
 
   def driverNumberTextBox(implicit driver: WebDriver): TextField = textField(id(DriverNumberId))
 
@@ -101,9 +104,10 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
     dayDateOfBirthTextBox enter dayDateOfBirth
     monthDateOfBirthTextBox enter monthDateOfBirth
     yearDateOfBirthTextBox enter yearDateOfBirth
-    email.fold(click on emailInvisible){emailAddress =>
+    email.fold(click on emailInvisible) { emailAddress =>
       click on emailVisible
       emailTextBox enter emailAddress
+      emailConfirmTextBox enter emailAddress
     }
 
     driverNumberTextBox enter driverNumber
