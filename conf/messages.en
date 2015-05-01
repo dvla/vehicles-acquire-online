@@ -88,6 +88,9 @@ error.sornformerror = You must accept the SORN option.
 error.nosornformerror = you must select the SORN now option.
 error.sornselectid = One of the options must be selected.
 acquire_vehicleTaxOrSorn.selectidError = One of the options must be selected.
+error.email.confirm.required = Please confirm the email address
+error.email.not.match = The email addresses did not match
+email.verify.label = Confirm email address
 
 datePlaceholder.day=Day
 datePlaceholder.month=Month
