@@ -3,8 +3,8 @@ package controllers
 import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessKeeperDetailsCacheKeys
-import models.PrivateKeeperDetailsCacheKeys
 import models.EnterAddressManuallyFormModel
+import models.PrivateKeeperDetailsCacheKeys
 import models.VehicleLookupFormModel.{Key, JsonFormat}
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
@@ -24,7 +24,6 @@ import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperDetailsDto
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupService
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupErrorMessage
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupResponseV2
 import utils.helpers.Config
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 
