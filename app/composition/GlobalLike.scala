@@ -48,8 +48,9 @@ trait GlobalLike extends WithFilters with GlobalSettings with Composition {
 
   override def onStart(app: Application) {
     Logger.info("vehicles-acquire Started") // used for operations, do not remove
-    TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"))
-    DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"))
+    val localTimeZone = "Europe/London"
+    TimeZone.setDefault(TimeZone.getTimeZone(localTimeZone))
+    DateTimeZone.setDefault(DateTimeZone.forID(localTimeZone))
   }
 
   override def onStop(app: Application) {
