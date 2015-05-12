@@ -7,7 +7,8 @@ import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
-import models.{VehicleNewKeeperCompletionCacheKeys, CompleteAndConfirmFormModel}
+import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
+import models.VehicleNewKeeperCompletionCacheKeys
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.mock.MockitoSugar
 import pages.acquire.VehicleLookupPage
@@ -29,21 +30,20 @@ import pages.common.ErrorPanel
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
-import play.api.test.FakeApplication
 import ProgressBar.progressStep
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebDriverFactory
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionDayValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
 import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 
-final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
+class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
     "display the page for a new keeper" taggedAs UiTag in new WebBrowser {
@@ -78,7 +78,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
     "Redirect when no new keeper details are cached" taggedAs UiTag in new WebBrowser {
       go to CompleteAndConfirmPage
       page.title should equal(SetupTradeDetailsPage.title)
-      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
+      assertCookiesDoNotExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
@@ -86,10 +86,10 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
-      csrf.getAttribute("value").size > 0 should equal(true)
+      csrf.getAttribute("value").length > 0 should equal(true)
     }
 
-    "redirect to vehicles lookup page if there is no cookie preventGoingToCompleteAndConfirmPage set" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicles lookup page if there is no cookie preventGoingToCompleteAndConfirmPage set" taggedAs UiTag in new PhantomJsByDefault {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -100,10 +100,10 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         .vehicleTaxOrSornFormModel()
       go to CompleteAndConfirmPage
       page.title should equal(VehicleLookupPage.title)
-      assertCookiesDoesnExist(cookiesDeletedOnRedirect)
+      assertCookiesDoNotExist(cookiesDeletedOnRedirect)
     }
 
-    "redirect to Business choose your address page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie e set and there is no dealer details" taggedAs UiTag in new WebBrowser {
+    "redirect to Business choose your address page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie set and there is no dealer details" taggedAs UiTag in new PhantomJsByDefault {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -113,7 +113,7 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         .vehicleTaxOrSornFormModel()
       go to CompleteAndConfirmPage
       page.title should equal(SetupTradeDetailsPage.title)
-      assertCookiesDoesnExist(cookiesDeletedOnRedirect)
+      assertCookiesDoNotExist(cookiesDeletedOnRedirect)
     }
   }
 
@@ -139,22 +139,22 @@ final class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(AcquireSuccessPage.title)
     }
 
-    "clear off the preventGoingToCompleteAndConfirmPage cookie on success" taggedAs UiTag in new WebBrowser {
+    "clear off the preventGoingToCompleteAndConfirmPage cookie on success" taggedAs UiTag in new PhantomJsByDefault {
       go to BeforeYouStartPage
       cacheSetup()
       assertCookieExist
       navigate()
       page.title should equal(AcquireSuccessPage.title)
-      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
+      assertCookiesDoNotExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
-    "clear off the preventGoingToCompleteAndConfirmPage cookie on failure" taggedAs UiTag in new MockAppWebBrowser(failingWebService) {
+    "clear off the preventGoingToCompleteAndConfirmPage cookie on failure" taggedAs UiTag in new MockAppWebBrowserPhantomJs(failingWebService) {
       go to BeforeYouStartPage
       cacheSetup()
       assertCookieExist
       navigate()
       page.title should equal(Messages("error.title"))
-      assertCookiesDoesnExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
+      assertCookiesDoNotExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
     /* Only works with phantomjs, chrome and firefox. Commenting out as not working with htmlunit
@@ -284,7 +284,7 @@ import play.api.test.FakeApplication
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "redirect to vehicles lookup page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie e set" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicles lookup page if there is no PreventGoingToCompleteAndConfirmPageCacheKey cookie set" taggedAs UiTag in new PhantomJsByDefault {
       def deleteFlagCookie(implicit driver: WebDriver) =
         driver.manage.deleteCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey)
 
@@ -349,7 +349,12 @@ import play.api.test.FakeApplication
       .vehicleTaxOrSornFormModel()
       .preventGoingToCompleteAndConfirmPageCookie()
 
-  class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowser(
+  class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowser (
+    app = LightFakeApplication(mockAcquireServiceCompositionGlobal(webService))
+  )
+
+  class MockAppWebBrowserPhantomJs(webService: AcquireWebService) extends WebBrowser (
+    webDriver = WebDriverFactory.defaultBrowserPhantomJs,
     app = LightFakeApplication(mockAcquireServiceCompositionGlobal(webService))
   )
 
@@ -378,7 +383,7 @@ import play.api.test.FakeApplication
   private val cookiesDeletedOnRedirect =
     VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
 
-  private def assertCookiesDoesnExist(cookies: Set[String])(implicit driver: WebDriver) =
+  private def assertCookiesDoNotExist(cookies: Set[String])(implicit driver: WebDriver) =
     for (cookie <- cookies) driver.manage().getCookieNamed(cookie) should be (null)
 
   private def assertCookieExist(implicit driver: WebDriver) =

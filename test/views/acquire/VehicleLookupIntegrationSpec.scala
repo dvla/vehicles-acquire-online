@@ -1,6 +1,5 @@
 package views.acquire
 
-import composition.TestGlobal
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.common.ProgressBar
@@ -18,7 +17,6 @@ import pages.acquire.VehicleLookupPage.{happyPath, back}
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.KeeperStillOnRecordPage
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import play.api.test.FakeApplication
 import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
@@ -26,7 +24,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormMo
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 
-final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
+class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
@@ -72,7 +70,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
-      csrf.getAttribute("value").size > 0 should equal(true)
+      csrf.getAttribute("value").length > 0 should equal(true)
     }
   }
 
@@ -92,7 +90,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(PrivateKeeperDetailsPage.title)
     }
 
-    "clear businessKeeperDetails when private keeper data is entered" taggedAs UiTag in new WebBrowser {
+    "clear businessKeeperDetails when private keeper data is entered" taggedAs UiTag in new PhantomJsByDefault {
       go to BeforeYouStartPage
       cacheSetup()
       CookieFactoryForUISpecs.businessKeeperDetails()
@@ -107,7 +105,7 @@ final class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       page.title should equal(BusinessKeeperDetailsPage.title)
     }
 
-    "clear privateKeeperDetails when business keeper data is entered" taggedAs UiTag in new WebBrowser {
+    "clear privateKeeperDetails when business keeper data is entered" taggedAs UiTag in new PhantomJsByDefault {
       go to BeforeYouStartPage
       cacheSetup()
       CookieFactoryForUISpecs.privateKeeperDetails()

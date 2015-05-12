@@ -12,7 +12,7 @@ import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPa
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 
-final class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
+class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
@@ -54,7 +54,7 @@ final class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness 
       page.title should equal(SetupTradeDetailsPage.title)
     }
 
-    "remove redundant cookies when displayed" taggedAs UiTag in new WebBrowser {
+    "remove redundant cookies when displayed" taggedAs UiTag in new PhantomJsByDefault {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleLookupFailurePage
