@@ -1,3 +1,11 @@
+======= 1.8 ========
+Time of release binary creation
+FILL ME IN
+
+DE481	All Services - Postcode facility
+US2580	Make the response code from V&K lookup a two var case class
+US2802	Make service shutdown warning dynamic
+
 ======== 1.5 ========
 Time of release binary creation
 Wed Apr 01 14:23:30 UTC 2015
