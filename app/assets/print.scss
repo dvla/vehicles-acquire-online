@@ -27,3 +27,9 @@
         display: none;
     }
 }
+
+.please-wait-overlay,
+.please-wait-overlay h2,
+.serviceClosingWarning{
+    display: none !important;
+}
