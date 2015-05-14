@@ -16,6 +16,7 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.PostcodeToAddressResponseDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnAddressPairDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnToAddressResponseDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressDto
 
 final class FakeAddressLookupWebServiceImpl(responseOfPostcodeWebService: Future[WSResponse],
                                             responseOfUprnWebService: Future[WSResponse]) extends AddressLookupWebService {
@@ -28,6 +29,9 @@ final class FakeAddressLookupWebServiceImpl(responseOfPostcodeWebService: Future
 
   override def callUprnWebService(uprn: String, trackingId: String)
                                  (implicit lang: Lang): Future[WSResponse] = responseOfUprnWebService
+
+  override def callAddresses(postcode: String, trackingId: String)
+                            (implicit lang: Lang): Future[WSResponse] = ???
 }
 
 object FakeAddressLookupWebServiceImpl {
