@@ -11,10 +11,11 @@ import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId, SornFormE
 import models.VehicleTaxOrSornViewModel
 import play.api.data.{FormError, Form}
 import play.api.Logger
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.LogFormats.logMessage
 import common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -41,16 +42,23 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
     }
   }
 
-  private def redirectToVehicleLookup(message: String) = {
-    Logger.warn(message)
+  private def redirectToVehicleLookup(message: String)
+                                     (implicit request: Request[_]) = {
+    Logger.warn(logMessage(message, request.cookies.trackingId()))
     Redirect(routes.VehicleLookup.present())
   }
 
   def back = Action { implicit request =>
     request.cookies.getModel[NewKeeperEnterAddressManuallyFormModel] match {
       case Some(manualAddress) =>
+        Logger.debug(logMessage(s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}",
+          request.cookies.trackingId()))
         Redirect(routes.NewKeeperEnterAddressManually.present())
-      case None => Redirect(routes.NewKeeperChooseYourAddress.present())
+      case None => {
+        Logger.debug(logMessage(s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}",
+          request.cookies.trackingId()))
+        Redirect(routes.NewKeeperChooseYourAddress.present())
+      }
     }
   }
 
@@ -68,6 +76,8 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
         }
       },
       validForm => {
+        Logger.debug(logMessage(s"Redirecting to ${routes.CompleteAndConfirm.present()}",
+          request.cookies.trackingId()))
           Redirect(routes.CompleteAndConfirm.present())
             .withCookie(validForm)
             .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")
@@ -77,7 +87,6 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
   }
 
   private def formWithReplacedErrors(form: Form[VehicleTaxOrSornFormModel]): (Form[VehicleTaxOrSornFormModel], ErrorType) = {
-
     (
       if ( form.data.get("select").exists(_ == "S") && form.globalError.isDefined) {
         form.replaceError(

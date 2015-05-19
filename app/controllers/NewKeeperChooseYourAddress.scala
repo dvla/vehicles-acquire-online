@@ -2,12 +2,15 @@ package controllers
 
 import javax.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
+import play.api.Logger
 import play.api.mvc.{Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.controllers.NewKeeperChooseYourAddressBase
 import common.model.NewKeeperChooseYourAddressViewModel
 import common.webserviceclients.addresslookup.AddressLookupService
+import common.LogFormats.logMessage
+import common.clientsidesession.CookieImplicits.RichCookies
 import utils.helpers.Config
 import views.html.acquire.new_keeper_choose_your_address
 
@@ -43,16 +46,28 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
       model, name, postcode, email, addresses)
     )
 
-  override protected def privateKeeperDetailsRedirect(implicit request: Request[_]) =
+  override protected def privateKeeperDetailsRedirect(implicit request: Request[_]) = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.PrivateKeeperDetails.present()}", request.cookies.trackingId()))
     Redirect(routes.PrivateKeeperDetails.present())
+  }
 
-  override protected def businessKeeperDetailsRedirect(implicit request: Request[_]) =
+  override protected def businessKeeperDetailsRedirect(implicit request: Request[_]) = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.BusinessKeeperDetails.present()}", request.cookies.trackingId()))
     Redirect(routes.BusinessKeeperDetails.present())
+  }
 
-  override protected def vehicleLookupRedirect(implicit request: Request[_]) = Redirect(routes.VehicleLookup.present())
+  override protected def vehicleLookupRedirect(implicit request: Request[_]) = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.VehicleLookup.present()}", request.cookies.trackingId()))
+    Redirect(routes.VehicleLookup.present())
+  }
 
-  override protected def completeAndConfirmRedirect(implicit request: Request[_]) =
+  override protected def completeAndConfirmRedirect(implicit request: Request[_]) = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.VehicleTaxOrSorn.present()}", request.cookies.trackingId()))
     Redirect(routes.VehicleTaxOrSorn.present())
+  }
 
-  override protected def upnpNotFoundRedirect(implicit request: Request[_]) = Redirect(routes.UprnNotFound.present())
+  override protected def upnpNotFoundRedirect(implicit request: Request[_]) = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.UprnNotFound.present()}", request.cookies.trackingId()))
+    Redirect(routes.UprnNotFound.present())
+  }
 }

@@ -2,9 +2,13 @@ package controllers
 
 import com.google.inject.Inject
 import models.AllCacheKeys
+import play.api.Logger
 import play.api.mvc.{Action, Controller}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichResult
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.RichResult
+import common.clientsidesession.CookieImplicits.RichCookies
+import common.LogFormats.logMessage
 import utils.helpers.Config
 
 class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -17,6 +21,7 @@ class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   }
 
   def submit = Action { implicit request =>
+    Logger.debug(logMessage(s"Redirecting to ${routes.SetUpTradeDetails.present()}", request.cookies.trackingId()))
     Redirect(routes.SetUpTradeDetails.present())
   }
 }
