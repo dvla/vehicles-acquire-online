@@ -11,7 +11,7 @@ import models.CompleteAndConfirmViewModel
 import models.VehicleLookupFormModel
 import models.VehicleNewKeeperCompletionCacheKeys
 import models.VehicleTaxOrSornFormModel
-import org.joda.time.{DateTime, LocalDate}
+import org.joda.time.{DateTimeZone, DateTime, LocalDate}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.data.{FormError, Form}
 import play.api.Logger
@@ -279,7 +279,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       keeperDetails,
       Some(traderDetails),
       fleetNumber = newKeeperDetailsViewModel.fleetNumber,
-      dateOfTransfer = dateTimeFormatter.print(completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay),
+      dateOfTransfer = dateTimeFormatter.print(
+        completeAndConfirmFormModel.dateOfSale.toDateTimeAtStartOfDay(DateTimeZone.forID("UTC"))
+      ),
       mileage = completeAndConfirmFormModel.mileage,
       keeperConsent = checkboxValueToBoolean(completeAndConfirmFormModel.consent),
       transactionTimestamp = dateTimeFormatter.print(timestamp),
