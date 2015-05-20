@@ -4,11 +4,14 @@ import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
+import play.api.Logger
 import play.api.mvc.{Request, Result}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
-import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupFailureBase
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.RichCookies
+import common.controllers.VehicleLookupFailureBase
+import common.LogFormats.logMessage
+import common.model.TraderDetailsModel
 import utils.helpers.Config
 
 class VehicleLookupFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
@@ -26,15 +29,23 @@ class VehicleLookupFailure @Inject()()(implicit clientSideSessionFactory: Client
       case _ => missingPresentCookieDataResult
     }
 
-  override def missingPresentCookieDataResult()(implicit request: Request[_]): Result =
+  override def missingPresentCookieDataResult()(implicit request: Request[_]): Result = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.SetUpTradeDetails.present()}", request.cookies.trackingId()))
     Redirect(routes.SetUpTradeDetails.present())
+  }
 
   override def submitResult()(implicit request: Request[_]): Result =
     request.cookies.getModel[TraderDetailsModel] match {
-      case Some(dealerDetails) => Redirect(routes.VehicleLookup.present())
+      case Some(dealerDetails) => {
+        Logger.debug(logMessage(s"Redirecting to ${routes.VehicleLookup.present()}", request.cookies.trackingId()))
+        Redirect(routes.VehicleLookup.present())
+      }
       case _ => missingSubmitCookieDataResult
     }
 
-  override def missingSubmitCookieDataResult()(implicit request: Request[_]): Result =
+  override def missingSubmitCookieDataResult()(implicit request: Request[_]): Result = {
+    Logger.debug(logMessage(s"Redirecting to ${routes.BeforeYouStart.present()}", request.cookies.trackingId()))
     Redirect(routes.BeforeYouStart.present())
+  }
+
 }

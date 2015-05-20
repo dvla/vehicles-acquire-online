@@ -8,10 +8,11 @@ import models.CompleteAndConfirmResponseModel
 import models.VehicleTaxOrSornFormModel
 import models.{AllCacheKeys, VehicleNewKeeperCompletionCacheKeys}
 import play.api.Logger
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
+import common.LogFormats.logMessage
 import common.model.{NewKeeperDetailsViewModel, VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
 
@@ -23,6 +24,7 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   private final val MissingCookies = "Missing cookies in cache."
 
   def present = Action { implicit request =>
+    Logger.info(s"Present acquireFailure page - trackingId: ${request.cookies.trackingId()}")
     (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
@@ -51,8 +53,9 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
         .discardingCookies(AllCacheKeys)
   }
 
-  private def redirectToStart(message: String) = {
-    Logger.warn(message)
+  private def redirectToStart(message: String)
+                             (implicit request: Request[_]) = {
+    Logger.warn(logMessage(message, request.cookies.trackingId()))
     Redirect(routes.BeforeYouStart.present())
   }
 }
