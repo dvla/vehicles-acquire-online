@@ -1,3 +1,21 @@
+======= 1.9 ========
+Time of release binary creation
+
+DE339  Overlength Address/Postcode issue in pre prod
+US2634 Review the logs if suitable for developers to find out what's going on in the system
+DE429  Date tabbing using shift and back tab deleting values
+DE445  Manual Address Entry Error message when invalid character is entered
+US3116 Make required changes to Vehicle and Keeper Lookup due to WSDL changes
+DE476  Confirming e-mail address - Chrome
+DE477  Web countdown app
+DE478  Web countdown clock
+DE480  Confirm email facility
+DE483  Printed transaction summary
+US3140 Set the default timezone to Europe/London in all exemplars and micro services
+DE492  Print summary page shows wrong text at the end of page ""Please Wait ...."".
+DE495  Entering an address manually address - error message & wording
+DE503  VSS record updating -1 day from date entered
+
 ======= 1.8.1 ========
 Time of release binary creation
 Tue May 19 12:27:36 UTC 2015
