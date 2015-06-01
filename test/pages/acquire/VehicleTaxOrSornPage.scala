@@ -17,12 +17,9 @@ object VehicleTaxOrSornPage extends Page with WebBrowserDSL {
 
   def sornSelect(implicit driver: WebDriver): Element = find(id(SornId)).get
 
-  def sornVehicle(implicit driver: WebDriver): Checkbox = checkbox(id(SornVehicleId))
-
   def navigate()(implicit driver: WebDriver) = {
     go to VehicleTaxOrSornPage
     click on sornSelect
-    click on sornVehicle
     click on next
   }
 }

@@ -30,8 +30,8 @@ object VehicleTaxOrSornFormModel {
     final val Mapping = mapping(
       SornVehicleId -> optional(text),
       SelectId -> nonEmptyText
-    )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply).verifying(SornFormError, form =>
-      form.select == "S" && form.sornVehicle.isDefined || form.select != "S" && !form.sornVehicle.isDefined
-      )
+    )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply)//.verifying(SornFormError, form =>
+     // form.select == "S" && form.sornVehicle.isDefined || form.select != "S" && !form.sornVehicle.isDefined
+     // )
   }
 }

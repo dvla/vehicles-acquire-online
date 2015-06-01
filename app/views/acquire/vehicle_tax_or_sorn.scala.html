@@ -105,26 +105,7 @@
 
                 <!-- Shown when sorn is selected -->
                 <div class="sorn-text panel-indent-wrapper ">
-                    <div id="sorn_details" class="@if(viewModel.errorType == NoSorn) {form-item validation} else {panel-indent}">
-                        @if(viewModel.errorType == NoSorn && form.get("select").exists(_ == "S")) {
-                            <p class="error">@Messages("error.sornformerror")</p>
-                        }
 
-                        @if(viewModel.errorType == NoSorn && form.get("select").exists(_ != "S")) {
-                            <p class="error">@Messages("error.nosornformerror")</p>
-                        }
-
-                        <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.sornText")</p>
-                        @valtechDeclareCheck(viewModel.form(SornVehicleId),
-                            args = Map(
-                                '_showConstraints -> false,
-                                'autofocus -> true,
-                                'NO_OPTIONAL_LABEL -> true,
-                                '_label -> Messages("acquire_vehicleTaxOrSorn.sornVehicle")
-                            )
-                        )
-                        <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.sornText-p1")</p>
-                    </div>
                 </div>
 
                 <!-- Shown when neither is selected -->

@@ -309,7 +309,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       mileage = completeAndConfirmFormModel.mileage,
       keeperConsent = checkboxValueToBoolean(completeAndConfirmFormModel.consent),
       transactionTimestamp = dateTimeFormatter.print(timestamp),
-      requiresSorn = checkboxValueToBoolean(taxOrSornModel.sornVehicle.getOrElse("false"))
+      requiresSorn = taxOrSornModel.select == "S"
     )
   }
 
