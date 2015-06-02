@@ -68,7 +68,6 @@
                 @valtechDeclareCheck(
                     data.form(ConsentId),
                     args = modify(Map(
-                        'autofocus -> true,
                         '_showConstraints -> false,
                         '_label -> Messages("acquire_keeperdetailscomplete.consent")
                     ), data.isSaleDateBeforeDisposalDate)
@@ -81,7 +80,6 @@
                         @inputDayMonthYearTextbox(
                             field = data.form(DateOfSaleId),
                             args = Map(
-                                'autofocus -> true,
                                 '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
                             ),
                             dateService = dateService,
