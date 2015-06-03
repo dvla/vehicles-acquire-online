@@ -12,6 +12,23 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         }
     };
 
+    var addGaEventToManualAddress = function() {
+        var enterAddressManually = $('#enterAddressManuallyButton');
+        if (enterAddressManually.length) {
+            enterAddressManually.on('click', function() {
+                _gaq.push(['_trackEvent', "manual_address", "link", "user clicked through manual address", 1]);
+            });
+        }
+
+        var enterAddressManually = $('#ga-manual-address-submit');
+        if (enterAddressManually.length) {
+            enterAddressManually.on('click', function() {
+                _gaq.push(['_trackEvent', "manual_address", "submit", "user submitted the manual address", 1]);
+            });
+        }
+
+    };
+
     var enableSendingGaEventsOnSubmit = function() {
         $('button[type="submit"]').on('click', function(e) {
             //Tracking events for SORN checkbox submit
@@ -20,8 +37,20 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                 _gaq.push(['_setCustomVar', 1, 'taxsorn', 'sorn', 3]);
                 _gaq.push(['_trackEvent', 'taxsorn', 'sorn']);
             }
+
+            // tracking the optional email fields on the trader details page
+            if ($('.ga-email-option-visible').is(':checked')) {
+                console.log("");
+                _gaq.push(['_trackEvent', "optional_field", "trader_email", 'provided']);
+            }
+            if ($('.ga-email-option-invisible').is(':checked')) {
+                _gaq.push(['_trackEvent',  "optional_field", "trader_email", 'absent']);
+            }
+
         });
     };
+
+
 
     return {
         init: function() {
@@ -33,8 +62,8 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             pageInit.hideEmailOnOther('#sorn', '#sorn_details');
             pageInit.hideEmailOnOther('#neither', '#neither_details');
 
-
             addGaEventToTaxLink();
+            addGaEventToManualAddress();
 
             // SORN form reset
             $('.sorn-tax-radio-wrapper label input').on('click', function() {

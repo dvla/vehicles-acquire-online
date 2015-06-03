@@ -10,11 +10,11 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       result should equal(htmlArgs)
     }
 
-    "return a modified map with autofocus removed and tabindex added when modification is specified" in {
+    "return a modified map with tabindex added when modification is specified" in {
       val result = CompleteAndConfirm.modify(htmlArgs, modify = true)
       result should equal(Map('tabindex -> -1))
     }
   }
 
-  private def htmlArgs: Map[Symbol, Any] = Map('autofocus -> true)
+  private def htmlArgs: Map[Symbol, Any] = Map()
 }

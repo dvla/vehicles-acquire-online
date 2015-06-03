@@ -38,14 +38,6 @@
     
         <div class="first-col">
             <dl class="playback">
-                <dt><h2>@Messages("acquire_completeandconfirm.taxOrSorn")</h2></dt>
-                @if(data.vehicleSorn.sornVehicle == None) {
-                    <dd class="tax-or-sorn">@Messages("acquire_completeandconfirm.sornNotEntered")</dd>
-                } else {
-                    <dd class="tax-or-sorn">@Messages("acquire_completeandconfirm.sornEntered")</dd>
-                }
-            </dl>
-            <dl class="playback">
                 <dt><h2>@Messages("acquire_completeandconfirm.newkeeperDetails")</h2></dt>
                 <dt>@Messages("acquire_completeandconfirm.displayName")</dt>
                 <dd>@data.keeperDetails.displayName</dd>
@@ -76,7 +68,6 @@
                 @valtechDeclareCheck(
                     data.form(ConsentId),
                     args = modify(Map(
-                        'autofocus -> true,
                         '_showConstraints -> false,
                         '_label -> Messages("acquire_keeperdetailscomplete.consent")
                     ), data.isSaleDateBeforeDisposalDate)
@@ -89,7 +80,6 @@
                         @inputDayMonthYearTextbox(
                             field = data.form(DateOfSaleId),
                             args = Map(
-                                'autofocus -> true,
                                 '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
                             ),
                             dateService = dateService,
