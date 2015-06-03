@@ -12,23 +12,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         }
     };
 
-    var addGaEventToManualAddress = function() {
-        var enterAddressManually = $('#enterAddressManuallyButton');
-        if (enterAddressManually.length) {
-            enterAddressManually.on('click', function() {
-                _gaq.push(['_trackEvent', "manual_address", "link", "user clicked through manual address", 1]);
-            });
-        }
-
-        var enterAddressManually = $('#ga-manual-address-submit');
-        if (enterAddressManually.length) {
-            enterAddressManually.on('click', function() {
-                _gaq.push(['_trackEvent', "manual_address", "submit", "user submitted the manual address", 1]);
-            });
-        }
-
-    };
-
     var enableSendingGaEventsOnSubmit = function() {
         $('button[type="submit"]').on('click', function(e) {
             //Tracking events for SORN checkbox submit
@@ -39,17 +22,75 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             }
 
             // tracking the optional email fields on the trader details page
-            if ($('.ga-email-option-visible').is(':checked')) {
-                console.log("");
-                _gaq.push(['_trackEvent', "optional_field", "trader_email", 'provided']);
-            }
-            if ($('.ga-email-option-invisible').is(':checked')) {
-                _gaq.push(['_trackEvent',  "optional_field", "trader_email", 'absent']);
-            }
+            trackingOptionalRadioField("#traderEmailOption", "trader_email");
+            trackingOptionalRadioField("#privatekeeper_option_email", "private_keeper_email");
+            trackingOptionalRadioField("#businesskeeper_option_email", "business_keeper_email");
+            trackingOptionalRadioField("#fleetNumberOption", "fleet_number");
+
+            //track driving licence number
+            trackingOptionalFields("#privatekeeper_drivernumber", "driving_licence");
+            //track mileage
+            trackingOptionalFields("#mileage", "mileage");
+
+            //track date of birth
+            trackingDateFields("#privatekeeper_dateofbirth", "date_of_birth");
+
+            // track if the new owner is a business or an individual
+            trackPrivateBusiness();
 
         });
     };
 
+    var trackPrivateBusiness = function() {
+        if ($("#vehicleSoldTo_Private").is(':checked')) {
+            _gaq.push(['_trackEvent', "track_path", "individual", '', value]);
+        }
+        if ($("#vehicleSoldTo_Business").is(':checked')) {
+            _gaq.push(['_trackEvent', "track_path", "business", '', value]);
+        }
+
+    };
+
+    // docs here
+    var trackingOptionalRadioField = function(fieldSelector, actionName, value) {
+        var visibleField = $(fieldSelector + "_visible");
+        var invisibleField = $(fieldSelector + "_invisible");
+
+        if (value === undefined) value = 1;
+
+        if (visibleField.is(':checked')) {
+            _gaq.push(['_trackEvent', "optional_field", actionName, 'provided', value]);
+        }
+        if (invisibleField.is(':checked')) {
+            _gaq.push(['_trackEvent',  "optional_field", actionName, 'absent', value]);
+        }
+    };
+
+    var trackingOptionalFields = function(fieldSelector, actionName, value) {
+        if (value === undefined) value = 1;
+
+        if($(fieldSelector).value == "") {
+            _gaq.push(['_trackEvent', "optional_field", actionName, 'absent', value]);
+        } else {
+            _gaq.push(['_trackEvent', "optional_field", actionName, 'provided', value]);
+        }
+    };
+
+    var trackingDateFields = function(fieldSelector, actionName, value) {
+
+        if (value === undefined) value = 1;
+
+        var field_day = $(fieldSelector + "_day");
+        var field_month = $(fieldSelector + "_month");
+        var field_year = $(fieldSelector + "_year");
+
+
+        if(field_day.value == "" || field_month.value == "" || field_year.value == "") {
+            _gaq.push(['_trackEvent', "optional_field", actionName, 'absent', value]);
+        } else {
+            _gaq.push(['_trackEvent', "optional_field", actionName, 'provided', value]);
+        }
+    };
 
 
     return {
@@ -63,7 +104,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             pageInit.hideEmailOnOther('#neither', '#neither_details');
 
             addGaEventToTaxLink();
-            addGaEventToManualAddress();
 
             // SORN form reset
             $('.sorn-tax-radio-wrapper label input').on('click', function() {
