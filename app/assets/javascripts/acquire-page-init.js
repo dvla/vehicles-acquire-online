@@ -21,22 +21,29 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                 _gaq.push(['_trackEvent', 'taxsorn', 'sorn']);
             }
 
-            // tracking the optional email fields on the trader details page
+            debugger;
+
+            //ACQ-002: tracking the optional email fields on the trader details page
             trackingOptionalRadioField("#traderEmailOption", "trader_email");
+
+            // ACQ-002: tracking the optional email on the private keeper details page
             trackingOptionalRadioField("#privatekeeper_option_email", "private_keeper_email");
+            // ACQ-003: tracking the optional email on the business keeper details page
             trackingOptionalRadioField("#businesskeeper_option_email", "business_keeper_email");
+            // ACQ-004: tracking the optional fleet number on the business keeper details page
             trackingOptionalRadioField("#fleetNumberOption", "fleet_number");
 
-            //track driving licence number
+            //ACQ-006: tracking driving licence number on the private keeper details page
             trackingOptionalFields("#privatekeeper_drivernumber", "driving_licence");
-            //track mileage
+            //ACQ-007: tracking the vehicle mileage on the sales details page
             trackingOptionalFields("#mileage", "mileage");
 
-            //track date of birth
+            //ACQ-005: tracking date of birth on the private keeper details page
             trackingDateFields("#privatekeeper_dateofbirth", "date_of_birth");
 
-            // track if the new owner is a business or an individual
+            //ACQ-011: tracking if the new owner is a business or an individual
             trackPrivateBusiness();
+
 
         });
     };
@@ -51,7 +58,9 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
 
     };
 
-    // docs here
+    // tracks an event based on the state of an optional radio box. This will work for the yes/no radio boxes.
+    // you need to pass the fieldSelector (for id: #id, for class: .className) and the name of the action.
+    // value is optional
     var trackingOptionalRadioField = function(fieldSelector, actionName, value) {
         var visibleField = $(fieldSelector + "_visible");
         var invisibleField = $(fieldSelector + "_invisible");
@@ -66,6 +75,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         }
     };
 
+    // tracks an event based on a field that has a value. e.g. a textfield.
     var trackingOptionalFields = function(fieldSelector, actionName, value) {
         if (value === undefined) value = 1;
 
