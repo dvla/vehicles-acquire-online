@@ -55,7 +55,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         if ($("#vehicleSoldTo_Business").is(':checked')) {
             _gaq.push(['_trackEvent', "track_path", "business", '', value]);
         }
-
     };
 
     // tracks an event based on the state of an optional radio box. This will work for the yes/no radio boxes.
