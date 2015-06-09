@@ -50,10 +50,10 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
 
     var trackPrivateBusiness = function() {
         if ($("#vehicleSoldTo_Private").is(':checked')) {
-            _gaq.push(['_trackEvent', "track_path", "individual", '', value]);
+            _gaq.push(['_trackEvent', "track_path", "individual"]);
         }
         if ($("#vehicleSoldTo_Business").is(':checked')) {
-            _gaq.push(['_trackEvent', "track_path", "business", '', value]);
+            _gaq.push(['_trackEvent', "track_path", "business"]);
         }
     };
 
