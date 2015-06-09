@@ -21,8 +21,6 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
                 _gaq.push(['_trackEvent', 'taxsorn', 'sorn']);
             }
 
-            debugger;
-
             //ACQ-002: tracking the optional email fields on the trader details page
             trackingOptionalRadioField("#traderEmailOption", "trader_email");
 
