@@ -1,3 +1,22 @@
+======= 1.11 =======
+Time of release binary creation
+Wed Jun 10 14:30:06 UTC 2015
+
+DE535   Refused to execute script from 'https://qa-vm.dev-dvla.co.uk/assets/javascripts/autofill-todays-date.js'
+DE538   On Before-you-start page, Alert is missing.
+DE544   Google Analytics error "Uncaught ReferenceError: _gaq is not defined".
+DE522   need to use the email whitelist when sending emails
+DE497   (IE8) - Selecting address from drop down menu
+DE361   1st line of Address with under 3 Alph Characters on the manual address screen
+US3213  Take out auto skip
+US3194  Remove the SORN content and Check box
+US3192  Remove Tax or SORN box in right hand column
+US3189  Create Google Analytics Events
+US3242  Service heading
+US3243  Auto-focus
+US3244  Heading hierarchy
+US3245  Pseudo buttons
+
 ======= 1.10 =======
 Time of release binary creation
 Wed Jun 03 13:08:07 UTC 2015
