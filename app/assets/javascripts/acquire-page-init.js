@@ -4,7 +4,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
     var addGaEventToTaxLink = function() {
         //Tracking events for Tax/SORN interactions
         if ($('#tax_details a').length) {
-            var taxLiank = $('#tax_details a');
+            var taxLink = $('#tax_details a');
             taxLink.on('click', function() {
                 _gaq.push(['_setCustomVar', 1, 'taxsorn', 'tax_through', 3]);
                 _gaq.push(['_trackEvent', 'taxsorn', 'tax_through']);
