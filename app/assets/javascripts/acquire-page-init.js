@@ -17,7 +17,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         if ($('#todays_date').length) {
             var todayDate = $('#todays_date');
             todayDate.on('click', function() {
-                _gaq.push(['_trackEvent',  "today date", 'click',  1]);
+                _gaq.push(['_trackEvent',  'ct_link', 'today_date', 'click',  1]);
             });
         }
     };
@@ -28,7 +28,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             var v5cHint = $('.hint-image-wrap p');
             v5cHint.on('click', function() {
                 var currentEvent = $('.hint-image-wrap p').attr('data-tracking');
-                _gaq.push(['_trackEvent',  currentEvent, 'click',  1]);
+                _gaq.push(['_trackEvent', 'ct_link',  currentEvent, 'click',  1]);
             });
         }
     };
@@ -39,7 +39,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             var buyAnother = $('.success-buy-another-btn');
             buyAnother.on('click', function() {
                 var currentEvent = $('.success-buy-another-btn').attr('data-tracking');
-                _gaq.push(['_trackEvent',  currentEvent, 'click',  1]);
+                _gaq.push(['_trackEvent', 'ct_link',  currentEvent, 'buy_another',  1]);
             });
         }
     };
@@ -49,7 +49,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         if ($('.print-button').length) {
             var printBtn = $('.print-button');
             printBtn.on('click', function() {
-                _gaq.push(['_trackEvent',  'Print', 'click',  1]);
+                _gaq.push(['_trackEvent', 'ct_link',  'summary_action', 'print',  1]);
             });
         }
     };
@@ -60,7 +60,7 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             var finishBtn = $('.success-finish-btn');
             finishBtn.on('click', function() {
                 var currentEvent = $('.success-finish-btn').attr('data-tracking');
-                _gaq.push(['_trackEvent',  currentEvent, 'click',  1]);
+                _gaq.push(['_trackEvent', 'ct_link',  currentEvent, 'finish',  1]);
             });
         }
     };
