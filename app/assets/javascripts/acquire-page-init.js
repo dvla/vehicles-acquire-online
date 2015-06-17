@@ -12,6 +12,60 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
         }
     };
 
+    var addGaEventToTodayDate = function() {
+        //Tracking event for Today's date functionality
+        if ($('#todays_date').length) {
+            var todayDate = $('#todays_date');
+            todayDate.on('click', function() {
+                _gaq.push(['_trackEvent',  "today date", 'click',  1]);
+            });
+        }
+    };
+
+    var addGaEventToV5Chint = function() {
+        //Tracking event for click on V5C image tooltip
+        if ($('.hint-image-wrap p').length) {
+            var v5cHint = $('.hint-image-wrap p');
+            v5cHint.on('click', function() {
+                var currentEvent = $('.hint-image-wrap p').attr('data-tracking');
+                _gaq.push(['_trackEvent',  currentEvent, 'click',  1]);
+            });
+        }
+    };
+
+    var addGaEventToBuyAnother = function() {
+        //Tracking event for click on "Buy another Vehicle"
+        if ($('.success-buy-another-btn').length) {
+            var buyAnother = $('.success-buy-another-btn');
+            buyAnother.on('click', function() {
+                var currentEvent = $('.success-buy-another-btn').attr('data-tracking');
+                _gaq.push(['_trackEvent',  currentEvent, 'click',  1]);
+            });
+        }
+    };
+
+    var addGaEventToPrint = function() {
+        //Tracking event for click on "Finish" button
+        if ($('.print-button').length) {
+            var printBtn = $('.print-button');
+            printBtn.on('click', function() {
+                _gaq.push(['_trackEvent',  'Print', 'click',  1]);
+            });
+        }
+    };
+
+    var addGaEventToFinish = function() {
+        //Tracking event for click on "Finish" button
+        if ($('.success-finish-btn').length) {
+            var finishBtn = $('.success-finish-btn');
+            finishBtn.on('click', function() {
+                var currentEvent = $('.success-finish-btn').attr('data-tracking');
+                _gaq.push(['_trackEvent',  currentEvent, 'click',  1]);
+            });
+        }
+    };
+
+
     var enableSendingGaEventsOnSubmit = function() {
         $('button[type="submit"]').on('click', function(e) {
             //Tracking events for SORN checkbox submit
@@ -109,8 +163,12 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             pageInit.hideEmailOnOther('#tax', '#tax_details');
             pageInit.hideEmailOnOther('#sorn', '#sorn_details');
             pageInit.hideEmailOnOther('#neither', '#neither_details');
-
             addGaEventToTaxLink();
+            addGaEventToTodayDate();
+            addGaEventToV5Chint();
+            addGaEventToBuyAnother();
+            addGaEventToFinish();
+            addGaEventToPrint();
 
             // SORN form reset
             $('.sorn-tax-radio-wrapper label input').on('click', function() {
