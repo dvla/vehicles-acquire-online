@@ -1,3 +1,14 @@
+======= 1.12 =======
+Time of release binary creation
+Wed Jun 24 10:25:57 UTC 2015
+
+US3240	Remove copy from User Feedback page
+DE545	New keeper (Business route) alpha character(s) required
+US3364	Outstanding GA Events
+DE559	Blank page gets displayed on Success Page
+DE560	Acquire & Dispose] - Two submit button on Summary Page resulting duplication.
+DE564	Failed email message blocks email queue
+
 ======= 1.11 =======
 Time of release binary creation
 Wed Jun 10 14:30:06 UTC 2015
