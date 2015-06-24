@@ -255,7 +255,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
     webService.invoke(disposeRequest, trackingId).map {
       case (httpResponseCode, response) =>
-        Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView, trackingId)))
+        Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView,
+          response.map(_.transactionId).getOrElse(""), transactionTimestamp, trackingId)))
           .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
           .map(_.withCookie(completeAndConfirmForm))
           .get
@@ -268,13 +269,17 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(vehicleDetails: VehicleAndKeeperDetailsModel,
                                                                             keeperDetails: NewKeeperDetailsViewModel,
+                                                                            transactionId: String,
+                                                                            transactionTimestamp: DateTime,
                                                                             trackingId: String)
                                                                             (implicit request: Request[_]) = {
     response.foreach(r => logResponse(r))
 
     response match {
-      case Some(r) if r.responseCode.isDefined => successReturn(vehicleDetails, keeperDetails, trackingId)
-      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, trackingId)
+      case Some(r) if r.responseCode.isDefined => successReturn(vehicleDetails, keeperDetails, transactionId,
+        transactionTimestamp, trackingId)
+      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, transactionId,
+        transactionTimestamp, trackingId)
     }
 
   }
@@ -347,10 +352,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
                                             keeperDetails: NewKeeperDetailsViewModel,
+                                            transactionId: String,
+                                            transactionTimestamp: DateTime,
                                             trackingId: String)
                           (implicit request: Request[_]): Call =
     statusCode match {
-      case OK => successReturn(vehicleDetails, keeperDetails, trackingId)
+      case OK => successReturn(vehicleDetails, keeperDetails, transactionId,
+        transactionTimestamp, trackingId)
       case _ => {
         Logger.warn(s"Acquire micro-service call failed. ${statusCode} - " +
           s"trackingId: ${request.cookies.trackingId()}")
@@ -360,9 +368,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
                             keeperDetails: NewKeeperDetailsViewModel,
+                            transactionId: String,
+                            transactionTimestamp: DateTime,
                             trackingId: String)
                            (implicit request: Request[_]): Call = {
-    createAndSendEmail(vehicleDetails, keeperDetails, trackingId)
+    createAndSendEmail(vehicleDetails, keeperDetails, transactionId,
+      transactionTimestamp, trackingId)
     Logger.debug(logMessage(s"Redirecting to ${routes.AcquireSuccess.present()}",request.cookies.trackingId()))
     routes.AcquireSuccess.present()
   }
@@ -435,6 +446,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
    */
   def createAndSendEmail(vehicleDetails: VehicleAndKeeperDetailsModel,
                          keeperDetails: NewKeeperDetailsViewModel,
+                         transactionId: String,
+                         transactionTimestamp: DateTime,
                          trackingId: String)(implicit request: Request[_]) =
     keeperDetails.email match {
       case Some(emailAddr) =>
@@ -445,12 +458,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         implicit val emailConfiguration = config.emailConfiguration
         implicit val implicitEmailService = implicitly[EmailService](emailService)
 
-        val template = EmailMessageBuilder.buildWith()
+        val template = EmailMessageBuilder.buildWith(vehicleDetails, transactionId, transactionTimestamp)
 
         Logger.info(s"Email sent - trackingId: ${request.cookies.trackingId()}")
 
         // This sends the email.
-        SEND email template withSubject vehicleDetails.registrationNumber to emailAddr send trackingId
+        SEND email template withSubject s"${vehicleDetails.registrationNumber} Confirmation of new vehicle keeper" to emailAddr send trackingId
 
       case None => Logger.warn(s"tried to send an email with no keeper details - " +
         s"trackingId: ${request.cookies.trackingId()}")
