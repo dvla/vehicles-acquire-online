@@ -148,7 +148,7 @@ language.en.button = YAGNI
 mandatory = Fields not labelled (optional) are mandatory
 
 #page 1 - Before You Start
-acquire_beforeyoustart.title = Buy a vehicle from the motor trade
+acquire_beforeyoustart.title = Selling a vehicle out of trade
 acquire_beforeyoustart.p0 = If a vehicle has been sold from the motor trader, the motor trader selling the vehicle can now tell DVLA online.
 acquire_beforeyoustart.p1 = This service must only be used by a member of the motor trade acting on behalf of a buyer.
 acquire_beforeyoustart.p2 = Before you start:
@@ -296,7 +296,7 @@ acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
 acquire_keeperstillonrecord.text2 = You can notify us of the vehicle''s sale to the motor trade.
 acquire_keeperstillonrecord.text3 = Before you do this, ensure you have the consent of the keeper we currently have on record.
-acquire_keeperstillonrecord.button1 = Buy another vehicle
+acquire_keeperstillonrecord.button1 = Notify Another Sale
 acquire_keeperstillonrecord.button2 = Finish
 acquire_keeperstillonrecord.vehicledetails = Vehicle details
 acquire_keeperstillonrecord.vehiclereg = Registration
@@ -307,7 +307,7 @@ acquire_keeperstillonrecord.vehiclemodel = Model
 error_suppressedV5C.title = Vehicle is part of a suppressed fleet
 error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
 error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a vehicle registration certificate (V5C) from the DVLA. This can be done using View Vehicle Record.
-error_suppressedV5C.button1 = Buy another vehicle
+error_suppressedV5C.button1 = Notify Another Sale
 error_suppressedV5C.button2 = Finish
 
 #private keeper details
@@ -504,14 +504,14 @@ acquire_success.further_information.p1 = Within 5 working days we will send a ne
 acquire_success.further_information.p2 = If they do not receive a new V5C in 2 weeks they must contact DVLA Customer Enquiries.
 acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the vehicle registration certificate (V5C)
 acquire_success.buttonnavprint = Print
-acquire_success.buyAnother = Buy another vehicle
+acquire_success.buyAnother = Notify Another Sale
 acquire_success.finish = Finish
 
 #page 7 - acquire failure
-acquire_acquirefailure.title = Buy a vehicle from the motor trade: failure
+acquire_acquirefailure.title = Selling a vehicle out of trade: failure
 acquire_acquirefailure.name = Failure
 acquire_acquirefailure.p1 = It has not been possible to complete your transaction. Please call 0300 790 6802
-acquire_acquirefailure.button = Buy another vehicle
+acquire_acquirefailure.button = Notify Another Sale
 acquire_acquirefailure.button2 = Finish
 acquire_acquirefailure.button3 = Print
 acquire_acquirefailure.transactiontext = Your transaction ID is:
@@ -520,7 +520,7 @@ acquire_failure.transaction_details.header = Transaction details
 acquire_failure.transaction_details.transaction_id = Transaction ID
 acquire_failure.transaction_details.transaction_date = Transaction date
 acquire_failure.buttonnavprint = Print
-acquire_failure.buyAnother = Buy another vehicle
+acquire_failure.buyAnother = Notify Another Sale
 acquire_failure.finish = Finish
 
 #micro-service error page
@@ -531,11 +531,11 @@ micro_service_error.exit.button=Exit
 
 #vrm locked
 vrm_locked.title=Registration number is locked
-vrm_locked.text1= There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Buy another vehicle" below.
+vrm_locked.text1= There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Notify Another Sale" below.
 vrm_locked.text2=Locked at
 vrm_locked.text3.1= If you are sure that the details entered are correct then please send your completed V5C to
 vrm_locked.text3.2=DVLA, Swansea SA99 1BA
-vrm_locked.buyanother.button=Buy another vehicle
+vrm_locked.buyanother.button= Notify Another Sale
 vrm_locked.exit.button=Exit
 
 # Date labels

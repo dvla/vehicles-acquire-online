@@ -39,7 +39,7 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
     VehicleLookupPage.documentReferenceNumber enter "88888888881"
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
-    page.source should include ("Buy another vehicle") withClue trackingId
+    page.source should include ("Notify Another Sale") withClue trackingId
     page.source should include ("Finish") withClue trackingId
   }
 
