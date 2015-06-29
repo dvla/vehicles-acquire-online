@@ -53,6 +53,7 @@
                             )
                          )
 
+                        <div class="hint-margin">
                         @valtechInputText(viewModel.form(DocumentReferenceNumberId), args =
                             Map('_label -> Messages("acquire_vehiclelookup.refnumlabel"),
                                 '_showConstraints -> false,
@@ -62,7 +63,7 @@
                                 'title -> Messages("")) ++ // [SKW] for accessibility Tony removed have 'title text as the screen reader reads it twice, the knock-on effect is that our custom validation messages aren't displayed so the user has no idea what is wrong.
                                 (if(config.isHtml5ValidationEnabled) Map('pattern -> DocumentReferenceNumber.Pattern) else Nil)
                         )
-
+                        </div>
                         <div class="hint-image-wrap img-wrap img-wrap-desktop">
                             <p data-tracking="v5c_image">@Messages("acquire_vehiclelookup.img.hint")</p>
                             <div class="panel-indent-wrapper">
