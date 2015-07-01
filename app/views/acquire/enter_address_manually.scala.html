@@ -16,7 +16,9 @@
     title = Messages("acquire_enteraddressmanually.title"),
     currentForm = Some(enterAddressManuallyForm)
 ) {
-
+    <a class="back" id="@BackId" href="@controllers.routes.BusinessChooseYourAddress.submit()">
+    @Messages("acquire_enteraddressmanually.backbutton")
+    </a>
     <h1>@Messages("acquire_enteraddressmanually.title")</h1>
 
     <div class="enter-address-manually uppercase-input sr-only-labels">
@@ -31,10 +33,7 @@
                 <button id="@NextId" type="submit" name="action" class="button ga-manual-address-submit">
                     @Messages("acquire_enteraddressmanually.submitbutton")
                 </button>
-                <br/>
-                <a class="back" id="@BackId" href="@controllers.routes.BusinessChooseYourAddress.submit()">
-                    @Messages("acquire_enteraddressmanually.backbutton")
-                </a>
+
             </div>
         }
     </div>
