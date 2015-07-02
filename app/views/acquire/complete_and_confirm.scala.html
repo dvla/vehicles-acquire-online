@@ -20,7 +20,11 @@
     title = Messages("acquire_completeAndConfirm.title"),
     currentForm = Some(data.form)
 ) {
-
+    <a class="back" id="@BackId"
+        @if(data.isSaleDateBeforeDisposalDate) {tabindex="-1"}
+    href="@controllers.routes.VehicleTaxOrSorn.present()">
+    @Messages("acquire_completeAndConfirm.backbutton")
+    </a>
     <h1>@Messages("acquire_completeAndConfirm.title")</h1>
 
     @* TODO: this should be removed as it will be put into the global scope by common *@
@@ -151,12 +155,7 @@
                         class="button">
                         @Messages("acquire_completeAndConfirm.submitbutton")
                     </button>
-                    <br/>
-                    <a class="back" id="@BackId"
-                        @if(data.isSaleDateBeforeDisposalDate) {tabindex="-1"}
-                        href="@controllers.routes.VehicleTaxOrSorn.present()">
-                        @Messages("acquire_completeAndConfirm.backbutton")
-                    </a>
+
                 </div>
         </div>
     </div>

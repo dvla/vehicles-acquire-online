@@ -32,7 +32,9 @@
     title = Messages("acquire_privatekeeperdetails.title"),
     currentForm = Some(privateKeeperDetailsForm)
 ) {
-
+    <a class="back" id="@BackId" href="@controllers.routes.VehicleLookup.present()">
+    @Messages("acquire_privatekeeperdetails.backbutton")
+    </a>
    <h1>@Messages("acquire_privatekeeperdetails.title")</h1>
 
     @form(action = PrivateKeeperDetails.submit) {
@@ -116,9 +118,7 @@
                         @Messages("acquire_privatekeeperdetails.submitbutton")
                     </button>
                     <br/>
-                    <a class="back" id="@BackId" href="@controllers.routes.VehicleLookup.present()">
-                        @Messages("acquire_privatekeeperdetails.backbutton")
-                    </a>
+
                 </div>
             </div>
         </div>

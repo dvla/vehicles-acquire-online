@@ -66,7 +66,14 @@
       }
     }
 
-
+    .hint-margin {
+      .form-item {
+         margin-bottom: 10px;
+      }
+      .panel-indent {
+        margin-top: 0;
+      }
+    }
 } // end $htmlNamespace
 
 .page-title {

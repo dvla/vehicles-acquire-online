@@ -25,7 +25,9 @@
     title = Messages("acquire_businesskeeperdetails.title"),
     currentForm = Some(viewModel.form)
 ) {
-
+    <a class="back" id="@BackId" href="@controllers.routes.VehicleLookup.present()">
+    @Messages("acquire_businesskeeperdetails.backbutton")
+    </a>
     <h1>@Messages("acquire_businesskeeperdetails.title")</h1>
 
     <div class="two-col clearfix">
@@ -99,10 +101,6 @@
                     <button id="@NextId" type="submit" name="action" class="button">
                         @Messages("acquire_businesskeeperdetails.nextbutton")
                     </button>
-                    <br/>
-                    <a class="back" id="@BackId" href="@controllers.routes.VehicleLookup.present()">
-                        @Messages("acquire_businesskeeperdetails.backbutton")
-                    </a>
                 }
             </div>
         </div>

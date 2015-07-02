@@ -7,7 +7,7 @@ import Headers.{headers_accept_html, headers_accept_png, headers_x_www_form_urle
 
 class Chains(data: RecordSeqFeederBuilder[String]) {
 
-  private final val BeforeYouStartPageTitle = "Buy a vehicle from the motor trade"
+  private final val BeforeYouStartPageTitle = "Selling a vehicle out of trade"
   private final val SetupTradeDetailsPageTitle = "Provide trader details"
   private final val BusinessChooseYourAddressPageTitle = "Select trader address"
   private final val TraderPlayBackHeading = "Vehicle being sold from"

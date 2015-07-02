@@ -21,7 +21,9 @@
     title = Messages("acquire_businessChooseYourAddress_title"),
     currentForm = Some(businessChooseYourAddressForm)
 ) {
-
+    <a class="back" id="@BackId" href="@controllers.routes.SetUpTradeDetails.present()">
+    @Messages("acquire_businessChooseYourAddress.backbutton")
+    </a>
     <h1>@Messages("acquire_businessChooseYourAddress_title")</h1>
 
     @form(action = BusinessChooseYourAddress.submit()) {
@@ -70,10 +72,6 @@
                     @Messages("acquire_businessChooseYourAddress.submitbutton")
                 </button>
             }
-            <br/>
-            <a class="back" id="@BackId" href="@controllers.routes.SetUpTradeDetails.present()">
-                @Messages("acquire_businessChooseYourAddress.backbutton")
-            </a>
         </div>
     }
 }
