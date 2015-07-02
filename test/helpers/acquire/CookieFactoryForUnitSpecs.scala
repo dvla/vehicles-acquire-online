@@ -12,6 +12,7 @@ import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.HelpCacheKey
 import models.SeenCookieMessageCacheKey
+import models.SurveyRequestTriggerDateCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
 import models.VehicleTaxOrSornFormModel
@@ -318,7 +319,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
       address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
       email = email,
       isBusinessKeeper = isBusinessKeeper,
-      displayName = if (businessName == None) firstName + " " + lastName
+      displayName = if (businessName.isEmpty) firstName + " " + lastName
                     else businessName.getOrElse("")
     )
     createCookie(key, value)
@@ -348,4 +349,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
 
   def allowGoingToCompleteAndConfirm(): Cookie =
     createCookie(CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey, "")
+
+  def surveyUrl(surveyUrl: String): Cookie =
+    createCookie(SurveyRequestTriggerDateCacheKey, surveyUrl)
 }

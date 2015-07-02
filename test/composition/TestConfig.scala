@@ -52,4 +52,8 @@ class TestConfig extends Config {
   )
 
   override def assetsUrl: Option[String] = None
+
+  // Survey URL
+  override def surveyUrl: Option[String] = None
+  override def surveyInterval: Long = 1000000000000L
 }

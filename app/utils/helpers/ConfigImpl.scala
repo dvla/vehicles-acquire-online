@@ -2,6 +2,7 @@ package utils.helpers
 
 import uk.gov.dvla.vehicles.presentation.common
 import common.ConfigProperties.booleanProp
+import common.ConfigProperties.getDurationProperty
 import common.ConfigProperties.getOptionalProperty
 import common.ConfigProperties.getProperty
 import common.ConfigProperties.getStringListProperty
@@ -58,4 +59,7 @@ class ConfigImpl extends Config {
   )
 
   override def assetsUrl: Option[String] = getOptionalProperty[String]("assets.url")
+
+  override val surveyUrl: Option[String] = getOptionalProperty[String]("survey.url")
+  override val surveyInterval: Long = getDurationProperty("survey.interval")
 }

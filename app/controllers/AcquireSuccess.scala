@@ -6,6 +6,7 @@ import models.AcquireCompletionViewModel
 import models.AllCacheKeys
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel
+import models.SurveyRequestTriggerDateCacheKey
 import models.VehicleNewKeeperCompletionCacheKeys
 import models.VehicleTaxOrSornFormModel
 import play.api.Logger
@@ -16,10 +17,13 @@ import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.LogFormats.logMessage
 import common.model.{TraderDetailsModel, VehicleAndKeeperDetailsModel}
 import common.model.NewKeeperDetailsViewModel
+import common.services.DateService
 import utils.helpers.Config
 
 class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                       config: Config) extends Controller {
+                                  config: Config,
+                                  surveyUrl: SurveyUrl,
+                                  dateService: DateService) extends Controller {
 
   private final val MissingCookiesAcquireSuccess = "Missing cookies in cache. Acquire was successful, however cannot " +
     "display success page. Redirecting to BeforeYouStart"
@@ -36,8 +40,17 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       ) match {
       case (Some(vehicleAndKeeperDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
         Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
-        Ok(views.html.acquire.acquire_success(AcquireCompletionViewModel(vehicleAndKeeperDetailsModel,
-          traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
+        Ok(views.html.acquire.acquire_success(
+          AcquireCompletionViewModel(
+            vehicleAndKeeperDetailsModel,
+            traderDetailsModel,
+            newKeeperDetailsModel,
+            completeAndConfirmModel,
+            taxOrSornModel,
+            responseModel
+          ),
+          surveyUrl(request)
+        ))
       case _ => redirectToStart(MissingCookiesAcquireSuccess)
     }
   }
@@ -53,11 +66,32 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   def finish = Action { implicit request =>
     Redirect(routes.BeforeYouStart.present())
       .discardingCookies(AllCacheKeys)
+      .withCookie(SurveyRequestTriggerDateCacheKey, dateService.now.getMillis.toString)
   }
 
   private def redirectToStart(message: String)
                              (implicit request: Request[_]) = {
     Logger.warn(logMessage(message, request.cookies.trackingId()))
     Redirect(routes.BeforeYouStart.present())
+  }
+}
+
+class SurveyUrl @Inject()(implicit clientSideSessionFactory: ClientSideSessionFactory,
+                          config: Config,
+                          dateService: DateService) {
+
+  def apply(request: Request[_]): Option[String] = {
+    val url = config.surveyUrl
+    request.cookies.getString(SurveyRequestTriggerDateCacheKey) match {
+      case Some(lastSurveyMillis) =>
+        if ((lastSurveyMillis.toLong + config.surveyInterval) < dateService.now.getMillis) {
+          Logger.debug(logMessage(s"Redirecting to survey $url", request.cookies.trackingId()))
+          url
+        }
+        else None
+      case None =>
+        Logger.debug(logMessage(s"Redirecting to survey $url", request.cookies.trackingId()))
+        url
+    }
   }
 }

@@ -1,4 +1,4 @@
-@(viewModel: models.AcquireCompletionViewModel)(implicit lang: Lang,
+@(viewModel: models.AcquireCompletionViewModel, surveyUrl: Option[String])(implicit lang: Lang,
     token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
     config: utils.helpers.Config)
 
@@ -53,23 +53,28 @@
             </dl>
         </div>
 
-
-
-
         <div class="alert-warning">
             <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
         </div>
 
         <div class="form-steps">
             <div class="step">
-                <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">
+                <button id="printDisposalSuccess"
+                    type="button"
+                    name="action"
+                    value="printDisposalSuccess"
+                    class="button js-only print-button">
                     @Messages("acquire_success.buttonnavprint")
                 </button>
             </div>
             <div class="step">
                 @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
                     @csrfTokenHiddenField()
-                    <button id="@BuyAnotherId" type="submit" name="action" data-tracking="summary_action" class="button button-new-disposal button-secondary success-buy-another-btn">
+                    <button id="@BuyAnotherId"
+                        type="submit"
+                        name="action"
+                        data-tracking="summary_action"
+                        class="button button-new-disposal button-secondary success-buy-another-btn">
                         @Messages("acquire_success.buyAnother")
                     </button>
                 }
@@ -77,17 +82,33 @@
             <div class="step">
                 @form(action = controllers.routes.AcquireSuccess.finish()) {
                     @csrfTokenHiddenField()
-                    <button id="@FinishId" type="submit" name="action" data-tracking="summary_action" class="button button-new-disposal button-secondary success-finish-btn">
-                        @Messages("acquire_success.finish")
-                    </button>
+                    @surveyUrl match {
+                        case Some(url) => {
+                            <button id="@FinishId"
+                                type="submit"
+                                name="action"
+                                onclick="window.open('@url', '_blank');"
+                                data-tracking="summary_action"
+                                class="button button-new-disposal button-secondary success-finish-btn">
+                                @Messages("acquire_success.finish")
+                            </button>
+                        }
+                        case None => {
+                            <button id="@FinishId"
+                                type="submit"
+                                name="action"
+                                data-tracking="summary_action"
+                                class="button button-new-disposal button-secondary success-finish-btn">
+                                @Messages("acquire_success.finish")
+                            </button>
+                        }
+                    }
                 }
             </div>
         </div>
-
     </div>
 
     <div class="first-col">
-
         <dl class="playback transaction-details desktop-only">
             <h2>@Messages("acquire_success.transaction_details.header")</h2>
             <dt>@Messages("acquire_success.transaction_details.transaction_id")</dt>
@@ -126,7 +147,9 @@
                     <dd class="tax-or-sorn uppercase-text">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
                     } else {
                     <dd class="tax-or-sorn uppercase-text">
-                        @Messages("acquire_success.vehicle_details.sornEntered", viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+                        @Messages("acquire_success.vehicle_details.sornEntered",
+                            viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")
+                        )
                     </dd>
                     <dd class="word-wrap-only tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
                     }
@@ -134,7 +157,9 @@
                     @if(viewModel.completeAndConfirmDetails.mileage == None) {
                     <dd class="uppercase-text">@Messages("acquire_success.vehicle_details.mileage_not_entered")</dd>
                     } else {
-                    <dd class="uppercase-text">@{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}</dd>
+                    <dd class="uppercase-text">
+                        @{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}
+                    </dd>
                     }
                 </dl>
             </div>
@@ -148,11 +173,12 @@
                     <dt>@Messages("acquire_success.vehicle_details.address")</dt>
                     <dd class="uppercase-text">@for(addr <- viewModel.newKeeperDetails.address.address) {@addr<br/>}</dd>
                     <dt>@Messages("acquire_success.vehicle_details.email")</dt>
-                    <dd class="uppercase-text">@viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))</dd>
+                    <dd class="uppercase-text">
+                        @viewModel.newKeeperDetails.email.getOrElse(Messages("acquire_email_not_entered"))
+                    </dd>
                 </dl>
             </div>
         </div>
     </div>
-
 </div>
 }
