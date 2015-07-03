@@ -175,7 +175,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       val presentFake = acquireSuccess.present(requestFullyPopulated)
       contentAsString(presentFake) should not include "survey"
     }
-}
+  }
 
   "buyAnother" should {
     "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
@@ -201,7 +201,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
         verifyCookieHasBeenDiscarded(CompleteAndConfirmCacheKey, cookies)
         verifyCookieHasBeenDiscarded(AcquireCompletionResponseCacheKey, cookies)
 
-          cookies.find(_.name == traderDetailsCacheKey) should be(None)
+        cookies.find(_.name == traderDetailsCacheKey) should be(None)
       }
     }
 
@@ -252,12 +252,12 @@ class AcquireSuccessUnitSpec extends UnitSpec {
 
     "redirect to the before you start page" in new WithApplication {
       val request = FakeRequest()
-        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
         .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = acquireSuccess.finish(request)
       whenReady(result) { r =>
@@ -270,7 +270,8 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     injector.getInstance(classOf[AcquireSuccess])
   }
 
-  private val requestFullyPopulated = FakeRequest()
+  // Must be lazy otherwise java.lang.RuntimeException: There is no started application is thrown
+  private lazy val requestFullyPopulated = FakeRequest()
     .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
     .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
     .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
@@ -278,6 +279,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
     .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
     .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
 
+  // Must be lazy otherwise java.lang.RuntimeException: There is no started application is thrown
   private lazy val present = {
     acquireSuccess.present(requestFullyPopulated)
   }
