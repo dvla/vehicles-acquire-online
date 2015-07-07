@@ -458,7 +458,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         implicit val emailConfiguration = config.emailConfiguration
         implicit val implicitEmailService = implicitly[EmailService](emailService)
 
-        val template = EmailMessageBuilder.buildWith(vehicleDetails, transactionId, transactionTimestamp)
+        val template = EmailMessageBuilder.buildWith(vehicleDetails, transactionId,
+          config.imagesPath, transactionTimestamp)
 
         Logger.info(s"Email sent - trackingId: ${request.cookies.trackingId()}")
 

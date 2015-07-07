@@ -35,6 +35,8 @@ trait Config extends VehicleLookupConfig {
 
   def emailConfiguration: EmailConfiguration
 
+  def imagesPath: String
+
   // Survey URL
   def surveyUrl: Option[String]
   def surveyInterval: Long

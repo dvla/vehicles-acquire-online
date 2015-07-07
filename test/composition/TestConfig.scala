@@ -51,6 +51,8 @@ class TestConfig extends Config {
     None
   )
 
+  def imagesPath: String = ""
+
   override def assetsUrl: Option[String] = None
 
   // Survey URL
