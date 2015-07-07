@@ -20,11 +20,10 @@
 @main(
     progress = Some(Messages("acquire_progress_6")),
     title = Messages("acquire_newKeeperChooseYourAddress_title"),
-    currentForm = Some(viewModel.form)
+    currentForm = Some(viewModel.form),
+    backButton = Some(controllers.routes.NewKeeperChooseYourAddress.back())
 ) {
-    <a class="back" id="@BackId" href="@controllers.routes.NewKeeperChooseYourAddress.back()">
-    @Messages("acquire_newKeeperChooseYourAddress.backbutton")
-    </a>
+
 <h1>@Messages("acquire_newKeeperChooseYourAddress_title")</h1>
 
 <div class="two-col clearfix">

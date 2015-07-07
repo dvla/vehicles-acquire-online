@@ -30,11 +30,9 @@
 @main(
     progress = Some(Messages("acquire_progress_5")),
     title = Messages("acquire_privatekeeperdetails.title"),
-    currentForm = Some(privateKeeperDetailsForm)
+    currentForm = Some(privateKeeperDetailsForm),
+    backButton = Some(controllers.routes.VehicleLookup.present())
 ) {
-    <a class="back" id="@BackId" href="@controllers.routes.VehicleLookup.present()">
-    @Messages("acquire_privatekeeperdetails.backbutton")
-    </a>
    <h1>@Messages("acquire_privatekeeperdetails.title")</h1>
 
     @form(action = PrivateKeeperDetails.submit) {

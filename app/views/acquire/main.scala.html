@@ -1,6 +1,8 @@
 @(progress: Option[String] = None,
 title: String,
-currentForm: Option[Form[_]] = None,  showBanner: Boolean = true)(content: Html)(implicit lang: Lang,
+currentForm: Option[Form[_]] = None,
+        showBanner: Boolean = true,
+        backButton: Option[Call] = None)(content: Html)(implicit lang: Lang,
 config: utils.helpers.Config)
 
 @import views.html.common.{progressBar, protoType}
@@ -16,6 +18,12 @@ config: utils.helpers.Config)
 
     <div class="section-content">
         @progressBar(progress)
+
+        @backButton.map { back =>
+            <a class="back" id="back" href="@back">
+            @Messages("acquire.backbutton")
+            </a>
+        }
 
         @errorsSummary(currentForm)
 

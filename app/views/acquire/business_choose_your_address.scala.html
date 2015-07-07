@@ -19,11 +19,9 @@
 @main(
     progress = Some(Messages("acquire_progress_3")),
     title = Messages("acquire_businessChooseYourAddress_title"),
-    currentForm = Some(businessChooseYourAddressForm)
+    currentForm = Some(businessChooseYourAddressForm),
+    backButton = Some(controllers.routes.SetUpTradeDetails.present())
 ) {
-    <a class="back" id="@BackId" href="@controllers.routes.SetUpTradeDetails.present()">
-    @Messages("acquire_businessChooseYourAddress.backbutton")
-    </a>
     <h1>@Messages("acquire_businessChooseYourAddress_title")</h1>
 
     @form(action = BusinessChooseYourAddress.submit()) {

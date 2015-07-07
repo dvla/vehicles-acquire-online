@@ -134,6 +134,7 @@ acquire_progress_9 = Step 9 of 9
 #disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
 #disposal.help.exit_button = Exit
 #disposal.help.back_button = Back
+acquire.backbutton = Back
 
 # 404 onHandlerNotFound
 onHandlerNotFound.title=This page cannot be found

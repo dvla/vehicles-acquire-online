@@ -23,11 +23,10 @@
 @main(
     progress = Some(Messages("acquire_progress_5")),
     title = Messages("acquire_businesskeeperdetails.title"),
-    currentForm = Some(viewModel.form)
+    currentForm = Some(viewModel.form),
+    backButton = Some(controllers.routes.VehicleLookup.present())
 ) {
-    <a class="back" id="@BackId" href="@controllers.routes.VehicleLookup.present()">
-    @Messages("acquire_businesskeeperdetails.backbutton")
-    </a>
+
     <h1>@Messages("acquire_businesskeeperdetails.title")</h1>
 
     <div class="two-col clearfix">

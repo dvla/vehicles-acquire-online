@@ -19,11 +19,9 @@
 @main(
     progress = Some(Messages("acquire_progress_7")),
     title = Messages("acquire_vehicleTaxOrSorn_title"),
-    currentForm = Some(viewModel.form)
+    currentForm = Some(viewModel.form),
+    backButton = Some(controllers.routes.VehicleTaxOrSorn.back())
 ) {
-    <a class="back" id="@BackId" href="@controllers.routes.VehicleTaxOrSorn.back()">
-    @Messages("acquire_vehicleTaxOrSorn.backbutton")
-    </a>
 <h1>@Messages("acquire_vehicleTaxOrSorn_title")</h1>
 
 <div class="two-col clearfix" xmlns="http://www.w3.org/1999/html">

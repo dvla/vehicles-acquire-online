@@ -14,11 +14,9 @@
 @main(
     progress = Some(Messages("acquire_progress_3")),
     title = Messages("acquire_enteraddressmanually.title"),
-    currentForm = Some(enterAddressManuallyForm)
+    currentForm = Some(enterAddressManuallyForm),
+    backButton = Some(controllers.routes.BusinessChooseYourAddress.submit())
 ) {
-    <a class="back" id="@BackId" href="@controllers.routes.BusinessChooseYourAddress.submit()">
-    @Messages("acquire_enteraddressmanually.backbutton")
-    </a>
     <h1>@Messages("acquire_enteraddressmanually.title")</h1>
 
     <div class="enter-address-manually uppercase-input sr-only-labels">
