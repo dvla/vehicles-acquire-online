@@ -19,7 +19,7 @@ class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFact
     Ok(views.html.acquire.error(exceptionDigest)).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
   }
 
-  def submit(exceptionDigest: String) = Action.async { implicit request =>
+  def submit(exceptionDigest: String) = Action { implicit request =>
     Logger.error(logMessage("Error submit called - now removing full set of cookies and redirecting to Start page.",
       request.cookies.trackingId(), Seq(exceptionDigest)))
 
