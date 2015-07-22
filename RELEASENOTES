@@ -1,3 +1,24 @@
+======= 1.14 =======
+Time of release binary creation
+Wed Jul 22 10:38:40 UTC 2015
+
+DE584	Date of Birth dropping a day if 1970's
+DE595	Web Validation for New Keeper - Business
+DE611	Space in email domain doesn't display the correct error message
+DE634	Defective cookie results in call back loop
+
+======= 1.13 =======
+Time of release binary creation
+Wed Jul 08 13:34:39 UTC 2015
+
+DE603	DVLA logo is missing at the end of the email
+US3427	Remove CEG number from End Pages
+US3429	Move the Back Control
+US3430	Move Where to find this above V5C Ref No Box
+US3431	Direct to GDS Feedback Pages
+US3433	Rename the Trader Services
+US3442	Date check wording
+
 ======= 1.12 =======
 Time of release binary creation
 Wed Jun 24 10:25:57 UTC 2015
