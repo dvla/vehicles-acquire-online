@@ -241,6 +241,15 @@ acquire_keeperstillonrecord.vehiclereg = Registration
 acquire_keeperstillonrecord.vehiclemake = Make
 acquire_keeperstillonrecord.vehiclemodel = Model
 
+#v5c is suppressed
+error_suppressedV5C.title = Vehicle is part of a suppressed fleet
+error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
+error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a vehicle registration certificate (V5C) from the DVLA. This can be done using the
+error_suppressedV5C.text3 = View Vehicle Record service.
+error_suppressedV5C.link = https://www.gov.uk/dvla-fleet-vehicle-info
+error_suppressedV5C.button1 = Notify Another Sale
+error_suppressedV5C.button2 = Finish
+
 #private keeper details
 acquire_privatekeeperdetails.title = Enter keeper details
 acquire_privatekeeperdetails.vehicledetails = Vehicle details
