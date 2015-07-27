@@ -278,8 +278,11 @@ error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 c
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
-acquire_keeperstillonrecord.text2 = You can notify us of the vehicle''s sale to the motor trade.
-acquire_keeperstillonrecord.text3 = Before you do this, ensure you have the consent of the keeper we currently have on record.
+acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA Customer Services on 0300 790 6802 (please enter code 756 when prompted).
+acquire_keeperstillonrecord.text3 = You can notify us of the vehicle''s sale to the motor trade.
+acquire_keeperstillonrecord.text4 = Bought a vehicle into the trade.
+acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
+acquire_keeperstillonrecord.text5 = Before you do this, ensure you have the consent of the keeper we currently have on record.
 acquire_keeperstillonrecord.button1 = Buy another vehicle
 acquire_keeperstillonrecord.button2 = Finish
 acquire_keeperstillonrecord.vehicledetails = Vehicle details
