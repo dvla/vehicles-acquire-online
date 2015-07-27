@@ -224,6 +224,7 @@ acquire_vehiclelookup.warning.p2 = Retain or transfer personal registrations bef
 acquire_vehiclelookup.img.hint = Where to find this
 acquire_vehiclelookup.img.h2 = Help finding your V5C document reference number?
 acquire_vehiclelookup.img.alt = V5C document reference number
+acquire_vehiclelookup.v5c = Vehicle Registration Certificate (V5C)
 acquire_vehiclelookup.refnumlabel = Latest V5C document reference number
 acquire_vehiclelookup.vrninputlabel = Vehicle registration number
 acquire_vehiclelookup.backbutton = Back
