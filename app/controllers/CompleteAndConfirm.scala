@@ -248,14 +248,14 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
     val transactionTimestamp = dateService.now.toDateTime
 
-    val disposeRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
+    val acquireRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
       newKeeperDetailsView, traderDetails, taxOrSorn, transactionTimestamp, trackingId)
 
-    logRequest(disposeRequest)
+    logRequest(acquireRequest)
 
-    webService.invoke(disposeRequest, trackingId).map {
+    webService.invoke(acquireRequest, trackingId).map {
       case (httpResponseCode, response) =>
-        Some(Redirect(nextPage(httpResponseCode, response)(vehicleAndKeeperDetails, newKeeperDetailsView,
+        Some(Redirect(nextPage(httpResponseCode, response)(acquireRequest, vehicleAndKeeperDetails, newKeeperDetailsView,
           response.map(_.transactionId).getOrElse(""), transactionTimestamp, trackingId)))
           .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
           .map(_.withCookie(completeAndConfirmForm))
@@ -267,21 +267,20 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     }
   }
 
-  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(vehicleDetails: VehicleAndKeeperDetailsModel,
-                                                                            keeperDetails: NewKeeperDetailsViewModel,
-                                                                            transactionId: String,
-                                                                            transactionTimestamp: DateTime,
-                                                                            trackingId: String)
-                                                                            (implicit request: Request[_]) = {
+  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(acquireRequest: AcquireRequestDto,
+                                                                  vehicleDetails: VehicleAndKeeperDetailsModel,
+                                                                  keeperDetails: NewKeeperDetailsViewModel,
+                                                                  transactionId: String,
+                                                                  transactionTimestamp: DateTime,
+                                                                  trackingId: String)(implicit request: Request[_]) = {
     response.foreach(r => logResponse(r))
 
     response match {
-      case Some(r) if r.responseCode.isDefined => successReturn(vehicleDetails, keeperDetails, transactionId,
-        transactionTimestamp, trackingId)
-      case _ => handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, transactionId,
+      case Some(r) if r.responseCode.isDefined => successReturn(r.responseCode.get, acquireRequest, vehicleDetails,
+        keeperDetails, transactionId, transactionTimestamp, trackingId)
+      case _ => handleHttpStatusCode(httpResponseCode)(acquireRequest, vehicleDetails, keeperDetails, transactionId,
         transactionTimestamp, trackingId)
     }
-
   }
 
   def buildMicroServiceRequest(vehicleLookup: VehicleLookupFormModel,
@@ -350,14 +349,15 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     )
   }
 
-  def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
+  def handleHttpStatusCode(statusCode: Int)(acquireRequest: AcquireRequestDto,
+                                            vehicleDetails: VehicleAndKeeperDetailsModel,
                                             keeperDetails: NewKeeperDetailsViewModel,
                                             transactionId: String,
                                             transactionTimestamp: DateTime,
                                             trackingId: String)
                           (implicit request: Request[_]): Call =
     statusCode match {
-      case OK => successReturn(vehicleDetails, keeperDetails, transactionId,
+      case OK => successReturn(statusCode.toString, acquireRequest, vehicleDetails, keeperDetails, transactionId,
         transactionTimestamp, trackingId)
       case _ => {
         Logger.warn(s"Acquire micro-service call failed. ${statusCode} - " +
@@ -366,12 +366,18 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       }
     }
 
-  private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
+  private def successReturn(code: String,
+                            acquireRequest: AcquireRequestDto,
+                            vehicleDetails: VehicleAndKeeperDetailsModel,
                             keeperDetails: NewKeeperDetailsViewModel,
                             transactionId: String,
                             transactionTimestamp: DateTime,
                             trackingId: String)
                            (implicit request: Request[_]): Call = {
+    code match {
+      case "X0001" | "W0075" => logRequestRequiringFurtherAction(code, acquireRequest)
+      case _ =>
+    }
     createAndSendEmail(vehicleDetails, keeperDetails, transactionId,
       transactionTimestamp, trackingId)
     Logger.debug(logMessage(s"Redirecting to ${routes.AcquireSuccess.present()}",request.cookies.trackingId()))
@@ -403,28 +409,28 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
   private def buildEndUser(): VssWebEndUserDto =
     VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
 
-  private def logRequest(disposeRequest: AcquireRequestDto)(implicit request: Request[_]) = {
+  private def logRequest(acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
     Logger.debug(logMessage("Change keeper micro-service request",
       request.cookies.trackingId(),
       Seq(
-        disposeRequest.webHeader.applicationCode,
-        disposeRequest.webHeader.originDateTime.toString(),
-        disposeRequest.webHeader.serviceTypeCode,
-        disposeRequest.webHeader.transactionId,
-        disposeRequest.dateOfTransfer,
-        disposeRequest.fleetNumber.getOrElse(optionNone),
-        disposeRequest.keeperConsent.toString,
-        disposeRequest.mileage.toString,
-        anonymize(disposeRequest.referenceNumber),
-        anonymize(disposeRequest.registrationNumber),
-        disposeRequest.requiresSorn.toString,
-        anonymize(disposeRequest.traderDetails.get.traderOrganisationName)) ++
-        disposeRequest.traderDetails.get.traderAddressLines.map(addr => anonymize(addr)) ++
+        acquireRequest.webHeader.applicationCode,
+        acquireRequest.webHeader.originDateTime.toString(),
+        acquireRequest.webHeader.serviceTypeCode,
+        acquireRequest.webHeader.transactionId,
+        acquireRequest.dateOfTransfer,
+        acquireRequest.fleetNumber.getOrElse(optionNone),
+        acquireRequest.keeperConsent.toString,
+        acquireRequest.mileage.toString,
+        anonymize(acquireRequest.referenceNumber),
+        anonymize(acquireRequest.registrationNumber),
+        acquireRequest.requiresSorn.toString,
+        anonymize(acquireRequest.traderDetails.get.traderOrganisationName)) ++
+        acquireRequest.traderDetails.get.traderAddressLines.map(addr => anonymize(addr)) ++
         Seq(
-          anonymize(disposeRequest.traderDetails.get.traderEmailAddress),
-          anonymize(disposeRequest.traderDetails.get.traderPostCode),
-          anonymize(disposeRequest.traderDetails.get.traderPostTown),
-          disposeRequest.transactionTimestamp
+          anonymize(acquireRequest.traderDetails.get.traderEmailAddress),
+          anonymize(acquireRequest.traderDetails.get.traderPostCode),
+          anonymize(acquireRequest.traderDetails.get.traderPostTown),
+          acquireRequest.transactionTimestamp
         )
       )
     )
@@ -436,6 +442,34 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       Seq(anonymize(disposeResponse.registrationNumber),
       disposeResponse.responseCode.getOrElse(""),
       anonymize(disposeResponse.transactionId)))
+    )
+  }
+
+  private def logRequestRequiringFurtherAction(responseCode: String,
+                                               acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
+    Logger.error(logMessage(responseCode,
+      request.cookies.trackingId(),
+      Seq(
+        acquireRequest.webHeader.applicationCode,
+        acquireRequest.webHeader.originDateTime.toString(),
+        acquireRequest.webHeader.serviceTypeCode,
+        acquireRequest.webHeader.transactionId,
+        acquireRequest.dateOfTransfer,
+        acquireRequest.fleetNumber.getOrElse(optionNone),
+        acquireRequest.keeperConsent.toString,
+        acquireRequest.mileage.toString,
+        anonymize(acquireRequest.referenceNumber),
+        anonymize(acquireRequest.registrationNumber),
+        acquireRequest.requiresSorn.toString,
+        anonymize(acquireRequest.traderDetails.get.traderOrganisationName)) ++
+        acquireRequest.traderDetails.get.traderAddressLines.map(addr => anonymize(addr)) ++
+        Seq(
+          anonymize(acquireRequest.traderDetails.get.traderEmailAddress),
+          anonymize(acquireRequest.traderDetails.get.traderPostCode),
+          anonymize(acquireRequest.traderDetails.get.traderPostTown),
+          acquireRequest.transactionTimestamp
+        )
+      )
     )
   }
 
