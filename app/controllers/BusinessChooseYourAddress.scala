@@ -125,7 +125,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
 
   private def fetchAddresses(model: SetupTradeDetailsFormModel, showBusinessName: Option[Boolean])
                             (implicit session: ClientSideSession, lang: Lang): Future[Seq[(String, String)]] =
-    addressLookupService.fetchAddressesForPostcode(model.traderPostcode, session.trackingId, showBusinessName = showBusinessName)
+    addressLookupService.fetchAddressesForPostcode(model.traderPostcode, session.trackingId.value, showBusinessName = showBusinessName)
 
   private def formWithReplacedErrors(form: Form[BusinessChooseYourAddressFormModel])(implicit request: Request[_]) =
     form.replaceError(AddressSelectId, "error.required",
@@ -134,7 +134,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
 
   private def lookupUprn(model: BusinessChooseYourAddressFormModel, traderName: String, traderEmail: Option[String])
                         (implicit request: Request[_], session: ClientSideSession) = {
-    val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
+    val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId.value)
     lookedUpAddress.map {
       case Some(addressViewModel) =>
         nextPage(model, traderName, addressViewModel, traderEmail)

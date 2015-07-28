@@ -29,7 +29,7 @@ import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSale
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.mappings.TitleType
 import common.model.AddressModel
 import common.model.BruteForcePreventionModel
@@ -68,7 +68,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   final val SeenCookieTrue = "yes"
   final val ConsentTrue = "true"
   final val VehicleLookupFailureResponseCode = "disposal_vehiclelookupfailure"
-  private val session = new ClearTextClientSideSession(TrackingIdValue)
+  private val session = new ClearTextClientSideSession(TrackingId(TrackingIdValue))
 
   private def createCookie[A](key: String, value: A)(implicit tjs: Writes[A]): Cookie = {
     val json = Json.toJson(value).toString()
