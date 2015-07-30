@@ -84,7 +84,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
       val content = contentAsString(vehicleTaxOrSorn.present(request))
-      content should include(s"<dd>$RegistrationNumberValid</dd>")
+      content should include(s"""<dd><span class="reg-number">$RegistrationNumberValid</span></dd>""")
       content should include(s"<dd>$VehicleMakeValid</dd>")
       content should include(s"<dd>$VehicleModelValid</dd>")
     }
