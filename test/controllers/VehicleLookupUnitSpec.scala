@@ -24,7 +24,7 @@ import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout,
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import common.mappings.DocumentReferenceNumber
 import common.services.DateServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
@@ -240,7 +240,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
         verify(bruteForceWebServiceMock, times(1)).callBruteForce(anyString())
-        verify(vehicleLookupMicroServiceMock, times(1)).invoke(any[VehicleAndKeeperLookupRequest], anyString())
+        verify(vehicleLookupMicroServiceMock, times(1)).invoke(any[VehicleAndKeeperLookupRequest], any[TrackingId])
       }
     }
 
@@ -253,7 +253,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
         verify(bruteForceWebServiceMock, never()).callBruteForce(anyString())
-        verify(vehicleLookupMicroServiceMock, never()).invoke(any[VehicleAndKeeperLookupRequest], anyString())
+        verify(vehicleLookupMicroServiceMock, never()).invoke(any[VehicleAndKeeperLookupRequest], any[TrackingId])
       }
     }
   }
@@ -304,7 +304,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
                                              ): (VehicleLookup, VehicleAndKeeperLookupWebService) = {
     val (status, vehicleDetailsResponse) = fullResponse
     val ws: VehicleAndKeeperLookupWebService = mock[VehicleAndKeeperLookupWebService]
-    when(ws.invoke(any[VehicleAndKeeperLookupRequest], any[String])).thenReturn(Future {
+    when(ws.invoke(any[VehicleAndKeeperLookupRequest], any[TrackingId])).thenReturn(Future {
       val responseAsJson: Option[JsValue] = vehicleDetailsResponse match {
         case Some(e) => Some(Json.toJson(e))
         case _ => None
@@ -337,7 +337,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
   private lazy val vehicleLookupError = {
     val permitted = true // The lookup is permitted as we want to test failure on the vehicle lookup micro-service step.
     val vehicleAndKeeperLookupWebService: VehicleAndKeeperLookupWebService = mock[VehicleAndKeeperLookupWebService]
-    when(vehicleAndKeeperLookupWebService.invoke(any[VehicleAndKeeperLookupRequest], any[String])).thenReturn(Future {
+    when(vehicleAndKeeperLookupWebService.invoke(any[VehicleAndKeeperLookupRequest], any[TrackingId])).thenReturn(Future {
       throw new IllegalArgumentException
     })
     val healthStatsMock = mock[HealthStats]

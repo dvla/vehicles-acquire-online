@@ -22,7 +22,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 import uk.gov.dvla.vehicles.presentation.common.views.models.DayMonthYear
@@ -215,7 +215,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
-        verify(acquireServiceMock, never()).invoke(any[AcquireRequestDto], anyString())
+        verify(acquireServiceMock, never()).invoke(any[AcquireRequestDto], any[TrackingId])
       }
     }
 
@@ -234,7 +234,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val acquireServiceMock = mock[AcquireService]
       val completeAndConfirm = acquireController(acquireServiceMock)
 
-      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId])).
         thenReturn(Future.successful {
         (OK, Some(acquireResponseSuccess))
       })
@@ -242,7 +242,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
-        verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], anyString())
+        verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], any[TrackingId])
       }
     }
 
@@ -261,7 +261,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val acquireServiceMock = mock[AcquireService]
       val completeAndConfirm = acquireController(acquireServiceMock)
 
-      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[String])).
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId])).
         thenReturn(Future.successful {
         (OK, Some(acquireResponseSuccess))
       })
@@ -269,7 +269,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val result = completeAndConfirm.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
-        verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], anyString())
+        verify(acquireServiceMock, times(1)).invoke(any[AcquireRequestDto], any[TrackingId])
       }
     }
 
@@ -370,7 +370,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   private def acquireWebService(acquireServiceStatus: Int = OK,
                                 acquireServiceResponse: Option[AcquireResponseDto] = Some(acquireResponseSuccess)): AcquireWebService = {
     val acquireWebService = mock[AcquireWebService]
-    when(acquireWebService.callAcquireService(any[AcquireRequestDto], any[String])).
+    when(acquireWebService.callAcquireService(any[AcquireRequestDto], any[TrackingId])).
       thenReturn(Future.successful {
       val fakeJson = acquireServiceResponse map (Json.toJson(_))
       new FakeResponse(status = acquireServiceStatus, fakeJson = fakeJson) // Any call to a webservice will always return this successful response.
@@ -419,7 +419,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
 
     val emailServiceMock: EmailService = mock[EmailService]
-    when(emailServiceMock.invoke(any[EmailServiceSendRequest](), anyString())).
+    when(emailServiceMock.invoke(any[EmailServiceSendRequest](), any[TrackingId])).
       thenReturn(Future(EmailServiceSendResponse()))
 
     new CompleteAndConfirm(acquireService, emailServiceMock)

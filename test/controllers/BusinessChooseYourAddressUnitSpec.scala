@@ -20,7 +20,7 @@ import play.api.mvc.Cookies
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, SET_COOKIE, contentAsString, defaultAwaitTimeout}
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.services.DateServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.AddressLookupWebService
@@ -96,7 +96,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.present(request)
       whenReady(result) { r =>
-        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang])
       }
     }
   }
@@ -160,7 +160,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = false)
       val result = controller.present(request)
       whenReady(result) { r =>
-        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang])
       }
     }
   }
@@ -241,7 +241,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val result = controller.submit(request)
       whenReady(result, timeout) { r =>
         r.header.status should equal(BAD_REQUEST)
-        verify(addressServiceMock, never()).callUprnWebService(anyString(), anyString())(any[Lang])
+        verify(addressServiceMock, never()).callUprnWebService(anyString(), any[TrackingId])(any[Lang])
       }
     }
 
@@ -251,7 +251,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
       whenReady(result) { r =>
-        verify(addressServiceMock, times(1)).callUprnWebService(anyString(), anyString())(any[Lang])
+        verify(addressServiceMock, times(1)).callUprnWebService(anyString(), any[TrackingId])(any[Lang])
       }
     }
   }
@@ -342,7 +342,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val result = controller.submit(request)
       whenReady(result, timeout) { r =>
         r.header.status should equal(BAD_REQUEST)
-        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang])
       }
     }
 
@@ -352,7 +352,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = false)
       val result = controller.submit(request)
       whenReady(result) { r =>
-        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang])
       }
     }
   }
@@ -390,9 +390,9 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     val responseUprn = if (uprnFound) responseValidForUprnToAddress else responseValidForUprnToAddressNotFound
 
     val addressLookupWebServiceMock = mock[AddressLookupWebService]
-    when(addressLookupWebServiceMock.callPostcodeWebService(anyString(), anyString(), any[Option[Boolean]])(any[Lang])).
+    when(addressLookupWebServiceMock.callPostcodeWebService(anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang])).
       thenReturn(responsePostcode)
-    when(addressLookupWebServiceMock.callUprnWebService(anyString(), anyString())(any[Lang])).
+    when(addressLookupWebServiceMock.callUprnWebService(anyString(), any[TrackingId])(any[Lang])).
       thenReturn(responseUprn)
 
     val healthStatsMock = mock[HealthStats]

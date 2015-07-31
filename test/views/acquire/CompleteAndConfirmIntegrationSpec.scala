@@ -31,6 +31,7 @@ import pages.common.Feedback.AcquireEmailFeedbackLink
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import ProgressBar.progressStep
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.TrackingId
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebDriverFactory
@@ -359,14 +360,14 @@ import play.api.test.FakeApplication
   )
 
   val failingWebService = new FakeAcquireWebServiceImpl {
-    override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] =
+    override def callAcquireService(request: AcquireRequestDto, trackingId: TrackingId): Future[WSResponse] =
       throw new Exception("Mock web service failure")
   }
 
   val countingWebService = new FakeAcquireWebServiceImpl {
-    var calls = List[(AcquireRequestDto, String)]()
+    var calls = List[(AcquireRequestDto, TrackingId)]()
 
-    override def callAcquireService(request: AcquireRequestDto, trackingId: String): Future[WSResponse] = {
+    override def callAcquireService(request: AcquireRequestDto, trackingId: TrackingId): Future[WSResponse] = {
       calls ++= List(request -> trackingId)
       super.callAcquireService(request, trackingId)
     }

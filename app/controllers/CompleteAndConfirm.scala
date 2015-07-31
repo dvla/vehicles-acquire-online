@@ -19,7 +19,7 @@ import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.LogFormats.{anonymize, logMessage, optionNone}
 import common.mappings.TitleType
@@ -243,7 +243,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                             vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
                             traderDetails: TraderDetailsModel,
                             taxOrSorn: VehicleTaxOrSornFormModel,
-                            trackingId: String)
+                            trackingId: TrackingId)
                            (implicit request: Request[AnyContent]): Future[Result] = {
 
     val transactionTimestamp = dateService.now.toDateTime
@@ -272,7 +272,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                                                                   keeperDetails: NewKeeperDetailsViewModel,
                                                                   transactionId: String,
                                                                   transactionTimestamp: DateTime,
-                                                                  trackingId: String)(implicit request: Request[_]) = {
+                                                                  trackingId: TrackingId)(implicit request: Request[_]) = {
     response.foreach(r => logResponse(r))
 
     response match {
@@ -288,7 +288,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                                newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
                                traderDetailsModel: TraderDetailsModel, taxOrSornModel: VehicleTaxOrSornFormModel,
                                timestamp: DateTime,
-                               trackingId: String): AcquireRequestDto = {
+                               trackingId: TrackingId): AcquireRequestDto = {
 
     val keeperDetails = buildKeeperDetails(newKeeperDetailsViewModel)
 
@@ -354,14 +354,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                                             keeperDetails: NewKeeperDetailsViewModel,
                                             transactionId: String,
                                             transactionTimestamp: DateTime,
-                                            trackingId: String)
+                                            trackingId: TrackingId)
                           (implicit request: Request[_]): Call =
     statusCode match {
       case OK => successReturn(statusCode.toString, acquireRequest, vehicleDetails, keeperDetails, transactionId,
         transactionTimestamp, trackingId)
       case _ => {
-        Logger.warn(s"Acquire micro-service call failed. ${statusCode} - " +
-          s"trackingId: ${request.cookies.trackingId()}")
+        Logger.warn(logMessage(s"Acquire micro-service call failed. ${statusCode}", trackingId))
         routes.MicroServiceError.present()
       }
     }
@@ -372,7 +371,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                             keeperDetails: NewKeeperDetailsViewModel,
                             transactionId: String,
                             transactionTimestamp: DateTime,
-                            trackingId: String)
+                            trackingId: TrackingId)
                            (implicit request: Request[_]): Call = {
     code match {
       case "X0001" | "W0075" => logRequestRequiringFurtherAction(code, acquireRequest)
@@ -399,8 +398,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     address.take(getLines)
   }
 
-  private def buildWebHeader(trackingId: String): VssWebHeaderDto =
-    VssWebHeaderDto(transactionId = trackingId,
+  private def buildWebHeader(trackingId: TrackingId): VssWebHeaderDto =
+    VssWebHeaderDto(transactionId = trackingId.value,
       originDateTime = new DateTime,
       applicationCode = config.applicationCode,
       serviceTypeCode = config.vssServiceTypeCode,
@@ -482,7 +481,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                          keeperDetails: NewKeeperDetailsViewModel,
                          transactionId: String,
                          transactionTimestamp: DateTime,
-                         trackingId: String)(implicit request: Request[_]) =
+                         trackingId: TrackingId)(implicit request: Request[_]) =
     keeperDetails.email match {
       case Some(emailAddr) =>
         import scala.language.postfixOps
