@@ -12,6 +12,7 @@ import pages.acquire.NewKeeperEnterAddressManuallyPage
 import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.VehicleTaxOrSornPage.back
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import scala.collection.JavaConversions.asScalaSet
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import webserviceclients.fakes.FakeAddressLookupService.{addressWithUprn, addressWithoutUprn}
@@ -53,6 +54,23 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
       csrf.getAttribute("value").size > 0 should equal(true)
+    }
+
+    "load EVL web site when tax selected" taggedAs UiTag in new WebBrowserWithJs {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to VehicleTaxOrSornPage
+
+      click on VehicleTaxOrSornPage.taxSelect
+      click on VehicleTaxOrSornPage.next
+
+      webDriver.getWindowHandles.size should equal(2)
+
+      webDriver.getWindowHandles.filterNot(_ == webDriver.getWindowHandle).foreach(winHandle => {
+          webDriver.switchTo().window(winHandle)
+          webDriver.getCurrentUrl should equal("https://www.gov.uk/vehicle-tax")
+        }
+      )
     }
   }
 

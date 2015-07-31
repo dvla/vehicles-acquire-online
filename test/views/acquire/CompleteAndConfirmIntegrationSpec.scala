@@ -32,7 +32,6 @@ import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import ProgressBar.progressStep
 import scala.concurrent.Future
-import scala.collection.JavaConversions.asScalaSet
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebDriverFactory
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
@@ -51,8 +50,6 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
-
-      webDriver.getWindowHandles.size should equal(1)
 
       page.title should equal(CompleteAndConfirmPage.title)
     }
@@ -320,29 +317,6 @@ import play.api.test.FakeApplication
       dayDateOfSaleTextBox.value should equal (DateOfAcquisitionDayValid)
       monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
       yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
-    }
-
-    "load EVL if VehicleTaxOrSorn is set to Tax Vehicle" in new WebBrowserWithJs {
-      go to BeforeYouStartPage
-      CookieFactoryForUISpecs
-        .setupTradeDetails()
-        .dealerDetails()
-        .vehicleAndKeeperDetails()
-        .newKeeperDetails()
-        .vehicleLookupFormModel()
-        .vehicleTaxOrSornFormModel(
-          sornVehicle = None,
-          select = "T")
-        .preventGoingToCompleteAndConfirmPageCookie()
-      go to CompleteAndConfirmPage
-
-      webDriver.getWindowHandles.size should equal(2)
-
-      webDriver.getWindowHandles.filterNot(_ == webDriver.getWindowHandle).foreach(winHandle => {
-          webDriver.switchTo().window(winHandle)
-          webDriver.getCurrentUrl should equal("https://www.gov.uk/vehicle-tax")
-        }
-      )
     }
 
   }
