@@ -14,7 +14,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.clientsidesession.{ClientSideSession, ClientSideSessionFactory}
-import common.LogFormats.logMessage
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
 import common.model.{AddressModel, SetupTradeDetailsFormModel, TraderDetailsModel, VmAddressModel}
 import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.addresslookup.AddressLookupService
@@ -23,7 +23,7 @@ import views.html.acquire.business_choose_your_address
 
 class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupService)
                                          (implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                          config: Config) extends Controller {
+                                          config: Config) extends Controller with DVLALogger {
 
   private[controllers] val form = Form(BusinessChooseYourAddressFormModel.Form.Mapping)
 
@@ -44,8 +44,8 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
             index(addresses)))
         }
       case None => Future {
-        Logger.warn(logMessage(s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}",
-          request.cookies.trackingId()))
+        logMessage(request.cookies.trackingId(),Warn,
+            s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}")
         Redirect(routes.SetUpTradeDetails.present())
       }
     }
@@ -73,8 +73,9 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
               }
             }
           case None => Future {
-            Logger.warn(s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()} - " +
-              s"trackingId: ${request.cookies.trackingId()}")
+            logMessage(request.cookies.trackingId(),Warn,
+                s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}")
+
             Redirect(routes.SetUpTradeDetails.present())
           }
         },
@@ -87,8 +88,8 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
             else
               lookupAddressByPostcodeThenIndex(validForm, setupTradeDetailsModel)
           case None => Future {
-            Logger.warn(s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()} - " +
-              s"trackingId: ${request.cookies.trackingId()}")
+            logMessage(request.cookies.trackingId(),Warn,
+              s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}")
             Redirect(routes.SetUpTradeDetails.present())
           }
         }
@@ -116,8 +117,8 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       }
       else {
         // Guard against IndexOutOfBoundsException
-        Logger.warn(s"Failed to find address details, redirecting to ${routes.UprnNotFound.present()} - " +
-          s"trackingId: ${request.cookies.trackingId()}")
+        logMessage(request.cookies.trackingId(),Warn,
+          s"Failed to find address details, redirecting to ${routes.UprnNotFound.present()}")
         Redirect(routes.UprnNotFound.present())
       }
     }
@@ -139,8 +140,8 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       case Some(addressViewModel) =>
         nextPage(model, traderName, addressViewModel, traderEmail)
       case None => {
-        Logger.warn(s"Failed to find address details, redirecting to ${routes.UprnNotFound.present()} - " +
-          s"trackingId: ${request.cookies.trackingId()}")
+        logMessage(request.cookies.trackingId(),Warn,
+            s"Failed to find address details, redirecting to ${routes.UprnNotFound.present()}")
         Redirect(routes.UprnNotFound.present())
       }
     }
@@ -156,8 +157,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       traderAddress = addressModel,
       traderEmail = traderEmail
     )
-    Logger.debug(s"Redirecting to ${routes.VehicleLookup.present()} - " +
-      s"trackingId: ${request.cookies.trackingId()}")
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
     Redirect(routes.VehicleLookup.present()).
       discardingCookie(EnterAddressManuallyCacheKey).
       withCookie(model).

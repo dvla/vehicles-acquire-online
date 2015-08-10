@@ -7,21 +7,21 @@ import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichResult
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.logMessage
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
 import utils.helpers.{CookieHelper, Config}
 
 class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                              config: Config) extends Controller {
+                              config: Config) extends Controller with DVLALogger {
 
   def present(exceptionDigest: String) = Action { implicit request =>
-    Logger.error(logMessage("Error - Displaying generic error page", request.cookies.trackingId(),
+    logMessage(request.cookies.trackingId(),Error,"Error - Displaying generic error page", Some(
       Seq(exceptionDigest)))
     Ok(views.html.acquire.error(exceptionDigest)).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
   }
 
   def submit(exceptionDigest: String) = Action { implicit request =>
-    Logger.error(logMessage("Error submit called - now removing full set of cookies and redirecting to Start page.",
-      request.cookies.trackingId(), Seq(exceptionDigest)))
+    logMessage(request.cookies.trackingId(),Error,"Error submit called - now removing full set of cookies and redirecting to Start page.",
+      Some(Seq(exceptionDigest)))
 
     CookieHelper.discardAllCookies
   }

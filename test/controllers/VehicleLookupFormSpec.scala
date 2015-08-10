@@ -126,7 +126,7 @@ class VehicleLookupFormSpec extends UnitSpec {
 
   private val bruteForceServiceImpl: BruteForcePreventionService = {
     val bruteForcePreventionWebService: BruteForcePreventionWebService = mock[BruteForcePreventionWebService]
-    when(bruteForcePreventionWebService.callBruteForce(anyString())).
+    when(bruteForcePreventionWebService.callBruteForce(anyString(), any[TrackingId])).
       thenReturn( Future.successful( new FakeResponse(status = OK) ))
     val healthStatsMock = mock[HealthStats]
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {

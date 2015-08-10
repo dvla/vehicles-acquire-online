@@ -11,7 +11,6 @@ import common.clientsidesession.CookieImplicits.RichCookies
 import common.controllers.PrivateKeeperDetailsBase
 import common.model.{PrivateKeeperDetailsFormModel, VehicleAndKeeperDetailsModel}
 import common.services.DateService
-import common.LogFormats.logMessage
 import utils.helpers.Config
 
 class PrivateKeeperDetails @Inject()()(implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
@@ -22,7 +21,7 @@ class PrivateKeeperDetails @Inject()()(implicit protected override val clientSid
     Ok(views.html.acquire.private_keeper_details(model, form))
 
   protected override def missingVehicleDetails(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.SetUpTradeDetails.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.SetUpTradeDetails.present()}")
     Redirect(routes.SetUpTradeDetails.present())
   }
 
@@ -30,7 +29,7 @@ class PrivateKeeperDetails @Inject()()(implicit protected override val clientSid
     BadRequest(views.html.acquire.private_keeper_details(model, form))
 
   protected override def success(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
     Redirect(routes.NewKeeperChooseYourAddress.present())
   }
 }

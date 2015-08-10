@@ -15,14 +15,14 @@ import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.LogFormats.logMessage
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
 import common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
 
 class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                   config: Config) extends Controller {
+                                   config: Config) extends Controller with DVLALogger {
 
   private[controllers] val form = Form(
     VehicleTaxOrSornFormModel.Form.Mapping
@@ -44,19 +44,17 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
 
   private def redirectToVehicleLookup(message: String)
                                      (implicit request: Request[_]) = {
-    Logger.warn(logMessage(message, request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Warn,message)
     Redirect(routes.VehicleLookup.present())
   }
 
   def back = Action { implicit request =>
     request.cookies.getModel[NewKeeperEnterAddressManuallyFormModel] match {
       case Some(manualAddress) =>
-        Logger.debug(logMessage(s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}",
-          request.cookies.trackingId()))
+        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}")
         Redirect(routes.NewKeeperEnterAddressManually.present())
       case None => {
-        Logger.debug(logMessage(s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}",
-          request.cookies.trackingId()))
+        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
         Redirect(routes.NewKeeperChooseYourAddress.present())
       }
     }
@@ -76,8 +74,7 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
         }
       },
       validForm => {
-        Logger.debug(logMessage(s"Redirecting to ${routes.CompleteAndConfirm.present()}",
-          request.cookies.trackingId()))
+        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.CompleteAndConfirm.present()}")
           Redirect(routes.CompleteAndConfirm.present())
             .withCookie(validForm)
             .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")

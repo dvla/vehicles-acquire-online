@@ -9,11 +9,12 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.controllers.BusinessKeeperDetailsBase
 import common.model.BusinessKeeperDetailsViewModel
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.logMessage
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
 import utils.helpers.Config
 
 class BusinessKeeperDetails @Inject()()(implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
-                                            val config: Config) extends BusinessKeeperDetailsBase {
+                                            val config: Config)
+                                        extends BusinessKeeperDetailsBase with DVLALogger {
 
   protected override def presentResult(model: BusinessKeeperDetailsViewModel)(implicit request: Request[_]): Result =
     Ok(views.html.acquire.business_keeper_details(model))
@@ -22,12 +23,14 @@ class BusinessKeeperDetails @Inject()()(implicit protected override val clientSi
     BadRequest(views.html.acquire.business_keeper_details(model))
 
   protected def missingVehicleDetails(implicit request: Request[_]): Result = {
-    Logger.warn(logMessage(s"Missing vehicle details, now redirecting to ${routes.VehicleLookup.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Warn,
+      s"Missing vehicle details, now redirecting to ${routes.VehicleLookup.present()}")
     Redirect(routes.SetUpTradeDetails.present())
   }
 
   protected def success(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,
+      s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
     Redirect(routes.NewKeeperChooseYourAddress.present())
   }
 }

@@ -10,7 +10,6 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.controllers.VehicleLookupFailureBase
-import common.LogFormats.logMessage
 import common.model.TraderDetailsModel
 import utils.helpers.Config
 
@@ -30,21 +29,21 @@ class VehicleLookupFailure @Inject()()(implicit clientSideSessionFactory: Client
     }
 
   override def missingPresentCookieDataResult()(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.SetUpTradeDetails.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.SetUpTradeDetails.present()}")
     Redirect(routes.SetUpTradeDetails.present())
   }
 
   override def submitResult()(implicit request: Request[_]): Result =
     request.cookies.getModel[TraderDetailsModel] match {
       case Some(dealerDetails) => {
-        Logger.debug(logMessage(s"Redirecting to ${routes.VehicleLookup.present()}", request.cookies.trackingId()))
+        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
         Redirect(routes.VehicleLookup.present())
       }
       case _ => missingSubmitCookieDataResult
     }
 
   override def missingSubmitCookieDataResult()(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.BeforeYouStart.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.BeforeYouStart.present()}")
     Redirect(routes.BeforeYouStart.present())
   }
 

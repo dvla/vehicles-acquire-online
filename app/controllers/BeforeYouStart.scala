@@ -8,11 +8,11 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.RichResult
 import common.clientsidesession.CookieImplicits.RichCookies
-import common.LogFormats.logMessage
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.DVLALogger
 import utils.helpers.Config
 
 class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                       config: Config) extends Controller {
+                                       config: Config) extends Controller with DVLALogger {
 
   def present = Action { implicit request =>
     Ok(views.html.acquire.before_you_start()).
@@ -21,7 +21,7 @@ class BeforeYouStart @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   }
 
   def submit = Action { implicit request =>
-    Logger.debug(logMessage(s"Redirecting to ${routes.SetUpTradeDetails.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.SetUpTradeDetails.present()}")
     Redirect(routes.SetUpTradeDetails.present())
   }
 }

@@ -9,7 +9,6 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm}
 import common.model.NewKeeperEnterAddressManuallyFormModel
-import common.LogFormats.logMessage
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.controllers.NewKeeperEnterAddressManuallyBase
 import common.model.NewKeeperEnterAddressManuallyViewModel
@@ -28,7 +27,7 @@ class NewKeeperEnterAddressManually @Inject()()
           Ok(new_keeper_enter_address_manually(NewKeeperEnterAddressManuallyViewModel(form.fill(), model), postcode))
 
   protected override def missingVehicleDetails(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.VehicleLookup.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
       Redirect(routes.VehicleLookup.present())
   }
 
@@ -39,7 +38,7 @@ class NewKeeperEnterAddressManually @Inject()()
             NewKeeperEnterAddressManuallyViewModel(formWithReplacedErrors(form), model), postcode))
 
   protected override def success(implicit request: Request[_]): Result = {
-    Logger.debug(logMessage(s"Redirecting to ${routes.VehicleTaxOrSorn.present()}", request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleTaxOrSorn.present()}")
           Redirect(routes.VehicleTaxOrSorn.present())
   }
 }

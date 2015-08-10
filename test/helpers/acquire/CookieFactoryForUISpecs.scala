@@ -28,7 +28,7 @@ import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
-import common.controllers.AlternateLanguages.{CyId, EnId}
+
 import common.mappings.TitleType
 import common.model.AddressModel
 import common.model.BruteForcePreventionModel
@@ -47,6 +47,8 @@ import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages._
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
@@ -64,19 +66,23 @@ object CookieFactoryForUISpecs {
     val valueAsString = Json.toJson(value).toString()
     val manage = webDriver.manage()
     val cookie = new Cookie(key, valueAsString)
+
     manage.addCookie(cookie)
   }
 
-  def withLanguageCy()(implicit webDriver: WebDriver) = {
+  def withLanguageCy()(implicit webDriver: WebDriver, clientSideSessionFactory: ClientSideSessionFactory) = {
     val key = Play.langCookieName
+
     val value = CyId
     addCookie(key, value)
     this
   }
 
-  def withLanguageEn()(implicit webDriver: WebDriver) = {
+  def withLanguageEn()(implicit webDriver: WebDriver, clientSideSessionFactory: ClientSideSessionFactory) = {
     val key = Play.langCookieName
+
     val value = EnId
+
     addCookie(key, value)
     this
   }

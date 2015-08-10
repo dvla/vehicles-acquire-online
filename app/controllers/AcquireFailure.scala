@@ -12,19 +12,19 @@ import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import common.LogFormats.logMessage
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
 import common.model.{NewKeeperDetailsViewModel, VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
 
 class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                       config: Config) extends Controller {
+                                       config: Config) extends Controller with DVLALogger {
 
   private final val MissingCookiesAcquireFailure = "Missing cookies in cache. Acquire was failed, however cannot " +
     "display failure page. Redirecting to BeforeYouStart"
   private final val MissingCookies = "Missing cookies in cache."
 
   def present = Action { implicit request =>
-    Logger.info(s"Present acquireFailure page - trackingId: ${request.cookies.trackingId()}")
+    logMessage(request.cookies.trackingId(),Info,s"Present acquireFailure page")
     (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
@@ -55,7 +55,7 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
 
   private def redirectToStart(message: String)
                              (implicit request: Request[_]) = {
-    Logger.warn(logMessage(message, request.cookies.trackingId()))
+    logMessage(request.cookies.trackingId(),Warn,message)
     Redirect(routes.BeforeYouStart.present())
   }
 }
