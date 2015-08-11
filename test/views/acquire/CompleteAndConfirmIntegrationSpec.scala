@@ -51,6 +51,7 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
+
       page.title should equal(CompleteAndConfirmPage.title)
     }
 
@@ -318,6 +319,7 @@ import play.api.test.FakeApplication
       monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
       yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
     }
+
   }
 
   "back" should {

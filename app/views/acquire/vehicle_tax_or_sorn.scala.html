@@ -5,7 +5,7 @@
 )
 
 @import controllers.routes.VehicleTaxOrSorn
-@import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SelectId}
+@import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SelectId, TaxId}
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.csrfTokenHiddenField
@@ -82,7 +82,7 @@
                                 <!-- Shown when tax is selected -->
                                 <div class="tax-text panel-indent-wrapper">
                                     <div id="tax_details" class="panel-indent">
-                                        <a class="large" href="https://www.gov.uk/tax-disc" target="_blank">@Messages("acquire_vehicleTaxOrSorn.link")</a>
+                                        <a class="large" href="https://www.gov.uk/vehicle-tax" target="_blank">@Messages("acquire_vehicleTaxOrSorn.link")</a>
                                         <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.taxText")</p>
                                         <p class="form-hint">@Messages("acquire_vehicleTaxOrSorn.taxText-2")</p>
                                     </div>
@@ -123,7 +123,7 @@
 
             <!-- Next and back buttons -->
             <div class="form-steps">
-                    <button id="@SubmitId" type="submit" name="action" class="button">
+                    <button id="@SubmitId" type="submit" name="action" class="button" onclick="if (document.getElementById('@TaxId').checked) window.open('https://www.gov.uk/vehicle-tax', '_blank');">
                         @Messages("acquire_vehicleTaxOrSorn.submitbutton")
                     </button>
             </div>
