@@ -276,10 +276,19 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     response.foreach(r => logResponse(r))
 
     response match {
-      case Some(r) if r.responseCode.isDefined => successReturn(r.responseCode.get, acquireRequest, vehicleDetails,
-        keeperDetails, transactionId, transactionTimestamp, trackingId)
-      case _ => handleHttpStatusCode(httpResponseCode)(acquireRequest, vehicleDetails, keeperDetails, transactionId,
-        transactionTimestamp, trackingId)
+      case Some(r) if r.responseCode.isDefined => {
+        r.responseCode.get match {
+          case "X0001" | "W0075" => {
+            logRequestRequiringFurtherAction(r.responseCode.get, transactionId, acquireRequest)
+            createAndSendEmailRequiringFurtherAction(transactionId, acquireRequest)
+          }
+          case _ =>
+        }
+        successReturn(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
+      }
+      case _ => {
+        handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
+      }
     }
   }
 
@@ -349,16 +358,14 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     )
   }
 
-  def handleHttpStatusCode(statusCode: Int)(acquireRequest: AcquireRequestDto,
-                                            vehicleDetails: VehicleAndKeeperDetailsModel,
+  def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
                                             keeperDetails: NewKeeperDetailsViewModel,
                                             transactionId: String,
                                             transactionTimestamp: DateTime,
                                             trackingId: String)
                           (implicit request: Request[_]): Call =
     statusCode match {
-      case OK => successReturn(statusCode.toString, acquireRequest, vehicleDetails, keeperDetails, transactionId,
-        transactionTimestamp, trackingId)
+      case OK => successReturn(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
       case _ => {
         Logger.warn(s"Acquire micro-service call failed. ${statusCode} - " +
           s"trackingId: ${request.cookies.trackingId()}")
@@ -366,20 +373,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       }
     }
 
-  private def successReturn(code: String,
-                            acquireRequest: AcquireRequestDto,
-                            vehicleDetails: VehicleAndKeeperDetailsModel,
+  private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
                             keeperDetails: NewKeeperDetailsViewModel,
                             transactionId: String,
                             transactionTimestamp: DateTime,
                             trackingId: String)
                            (implicit request: Request[_]): Call = {
-    code match {
-      case "X0001" | "W0075" => logRequestRequiringFurtherAction(code, acquireRequest)
-      case _ =>
-    }
-    createAndSendEmail(vehicleDetails, keeperDetails, transactionId,
-      transactionTimestamp, trackingId)
+    createAndSendEmail(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
     Logger.debug(logMessage(s"Redirecting to ${routes.AcquireSuccess.present()}",request.cookies.trackingId()))
     routes.AcquireSuccess.present()
   }
@@ -445,7 +445,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     )
   }
 
-  private def logRequestRequiringFurtherAction(responseCode: String,
+  private def logRequestRequiringFurtherAction(responseCode: String, transactionId: String,
                                                acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
     Logger.error(logMessage(responseCode,
       request.cookies.trackingId(),
@@ -453,7 +453,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         acquireRequest.webHeader.applicationCode,
         acquireRequest.webHeader.originDateTime.toString(),
         acquireRequest.webHeader.serviceTypeCode,
-        acquireRequest.webHeader.transactionId,
+        transactionId,
         acquireRequest.dateOfTransfer,
         acquireRequest.fleetNumber.getOrElse(optionNone),
         acquireRequest.keeperConsent.toString,
@@ -471,6 +471,83 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         )
       )
     )
+  }
+
+  private def createAndSendEmailRequiringFurtherAction(transactionId: String, acquireRequest: AcquireRequestDto)
+                                                      (implicit request: Request[_]) = {
+
+    import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
+
+    implicit val emailConfiguration = config.emailConfiguration
+    implicit val implicitEmailService = implicitly[EmailService](emailService)
+
+    val email = config.emailConfiguration.feedbackEmail.email
+
+    val dateTime = acquireRequest.webHeader.originDateTime.toString("dd/MM/yy HH:mm")
+
+    val message1 =
+    s"""
+      |Vehicle Registration:  ${acquireRequest.registrationNumber}
+      |Transaction ID:  ${transactionId}
+      |Date/Time of Transaction: ${dateTime}
+    """.stripMargin
+
+    val message2 =
+    s"""
+     |New Keeper Title:  ${acquireRequest.keeperDetails.keeperTitle match {
+                              case TitleTypeDto(Some(1), None) => play.api.i18n.Messages("titlePicker.mr")
+                              case TitleTypeDto(Some(2), None) => play.api.i18n.Messages("titlePicker.mrs")
+                              case TitleTypeDto(Some(3), None) => play.api.i18n.Messages("titlePicker.miss")
+                              case TitleTypeDto(Some(4), Some(s)) => s
+                              case TitleTypeDto(None, None) => "NOT ENTERED"
+                            }
+                          }
+     |New Keeper First Name:  ${acquireRequest.keeperDetails.keeperForename.getOrElse("NOT ENTERED")}
+     |New Keeper/Business Last Name:  ${acquireRequest.keeperDetails.keeperSurname.getOrElse("NOT ENTERED")}/${acquireRequest.keeperDetails.keeperBusinessName.getOrElse("NOT ENTERED")}
+     |New Keeper Address:  ${acquireRequest.keeperDetails.keeperAddressLines.mkString("\n                     ")}
+     |                     ${acquireRequest.keeperDetails.keeperPostCode}
+     |                     ${acquireRequest.keeperDetails.keeperPostTown}
+     |New Keeper Email:  ${acquireRequest.keeperDetails.keeperEmailAddress.getOrElse("NOT ENTERED")}
+     |Date of Birth:  ${acquireRequest.keeperDetails.keeperDateOfBirth match {
+                          case Some(s) => DateTime.parse(s).toString("dd/MM/yy")
+                          case _ => "NOT ENTERED"
+                        }
+                      }
+     |Driving Licence Number:  ${acquireRequest.keeperDetails.keeperDriverNumber.getOrElse("NOT ENTERED")}
+     |Fleet Number:  ${acquireRequest.fleetNumber.getOrElse("NOT ENTERED")}
+     |Trader Name:  ${acquireRequest.traderDetails.get.traderOrganisationName}
+     |Trader Address:  ${acquireRequest.traderDetails.get.traderAddressLines.mkString("\n                 ")}
+     |                 ${acquireRequest.traderDetails.get.traderPostCode}
+     |                 ${acquireRequest.traderDetails.get.traderPostTown}
+     |Trader Email:  ${acquireRequest.traderDetails.get.traderEmailAddress.getOrElse("NOT ENTERED")}
+     |Document Reference Number: ${acquireRequest.referenceNumber}
+     |Mileage: ${acquireRequest.mileage.getOrElse("NOT ENTERED")}
+     |Date of Sale:  ${DateTime.parse(acquireRequest.dateOfTransfer).toString("dd/MM/yy")}
+     |Tax Choice:  ${request.cookies.getModel[VehicleTaxOrSornFormModel].get.select match {
+                        case "T" => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.taxVehicle")
+                        case "S" => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.sornNow")
+                        case "N" => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.neither")
+                      }
+                    }
+     |Transaction ID:  ${transactionId}
+     |Date/Time of Transaction:  ${dateTime}
+    """.stripMargin
+
+    Logger.info(message1)
+
+    SEND
+      .email(Contents(message1, message1))
+      .withSubject(s"Acquire Failure (1 of 2) ${transactionId}")
+      .to(email)
+      .send(request.cookies.trackingId)
+
+    Logger.info(message2)
+
+    SEND
+      .email(Contents(message2, message2))
+      .withSubject(s"Acquire Failure (2 of 2) ${transactionId}")
+      .to(email)
+      .send(request.cookies.trackingId)
   }
 
   /**
