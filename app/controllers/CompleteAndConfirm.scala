@@ -533,15 +533,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
      |Date/Time of Transaction:  ${dateTime}
     """.stripMargin
 
-    Logger.info(message1)
-
     SEND
       .email(Contents(message1, message1))
       .withSubject(s"Acquire Failure (1 of 2) ${transactionId}")
       .to(email)
       .send(request.cookies.trackingId)
-
-    Logger.info(message2)
 
     SEND
       .email(Contents(message2, message2))
