@@ -21,8 +21,9 @@ Most complex business decisions are deferred to a network of [RESTful][rest] mic
 separate projects:
 
 -   `ordnance-survey`
--   `vehicles-lookup`
+-   `vehicle-keeper-lookup`
 -   `vehicles-acquire-fulfil`
+-   `email-service`
 
 These services are mocked for automated testing, but must be running locally for manual testing/development of dependant
 components within the presentation layer.
@@ -63,7 +64,7 @@ Being a standard Play! application vehiles-online can be compiled by simply runn
 
 Running
 -------
-Vehicles-online needs certain secrets to be able to run. If you don't have access to the secret repo you won't be able to run the application except during the test run.
+Vehicles-online needs certain secrets to be able to run. If you don't have access to the secret repo you won't be able to run the application except during the test run. There are three ways to run the application:
 
 1. Running vehicles-online only
     - Clone the secret repo in the parent folder of vehicles-online
@@ -78,19 +79,9 @@ Vehicles-online needs certain secrets to be able to run. If you don't have acces
 3. Sandbox - Automatically run all the microservices
 Just run ```sbt sandbox``` within vehicles-online and it will do all the above fast and reliable. 
 
-Vehicles-online depends on three services in order to successfully complete a disposal. These are `os-address-lookup`, `vehicles-lookup` and `vehicles-acquire-fulfil`
+Afterwards open your browser to:
 
-Vehicles-lookup and vehicles-acquire-fulfil depend on two legacy stub services.
-All these are located in different git repositories and need to be manually cloned built and run if the vehicles-acquire-online is going to run normally.
-The sandbox provides a way to run all the required microservices along with the vehicles-online itself with a single command.
-
-The sandbox needs:
-- git installed
-- ssh access to the git repositories granted
-- DECRYPT_PASSWORD environment variable or Java property set.
-If any of the above is missing it will print a message and exit.
-
-The sandbox is implemented as a single sbt task so you can run it like every other sbt task. Just do ```sbt sandbox```. This will download the latest versions of the services and will start them. After the sandbox is started the app is running on http://localhost:9000 and the user should be able to go all the way to disposing a vehicle.
+    http://localhost:9000/
 
 If here are any local changes to the vehicles-acquire-online code base they would be automatically picked up next time the browser is refreshed.
 
