@@ -21,7 +21,7 @@ global-please-wait-close = Cau''r neges hon
 
 global.serviceCloseWarning = Bydd y gwasanaeth yn cau cyn bo hir - yr amser bellach yn {0} bydd y gwasanaeth yn cau am {1}:00:00
 global.serviceCloseWarning.p2 = to complete this service.
-global.serviceClosed = Service now closed. Service is available {0}:00 to {1}:00
+global.serviceClosed = Service now closed. Service is available {0} to {1}
 
 footer.builtbyintro = Built by
 footer.builtby = Driver & Vehicle Licensing Agency
