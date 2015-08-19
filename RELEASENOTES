@@ -1,4 +1,17 @@
+======= 1.16 =======
+Time of release binary creation
+Wed Aug 19 13:36:50 UTC 2015
+
+DE661  Java Script disabled - V5C image not being displayed
+DE665 Incorrect contact details on dispose We Are Sorry page
+US3663 Extend service hours for trial run
+US3560 Address sorting
+US3513 Direct to GDS Feedback pages
+US3506 Handle X0001 and W0075 errors
+US3709 Change sandbox to read unencrypted secrets
+
 ======= 1.15 =======
+Time of release binary creation
 Tue Aug 04 12:18:32 UTC 2015
 
 US3662	SPIKE - Devise a mechanism for identifying that the DVLA have executed a transaction internally
