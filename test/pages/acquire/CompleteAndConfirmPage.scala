@@ -1,9 +1,9 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Checkbox, Element, Page, TelField, WebBrowserDSL, WebDriverFactory}
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId, TodaysDateId}
 import org.openqa.selenium.WebDriver
+import uk.gov.dvla.vehicles.presentation.common.helpers
+import helpers.webbrowser.{Checkbox, Element, Page, TelField, WebBrowserDSL, WebDriverFactory}
 import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
 object CompleteAndConfirmPage extends Page with WebBrowserDSL {

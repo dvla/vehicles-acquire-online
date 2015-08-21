@@ -1,10 +1,10 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.UiSpec
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
+import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.NewKeeperChooseYourAddressPage
@@ -17,7 +17,7 @@ import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import webserviceclients.fakes.FakeAddressLookupService.{addressWithUprn, addressWithoutUprn}
 
-final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
+class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
 
   "go to page" should {
     "display the page for a new keeper" taggedAs UiTag in new WebBrowser {
@@ -118,5 +118,4 @@ final class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       .vehicleAndKeeperDetails()
       .newKeeperDetails()
       .vehicleLookupFormModel()
-
 }

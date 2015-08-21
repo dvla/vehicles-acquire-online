@@ -28,8 +28,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{YearDateOfBirthValid, DayDateOfBi
 import pages.acquire.CompleteAndConfirmPage.{DayDateOfSaleValid, MonthDateOfSaleValid, YearDateOfSaleValid}
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
+import common.clientsidesession.{TrackingId, ClearTextClientSideSession, ClientSideSessionFactory, CookieFlags}
 import common.mappings.TitleType
 import common.model.AddressModel
 import common.model.BruteForcePreventionModel
@@ -44,6 +43,7 @@ import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddress
 import common.model.PrivateKeeperDetailsFormModel
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel
 import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel

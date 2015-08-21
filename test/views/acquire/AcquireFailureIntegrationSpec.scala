@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver
 import pages.acquire.AcquireFailurePage.buyAnother
 import pages.acquire.{AcquireFailurePage, BeforeYouStartPage, VehicleLookupPage}
 
-final class AcquireFailureIntegrationSpec extends UiSpec with TestHarness {
+class AcquireFailureIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage

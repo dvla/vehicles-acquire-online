@@ -391,5 +391,4 @@ import play.api.test.FakeApplication
 
   private def assertCookieExist(implicit driver: WebDriver) =
     driver.manage().getCookieNamed(AllowGoingToCompleteAndConfirmPageCacheKey) should not be null
-
 }

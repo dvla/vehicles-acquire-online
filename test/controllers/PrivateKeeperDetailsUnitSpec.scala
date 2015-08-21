@@ -5,7 +5,14 @@ import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when
-import pages.acquire.PrivateKeeperDetailsPage.{DayDateOfBirthValid, DriverNumberValid, EmailValid, FirstNameValid, LastNameValid, MonthDateOfBirthValid, PostcodeValid, YearDateOfBirthValid}
+import pages.acquire.PrivateKeeperDetailsPage.DayDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.DriverNumberValid
+import pages.acquire.PrivateKeeperDetailsPage.EmailValid
+import pages.acquire.PrivateKeeperDetailsPage.FirstNameValid
+import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
+import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
+import pages.acquire.PrivateKeeperDetailsPage.PostcodeValid
+import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
 import pages.acquire.{NewKeeperChooseYourAddressPage, SetupTradeDetailsPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
@@ -56,7 +63,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
-      content should include(Messages(standardOptions(0)))
+      content should include(Messages(standardOptions.head))
       content should include(FirstNameValid)
       content should include(LastNameValid)
       content should include(DayDateOfBirthValid)
@@ -80,7 +87,7 @@ class PrivateKeeperDetailsUnitSpec extends UnitSpec {
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
       val result = privateKeeperDetails.present(request)
       val content = contentAsString(result)
-      content should include(Messages(standardOptions(0)))
+      content should include(Messages(standardOptions.head))
       content should not include "selected"
     }
   }

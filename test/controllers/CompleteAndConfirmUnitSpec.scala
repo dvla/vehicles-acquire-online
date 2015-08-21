@@ -1,11 +1,10 @@
 package controllers
 
-import java.util.TimeZone
-
 import composition.WithApplication
 import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
+import java.util.TimeZone
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{DateTimeZone, DateTime, Instant}
@@ -14,7 +13,11 @@ import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, EmailValid, FleetNumberValid}
-import pages.acquire.CompleteAndConfirmPage.{ConsentTrue, DayDateOfSaleValid, MileageValid, MonthDateOfSaleValid, YearDateOfSaleValid}
+import pages.acquire.CompleteAndConfirmPage.ConsentTrue
+import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.MileageValid
+import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
+import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.{AcquireSuccessPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.libs.json.Json

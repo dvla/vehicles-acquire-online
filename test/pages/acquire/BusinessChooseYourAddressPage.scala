@@ -1,13 +1,16 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
 import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+import org.openqa.selenium.WebDriver
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.Element
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.Page
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.SingleSel
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebBrowserDSL
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebDriverFactory
 import views.acquire.BusinessChooseYourAddress
 import BusinessChooseYourAddress.{BackId,SubmitId}
 import BusinessChooseYourAddress.EnterAddressManuallyButtonId
 import BusinessChooseYourAddress.SelectId
-import org.openqa.selenium.WebDriver
 
 object BusinessChooseYourAddressPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("business-choose-your-address")

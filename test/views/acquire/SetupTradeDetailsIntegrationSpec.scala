@@ -1,16 +1,16 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.UiSpec
 import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
-import pages.common.{Accessibility, ErrorPanel}
+import helpers.UiSpec
 import pages.acquire.SetupTradeDetailsPage.{happyPath, PostcodeValid, TraderBusinessNameValid}
 import pages.acquire.SetupTradeDetailsPage
+import pages.common.{Accessibility, ErrorPanel}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel
 
-final class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
+class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to SetupTradeDetailsPage

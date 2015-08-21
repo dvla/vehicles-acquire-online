@@ -1,15 +1,12 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
-import views.acquire.EnterAddressManually
-import EnterAddressManually.{BackId, NextId}
-import uk.gov.dvla.vehicles.presentation.common
-import common.views.models.AddressLinesViewModel
-import common.model.NewKeeperEnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import org.openqa.selenium.WebDriver
-import AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
+import uk.gov.dvla.vehicles.presentation.common
+import common.helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
+import common.model.NewKeeperEnterAddressManuallyFormModel.Form.AddressAndPostcodeId
+import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
+import views.acquire.EnterAddressManually.{BackId, NextId}
 
 object NewKeeperEnterAddressManuallyPage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("new-keeper-enter-address-manually")

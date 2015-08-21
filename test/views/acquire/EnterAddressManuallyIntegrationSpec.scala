@@ -1,18 +1,18 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.UiSpec
-import helpers.common.ProgressBar.progressStep
 import helpers.acquire.CookieFactoryForUISpecs
+import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
+import helpers.UiSpec
 import org.openqa.selenium.{By, WebDriver, WebElement}
-import pages.common.ErrorPanel
 import pages.acquire.EnterAddressManuallyPage.{happyPath, happyPathMandatoryFieldsOnly, sadPath}
 import pages.acquire.{BeforeYouStartPage, EnterAddressManuallyPage, VehicleLookupPage}
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import pages.common.ErrorPanel
 import pages.common.Feedback.AcquireEmailFeedbackLink
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 
-final class EnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness {
+class EnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage

@@ -1,11 +1,11 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser._
 import org.openqa.selenium.WebDriver
 import uk.gov.dvla.vehicles.presentation.common
-import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
+import common.helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, TextField, Element, RadioButton}
 import common.mappings.Email.{EmailId, EmailVerifyId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle._
+import common.mappings.OptionalToggle.{Invisible, Visible}
+import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
 import views.acquire.SetupTradeDetails.SubmitId
 
 object SetupTradeDetailsPage extends Page with WebBrowserDSL {

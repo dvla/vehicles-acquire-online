@@ -1,7 +1,6 @@
 package email
 
 import java.text.SimpleDateFormat
-
 import org.joda.time.DateTime
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 

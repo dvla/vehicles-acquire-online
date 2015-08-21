@@ -2,12 +2,14 @@ package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{Element, Page, TextField, WebBrowserDSL, WebDriverFactory}
-import views.acquire.EnterAddressManually
-import EnterAddressManually.{BackId, NextId}
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel
-import org.openqa.selenium.WebDriver
-import AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
+import org.openqa.selenium.WebDriver
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.AddressLinesId
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.Line2Id
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.Line3Id
+import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.PostTownId
+import views.acquire.EnterAddressManually.{BackId, NextId}
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 
 object EnterAddressManuallyPage extends Page with WebBrowserDSL {

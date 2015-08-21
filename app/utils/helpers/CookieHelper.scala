@@ -4,9 +4,7 @@ import controllers.routes
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{DiscardingCookie, RequestHeader, Result}
 import models.SeenCookieMessageCacheKey
-import uk.gov.dvla.vehicles.presentation.common
 import uk.gov.dvla.vehicles.presentation.common.LogFormats.DVLALogger
-
 
 object CookieHelper extends DVLALogger {
   def discardAllCookies(implicit request: RequestHeader): Result = {

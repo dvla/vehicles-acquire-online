@@ -1,9 +1,8 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
 import models.VehicleTaxOrSornFormModel.Form.{TaxId, SornId}
 import org.openqa.selenium.WebDriver
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
 import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
 
 object VehicleTaxOrSornPage extends Page with WebBrowserDSL {

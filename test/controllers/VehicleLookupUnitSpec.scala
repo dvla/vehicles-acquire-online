@@ -24,7 +24,7 @@ import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout,
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
+import common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import common.mappings.DocumentReferenceNumber
 import common.services.DateServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
@@ -57,7 +57,6 @@ import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 class VehicleLookupUnitSpec extends UnitSpec {
 
   val healthStatsMock = mock[HealthStats]
-
 
   when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
     override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]

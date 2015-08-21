@@ -1,12 +1,12 @@
 package models
 
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import play.api.data.Forms.mapping
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
 import common.views.models.AddressAndPostcodeViewModel
 import common.mappings.ThreeAlphasConstraint.threeAlphasConstraint
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class EnterAddressManuallyFormModel(addressAndPostcodeModel: AddressAndPostcodeViewModel)
 

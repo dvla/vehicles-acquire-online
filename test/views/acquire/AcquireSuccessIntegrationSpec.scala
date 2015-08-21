@@ -11,7 +11,7 @@ import pages.common.Feedback.AcquireEmailFeedbackLink
 import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 
-final class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
+class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {

@@ -13,7 +13,6 @@ class CompleteAndConfirmFormSpec extends UnitSpec {
 
   "form" should {
     "accept if form is completed with all fields entered correctly" in new WithApplication {
-
       val model = formWithValidDefaults().get
       model.mileage should equal(Some("1000".toInt))
       model.dateOfSale should equal(new LocalDate(

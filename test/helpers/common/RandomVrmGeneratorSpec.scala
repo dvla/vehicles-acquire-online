@@ -16,7 +16,7 @@ final class RandomVrmGeneratorSpec extends UnitSpec {
 
       // If the number of distinct characters is not > 3 this means each of the 3 sections
       // has the same character used multiple times and so the randomization is not enough
-      vrm.distinct.size > 3 should equal(true)
+      vrm.distinct.length > 3 should equal(true)
     }
   }
 }

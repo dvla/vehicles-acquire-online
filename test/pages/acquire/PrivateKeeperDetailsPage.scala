@@ -3,11 +3,18 @@ package pages.acquire
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser._
-import common.mappings.TitlePickerString.OtherTitleRadioValue
+import common.helpers.webbrowser.{WebBrowserDSL, Page, WebDriverFactory, Element, RadioButton, TextField, TelField}
 import common.mappings.Email.{EmailId => EmailEnterId, EmailVerifyId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.OptionalToggle._
-import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.Form._
+import common.mappings.TitlePickerString.OtherTitleRadioValue
+import common.mappings.OptionalToggle.{Invisible, Visible}
+import common.model.PrivateKeeperDetailsFormModel.Form.DateOfBirthId
+import common.model.PrivateKeeperDetailsFormModel.Form.DriverNumberId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailId
+import common.model.PrivateKeeperDetailsFormModel.Form.EmailOptionId
+import common.model.PrivateKeeperDetailsFormModel.Form.FirstNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.LastNameId
+import common.model.PrivateKeeperDetailsFormModel.Form.PostcodeId
+import common.model.PrivateKeeperDetailsFormModel.Form.TitleId
 import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
 object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
@@ -80,7 +87,7 @@ object PrivateKeeperDetailsPage extends Page with WebBrowserDSL with Matchers {
     titleRadioButtons.find(_.underlying.getAttribute("id") endsWith titleType(title))
       .fold(throw new Exception) ( _.isSelected should equal(true))
     titleRadioButtons.filterNot(_.underlying.getAttribute("id") endsWith titleType(title))
-      .map(_.isSelected should equal(false))
+      .foreach(_.isSelected should equal(false))
   }
 
   def assertNoTitleSelected()(implicit driver: WebDriver): Unit = {

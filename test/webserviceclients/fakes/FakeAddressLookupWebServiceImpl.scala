@@ -17,7 +17,6 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.PostcodeToAddressResponseDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnAddressPairDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.UprnToAddressResponseDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressDto
 
 final class FakeAddressLookupWebServiceImpl(responseOfPostcodeWebService: Future[WSResponse],
                                             responseOfUprnWebService: Future[WSResponse]) extends AddressLookupWebService {
@@ -43,7 +42,9 @@ object FakeAddressLookupWebServiceImpl {
     Seq(houseName, houseNumber, "property stub", "street stub", "town stub", "area stub", PostcodeValid)
   }
 
-  def uprnAddressPairWithDefaults(uprn: String = UprnValid.toString, houseName: String = "presentationProperty stub", houseNumber: String = "123") =
+  def uprnAddressPairWithDefaults(uprn: String = UprnValid.toString,
+                                  houseName: String = "presentationProperty stub",
+                                  houseNumber: String = "123") =
     UprnAddressPairDto(uprn, address = addressSeq(houseName, houseNumber).mkString(", "))
 
   def postcodeToAddressResponseValid: PostcodeToAddressResponseDto = {
@@ -74,7 +75,8 @@ object FakeAddressLookupWebServiceImpl {
 
   val uprnToAddressResponseValid = {
     val uprnAddressPair = uprnAddressPairWithDefaults()
-    UprnToAddressResponseDto(addressViewModel = Some(AddressModel(uprn = Some(uprnAddressPair.uprn.toLong), address = uprnAddressPair.address.split(", "))))
+    UprnToAddressResponseDto(addressViewModel = Some(AddressModel(uprn = Some(uprnAddressPair.uprn.toLong),
+      address = uprnAddressPair.address.split(", "))))
   }
 
   def responseValidForUprnToAddress: Future[WSResponse] = {

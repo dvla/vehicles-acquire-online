@@ -20,7 +20,6 @@ import pages.acquire.PrivateKeeperDetailsPage.{EmailValid, FirstNameValid, LastN
 import pages.acquire.{BeforeYouStartPage, VehicleLookupPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import webserviceclients.fakes.FakeDateServiceImpl
 import scala.concurrent.duration.DurationInt
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
@@ -30,6 +29,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderD
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.services.{DateService, DateServiceImpl}
 import utils.helpers.Config
+import webserviceclients.fakes.FakeDateServiceImpl
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionIdValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionTimestampValid

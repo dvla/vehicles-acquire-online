@@ -9,7 +9,7 @@ import pages.acquire.BeforeYouStartPage.startNow
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import ProgressBar.progressStep
 
-final class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
+class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage

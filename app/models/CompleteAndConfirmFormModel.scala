@@ -1,6 +1,7 @@
 package models
 
 import mappings.Consent.consent
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import org.joda.time.LocalDate
 import play.api.data.Forms.mapping
 import play.api.data.validation.{Valid, ValidationError, Invalid, Constraint}
@@ -10,7 +11,6 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 case class CompleteAndConfirmFormModel(mileage: Option[Int],
                                        dateOfSale: LocalDate,

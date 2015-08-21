@@ -615,10 +615,11 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
     val responseUprn = if (uprnFound) responseValidForUprnToAddress else responseValidForUprnToAddressNotFound
 
     val addressLookupWebServiceMock = mock[AddressLookupWebService]
-    when(addressLookupWebServiceMock.callPostcodeWebService(anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang])).
-      thenReturn(responsePostcode)
-    when(addressLookupWebServiceMock.callUprnWebService(anyString(), any[TrackingId])(any[Lang])).
-      thenReturn(responseUprn)
+    when(addressLookupWebServiceMock.callPostcodeWebService(
+      anyString(), any[TrackingId], any[Option[Boolean]])(any[Lang]))
+      .thenReturn(responsePostcode)
+    when(addressLookupWebServiceMock.callUprnWebService(anyString(), any[TrackingId])(any[Lang]))
+      .thenReturn(responseUprn)
 
     val healthStatsMock = mock[HealthStats]
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {

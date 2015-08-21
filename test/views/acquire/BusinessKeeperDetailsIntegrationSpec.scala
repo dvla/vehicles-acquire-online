@@ -14,7 +14,7 @@ import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 
-final class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
+class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {

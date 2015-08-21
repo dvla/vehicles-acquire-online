@@ -1,6 +1,8 @@
 package composition
 
-import uk.gov.dvla.vehicles.presentation.common.ConfigProperties._
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.booleanProp
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.intProp
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.EmailConfiguration
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire_service.FakeAcquireConfig
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.From

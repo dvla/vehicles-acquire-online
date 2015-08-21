@@ -9,7 +9,9 @@ import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{RegistrationNumberValid, VehicleMakeValid, VehicleModelValid}
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleMakeValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleModelValid
 
 class VehicleTaxOrSornUnitSpec extends UnitSpec {
 

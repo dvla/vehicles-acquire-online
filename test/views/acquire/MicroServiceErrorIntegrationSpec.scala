@@ -10,7 +10,7 @@ import pages.acquire.MicroServiceErrorPage.{exit, tryAgain}
 import pages.acquire.{BeforeYouStartPage, MicroServiceErrorPage, SetupTradeDetailsPage, VehicleLookupPage}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 
-final class MicroServiceErrorIntegrationSpec extends UiSpec with TestHarness {
+class MicroServiceErrorIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to MicroServiceErrorPage

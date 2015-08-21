@@ -2,8 +2,7 @@ package pages.common
 
 import org.openqa.selenium.WebDriver
 import pages.acquire.buildAppUrl
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
 import views.common.UprnNotFound.{ManualaddressbuttonId, SetuptradedetailsbuttonId}
 
 object UprnNotFoundPage extends Page with WebBrowserDSL {

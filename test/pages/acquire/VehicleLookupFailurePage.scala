@@ -1,10 +1,9 @@
 package pages.acquire
 
-import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
+import org.openqa.selenium.WebDriver
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
 import views.acquire.VehicleLookupFailure
 import VehicleLookupFailure.{BeforeYouStartId, VehicleLookupId}
-import org.openqa.selenium.WebDriver
 
 object VehicleLookupFailurePage extends Page with WebBrowserDSL {
   final val address = buildAppUrl("vehicle-lookup-failure")

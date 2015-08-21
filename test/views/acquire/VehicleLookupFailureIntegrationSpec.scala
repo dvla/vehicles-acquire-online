@@ -1,10 +1,10 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.UiSpec
-import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
+import helpers.common.ProgressBar
 import helpers.tags.UiTag
+import helpers.UiSpec
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import org.openqa.selenium.WebDriver
 import pages.acquire.VehicleLookupFailurePage.{beforeYouStart, vehicleLookup}
@@ -13,6 +13,9 @@ import pages.common.Feedback.AcquireEmailFeedbackLink
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 
 class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
+  val expectedString = "Only a limited number of attempts can be made to retrieve vehicle details " +
+    "for each vehicle registration number entered."
+
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowser {
       go to BeforeYouStartPage
@@ -71,7 +74,7 @@ class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
         vehicleLookupResponseCode(responseCode = "300L - vehicle_and_keeper_lookup_vrm_not_found")
 
       go to VehicleLookupFailurePage
-      page.source should include("Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.")
+      page.source should include(expectedString)
     }
 
     "display messages that show that the number of brute force attempts does not impact which messages are displayed when 2 attempts have been made" taggedAs UiTag in new WebBrowser {
@@ -84,7 +87,7 @@ class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
         vehicleLookupResponseCode(responseCode = "400P - vehicle_and_keeper_lookup_vrm_not_found")
 
       go to VehicleLookupFailurePage
-      page.source should include("Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.")
+      page.source should include(expectedString)
     }
 
     "display appropriate messages for document reference mismatch" taggedAs UiTag in new WebBrowser {
@@ -97,7 +100,7 @@ class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
         vehicleLookupResponseCode(responseCode = "600K - vehicle_and_keeper_lookup_document_reference_mismatch")
 
       go to VehicleLookupFailurePage
-      page.source should include("Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.")
+      page.source should include(expectedString)
     }
   }
 

@@ -1,9 +1,9 @@
 package models
 
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 final case class CompleteAndConfirmResponseModel(transactionId: String,
                                                  transactionTimestamp: DateTime)
