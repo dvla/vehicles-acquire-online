@@ -1,21 +1,19 @@
 package controllers
 
 import com.google.inject.Inject
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.EnterAddressManuallyFormModel
-import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichForm, RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
+import common.LogFormats.DVLALogger
 import common.model.{VmAddressModel, SetupTradeDetailsFormModel, TraderDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.enter_address_manually
-
-import models.AcquireCacheKeyPrefix.CookiePrefix
 
 class EnterAddressManually @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller with DVLALogger {
@@ -28,10 +26,10 @@ class EnterAddressManually @Inject()()(implicit clientSideSessionFactory: Client
     request.cookies.getModel[SetupTradeDetailsFormModel] match {
       case Some(setupTradeDetails) =>
         Ok(enter_address_manually(form.fill(), traderPostcode = setupTradeDetails.traderPostcode))
-      case None => {
-        logMessage(request.cookies.trackingId(),Error,s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}")
+      case None =>
+        logMessage(request.cookies.trackingId(), Error,
+          s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}")
         Redirect(routes.SetUpTradeDetails.present())
-      }
     }
   }
 
@@ -41,8 +39,8 @@ class EnterAddressManually @Inject()()(implicit clientSideSessionFactory: Client
           case Some(setupTradeDetails) =>
             BadRequest(enter_address_manually(formWithReplacedErrors(invalidForm), setupTradeDetails.traderPostcode))
           case None =>
-            logMessage(request.cookies.trackingId(),Debug,s"Failed to find dealer details in cache, redirecting to " +
-              s"${routes.SetUpTradeDetails.present()}")
+            logMessage(request.cookies.trackingId(), Debug,
+              s"Failed to find dealer details in cache, redirecting to ${routes.SetUpTradeDetails.present()}")
             Redirect(routes.SetUpTradeDetails.present())
         },
       validForm => request.cookies.getModel[SetupTradeDetailsFormModel] match {
@@ -53,13 +51,13 @@ class EnterAddressManually @Inject()()(implicit clientSideSessionFactory: Client
             traderAddress = traderAddress,
             traderEmail = setupTradeDetails.traderEmail
           )
-          logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
+          logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.VehicleLookup.present()}")
           Redirect(routes.VehicleLookup.present()).
             discardingCookie(BusinessChooseYourAddressCacheKey).
             withCookie(validForm).
             withCookie(traderDetailsModel)
         case None =>
-          logMessage(request.cookies.trackingId(),Warn,
+          logMessage(request.cookies.trackingId(), Warn,
             "Failed to find dealer details in cache on submit, redirecting to SetUpTradeDetails")
           Redirect(routes.SetUpTradeDetails.present())
       }

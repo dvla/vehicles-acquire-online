@@ -21,6 +21,7 @@ import common.services.DateServiceImpl
 import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
 import common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl
 import common.webserviceclients.addresslookup.ordnanceservey.WebServiceImpl
+import common.webserviceclients.bruteforceprevention.{WebServiceImpl => BruteForcePreventionWebServiceImpl}
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
@@ -66,7 +67,7 @@ class DevModule extends ScalaModule {
     bind[EmailServiceWebService].to[EmailServiceWebServiceImpl].asEagerSingleton()
     bind[EmailService].to[EmailServiceImpl].asEagerSingleton()
 
-    bind[BruteForcePreventionWebService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.bruteforceprevention.WebServiceImpl].asEagerSingleton()
+    bind[BruteForcePreventionWebService].to[BruteForcePreventionWebServiceImpl].asEagerSingleton()
     bind[BruteForcePreventionService].to[BruteForcePreventionServiceImpl].asEagerSingleton()
 
     bind[LoggerLike].annotatedWith(Names.named(AccessLoggerName)).toInstance(Logger("dvla.pages.common.AccessLogger"))

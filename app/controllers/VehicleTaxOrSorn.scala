@@ -10,12 +10,11 @@ import models.VehicleTaxOrSornFormModel
 import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId, SornFormError}
 import models.VehicleTaxOrSornViewModel
 import play.api.data.{FormError, Form}
-import play.api.Logger
 import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
+import common.LogFormats.DVLALogger
 import common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
 import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
@@ -44,19 +43,20 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
 
   private def redirectToVehicleLookup(message: String)
                                      (implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Warn,message)
+    logMessage(request.cookies.trackingId(), Warn, message)
     Redirect(routes.VehicleLookup.present())
   }
 
   def back = Action { implicit request =>
     request.cookies.getModel[NewKeeperEnterAddressManuallyFormModel] match {
       case Some(manualAddress) =>
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}")
+        logMessage(request.cookies.trackingId(), Debug,
+          s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}")
         Redirect(routes.NewKeeperEnterAddressManually.present())
-      case None => {
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
+      case None =>
+        logMessage(request.cookies.trackingId(), Debug,
+          s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
         Redirect(routes.NewKeeperChooseYourAddress.present())
-      }
     }
   }
 
@@ -74,7 +74,7 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
         }
       },
       validForm => {
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.CompleteAndConfirm.present()}")
+        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.CompleteAndConfirm.present()}")
           Redirect(routes.CompleteAndConfirm.present())
             .withCookie(validForm)
             .withCookie(AllowGoingToCompleteAndConfirmPageCacheKey, "true")

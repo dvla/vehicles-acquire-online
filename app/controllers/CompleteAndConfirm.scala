@@ -18,9 +18,9 @@ import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
+import common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger, anonymize, optionNone}
+import common.LogFormats.{DVLALogger, anonymize, optionNone}
 import common.mappings.TitleType
 import common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
 import common.services.{SEND, DateService}
@@ -97,7 +97,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                 dateService)
               )
             case _ =>
-              logMessage(request.cookies.trackingId(),Warn,
+              logMessage(request.cookies.trackingId(), Warn,
                 "Could not find expected data in cache on dispose submit - now redirecting...")
               Redirect(routes.VehicleLookup.present()).discardingCookies()
           }
@@ -105,8 +105,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         validForm => {
           // Check to see if the TraderDetailsModel cookie is present
           request.cookies.getModel[TraderDetailsModel].fold {
-            logMessage(request.cookies.trackingId(),Warn,"Could not find trader details in cache on Acquire submit - " +
-              "now redirecting to SetUpTradeDetails...")
+            logMessage(request.cookies.trackingId(), Warn,
+              "Could not find trader details in cache on Acquire submit - now redirecting to SetUpTradeDetails...")
             Future.successful {
               Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             }
@@ -127,7 +127,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
               ))(keeperEndDate => { // keeperEndDate is present so we use it to see if the dateOfSale is valid
                 if (!validDates(keeperEndDate, validForm.dateOfSale)) {
                   // Date of sale is invalid so send a bad request back to the submitting page
-                  logMessage(request.cookies.trackingId(),Debug,s"Complete-and-confirm date validation failed: keeperEndDate " +
+                  logMessage(request.cookies.trackingId(), Debug,
+                    "Complete-and-confirm date validation failed: keeperEndDate " +
                     s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
 
                   val dateInvalidCall = Future.successful {
@@ -155,8 +156,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
             }
             // For comprehension drops out to here if any of the cookies are missing
             result.getOrElse(Future.successful {
-              logMessage(request.cookies.trackingId(),Warn,"Could not find expected data in cache on acquire submit - " +
-                s"now redirecting to VehicleLookup")
+              logMessage(request.cookies.trackingId(), Warn,
+                "Could not find expected data in cache on acquire submit - now redirecting to VehicleLookup")
               Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
             })
           }
@@ -167,20 +168,22 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   private def canPerformPresent(action: => Result)(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
-      logMessage(request.cookies.trackingId(),Warn,s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
+      logMessage(request.cookies.trackingId(), Warn,
+        "Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
         s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
       Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardedOnRedirectAway)
     }(c => action)
 
   private def canPerformSubmit(action: => Future[Result])(implicit request: Request[_]) =
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
-      logMessage(request.cookies.trackingId(),Warn,s"Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
+      logMessage(request.cookies.trackingId(), Warn,
+        "Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
         s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
       Future.successful(Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardedOnRedirectAway))
     }(c => action)
 
   private def redirectToVehicleLookup(message: String)(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Warn,message)
+    logMessage(request.cookies.trackingId(), Warn, message)
     Redirect(routes.VehicleLookup.present())
   }
 
@@ -188,17 +191,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     request.cookies.getModel[NewKeeperDetailsViewModel] match {
       case Some(keeperDetails) =>
         if (keeperDetails.address.uprn.isDefined) {
-          logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
+          logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
           Redirect(routes.NewKeeperChooseYourAddress.present())
         }
         else {
-          logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}")
+          logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}")
           Redirect(routes.NewKeeperEnterAddressManually.present())
         }
-      case None => {
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
+      case None =>
+        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.VehicleLookup.present()}")
         Redirect(routes.VehicleLookup.present())
-      }
     }
   }
 
@@ -256,7 +258,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
           .get
     }.recover {
       case e: Throwable =>
-        logMessage(request.cookies.trackingId(),Warn,s"Acquire micro-service call failed: ${e.getMessage}")
+        logMessage(request.cookies.trackingId(), Warn, s"Acquire micro-service call failed: ${e.getMessage}")
         Redirect(routes.MicroServiceError.present())
     }
   }
@@ -270,19 +272,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     response.foreach(r => logResponse(r))
 
     response match {
-      case Some(r) if r.responseCode.isDefined => {
+      case Some(r) if r.responseCode.isDefined =>
         r.responseCode.get match {
-          case "X0001" | "W0075" => {
+          case "X0001" | "W0075" =>
             logRequestRequiringFurtherAction(r.responseCode.get, transactionId, acquireRequest)
             createAndSendEmailRequiringFurtherAction(transactionId, acquireRequest)
-          }
           case _ =>
         }
         successReturn(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
-      }
-      case _ => {
+      case _ =>
         handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
-      }
     }
   }
 
@@ -360,10 +359,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                           (implicit request: Request[_]): Call =
     statusCode match {
       case OK => successReturn(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
-      case _ => {
-        logMessage(request.cookies.trackingId(),Warn, s"Acquire micro-service call failed. ${statusCode}")
+      case _ =>
+        logMessage(request.cookies.trackingId(), Warn, s"Acquire micro-service call failed. $statusCode")
         routes.MicroServiceError.present()
-      }
     }
 
   private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
@@ -373,7 +371,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                             trackingId: TrackingId)
                            (implicit request: Request[_]): Call = {
     createAndSendEmail(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
-    logMessage(request.cookies.trackingId(), Info,s"Redirecting to ${routes.AcquireSuccess.present()}")
+    logMessage(request.cookies.trackingId(), Info, s"Redirecting to ${routes.AcquireSuccess.present()}")
     routes.AcquireSuccess.present()
   }
 
@@ -403,7 +401,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
 
   private def logRequest(acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Debug,"Change keeper micro-service request",
+    logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",
       Option(Seq(
         acquireRequest.webHeader.applicationCode,
         acquireRequest.webHeader.originDateTime.toString(),
@@ -429,7 +427,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
   }
 
   private def logResponse(disposeResponse: AcquireResponseDto)(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Debug,"Change keeper micro-service request",
+    logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",
       Option(Seq(anonymize(disposeResponse.registrationNumber),
       disposeResponse.responseCode.getOrElse(""),
       anonymize(disposeResponse.transactionId)))
@@ -438,7 +436,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   private def logRequestRequiringFurtherAction(responseCode: String, transactionId: String,
                                                acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Error, "Further action required",
+    logMessage(request.cookies.trackingId(), Error, "Further action required",
       Some(Seq(
         acquireRequest.webHeader.applicationCode,
         acquireRequest.webHeader.originDateTime.toString(),
@@ -584,7 +582,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     keeperDetails.email match {
       case Some(emailAddr) =>
         import scala.language.postfixOps
-
         import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
 
         implicit val emailConfiguration = config.emailConfiguration
@@ -596,6 +593,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         // This sends the email.
         SEND email template withSubject s"${vehicleDetails.registrationNumber} Confirmation of new vehicle keeper" to emailAddr send trackingId
 
-      case None => logMessage(request.cookies.trackingId(),Warn,s"tried to send an email with no keeper details")
+      case None => logMessage(request.cookies.trackingId(), Warn, "Tried to send an email with no keeper details")
     }
 }

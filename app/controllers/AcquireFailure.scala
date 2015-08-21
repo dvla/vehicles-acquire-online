@@ -7,12 +7,11 @@ import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel
 import models.VehicleTaxOrSornFormModel
 import models.{AllCacheKeys, VehicleNewKeeperCompletionCacheKeys}
-import play.api.Logger
 import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
+import common.LogFormats.DVLALogger
 import common.model.{NewKeeperDetailsViewModel, VehicleAndKeeperDetailsModel, TraderDetailsModel}
 import utils.helpers.Config
 
@@ -24,7 +23,7 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   private final val MissingCookies = "Missing cookies in cache."
 
   def present = Action { implicit request =>
-    logMessage(request.cookies.trackingId(),Info,s"Present acquireFailure page")
+    logMessage(request.cookies.trackingId(), Info, "Present acquireFailure page")
     (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
@@ -55,7 +54,7 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
 
   private def redirectToStart(message: String)
                              (implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Warn,message)
+    logMessage(request.cookies.trackingId(), Warn, message)
     Redirect(routes.BeforeYouStart.present())
   }
 }

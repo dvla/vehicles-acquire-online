@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import play.api.Logger
 import play.api.mvc.{Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
@@ -29,22 +28,20 @@ class VehicleLookupFailure @Inject()()(implicit clientSideSessionFactory: Client
     }
 
   override def missingPresentCookieDataResult()(implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.SetUpTradeDetails.present()}")
+    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.SetUpTradeDetails.present()}")
     Redirect(routes.SetUpTradeDetails.present())
   }
 
   override def submitResult()(implicit request: Request[_]): Result =
     request.cookies.getModel[TraderDetailsModel] match {
-      case Some(dealerDetails) => {
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
+      case Some(dealerDetails) =>
+        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.VehicleLookup.present()}")
         Redirect(routes.VehicleLookup.present())
-      }
       case _ => missingSubmitCookieDataResult
     }
 
   override def missingSubmitCookieDataResult()(implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.BeforeYouStart.present()}")
+    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.BeforeYouStart.present()}")
     Redirect(routes.BeforeYouStart.present())
   }
-
 }

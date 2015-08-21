@@ -14,8 +14,9 @@ import common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import webserviceclients.emailservice.EmailService
 
-class FeedbackController @Inject()(val emailService: EmailService)(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                        config: Config) extends Controller with FeedbackBase {
+class FeedbackController @Inject()(val emailService: EmailService)
+                                  (implicit clientSideSessionFactory: ClientSideSessionFactory,
+                                   config: Config) extends Controller with FeedbackBase {
 
   override val emailConfiguration = config.emailConfiguration
 
@@ -24,7 +25,7 @@ class FeedbackController @Inject()(val emailService: EmailService)(implicit clie
   )
 
   implicit val controls: Map[String, Call] = Map(
-  "submit" -> controllers.routes.FeedbackController.submit()
+    "submit" -> controllers.routes.FeedbackController.submit()
   )
 
   def present() = Action { implicit request =>

@@ -2,18 +2,16 @@ package controllers
 
 import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import play.api.Logger
 import play.api.data.Form
 import play.api.mvc.{Request, Result}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichForm}
-import common.model.NewKeeperEnterAddressManuallyFormModel
+import common.clientsidesession.CookieImplicits.RichForm
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.controllers.NewKeeperEnterAddressManuallyBase
+import common.model.NewKeeperEnterAddressManuallyFormModel
 import common.model.NewKeeperEnterAddressManuallyViewModel
 import common.model.VehicleAndKeeperDetailsModel
-
 import utils.helpers.Config
 import views.html.acquire.new_keeper_enter_address_manually
 
@@ -27,7 +25,7 @@ class NewKeeperEnterAddressManually @Inject()()
           Ok(new_keeper_enter_address_manually(NewKeeperEnterAddressManuallyViewModel(form.fill(), model), postcode))
 
   protected override def missingVehicleDetails(implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.VehicleLookup.present()}")
+    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.VehicleLookup.present()}")
       Redirect(routes.VehicleLookup.present())
   }
 

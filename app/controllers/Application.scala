@@ -9,11 +9,13 @@ import utils.helpers.Config
 import common.clientsidesession.CookieImplicits.RichCookies
 
 /* Controller for redirecting people to the start page if the enter the application using the url "/" */
-class Application @Inject()(implicit config: Config, clientSideSessionFactory: ClientSideSessionFactory) extends Controller with DVLALogger {
+class Application @Inject()(implicit config: Config,
+                            clientSideSessionFactory: ClientSideSessionFactory) extends Controller with DVLALogger {
+
   private final val startUrl: String = config.startUrl
 
   def index = Action { implicit request =>
-    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to $startUrl...")
+    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to $startUrl...")
     Redirect(startUrl)
   }
 }

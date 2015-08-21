@@ -2,7 +2,6 @@ package controllers
 
 import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import play.api.Logger
 import play.api.mvc.{Result, Request}
 import play.api.data.Form
 import uk.gov.dvla.vehicles.presentation.common
@@ -17,19 +16,21 @@ class PrivateKeeperDetails @Inject()()(implicit protected override val clientSid
                                        dateService: DateService,
                                        config: Config) extends PrivateKeeperDetailsBase {
 
-  protected override def presentResult(model: VehicleAndKeeperDetailsModel, form: Form[PrivateKeeperDetailsFormModel])(implicit request: Request[_]): Result =
+  protected override def presentResult(model: VehicleAndKeeperDetailsModel, form: Form[PrivateKeeperDetailsFormModel])
+                                      (implicit request: Request[_]): Result =
     Ok(views.html.acquire.private_keeper_details(model, form))
 
   protected override def missingVehicleDetails(implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.SetUpTradeDetails.present()}")
+    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.SetUpTradeDetails.present()}")
     Redirect(routes.SetUpTradeDetails.present())
   }
 
-  protected override def invalidFormResult(model: VehicleAndKeeperDetailsModel, form: Form[PrivateKeeperDetailsFormModel])(implicit request: Request[_]): Result =
+  protected override def invalidFormResult(model: VehicleAndKeeperDetailsModel, form: Form[PrivateKeeperDetailsFormModel])
+                                          (implicit request: Request[_]): Result =
     BadRequest(views.html.acquire.private_keeper_details(model, form))
 
   protected override def success(implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
+    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
     Redirect(routes.NewKeeperChooseYourAddress.present())
   }
 }

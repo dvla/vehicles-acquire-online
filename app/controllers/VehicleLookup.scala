@@ -8,7 +8,6 @@ import models.EnterAddressManuallyFormModel
 import models.VehicleLookupFormModel.{Key, JsonFormat}
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
-import play.api.Logger
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Result, Action, Request}
 import scala.concurrent.Future
@@ -39,19 +38,19 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
 
   override def vrmLocked(bruteForcePreventionModel: BruteForcePreventionModel, formModel: VehicleLookupFormModel)
                         (implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Warn,s"Redirecting to ${routes.VrmLocked.present()}")
+    logMessage(request.cookies.trackingId(), Warn, s"Redirecting to ${routes.VrmLocked.present()}")
     Redirect(routes.VrmLocked.present())
   }
 
   override def microServiceError(t: Throwable, formModel: VehicleLookupFormModel)
                                 (implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Error,s"Redirecting to ${routes.MicroServiceError.present()}")
+    logMessage(request.cookies.trackingId(), Error, s"Redirecting to ${routes.MicroServiceError.present()}")
     Redirect(routes.MicroServiceError.present())
   }
 
   override def vehicleLookupFailure(responseCode: VehicleAndKeeperLookupErrorMessage, formModel: VehicleLookupFormModel)
                                    (implicit request: Request[_]): Result = {
-    logMessage(request.cookies.trackingId(),Warn,s"Redirecting to ${routes.VehicleLookupFailure.present()}")
+    logMessage(request.cookies.trackingId(), Warn, s"Redirecting to ${routes.VehicleLookupFailure.present()}")
     Redirect(routes.VehicleLookupFailure.present())
   }
 
@@ -65,10 +64,10 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
             traderDetails.traderAddress.address,
             traderDetails.traderEmail
           )))
-      case None => {
-        logMessage(request.cookies.trackingId(),Warn,s"No trader details found, now redirecting to ${routes.SetUpTradeDetails.present()}")
+      case None =>
+        logMessage(request.cookies.trackingId(), Warn,
+          s"No trader details found, now redirecting to ${routes.SetUpTradeDetails.present()}")
         Redirect(routes.SetUpTradeDetails.present())
-      }
     }
 
   override def invalidFormResult(invalidForm: Form[VehicleLookupFormModel])
@@ -85,23 +84,21 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
             )
           )
         )
-      case None => {
-        logMessage(request.cookies.trackingId(),Warn,s"No trader details found, now redirecting to ${routes.SetUpTradeDetails.present()}")
+      case None =>
+        logMessage(request.cookies.trackingId(), Warn,
+          s"No trader details found, now redirecting to ${routes.SetUpTradeDetails.present()}")
         Redirect(routes.SetUpTradeDetails.present())
-      }
     }
   }
 
   def back = Action { implicit request =>
     request.cookies.getModel[EnterAddressManuallyFormModel] match {
-      case Some(manualAddress) => {
-        logMessage(request.cookies.trackingId(),Warn,s"Redirecting to ${routes.EnterAddressManually.present()}")
+      case Some(manualAddress) =>
+        logMessage(request.cookies.trackingId(), Warn, s"Redirecting to ${routes.EnterAddressManually.present()}")
         Redirect(routes.EnterAddressManually.present())
-      }
-      case None => {
-        logMessage(request.cookies.trackingId(),Warn,s"Redirecting to ${routes.BusinessChooseYourAddress.present()}")
+      case None =>
+        logMessage(request.cookies.trackingId(), Warn, s"Redirecting to ${routes.BusinessChooseYourAddress.present()}")
         Redirect(routes.BusinessChooseYourAddress.present())
-      }
     }
   }
 
@@ -113,15 +110,15 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
     val suppressed = model.suppressedV5Flag.getOrElse(false)
 
     (disposed, suppressed) match {
-      case (_, true) => {
-        logMessage(request.cookies.trackingId(),Warn,s"V5C is suppressed, now redirecting to ${routes.SuppressedV5C.present()}")
+      case (_, true) =>
+        logMessage(request.cookies.trackingId(), Warn,
+          s"V5C is suppressed, now redirecting to ${routes.SuppressedV5C.present()}")
         Redirect(routes.SuppressedV5C.present()).withCookie(model)
-      }
       case (true, false) => vehicleDisposedResult(model, formModel.vehicleSoldTo)
-      case (false, _) => {
-        logMessage(request.cookies.trackingId(),Warn,s"Keeper is still on record, now redirecting to ${routes.KeeperStillOnRecord.present()}")
+      case (false, _) =>
+        logMessage(request.cookies.trackingId(), Warn,
+          s"Keeper is still on record, now redirecting to ${routes.KeeperStillOnRecord.present()}")
         Redirect(routes.KeeperStillOnRecord.present()).withCookie(model)
-      }
     }
   }
 
@@ -129,11 +126,11 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
                                     soldTo: String)(implicit request: Request[_]) = {
     val (call, discardedCookies) =
       if (soldTo == VehicleSoldTo_Private) {
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.PrivateKeeperDetails.present()}")
+        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.PrivateKeeperDetails.present()}")
         (routes.PrivateKeeperDetails.present(), BusinessKeeperDetailsCacheKeys)
       }
       else {
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to ${routes.BusinessKeeperDetails.present()}")
+        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.BusinessKeeperDetails.present()}")
         (routes.BusinessKeeperDetails.present(), PrivateKeeperDetailsCacheKeys)
       }
 

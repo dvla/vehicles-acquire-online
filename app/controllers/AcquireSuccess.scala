@@ -9,12 +9,11 @@ import models.CompleteAndConfirmResponseModel
 import models.SurveyRequestTriggerDateCacheKey
 import models.VehicleNewKeeperCompletionCacheKeys
 import models.VehicleTaxOrSornFormModel
-import play.api.Logger
 import play.api.mvc.{Request, Action, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger}
+import common.LogFormats.DVLALogger
 import common.model.{TraderDetailsModel, VehicleAndKeeperDetailsModel}
 import common.model.NewKeeperDetailsViewModel
 import common.services.DateService
@@ -30,7 +29,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   private final val MissingCookies = "Missing cookies in cache. Redirecting to BeforeYouStart"
 
   def present = Action { implicit request =>
-    logMessage(request.cookies.trackingId(),Debug,s"Acquire success")
+    logMessage(request.cookies.trackingId(), Debug, "Acquire success")
     (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
@@ -71,7 +70,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
 
   private def redirectToStart(message: String)
                              (implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(),Warn,message)
+    logMessage(request.cookies.trackingId(), Warn, message)
     Redirect(routes.BeforeYouStart.present())
   }
 }
@@ -85,12 +84,12 @@ class SurveyUrl @Inject()(implicit clientSideSessionFactory: ClientSideSessionFa
     request.cookies.getString(SurveyRequestTriggerDateCacheKey) match {
       case Some(lastSurveyMillis) =>
         if ((lastSurveyMillis.toLong + config.surveyInterval) < dateService.now.getMillis) {
-          logMessage(request.cookies.trackingId(),Debug,s"Redirecting to survey $url")
+          logMessage(request.cookies.trackingId(), Debug, s"Redirecting to survey $url")
           url
         }
         else None
       case None =>
-        logMessage(request.cookies.trackingId(),Debug,s"Redirecting to survey $url")
+        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to survey $url")
         url
     }
   }
