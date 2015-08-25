@@ -22,7 +22,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.{AcquireSuccessPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
@@ -35,9 +35,11 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.Acquir
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireService
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireServiceImpl
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailServiceSendRequest
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailServiceSendResponse
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
-import webserviceclients.emailservice.{EmailService, EmailServiceSendRequest, EmailServiceSendResponse}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseApplicationBeingProcessed, acquireResponseSuccess}
 import webserviceclients.fakes.FakeResponse
 

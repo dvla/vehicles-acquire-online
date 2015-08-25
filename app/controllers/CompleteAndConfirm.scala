@@ -32,9 +32,9 @@ import common.webserviceclients.acquire.KeeperDetailsDto
 import common.webserviceclients.acquire.TitleTypeDto
 import common.webserviceclients.acquire.TraderDetailsDto
 import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
+import common.webserviceclients.emailservice.EmailService
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
-import webserviceclients.emailservice.EmailService
 
 class CompleteAndConfirm @Inject()(webService: AcquireService,
                                    emailService: EmailService)
