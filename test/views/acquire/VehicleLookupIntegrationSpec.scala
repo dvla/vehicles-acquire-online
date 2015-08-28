@@ -22,8 +22,9 @@ import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
+import uk.gov.dvla.vehicles.presentation.common.views.widgetdriver.Wait
+import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 
 class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
@@ -78,8 +79,9 @@ class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleLookupPage
-      new WebDriverWait(webDriver, 3).until(ExpectedConditions.visibilityOfElementLocated(
-        By.xpath("//div[@data-tooltip='tooltip_documentReferenceNumber']"))
+      Wait.until(ExpectedConditions.visibilityOfElementLocated(
+        By.xpath("//div[@data-tooltip='tooltip_documentReferenceNumber']")),
+        5
       )
     }
 
@@ -88,9 +90,8 @@ class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       go to VehicleLookupPage
       val v5c = By.xpath("//div[@data-tooltip='tooltip_documentReferenceNumber']")
-      val waiting = new WebDriverWait(webDriver, 3)
-      waiting.until(ExpectedConditions.presenceOfElementLocated(v5c))
-      waiting.until(ExpectedConditions.invisibilityOfElementLocated(v5c))
+      Wait.until(ExpectedConditions.presenceOfElementLocated(v5c), 5)
+      Wait.until(ExpectedConditions.invisibilityOfElementLocated(v5c), 5)
     }
   }
 
