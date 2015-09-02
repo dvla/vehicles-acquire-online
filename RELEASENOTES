@@ -1,5 +1,16 @@
 ======= 1.16 =======
 Time of release binary creation
+Wed Sep 02 14:35:25 UTC 2015
+
+DE645	Pictures flashing up when loading page
+DE660	Link to Dispose page wording
+DE671	JavaScript disabled, V5C image is getting displayed between the V5c input box and its label name.
+US3731	Remove openingTime, closingTime properties from all exemplars
+US3738	Code review and clean up on vehicles-acquire-online e.g. logMessage, wildcard on imports, line length
+US3754	Change text in email confirmation sent from "Dispose to trade" and K2K
+
+======= 1.16 =======
+Time of release binary creation
 Wed Aug 19 13:36:50 UTC 2015
 
 DE661  Java Script disabled - V5C image not being displayed
