@@ -1,0 +1,10 @@
+/opt/vehicles-acquire-online/logs/*.log {
+        missingok
+        copytruncate
+        notifempty
+        dateext
+        daily
+        create 644 vehicles-acquire-online vehicles-acquire-online
+        compress
+        rotate 35
+}
