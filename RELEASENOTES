@@ -1,4 +1,6 @@
 ======= 1.17 =======
+Time of release binary creation
+Wed Sep 16 10:30:49 UTC 2015
 
 US3731 Remove openingTime, closingTime properties from all exemplars
 US3789 Tidy up the upstart scripts for all microservices and apps
