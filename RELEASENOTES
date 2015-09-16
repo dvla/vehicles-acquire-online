@@ -1,3 +1,9 @@
+======= 1.17 =======
+
+US3731 Remove openingTime, closingTime properties from all exemplars
+US3789 Tidy up the upstart scripts for all microservices and apps
+US3800 Better Emphasize 'Destroy V5C' on all VM Services
+
 ======= 1.16 =======
 Time of release binary creation
 Wed Sep 02 14:35:25 UTC 2015
