@@ -4,12 +4,11 @@ config: utils.helpers.Config)
 @import views.html.acquire.main
 
 @main(
-    title = Messages("acquire.closed.title")
+    title = Messages("closed.title")
 ) {
-    <h1>@Messages("acquire.closed.title")</h1>
-    <p>@Messages("acquire.closed.p1")</p>
-    <p>@Messages("acquire.closed.p2", opening, closing)</p>
+    <h1>@Messages("closed.title")</h1>
+    <p>@Messages("closed.p1", opening, closing)</p>
     <div class="form-steps">
-        <a id="exit-button" href="https://www.gov.uk/" class="button">@Messages("acquire.closed.exit_button")</a>
+        <a id="exit-button" href="https://www.gov.uk/" class="button">@Messages("closed.exit_button")</a>
     </div>
 }

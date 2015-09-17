@@ -588,10 +588,9 @@ acquire.help.exit_button = Exit
 acquire.help.back_button = Back
 
 # closed
-acquire.closed.title = Service Closed
-acquire.closed.p1 = The supporting systems for this service are currently unavailable.
-acquire.closed.p2 = The normal hours of operation are Monday to Saturday - {0} to {1}. Please complete your transaction during these hours.
-acquire.closed.exit_button = Exit
+closed.title = Nid yw’r Gwasanaeth ar gael
+closed.p1 = Mae’r gwasanaeth ar gael o ddydd Llun i ddydd Sadwrn yn unig {0} to {1}
+closed.exit_button = Gadael
 
 # feedback
 common_feedback.title = Give Feedback
