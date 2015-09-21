@@ -12,6 +12,7 @@
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.helpers.LabelHelper.optionalFieldKey
 @import common.mappings.Email.EmailMaxLength
+@import common.views.html.widgets.alertWarning
 @import common.views.html.widgets.base.valtechSelect
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.html.widgets.dates.valtechDate
@@ -41,9 +42,9 @@
         <div class="two-col clearfix">
             <div class="first-col">
                 @vehicle_detail_playback(data)
-                <div class="alert-warning print-message">
+                @alertWarning(List("print-message")) {
                   <p><strong>@Messages("acquire_privatekeeperdetails.p3")</strong></p>
-                </div>
+                }
             </div>
 
             <div class="second-col">
