@@ -30,8 +30,10 @@
         <dl class="playback">
             <dt>@Messages("acquire_businessChooseYourAddress_businessName_label")</dt>
             <dd>@Messages("acquire_businessChooseYourAddress_businessName", traderBusinessName)</dd>
+
             <dt>@Messages("acquire_businessChooseYourAddress_postcode_label")</dt>
             <dd>@traderPostcode</dd>
+
             <dt>@Messages("acquire_businessChooseYourAddress_businessEmail_label")</dt>
             @if(traderEmail == None) {
             <dd>@Messages("acquire_businessChooseYourAddress.emailNotEntered")</dd>

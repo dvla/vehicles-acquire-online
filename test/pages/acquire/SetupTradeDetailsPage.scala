@@ -2,7 +2,7 @@ package pages.acquire
 
 import org.openqa.selenium.WebDriver
 import uk.gov.dvla.vehicles.presentation.common
-import common.helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, TextField, Element, RadioButton}
+import common.helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, TextField, Element, RadioButton, EmailField}
 import common.mappings.Email.{EmailId, EmailVerifyId}
 import common.mappings.OptionalToggle.{Invisible, Visible}
 import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
@@ -23,9 +23,9 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
 
   def traderPostcode(implicit driver: WebDriver): TextField = textField(id(TraderPostcodeId))
 
-  def traderEmail(implicit driver: WebDriver): TextField = textField(id(s"${TraderEmailId}_$EmailId"))
+  def traderEmail(implicit driver: WebDriver): EmailField = emailField(id(s"${TraderEmailId}_$EmailId"))
 
-  def traderConfirmEmail(implicit driver: WebDriver): TextField = textField(id(s"${TraderEmailId}_$EmailVerifyId"))
+  def traderConfirmEmail(implicit driver: WebDriver): EmailField = emailField(id(s"${TraderEmailId}_$EmailVerifyId"))
 
   def lookup(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 

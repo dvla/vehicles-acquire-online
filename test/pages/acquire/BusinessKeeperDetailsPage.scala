@@ -2,7 +2,8 @@ package pages.acquire
 
 import org.openqa.selenium.WebDriver
 import uk.gov.dvla.vehicles.presentation.common
-import common.helpers.webbrowser._
+import common.helpers.webbrowser.{WebBrowserDSL, Page, WebDriverFactory, Element, RadioButton, TextField, TelField, EmailField}
+
 import common.mappings.OptionalToggle._
 import common.model.BusinessKeeperDetailsFormModel.Form._
 import common.mappings.Email.{EmailId => EmailEnterId, EmailVerifyId}
@@ -35,9 +36,9 @@ object BusinessKeeperDetailsPage extends Page with WebBrowserDSL {
   def emailInvisible(implicit driver: WebDriver): RadioButton =
     radioButton(id(s"${EmailOptionId}_$Invisible"))
 
-  def emailField(implicit driver: WebDriver): TextField = textField(id(s"${EmailId}_$EmailEnterId"))
+  def emailField(implicit driver: WebDriver): EmailField = emailField(id(s"${EmailId}_$EmailEnterId"))
 
-  def emailConfirmField(implicit driver: WebDriver): TextField = textField(id(s"${EmailId}_$EmailVerifyId"))
+  def emailConfirmField(implicit driver: WebDriver): EmailField = emailField(id(s"${EmailId}_$EmailVerifyId"))
 
   def postcodeField(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
 
