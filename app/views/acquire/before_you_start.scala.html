@@ -4,6 +4,7 @@
 
 @import controllers.routes.SetUpTradeDetails
 @import views.acquire.BeforeYouStart.NextId
+@import uk.gov.dvla.vehicles.presentation.common.views.html.widgets.alertWarning
 
 @main(
     progress = Some(Messages("acquire_progress_1")),
@@ -24,7 +25,7 @@
         <div class="second-col">
 
             <p>@Messages("acquire_beforeyoustart.p0")</p>
-            <div class="alert-warning"><h2>@Messages("acquire_beforeyoustart.p1")</h2></div>
+            @alertWarning() { <h2>@Messages("acquire_beforeyoustart.p1")</h2> }
 
             <a class="button" role="button" id="@NextId" href="@SetUpTradeDetails.present()">
                 @Messages("acquire_beforeyoustart.button")

@@ -7,6 +7,7 @@
 @import uk.gov.dvla.vehicles.presentation.common
 @import views.html.helper.form
 @import views.acquire.AcquireSuccess.{BuyAnotherId, FinishId}
+@import common.views.html.widgets.alertWarning
 @import common.views.html.widgets.base.csrfTokenHiddenField
 
 @main(
@@ -21,7 +22,9 @@
         <div class="alert-complete">
             <h1>@Messages("acquire_success.complete.header")</h1>
             <p>@Messages("acquire_success.complete.p1")</p>
-            <div class="alert-warning"><p><strong>@Messages("acquire_success.complete.p2")</strong></p></div>
+            @alertWarning() {
+              <p><strong>@Messages("acquire_success.complete.p2")</strong></p>
+            }
         </div>
 
         <h2>@Messages("acquire_success.further_information.header")</h2>
@@ -53,9 +56,9 @@
             </dl>
         </div>
 
-        <div class="alert-warning">
-            <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
-        </div>
+        @alertWarning() {
+          <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
+        }
 
         <div class="form-steps">
             <div class="step">
