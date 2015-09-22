@@ -2,13 +2,22 @@ package pages.acquire
 
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId, TodaysDateId}
 import org.openqa.selenium.WebDriver
+import org.scalatest.selenium.WebBrowser.Checkbox
+import org.scalatest.selenium.WebBrowser.checkbox
+import org.scalatest.selenium.WebBrowser.TelField
+import org.scalatest.selenium.WebBrowser.telField
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.find
+import org.scalatest.selenium.WebBrowser.id
+import org.scalatest.selenium.WebBrowser.Element
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Checkbox, Element, Page, TelField, WebBrowserDSL, WebDriverFactory}
+import helpers.webbrowser.{Page, WebDriverFactory}
 import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
-object CompleteAndConfirmPage extends Page with WebBrowserDSL {
+object CompleteAndConfirmPage extends Page {
   final val address = buildAppUrl("complete-and-confirm")
-  override def url: String = WebDriverFactory.testUrl + address.substring(1)
+  override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Complete and confirm"
 
   final val MileageValid = "1000"
@@ -40,10 +49,10 @@ object CompleteAndConfirmPage extends Page with WebBrowserDSL {
                consent: String = ConsentTrue)(implicit driver: WebDriver) = {
     go to CompleteAndConfirmPage
 
-    mileageTextBox enter mileage
-    dayDateOfSaleTextBox enter dayDateOfSale
-    monthDateOfSaleTextBox enter monthDateOfSale
-    yearDateOfSaleTextBox enter yearDateOfSale
+    mileageTextBox.value = mileage
+    dayDateOfSaleTextBox.value = dayDateOfSale
+    monthDateOfSaleTextBox.value = monthDateOfSale
+    yearDateOfSaleTextBox.value = yearDateOfSale
     click on consent
 
     click on next

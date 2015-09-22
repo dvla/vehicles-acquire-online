@@ -5,10 +5,13 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import org.joda.time.DateTime
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.CompleteAndConfirmPage
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver,WithClue, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver,WithClue}
 
-class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
+class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -60,13 +63,13 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   @Then("^the user will be taken to the \"(.*?)\" page$")
   def the_user_will_be_taken_to_the_page(pageTitle: String) = {
-    page.title should include(pageTitle)
+    pageTitle should include(pageTitle)
   }
 
   @Then("^the user will remain on the complete and confirm page and a warning will be displayed$")
   def the_user_will_be_taken_to_the_page() = {
-    page.title should equal(CompleteAndConfirmPage.title)
-    page.source should include("<div class=\"popup-modal\">")
+    pageTitle should equal(CompleteAndConfirmPage.title)
+    pageSource should include("<div class=\"popup-modal\">")
   }
   
   @When("^the user enters a date of sale same as date of disposal and submits the form$")

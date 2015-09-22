@@ -4,10 +4,13 @@ import cucumber.api.java.en.{Given, When, Then}
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{BusinessKeeperDetailsPage, BusinessChooseYourAddressPage, SetupTradeDetailsPage, VehicleLookupPage}
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDSL, WithClue,WebBrowserDriver}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WithClue,WebBrowserDriver}
 
-class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
+class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -15,11 +18,11 @@ class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: We
 
   def gotoVehicleLookUpPageWithKnownAddress() {
     happyPath.goToSetupTradeDetailsPage()
-    SetupTradeDetailsPage.traderName enter "VA12SU"
-    SetupTradeDetailsPage.traderPostcode enter "qq99qq"
+    SetupTradeDetailsPage.traderName.value = "VA12SU"
+    SetupTradeDetailsPage.traderPostcode.value = "qq99qq"
     click on SetupTradeDetailsPage.emailVisible
-    SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
-    SetupTradeDetailsPage.traderConfirmEmail enter "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderEmail.value = "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderConfirmEmail.value = "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     BusinessChooseYourAddressPage.chooseAddress.value = "0"
     click on BusinessChooseYourAddressPage.select
@@ -29,33 +32,33 @@ class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: We
   @Given("^the user is on the Vehicle LookUp page$")
   def the_user_is_on_the_Vehicle_LookUp_page()  {
     gotoVehicleLookUpPageWithKnownAddress()
-    page.title shouldEqual VehicleLookupPage.title withClue trackingId
+    pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @When("^the user has submitted a vehicle lookup request and a matching record is returned$")
   def the_user_has_submitted_a_vehicle_lookup_request_and_a_matching_record_is_returned()  {
-      VehicleLookupPage.vehicleRegistrationNumber enter "AA11AAE"
-      VehicleLookupPage.documentReferenceNumber enter "88888888885"
+      VehicleLookupPage.vehicleRegistrationNumber.value = "AA11AAE"
+      VehicleLookupPage.documentReferenceNumber.value = "88888888885"
       click on VehicleLookupPage.vehicleSoldToBusiness
       click on VehicleLookupPage.next
   }
 
   @Then("^the user is presented with an error message \"(.*?)\"$")
   def the_user_is_presented_with_an_error_message(keeperStillOnRecord:String)  {
-    page.source should include(keeperStillOnRecord)
+    pageSource should include(keeperStillOnRecord)
   }
 
   @When("^the user has submitted a vehicle lookup request which does n't have keeper end date$")
   def the_user_has_submitted_a_vehicle_lookup_request_which_does_n_t_have_keeper_end_date()  {
-    VehicleLookupPage.vehicleRegistrationNumber enter "AA11AAA"
-    VehicleLookupPage.documentReferenceNumber enter "88888888881"
+    VehicleLookupPage.vehicleRegistrationNumber.value = "AA11AAA"
+    VehicleLookupPage.documentReferenceNumber.value = "88888888881"
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
   }
 
   @Then("^the user will navigate to next page successfully$")
   def the_user_will_navigate_to_next_page_successfully()  {
-    page.title shouldEqual BusinessKeeperDetailsPage.title withClue trackingId
+    pageTitle shouldEqual BusinessKeeperDetailsPage.title withClue trackingId
   }
 
 }

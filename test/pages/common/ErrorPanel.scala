@@ -1,9 +1,10 @@
 package pages.common
 
 import org.openqa.selenium.{By, WebDriver}
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebBrowserDSL
+import org.scalatest.selenium.WebBrowser.find
+import org.scalatest.selenium.WebBrowser.id
 
-object ErrorPanel extends WebBrowserDSL {
+object ErrorPanel {
   def numberOfErrors(implicit driver: WebDriver): Int =
     driver.findElement(By.cssSelector(".validation-summary")).findElements(By.tagName("li")).size
 

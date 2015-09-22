@@ -11,6 +11,10 @@ import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCach
 import models.VehicleNewKeeperCompletionCacheKeys
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.VehicleLookupPage
 import pages.acquire.AcquireSuccessPage
 import pages.acquire.CompleteAndConfirmPage
@@ -47,43 +51,43 @@ import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
 class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
-    "display the page for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display the page for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
 
-      page.title should equal(CompleteAndConfirmPage.title)
+      pageTitle should equal(CompleteAndConfirmPage.title)
     }
 
-    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
 
-      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+      pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
-      page.source.contains(progressStep(8)) should equal(true)
+      pageSource.contains(progressStep(8)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
-      page.source.contains(progressStep(8)) should equal(false)
+      pageSource.contains(progressStep(8)) should equal(false)
     }
 
-    "Redirect when no new keeper details are cached" taggedAs UiTag in new WebBrowser {
+    "Redirect when no new keeper details are cached" taggedAs UiTag in new WebBrowserForSelenium {
       go to CompleteAndConfirmPage
-      page.title should equal(SetupTradeDetailsPage.title)
+      pageTitle should equal(SetupTradeDetailsPage.title)
       assertCookiesDoNotExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
-    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       go to CompleteAndConfirmPage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
@@ -101,7 +105,7 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         .vehicleLookupFormModel()
         .vehicleTaxOrSornFormModel()
       go to CompleteAndConfirmPage
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
       assertCookiesDoNotExist(cookiesDeletedOnRedirect)
     }
 
@@ -114,31 +118,31 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
         .vehicleLookupFormModel()
         .vehicleTaxOrSornFormModel()
       go to CompleteAndConfirmPage
-      page.title should equal(SetupTradeDetailsPage.title)
+      pageTitle should equal(SetupTradeDetailsPage.title)
       assertCookiesDoNotExist(cookiesDeletedOnRedirect)
     }
   }
 
   "submit button" should {
-    "go to the appropriate next page when all details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all details are entered for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal(AcquireSuccessPage.title)
+      pageTitle should equal(AcquireSuccessPage.title)
     }
 
     "go to the AcquireFailure page when all details are entered for a new keeper" taggedAs UiTag in new MockAppWebBrowser(failingWebService) {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal(Messages("error.title"))
+      pageTitle should equal(Messages("error.title"))
     }
 
-    "go to the appropriate next page when mandatory details are entered for a new keeper" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when mandatory details are entered for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "")
-      page.title should equal(AcquireSuccessPage.title)
+      pageTitle should equal(AcquireSuccessPage.title)
     }
 
     "clear off the preventGoingToCompleteAndConfirmPage cookie on success" taggedAs UiTag in new PhantomJsByDefault {
@@ -146,7 +150,7 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       assertCookieExist
       navigate()
-      page.title should equal(AcquireSuccessPage.title)
+      pageTitle should equal(AcquireSuccessPage.title)
       assertCookiesDoNotExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
@@ -155,7 +159,7 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       assertCookieExist
       navigate()
-      page.title should equal(Messages("error.title"))
+      pageTitle should equal(Messages("error.title"))
       assertCookiesDoNotExist(Set(AllowGoingToCompleteAndConfirmPageCacheKey))
     }
 
@@ -223,63 +227,63 @@ import play.api.test.FakeApplication
       countingWebService.calls should have size 1
     }*/
 
-    "display one validation error message when a mileage is entered greater than max length for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when a mileage is entered greater than max length for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "1000000")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when a mileage is entered less than min length for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when a mileage is entered less than min length for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "-1")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when a mileage containing letters is entered for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when a mileage containing letters is entered for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(mileage = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when day date of sale is empty for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when day date of sale is empty for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(dayDateOfSale = "")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when month date of sale is empty for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when month date of sale is empty for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(monthDateOfSale = "")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when year date of sale is empty for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when year date of sale is empty for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(yearDateOfSale = "")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when day date of sale contains letters for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when day date of sale contains letters for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(dayDateOfSale = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when month date of sale contains letters for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when month date of sale contains letters for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(monthDateOfSale = "a")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when year date of sale contains letters for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when year date of sale contains letters for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(yearDateOfSale = "a")
@@ -294,16 +298,16 @@ import play.api.test.FakeApplication
       cacheSetup()
       go to CompleteAndConfirmPage
 
-      mileageTextBox enter CompleteAndConfirmPage.MileageValid
-      dayDateOfSaleTextBox enter CompleteAndConfirmPage.DayDateOfSaleValid
-      monthDateOfSaleTextBox enter CompleteAndConfirmPage.MonthDateOfSaleValid
-      yearDateOfSaleTextBox enter CompleteAndConfirmPage.YearDateOfSaleValid
+      mileageTextBox.value = CompleteAndConfirmPage.MileageValid
+      dayDateOfSaleTextBox.value = CompleteAndConfirmPage.DayDateOfSaleValid
+      monthDateOfSaleTextBox.value = CompleteAndConfirmPage.MonthDateOfSaleValid
+      yearDateOfSaleTextBox.value = CompleteAndConfirmPage.YearDateOfSaleValid
       click on consent
 
       deleteFlagCookie
 
       click on next
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
   }
 
@@ -323,7 +327,7 @@ import play.api.test.FakeApplication
   }
 
   "back" should {
-    "display previous page when back link is clicked for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display previous page when back link is clicked for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
@@ -338,7 +342,7 @@ import play.api.test.FakeApplication
 
       go to CompleteAndConfirmPage
       click on back
-      page.title should equal(VehicleTaxOrSornPage.title)
+      pageTitle should equal(VehicleTaxOrSornPage.title)
     }
   }
 
@@ -352,11 +356,11 @@ import play.api.test.FakeApplication
       .vehicleTaxOrSornFormModel()
       .preventGoingToCompleteAndConfirmPageCookie()
 
-  class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowser (
+  class MockAppWebBrowser(webService: AcquireWebService) extends WebBrowserForSelenium (
     app = LightFakeApplication(mockAcquireServiceCompositionGlobal(webService))
   )
 
-  class MockAppWebBrowserPhantomJs(webService: AcquireWebService) extends WebBrowser (
+  class MockAppWebBrowserPhantomJs(webService: AcquireWebService) extends WebBrowserForSelenium (
     webDriver = WebDriverFactory.defaultBrowserPhantomJs,
     app = LightFakeApplication(mockAcquireServiceCompositionGlobal(webService))
   )

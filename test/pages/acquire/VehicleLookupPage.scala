@@ -1,17 +1,28 @@
 package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, RadioButton, WebBrowserDSL, WebDriverFactory, TelField, TextField}
+import helpers.webbrowser.{Page, WebDriverFactory}
 import views.acquire.VehicleLookup
 import VehicleLookup.{BackId, SubmitId}
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 import org.openqa.selenium.WebDriver
+import org.scalatest.selenium.WebBrowser.TextField
+import org.scalatest.selenium.WebBrowser.textField
+import org.scalatest.selenium.WebBrowser.TelField
+import org.scalatest.selenium.WebBrowser.telField
+import org.scalatest.selenium.WebBrowser.RadioButton
+import org.scalatest.selenium.WebBrowser.radioButton
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.find
+import org.scalatest.selenium.WebBrowser.id
+import org.scalatest.selenium.WebBrowser.Element
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
 
-object VehicleLookupPage extends Page with WebBrowserDSL {
+object VehicleLookupPage extends Page {
   final val address = buildAppUrl("vehicle-lookup")
-  override def url: String = WebDriverFactory.testUrl + address.substring(1)
+  override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter vehicle details"
 
   def vehicleRegistrationNumber(implicit driver: WebDriver): TextField = textField(id(VehicleRegistrationNumberId))
@@ -31,8 +42,8 @@ object VehicleLookupPage extends Page with WebBrowserDSL {
                 isVehicleSoldToPrivateIndividual: Boolean = true)
                (implicit driver: WebDriver) = {
     go to VehicleLookupPage
-    documentReferenceNumber enter referenceNumber
-    VehicleLookupPage.vehicleRegistrationNumber enter registrationNumber
+    documentReferenceNumber.value = referenceNumber
+    VehicleLookupPage.vehicleRegistrationNumber.value = registrationNumber
 
     if (isVehicleSoldToPrivateIndividual) click on vehicleSoldToPrivateIndividual
     else click on vehicleSoldToBusiness

@@ -4,11 +4,14 @@ import cucumber.api.java.en.{Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{VehicleLookupPage, BusinessChooseYourAddressPage, SetupTradeDetailsPage}
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WithClue, WebBrowserDSL, WebBrowserDriver}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WithClue, WebBrowserDriver}
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
-class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
+class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -16,11 +19,11 @@ class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   def goToVehicleLookUpPage()={
     happyPath.goToSetupTradeDetailsPage()
-    SetupTradeDetailsPage.traderName enter "VA12SU"
-    SetupTradeDetailsPage.traderPostcode enter "qq99qq"
+    SetupTradeDetailsPage.traderName.value = "VA12SU"
+    SetupTradeDetailsPage.traderPostcode.value = "qq99qq"
     click on SetupTradeDetailsPage.emailVisible
-    SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
-    SetupTradeDetailsPage.traderConfirmEmail enter "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderEmail.value = "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderConfirmEmail.value = "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     BusinessChooseYourAddressPage.chooseAddress.value = "0"
     click on BusinessChooseYourAddressPage.select
@@ -30,20 +33,20 @@ class SystemAuditVehicleSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
   @Given("^the user is on the vehicle lookup page$")
   def the_user_is_on_the_vehicle_lookup_page()  {
     goToVehicleLookUpPage()
-    page.title shouldEqual VehicleLookupPage.title withClue trackingId
+    pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @When("^the user submits vehicles details$")
   def the_user_submits_vehicles_details()  {
-    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
-    VehicleLookupPage.documentReferenceNumber enter "88888888881"
+    VehicleLookupPage.vehicleRegistrationNumber.value = RandomVrmGenerator.uniqueVrm
+    VehicleLookupPage.documentReferenceNumber.value = "88888888881"
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
   }
 
   @Then("^the user will see \"(.*?)\" screen$")
   def the_user_will_see_screen(unSuccessfulText:String)  {
-    page.source should include(unSuccessfulText) withClue trackingId
+    pageSource should include(unSuccessfulText) withClue trackingId
   }
 
 }

@@ -1,14 +1,17 @@
 package pages.acquire
 
 import org.openqa.selenium.WebDriver
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{Element, Page, WebBrowserDSL, WebDriverFactory}
+import org.scalatest.selenium.WebBrowser.find
+import org.scalatest.selenium.WebBrowser.id
+import org.scalatest.selenium.WebBrowser.Element
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{Page, WebDriverFactory}
 import views.acquire.MicroServiceError.{ExitId, TryAgainId}
 
-object MicroServiceErrorPage extends Page with WebBrowserDSL {
+object MicroServiceErrorPage extends Page {
   final val address = buildAppUrl("service-error")
   final override val title = "We are sorry"
 
-  override def url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
 
   def tryAgain(implicit driver: WebDriver): Element = find(id(TryAgainId)).get
 

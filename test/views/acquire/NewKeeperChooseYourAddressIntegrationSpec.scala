@@ -6,6 +6,10 @@ import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.BusinessKeeperDetailsPage
@@ -23,144 +27,142 @@ import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "new keeper choose your address page" should {
-    "display the page for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "display the page for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      pageTitle should equal(NewKeeperChooseYourAddressPage.title)
     }
 
-    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+      pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
-    "display the page for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "display the page for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      pageTitle should equal(NewKeeperChooseYourAddressPage.title)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains(progressStep(6)) should equal(true)
+      pageSource.contains(progressStep(6)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains(progressStep(6)) should equal(false)
+      pageSource.contains(progressStep(6)) should equal(false)
     }
 
-    "redirect to vehicle lookup when no keeper cookies are in cache" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicle lookup when no keeper cookies are in cache" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
         .vehicleAndKeeperDetails()
       go to NewKeeperChooseYourAddressPage
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
 
-    "redirect to vehicle lookup when cookies are in cache for both private and business keeper" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicle lookup when cookies are in cache for both private and business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
 
-    "redirect to vehicle lookup when no vehicle cookies are in cache but private keeper details exist" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicle lookup when no vehicle cookies are in cache but private keeper details exist" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
         .privateKeeperDetails()
       go to NewKeeperChooseYourAddressPage
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
 
-    "redirect to vehicle lookup when no vehicle cookies are in cache but new keeper details exist" taggedAs UiTag in new WebBrowser {
+    "redirect to vehicle lookup when no vehicle cookies are in cache but new keeper details exist" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
         .dealerDetails()
         .businessKeeperDetails()
       go to NewKeeperChooseYourAddressPage
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
 
-    "display appropriate content when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "display appropriate content when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
-      page.source should include( """<a id="enterAddressManuallyButton" href""")
+      pageSource.contains("No addresses found for that postcode") should equal(false) // Does not contain message
+      pageSource should include( """<a id="enterAddressManuallyButton" href""")
     }
 
-    "display appropriate content when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "display appropriate content when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains("No addresses found for that postcode") should equal(false) // Does not contain message
-      page.source should include( """<a id="enterAddressManuallyButton" href""")
+      pageSource.contains("No addresses found for that postcode") should equal(false) // Does not contain message
+      pageSource should include( """<a id="enterAddressManuallyButton" href""")
     }
 
-    "display the postcode entered in the previous page for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "display the postcode entered in the previous page for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
+      pageSource.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
-    "display the postcode entered in the previous page for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "display the postcode entered in the previous page for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-      page.source.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
+      pageSource.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
-    "display expected addresses in dropdown when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "display expected addresses in dropdown when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
 
-      NewKeeperChooseYourAddressPage.getListCount should equal(4) // The first option is the "Please select..." and the other options are the addresses.
-      page.source should include(
+      pageSource should include(
         s"presentationProperty stub, 123, property stub, street stub, town stub, area stub, $PostcodeValid"
       )
-      page.source should include(
+      pageSource should include(
         s"presentationProperty stub, 456, property stub, street stub, town stub, area stub, $PostcodeValid"
       )
-      page.source should include(
+      pageSource should include(
         s"presentationProperty stub, 789, property stub, street stub, town stub, area stub, $PostcodeValid"
       )
     }
 
-    "display expected addresses in dropdown when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "display expected addresses in dropdown when address service returns addresses for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
 
-      NewKeeperChooseYourAddressPage.getListCount should equal(4) // The first option is the "Please select..." and the other options are the addresses.
-      page.source should include(
+      pageSource should include(
         s"presentationProperty stub, 123, property stub, street stub, town stub, area stub, $PostcodeValid"
       )
-      page.source should include(
+      pageSource should include(
         s"presentationProperty stub, 456, property stub, street stub, town stub, area stub, $PostcodeValid"
       )
-      page.source should include(
+      pageSource should include(
         s"presentationProperty stub, 789, property stub, street stub, town stub, area stub, $PostcodeValid"
       )
     }
 
-    "display appropriate content when address service returns no addresses for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "display appropriate content when address service returns no addresses for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -168,10 +170,10 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         .vehicleAndKeeperDetails()
       go to PrivateKeeperDetailsPage
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
-      page.source should include("No addresses found for that postcode") // Does not contain the positive message
+      pageSource should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
-    "display appropriate content when address service returns no addresses for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "display appropriate content when address service returns no addresses for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -179,26 +181,26 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
         .vehicleAndKeeperDetails()
       go to BusinessKeeperDetailsPage
       BusinessKeeperDetailsPage.submitPostcodeWithoutAddresses
-      page.source should include("No addresses found for that postcode") // Does not contain the positive message
+      pageSource should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
-    "allow navigation to manual address entry when addresses have been found" taggedAs UiTag in new WebBrowser {
+    "allow navigation to manual address entry when addresses have been found" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
       click on manualAddress
-      page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+      pageTitle should equal(NewKeeperEnterAddressManuallyPage.title)
     }
 
-    "allow navigation to manual address entry when no addresses have been found" taggedAs UiTag in new WebBrowser {
+    "allow navigation to manual address entry when no addresses have been found" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
       click on manualAddress
-      page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+      pageTitle should equal(NewKeeperEnterAddressManuallyPage.title)
     }
 
-    "contain the hidden csrfToken field for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper()
       go to NewKeeperChooseYourAddressPage
@@ -209,7 +211,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       csrf.getAttribute("value").size > 0 should equal(true)
     }
 
-    "contain the hidden csrfToken field for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper()
       go to NewKeeperChooseYourAddressPage
@@ -222,39 +224,39 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
   }
 
   "back button" should {
-    "display private keeper details page when private keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
+    "display private keeper details page when private keeper cookie is in cache" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
       click on back
-      page.title should equal(PrivateKeeperDetailsPage.title)
+      pageTitle should equal(PrivateKeeperDetailsPage.title)
     }
 
-    "display new keeper details page when business keeper cookie is in cache" taggedAs UiTag in new WebBrowser {
+    "display new keeper details page when business keeper cookie is in cache" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
       click on back
-      page.title should equal(BusinessKeeperDetailsPage.title)
+      pageTitle should equal(BusinessKeeperDetailsPage.title)
     }
   }
 
   "select button" should {
-    "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "go to the next page when correct data is entered for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       happyPath
-      page.title should equal(VehicleTaxOrSornPage.title)
+      pageTitle should equal(VehicleTaxOrSornPage.title)
     }
 
-    "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "go to the next page when correct data is entered for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       happyPath
-      page.title should equal(VehicleTaxOrSornPage.title)
+      pageTitle should equal(VehicleTaxOrSornPage.title)
       }
 
-    "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowser {
+    "display validation error messages when addressSelected is not in the list for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       sadPath
@@ -262,7 +264,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
     }
 
 
-    "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowser {
+    "display validation error messages when addressSelected is not in the list for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       sadPath

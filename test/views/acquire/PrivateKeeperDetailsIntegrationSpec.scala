@@ -7,6 +7,10 @@ import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.common.ErrorPanel
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.NewKeeperChooseYourAddressPage
@@ -24,11 +28,11 @@ import pages.common.Feedback.AcquireEmailFeedbackLink
 final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
-    "display the page" taggedAs UiTag in new WebBrowser {
+    "display the page" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to PrivateKeeperDetailsPage
-      page.title should equal(PrivateKeeperDetailsPage.title)
+      pageTitle should equal(PrivateKeeperDetailsPage.title)
 
       // Ensure the date of birth fields are on the page
       PrivateKeeperDetailsPage.yearDateOfBirthTextBox.text should equal("")
@@ -36,33 +40,33 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       PrivateKeeperDetailsPage.dayDateOfBirthTextBox.text should equal("")
     }
 
-    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to PrivateKeeperDetailsPage
-      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+      pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
       go to PrivateKeeperDetailsPage
-      page.source.contains(progressStep(5)) should equal(true)
+      pageSource.contains(progressStep(5)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
       go to PrivateKeeperDetailsPage
-      page.source.contains(progressStep(5)) should equal(false)
+      pageSource.contains(progressStep(5)) should equal(false)
     }
 
-    "Redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowser {
+    "Redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowserForSelenium {
       go to PrivateKeeperDetailsPage
-      page.title should equal(SetupTradeDetailsPage.title)
+      pageTitle should equal(SetupTradeDetailsPage.title)
     }
 
-    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       go to PrivateKeeperDetailsPage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
@@ -72,63 +76,63 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
   }
 
   "next button" should {
-    "go to the appropriate next page when all private keeper details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all private keeper details are entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      pageTitle should equal(NewKeeperChooseYourAddressPage.title)
     }
 
-    "go to the appropriate next page when mandatory private keeper details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when mandatory private keeper details are entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(email = None)
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      pageTitle should equal(NewKeeperChooseYourAddressPage.title)
     }
 
-    "display one validation error message when no title is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when no title is entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(title = TitleInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(email = Some(EmailInvalid))
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect driver number is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect driver number is entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(driverNumber = DriverNumberInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when no firstname is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when no firstname is entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(firstName = FirstNameInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when no lastName is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when no lastName is entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(lastName = LastNameInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(postcode = PostcodeInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when the title and the first name are longer then 26" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when the title and the first name are longer then 26" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(title = "tenchartdd", firstName = "15characterssdyff")
@@ -137,7 +141,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
   }
 
   "back" should {
-    "display previous page when back link is clicked with uprn present" taggedAs UiTag in new WebBrowser {
+    "display previous page when back link is clicked with uprn present" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
@@ -146,7 +150,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
 
       go to PrivateKeeperDetailsPage
       click on back
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
   }
 

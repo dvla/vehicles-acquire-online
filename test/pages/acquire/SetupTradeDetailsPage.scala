@@ -1,21 +1,30 @@
 package pages.acquire
 
 import org.openqa.selenium.WebDriver
+import org.scalatest.selenium.WebBrowser.TextField
+import org.scalatest.selenium.WebBrowser.textField
+import org.scalatest.selenium.WebBrowser.RadioButton
+import org.scalatest.selenium.WebBrowser.radioButton
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.find
+import org.scalatest.selenium.WebBrowser.id
+import org.scalatest.selenium.WebBrowser.Element
 import uk.gov.dvla.vehicles.presentation.common
-import common.helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory, TextField, Element, RadioButton}
+import common.helpers.webbrowser.{Page, WebDriverFactory}
 import common.mappings.Email.{EmailId, EmailVerifyId}
 import common.mappings.OptionalToggle.{Invisible, Visible}
 import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderPostcodeId, TraderEmailId, TraderEmailOptionId}
 import views.acquire.SetupTradeDetails.SubmitId
 
-object SetupTradeDetailsPage extends Page with WebBrowserDSL {
+object SetupTradeDetailsPage extends Page {
   final val TraderBusinessNameValid = "example trader name"
   final val PostcodeWithoutAddresses = "xx99xx"
   final val PostcodeValid = "QQ99QQ"
   final val TraderEmailValid = "example@example.co.uk"
 
   final val address = buildAppUrl("setup-trade-details")
-  override def url: String = WebDriverFactory.testUrl + address.substring(1)
+  override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Provide trader details"
 
 
@@ -41,20 +50,20 @@ object SetupTradeDetailsPage extends Page with WebBrowserDSL {
                 traderBusinessEmail: Option[String] = Some(TraderEmailValid))
                (implicit driver: WebDriver) = {
     go to SetupTradeDetailsPage
-    traderName enter traderBusinessName
-    traderPostcode enter traderBusinessPostcode
+    traderName.value = traderBusinessName
+    traderPostcode.value = traderBusinessPostcode
     traderBusinessEmail.fold(click on emailInvisible) { email =>
       click on emailVisible
-      traderEmail enter email
-      traderConfirmEmail enter email
+      traderEmail.value = email
+      traderConfirmEmail.value = email
     }
     click on lookup
   }
 
   def submitPostcodeWithoutAddresses(implicit driver: WebDriver) = {
     go to SetupTradeDetailsPage
-    traderName enter TraderBusinessNameValid
-    traderPostcode enter PostcodeWithoutAddresses
+    traderName.value = TraderBusinessNameValid
+    traderPostcode.value = PostcodeWithoutAddresses
     click on emailInvisible
     click on lookup
   }
