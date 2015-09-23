@@ -247,6 +247,9 @@ unhandled_exception.p3 = Only a limited number of attempts can be made to retrie
 acquire_enteraddressmanually.title = Enter address
 acquire_enteraddressmanually.submitbutton = Next
 acquire_enteraddressmanually.backbutton = Back
+acquire_enteraddressmanually.addresswarning =
+acquire_enteraddressmanually.addresswarninglinktext =
+
 addressAndPostcode_addressLines = Address
 address.lines.label = Building/number and street
 address.buildingNameOrNumber.label =
