@@ -6,6 +6,10 @@ import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{AcquireSuccessPage, BeforeYouStartPage, VehicleLookupPage}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import ProgressBar.progressStep
@@ -14,40 +18,40 @@ import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
-    "display the page" taggedAs UiTag in new WebBrowser {
+    "display the page" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-      page.title should equal(AcquireSuccessPage.title)
+      pageTitle should equal(AcquireSuccessPage.title)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-      page.source.contains(progressStep(9)) should equal(true)
+      pageSource.contains(progressStep(9)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-      page.source.contains(progressStep(9)) should equal(false)
+      pageSource.contains(progressStep(9)) should equal(false)
     }
 
-    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
-      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+      pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
-    "redirect when the cache is missing acquire complete details" taggedAs UiTag in new WebBrowser {
+    "redirect when the cache is missing acquire complete details" taggedAs UiTag in new WebBrowserForSelenium {
       go to AcquireSuccessPage
-      page.title should equal(BeforeYouStartPage.title)
+      pageTitle should equal(BeforeYouStartPage.title)
     }
 
-    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
@@ -59,12 +63,12 @@ class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "Clicking buy another vehicle button" should {
-    "go to VehicleLookupPage" taggedAs UiTag in new WebBrowser {
+    "go to VehicleLookupPage" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireSuccessPage
       click on AcquireSuccessPage.buyAnother
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
   }
 

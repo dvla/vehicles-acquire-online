@@ -6,6 +6,10 @@ import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.common.ErrorPanel
 import pages.acquire.{BeforeYouStartPage, BusinessKeeperDetailsPage, NewKeeperChooseYourAddressPage, VehicleLookupPage}
 import pages.acquire.BusinessKeeperDetailsPage.{navigate, back}
@@ -17,36 +21,36 @@ import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
   "go to page" should {
-    "display the page" taggedAs UiTag in new WebBrowser {
+    "display the page" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to BusinessKeeperDetailsPage
-      page.title should equal(BusinessKeeperDetailsPage.title)
+      pageTitle should equal(BusinessKeeperDetailsPage.title)
     }
 
-    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to BusinessKeeperDetailsPage
 
-      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+      pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
       go to BusinessKeeperDetailsPage
-      page.source.contains(progressStep(5)) should equal(true)
+      pageSource.contains(progressStep(5)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
       go to BusinessKeeperDetailsPage
-      page.source.contains(progressStep(5)) should equal(false)
+      pageSource.contains(progressStep(5)) should equal(false)
     }
 
-    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       go to BusinessKeeperDetailsPage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
@@ -56,28 +60,28 @@ class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "next button" should {
-    "go to the appropriate next page when all new keeper details are entered" taggedAs UiTag in new WebBrowser {
+    "go to the appropriate next page when all new keeper details are entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
-      page.title should equal (NewKeeperChooseYourAddressPage.title)
+      pageTitle should equal (NewKeeperChooseYourAddressPage.title)
     }
 
-    "display one validation error message when an incorrect business name is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect business name is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(businessName = "")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(postcode = "Q9")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowser {
+    "display one validation error message when an incorrect email is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(email = Some("aaa.com"))
@@ -86,7 +90,7 @@ class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "back" should {
-    "display previous page when back button is clicked" taggedAs UiTag in new WebBrowser {
+    "display previous page when back button is clicked" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
@@ -95,7 +99,7 @@ class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
       go to BusinessKeeperDetailsPage
       click on back
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
   }
 

@@ -4,11 +4,14 @@ import cucumber.api.java.en.{And, Then, When, Given}
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.scalatest.Matchers
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire._
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WithClue, WebBrowserDSL}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WithClue}
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
-class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with WebBrowserDSL with Matchers with WithClue {
+class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 
@@ -27,11 +30,11 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   def gotoVehicleLookUpPageWithKnownAddress() {
     happyPath.goToSetupTradeDetailsPage()
-    SetupTradeDetailsPage.traderName enter "VA12SU"
-    SetupTradeDetailsPage.traderPostcode enter "qq99qq"
+    SetupTradeDetailsPage.traderName.value = "VA12SU"
+    SetupTradeDetailsPage.traderPostcode.value = "qq99qq"
     click on SetupTradeDetailsPage.emailVisible
-    SetupTradeDetailsPage.traderEmail enter "C@GMAIL.COM"
-    SetupTradeDetailsPage.traderConfirmEmail enter "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderEmail.value = "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderConfirmEmail.value = "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     BusinessChooseYourAddressPage.chooseAddress.value = "0"
     click on BusinessChooseYourAddressPage.select
@@ -53,39 +56,39 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     gotoVehicleLookUpPageWithKnownAddress()
     the_user_fills_in_the_vrn_doc_ref_number_and_selects_businessKeeper()
     click on VehicleLookupPage.next
-    page.title should equal(BusinessKeeperDetailsPage.title) withClue trackingId
+    pageTitle should equal(BusinessKeeperDetailsPage.title) withClue trackingId
   }
 
   @When("^the user fills in the vrn, doc ref number and selects privateKeeper$")
   def the_user_fill_in_the_vrn_doc_ref_number_and_selects_privateKeeper() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
-    VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
-    happyPath.click on VehicleLookupPage.vehicleSoldToPrivateIndividual
+    VehicleLookupPage.vehicleRegistrationNumber.value = RandomVrmGenerator.uniqueVrm
+    VehicleLookupPage.documentReferenceNumber.value = ValidDocReferenceNumber
+    click on VehicleLookupPage.vehicleSoldToPrivateIndividual
   }
 
   @When("^the user fills in the vrn, doc ref number and selects businessKeeper$")
   def the_user_fills_in_the_vrn_doc_ref_number_and_selects_businessKeeper() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
-    VehicleLookupPage.documentReferenceNumber enter ValidDocReferenceNumber
-    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+    VehicleLookupPage.vehicleRegistrationNumber.value = RandomVrmGenerator.uniqueVrm
+    VehicleLookupPage.documentReferenceNumber.value = ValidDocReferenceNumber
+    click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
   @When("^the user fills in data that results in document reference mismatch error from the micro service$")
   def the_user_fills_in_data_that_results_in_document_reference_mismatch_error_from_the_micro_service() {
     happyPath.fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
-    VehicleLookupPage.vehicleRegistrationNumber enter RandomVrmGenerator.uniqueVrm
-    VehicleLookupPage.documentReferenceNumber enter InvalidDocReferenceNumber
-    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+    VehicleLookupPage.vehicleRegistrationNumber.value = RandomVrmGenerator.uniqueVrm
+    VehicleLookupPage.documentReferenceNumber.value = InvalidDocReferenceNumber
+    click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
   @When("^the user fills in data for a vehicle which has not been disposed$")
   def the_user_fills_in_data_for_a_vehicle_which_has_not_been_disposed() {
     happyPath.goToVehicleLookupPageAfterManuallyEnteringAddress()
-    VehicleLookupPage.vehicleRegistrationNumber enter VehicleNotDisposedVrn
-    VehicleLookupPage.documentReferenceNumber enter VehicleNotDisposedDocReferenceNumber
-    happyPath.click on VehicleLookupPage.vehicleSoldToBusiness
+    VehicleLookupPage.vehicleRegistrationNumber.value = VehicleNotDisposedVrn
+    VehicleLookupPage.documentReferenceNumber.value = VehicleNotDisposedDocReferenceNumber
+    click on VehicleLookupPage.vehicleSoldToBusiness
   }
 
   @When("^the user navigates forwards from the vehicle lookup page and there are no validation errors$")
@@ -125,21 +128,21 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
 
   @Then("^the user remains on the VehicleLookPage$")
   def the_user_remains_on_the_VehicleLookPage() {
-    page.title shouldEqual VehicleLookupPage.title withClue trackingId
+    pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
   @Then("^the user is taken to the page entitled \"(.*?)\"$")
   def the_user_is_taken_to_the_page_entitled(title: String) {
-    page.title shouldEqual title withClue trackingId
+    pageTitle shouldEqual title withClue trackingId
   }
 
   @Then("^the user will be redirected to the vehicle lookup failure page$")
   def the_user_will_be_redirected_to_the_VehicleLookupFailure_page() {
-    page.title shouldEqual VehicleLookupFailurePage.title withClue trackingId
+    pageTitle shouldEqual VehicleLookupFailurePage.title withClue trackingId
   }
 
   @Then("^the page will contain text \"(.*?)\"$")
   def the_page_will_contain_text(text: String) {
-    page.source should include(text) withClue trackingId
+    pageSource should include(text) withClue trackingId
   }
 }

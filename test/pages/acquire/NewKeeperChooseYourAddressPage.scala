@@ -1,7 +1,14 @@
 package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Element, Page, SingleSel, WebBrowserDSL, WebDriverFactory}
+import helpers.webbrowser.{Page, WebDriverFactory}
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.find
+import org.scalatest.selenium.WebBrowser.id
+import org.scalatest.selenium.WebBrowser.Element
+import org.scalatest.selenium.WebBrowser.SingleSel
+import org.scalatest.selenium.WebBrowser.singleSel
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 import views.acquire.NewKeeperChooseYourAddress
 import NewKeeperChooseYourAddress.BackId
@@ -9,9 +16,9 @@ import NewKeeperChooseYourAddress.EnterAddressManuallyButtonId
 import NewKeeperChooseYourAddress.SelectId
 import org.openqa.selenium.WebDriver
 
-object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
+object NewKeeperChooseYourAddressPage extends Page {
   final val address = buildAppUrl("new-keeper-choose-your-address")
-  override def url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select new keeper address"
   //final val titleCy = "Dewiswch eich cyfeiriad masnach"
 
@@ -20,10 +27,6 @@ object NewKeeperChooseYourAddressPage extends Page with WebBrowserDSL {
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get
 
   def manualAddress(implicit driver: WebDriver): Element = find(id(EnterAddressManuallyButtonId)).get
-
-  def getList(implicit driver: WebDriver) = singleSel(id(AddressSelectId)).getOptions
-
-  def getListCount(implicit driver: WebDriver): Int = getList.size
 
   def select(implicit driver: WebDriver): Element = find(id(SelectId)).get
 

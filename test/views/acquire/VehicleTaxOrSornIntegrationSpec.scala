@@ -6,6 +6,10 @@ import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.NewKeeperChooseYourAddressPage
 import pages.acquire.NewKeeperEnterAddressManuallyPage
@@ -19,35 +23,35 @@ import webserviceclients.fakes.FakeAddressLookupService.{addressWithUprn, addres
 class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
 
   "go to page" should {
-    "display the page for a new keeper" taggedAs UiTag in new WebBrowser {
+    "display the page for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleTaxOrSornPage
-      page.title should equal(VehicleTaxOrSornPage.title)
+      pageTitle should equal(VehicleTaxOrSornPage.title)
     }
 
-    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowser {
+    "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleTaxOrSornPage
-      page.source.contains(AcquireEmailFeedbackLink) should equal(true)
+      pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
     "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleTaxOrSornPage
-      page.source.contains(progressStep(7)) should equal(true)
+      pageSource.contains(progressStep(7)) should equal(true)
     }
 
     "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleTaxOrSornPage
-      page.source.contains(progressStep(7)) should equal(false)
+      pageSource.contains(progressStep(7)) should equal(false)
     }
 
-    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowser {
+    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       go to VehicleTaxOrSornPage
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
@@ -77,7 +81,7 @@ class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
   }
 
   "back" should {
-    "display new keeper choose your address page when back is clicked after the address has been selected from the drop down" taggedAs UiTag in new WebBrowser {
+    "display new keeper choose your address page when back is clicked after the address has been selected from the drop down" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
@@ -91,10 +95,10 @@ class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
 
       go to VehicleTaxOrSornPage
       click on back
-      page.title should equal(NewKeeperChooseYourAddressPage.title)
+      pageTitle should equal(NewKeeperChooseYourAddressPage.title)
     }
 
-    "display new keeper enter address manually page when back is clicked after the new keeper has entered the address manually" taggedAs UiTag in new WebBrowser {
+    "display new keeper enter address manually page when back is clicked after the new keeper has entered the address manually" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
@@ -109,7 +113,7 @@ class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
 
       go to VehicleTaxOrSornPage
       click on back
-      page.title should equal(NewKeeperEnterAddressManuallyPage.title)
+      pageTitle should equal(NewKeeperEnterAddressManuallyPage.title)
     }
   }
 

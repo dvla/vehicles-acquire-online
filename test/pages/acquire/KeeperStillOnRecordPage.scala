@@ -1,10 +1,10 @@
 package pages.acquire
 
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{Page, WebBrowserDSL, WebDriverFactory}
+import helpers.webbrowser.{Page, WebDriverFactory}
 
-object KeeperStillOnRecordPage extends Page with WebBrowserDSL {
+object KeeperStillOnRecordPage extends Page {
   final val address = buildAppUrl("keeper-still-on-record")
-  override def url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "A keeper is on the record"
 }

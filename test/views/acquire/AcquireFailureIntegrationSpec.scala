@@ -6,36 +6,40 @@ import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.WebDriver
+import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.go
+import org.scalatest.selenium.WebBrowser.pageSource
+import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.AcquireFailurePage.buyAnother
 import pages.acquire.{AcquireFailurePage, BeforeYouStartPage, VehicleLookupPage}
 
 class AcquireFailureIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {
-    "display the page" taggedAs UiTag in new WebBrowser {
+    "display the page" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireFailurePage
-      page.title should equal(AcquireFailurePage.title)
+      pageTitle should equal(AcquireFailurePage.title)
     }
 
-    "redirect to before you start if cache is empty on page load" taggedAs UiTag in new WebBrowser {
+    "redirect to before you start if cache is empty on page load" taggedAs UiTag in new WebBrowserForSelenium {
       go to AcquireFailurePage
-      page.title should equal(BeforeYouStartPage.title)
+      pageTitle should equal(BeforeYouStartPage.title)
     }
 
     "not display any progress indicator when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
       go to AcquireFailurePage
-      page.source should not contain ProgressBar.div
+      pageSource should not contain ProgressBar.div
     }
   }
 
   "vehiclelookup button" should {
-    "redirect to vehiclelookup" taggedAs UiTag in new WebBrowser {
+    "redirect to vehiclelookup" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       go to AcquireFailurePage
       click on buyAnother
-      page.title should equal(VehicleLookupPage.title)
+      pageTitle should equal(VehicleLookupPage.title)
     }
   }
 
