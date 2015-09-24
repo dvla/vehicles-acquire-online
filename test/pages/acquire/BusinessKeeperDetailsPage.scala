@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.WebBrowser.TextField
 import org.scalatest.selenium.WebBrowser.textField
 import org.scalatest.selenium.WebBrowser.EmailField
-import org.scalatest.selenium.WebBrowser.emailField
+import org.scalatest.selenium.WebBrowser.{emailField => webBrowserEmailField}
 import org.scalatest.selenium.WebBrowser.TelField
 import org.scalatest.selenium.WebBrowser.telField
 import org.scalatest.selenium.WebBrowser.RadioButton
@@ -49,13 +49,9 @@ object BusinessKeeperDetailsPage extends Page {
   def emailInvisible(implicit driver: WebDriver): RadioButton =
     radioButton(id(s"${EmailOptionId}_$Invisible"))
 
-//  def emailField(implicit driver: WebDriver): EmailField = emailField(id(s"${EmailId}_$EmailEnterId"))
-//
-//  def emailConfirmField(implicit driver: WebDriver): EmailField = emailField(id(s"${EmailId}_$EmailVerifyId"))
+  def emailField(implicit driver: WebDriver): EmailField = webBrowserEmailField(id(s"${EmailId}_$EmailEnterId"))
 
-  def emailField(implicit driver: WebDriver): EmailField = emailField(driver)
-
-  def emailConfirmField(implicit driver: WebDriver): EmailField = emailField(driver)
+  def emailConfirmField(implicit driver: WebDriver): EmailField = webBrowserEmailField(id(s"${EmailId}_$EmailVerifyId"))
 
   def postcodeField(implicit driver: WebDriver): TextField = textField(id(PostcodeId))
 
