@@ -18,7 +18,7 @@ import BusinessChooseYourAddress.SelectId
 
 object BusinessChooseYourAddressPage extends Page {
   final val address = buildAppUrl("business-choose-your-address")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select trader address"
   final val titleCy = "Dewiswch eich cyfeiriad masnach"
 

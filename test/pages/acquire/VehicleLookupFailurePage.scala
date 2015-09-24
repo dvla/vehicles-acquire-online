@@ -12,7 +12,7 @@ object VehicleLookupFailurePage extends Page {
   final val address = buildAppUrl("vehicle-lookup-failure")
   final override val title: String = "Unable to find a vehicle record"
 
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
 
   def beforeYouStart(implicit driver: WebDriver): Element = find(id(BeforeYouStartId)).get
 

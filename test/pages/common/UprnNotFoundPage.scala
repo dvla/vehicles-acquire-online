@@ -17,4 +17,3 @@ object UprnNotFoundPage extends Page {
 
   def manualAddress(implicit driver: WebDriver): Element = find(id(ManualaddressbuttonId)).get
 }
-x

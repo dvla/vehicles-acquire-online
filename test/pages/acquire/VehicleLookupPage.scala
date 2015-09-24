@@ -22,7 +22,7 @@ import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Busines
 
 object VehicleLookupPage extends Page {
   final val address = buildAppUrl("vehicle-lookup")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter vehicle details"
 
   def vehicleRegistrationNumber(implicit driver: WebDriver): TextField = textField(id(VehicleRegistrationNumberId))

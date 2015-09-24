@@ -11,7 +11,7 @@ import VrmLocked.{ExitId, BuyAnotherVehicleId}
 object VrmLockedPage extends Page {
   final val address = s"$applicationContext/vrm-locked"
 
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
 
   final override val title = "Registration number is locked"
 

@@ -17,7 +17,7 @@ import views.acquire.EnterAddressManually.{BackId, NextId}
 
 object NewKeeperEnterAddressManuallyPage extends Page {
   final val address = buildAppUrl("new-keeper-enter-address-manually")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter keeper address"
 
   def addressBuildingNameOrNumber(implicit driver: WebDriver): TextField =

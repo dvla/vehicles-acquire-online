@@ -17,7 +17,7 @@ import views.acquire.CompleteAndConfirm.{BackId, SubmitId}
 
 object CompleteAndConfirmPage extends Page {
   final val address = buildAppUrl("complete-and-confirm")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Complete and confirm"
 
   final val MileageValid = "1000"

@@ -10,7 +10,7 @@ import views.acquire.AcquireFailure.BuyAnotherId
 object AcquireFailurePage extends Page {
   final val address = s"$applicationContext/buy-from-the-trade-failure"
   final override val title: String = "Selling a vehicle out of trade: failure"
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
 
   def buyAnother(implicit driver: WebDriver): Element = find(id(BuyAnotherId)).get
 }

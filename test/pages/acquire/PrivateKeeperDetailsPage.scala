@@ -30,7 +30,7 @@ import views.acquire.PrivateKeeperDetails.{BackId, SubmitId}
 
 object PrivateKeeperDetailsPage extends Page with Matchers {
   final val address = buildAppUrl("private-keeper-details")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter new keeper details"
 
   final val TitleInvalid = "other"

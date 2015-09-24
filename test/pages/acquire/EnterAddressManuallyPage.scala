@@ -21,7 +21,7 @@ import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberVal
 
 object EnterAddressManuallyPage extends Page {
   final val address = buildAppUrl("enter-address-manually")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Enter address"
 
   def addressBuildingNameOrNumber(implicit driver: WebDriver): TextField =

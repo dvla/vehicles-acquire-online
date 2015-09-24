@@ -18,7 +18,7 @@ import org.openqa.selenium.WebDriver
 
 object NewKeeperChooseYourAddressPage extends Page {
   final val address = buildAppUrl("new-keeper-choose-your-address")
-  override val url: String = WebDriverFactory.testUrl + address.substring(1)
+  override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select new keeper address"
   //final val titleCy = "Dewiswch eich cyfeiriad masnach"
 
