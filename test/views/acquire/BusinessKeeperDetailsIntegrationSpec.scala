@@ -60,28 +60,28 @@ class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "next button" should {
-    "go to the appropriate next page when all new keeper details are entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "go to the appropriate next page when all new keeper details are entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
       pageTitle should equal (NewKeeperChooseYourAddressPage.title)
     }
 
-    "display one validation error message when an incorrect business name is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when an incorrect business name is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(businessName = "")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(postcode = "Q9")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when an incorrect email is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(email = Some("aaa.com"))

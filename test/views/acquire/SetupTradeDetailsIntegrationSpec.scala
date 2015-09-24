@@ -37,47 +37,47 @@ class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   }
 
   "lookup button" should {
-    "go to the next page when correct data is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "go to the next page when correct data is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath()
       pageTitle should equal("Select trader address")
     }
 
-    "display one summary validation error message when no postcode is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one summary validation error message when no postcode is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessName = TraderBusinessNameValid, traderBusinessPostcode = "")
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one summary validation error message when no trader business name is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one summary validation error message when no trader business name is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessName = "", traderBusinessPostcode = PostcodeValid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display two summary validation error messages when no details are entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display two summary validation error messages when no details are entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessName = "", traderBusinessPostcode = "")
       ErrorPanel.numberOfErrors should equal(2)
     }
 
-    "display one summary validation error message when an incorrectly email is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one summary validation error message when an incorrectly email is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessEmail = Some("email_with_no_at_symbol"))
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "add aria required attribute to trader name field when required field not input" taggedAs UiTag in new WebBrowserForSelenium {
+    "add aria required attribute to trader name field when required field not input" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessName = "")
       Accessibility.ariaRequiredPresent(SetupTradeDetailsFormModel.Form.TraderNameId) should equal(true)
     }
 
-    "add aria invalid attribute to trader name field when required field not input" taggedAs UiTag in new WebBrowserForSelenium {
+    "add aria invalid attribute to trader name field when required field not input" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessName = "")
       Accessibility.ariaInvalidPresent(SetupTradeDetailsFormModel.Form.TraderNameId) should equal(true)
     }
 
-    "add aria required attribute to trader postcode field when required field not input" taggedAs UiTag in new WebBrowserForSelenium {
+    "add aria required attribute to trader postcode field when required field not input" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessPostcode = "")
       Accessibility.ariaRequiredPresent(SetupTradeDetailsFormModel.Form.TraderPostcodeId) should equal(true)
     }
 
-    "add aria invalid attribute to trader postcode field when required field not input" taggedAs UiTag in new WebBrowserForSelenium {
+    "add aria invalid attribute to trader postcode field when required field not input" taggedAs UiTag ignore new WebBrowserForSelenium {
       happyPath(traderBusinessPostcode = "")
       Accessibility.ariaInvalidPresent(SetupTradeDetailsFormModel.Form.TraderPostcodeId) should equal(true)
     }

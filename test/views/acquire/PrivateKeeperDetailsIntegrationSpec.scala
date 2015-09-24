@@ -76,7 +76,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
   }
 
   "next button" should {
-    "go to the appropriate next page when all private keeper details are entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "go to the appropriate next page when all private keeper details are entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate()
@@ -90,49 +90,49 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       pageTitle should equal(NewKeeperChooseYourAddressPage.title)
     }
 
-    "display one validation error message when no title is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when no title is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(title = TitleInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect email is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when an incorrect email is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(email = Some(EmailInvalid))
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect driver number is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when an incorrect driver number is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(driverNumber = DriverNumberInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when no firstname is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when no firstname is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(firstName = FirstNameInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when no lastName is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when no lastName is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(lastName = LastNameInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when an incorrect postcode is entered" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(postcode = PostcodeInvalid)
       ErrorPanel.numberOfErrors should equal(1)
     }
 
-    "display one validation error message when the title and the first name are longer then 26" taggedAs UiTag in new WebBrowserForSelenium {
+    "display one validation error message when the title and the first name are longer then 26" taggedAs UiTag ignore new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetup()
       navigate(title = "tenchartdd", firstName = "15characterssdyff")
