@@ -1,6 +1,6 @@
 ======= 1.18 =======
 Time of release binary creation
-
+Wed Sep 30 11:04:12 UTC 2015 	
 
 US2440 Stop using Sion's WebBorwser DSL, use the real Selenium DSL
 US3803 Amend Service Unavailable message for all VM Services
