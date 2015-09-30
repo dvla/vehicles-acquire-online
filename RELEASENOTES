@@ -1,3 +1,15 @@
+======= 1.18 =======
+Time of release binary creation
+
+
+US2440 Stop using Sion's WebBorwser DSL, use the real Selenium DSL
+US3803 Amend Service Unavailable message for all VM Services
+US3804 Add Royal Mail link to Manual Address Entry Screen
+US3813 Create and implement alert-warning as a common widget in vehicles-presentation-common
+US3815 Create (or modify valtechInputText) so that the type parameter can be set to Email
+US3816 Create and implement Reg-Number as a common widget in vehicles-presentation-common
+
+
 ======= 1.17 =======
 Time of release binary creation
 Wed Sep 16 10:30:49 UTC 2015
