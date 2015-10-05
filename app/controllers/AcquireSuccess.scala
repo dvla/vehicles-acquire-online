@@ -24,12 +24,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
                                   surveyUrl: SurveyUrl,
                                   dateService: DateService) extends Controller with DVLALogger {
 
-  private final val MissingCookiesAcquireSuccess = "Missing cookies in cache. Acquire was successful, however cannot " +
-    "display success page. Redirecting to BeforeYouStart"
-  private final val MissingCookies = "Missing cookies in cache. Redirecting to BeforeYouStart"
-
   def present = Action { implicit request =>
-    logMessage(request.cookies.trackingId(), Debug, "Acquire success")
     (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
@@ -39,6 +34,8 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       ) match {
       case (Some(vehicleAndKeeperDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
         Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
+        val msg = "User transaction completed successfully - now displaying the acquire success view"
+        logMessage(request.cookies.trackingId(), Info, msg)
         Ok(views.html.acquire.acquire_success(
           AcquireCompletionViewModel(
             vehicleAndKeeperDetailsModel,
@@ -50,7 +47,10 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
           ),
           surveyUrl(request)
         ))
-      case _ => redirectToStart(MissingCookiesAcquireSuccess)
+      case _ =>
+        val msg = "Missing cookies in cache. Acquire was successful, however will not " +
+        "display success page. Redirecting to BeforeYouStart"
+        redirectToStart(msg)
     }
   }
 
@@ -59,7 +59,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       acquireCompletionViewModel <- request.cookies.getModel[TraderDetailsModel]
     } yield Redirect(routes.VehicleLookup.present())
       .discardingCookies(VehicleNewKeeperCompletionCacheKeys)
-    result getOrElse redirectToStart(MissingCookies)
+    result getOrElse redirectToStart("Missing cookies in cache. Redirecting to BeforeYouStart")
   }
 
   def finish = Action { implicit request =>
