@@ -1,32 +1,37 @@
 package webserviceclients.fakes
 
 import org.joda.time.DateTime
-import play.api.http.Status.{OK, SERVICE_UNAVAILABLE}
-import play.api.libs.json.Json
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK, SERVICE_UNAVAILABLE}
+import play.api.libs.json.{Json, JsValue}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.TrackingId
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupDetailsDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupErrorMessage
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupRequest
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupResponse
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.MicroserviceResponse
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup
+import vehicleandkeeperlookup.VehicleAndKeeperLookupFailureResponse
+import vehicleandkeeperlookup.VehicleAndKeeperLookupDetailsDto
+import vehicleandkeeperlookup.VehicleAndKeeperLookupRequest
+import vehicleandkeeperlookup.VehicleAndKeeperLookupSuccessResponse
+import vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
 
 final class FakeVehicleAndKeeperLookupWebService extends VehicleAndKeeperLookupWebService {
   import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
 
   override def invoke(request: VehicleAndKeeperLookupRequest, trackingId: TrackingId) = Future {
-    val (responseStatus, response) = {
+    val (responseStatus: Int, response: JsValue) = {
       request.referenceNumber match {
-        case "99999999991" => vehicleDetailsResponseVRMNotFound
-        case "99999999992" => vehicleDetailsResponseDocRefNumberNotLatest
-        case "99999999993" => vehicleDetailsKeeperStillOnRecordResponseSuccess
-        case "99999999999" => vehicleDetailsResponseNotFoundResponseCode
-        case _ => vehicleDetailsResponseSuccess
+        case "99999999991" => (vehicleDetailsResponseVRMNotFound._1,
+                               Json.toJson(vehicleDetailsResponseVRMNotFound._2.get.left.get))
+        case "99999999992" => (vehicleDetailsResponseDocRefNumberNotLatest._1,
+                               Json.toJson(vehicleDetailsResponseDocRefNumberNotLatest._2.get.left.get))
+        case "99999999993" => (vehicleDetailsKeeperStillOnRecordResponseSuccess._1,
+                               Json.toJson(vehicleDetailsKeeperStillOnRecordResponseSuccess._2.get.right.get))
+        case "99999999999" => (vehicleDetailsResponseNotFoundResponseCode._1,
+                               Json.toJson(vehicleDetailsResponseNotFoundResponseCode._2.get.right.get))
+        case _ => (vehicleDetailsResponseSuccess._1, Json.toJson(vehicleDetailsResponseSuccess._2.get.right.get))
       }
     }
-    val responseAsJson = Json.toJson(response)
-    new FakeResponse(status = responseStatus, fakeJson = Some(responseAsJson)) // Any call to a webservice will always return this successful response.
+    new FakeResponse(status = responseStatus, fakeJson = Some(response))
   }
 }
 
@@ -41,8 +46,8 @@ object FakeVehicleAndKeeperLookupWebService {
   final val KeeperUprnValid = 10123456789L
   final val ConsentValid = "true"
   final val TransactionIdValid = "A1-100"
-  final val VrmNotFound = VehicleAndKeeperLookupErrorMessage(code = "", message = "vehicle_lookup_vrm_not_found")
-  final val DocumentRecordMismatch = VehicleAndKeeperLookupErrorMessage(code = "", message = "vehicle_lookup_document_record_mismatch")
+  final val VrmNotFound = MicroserviceResponse(code = "", message = "vehicle_lookup_vrm_not_found")
+  final val DocumentRecordMismatch = MicroserviceResponse(code = "", message = "vehicle_lookup_document_record_mismatch")
   final val TransactionTimestampValid = new DateTime()
   final val UnhandledException = "unhandled_exception"
 
@@ -67,27 +72,35 @@ object FakeVehicleAndKeeperLookupWebService {
       suppressedV5Flag = None
     )
 
-  val vehicleDetailsResponseSuccess: (Int, Option[VehicleAndKeeperLookupResponse]) =
-    (OK, Some(VehicleAndKeeperLookupResponse(responseCode = None, Some(vehicleDetails()))))
+  val vehicleDetailsResponseSuccess: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                         VehicleAndKeeperLookupSuccessResponse]]) =
+    (OK, Some(Right(VehicleAndKeeperLookupSuccessResponse(Some(vehicleDetails())))))
 
-  val vehicleDetailsKeeperStillOnRecordResponseSuccess: (Int, Option[VehicleAndKeeperLookupResponse]) =
-    (OK, Some(VehicleAndKeeperLookupResponse(responseCode = None, Some(vehicleDetails(disposeFlag = false)))))
+  val vehicleDetailsKeeperStillOnRecordResponseSuccess: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                                            VehicleAndKeeperLookupSuccessResponse]]) =
+    (OK, Some(Right(VehicleAndKeeperLookupSuccessResponse(Some(vehicleDetails(disposeFlag = false))))))
 
-  val vehicleDetailsResponseVRMNotFound: (Int, Option[VehicleAndKeeperLookupResponse]) =
-    (OK, Some(VehicleAndKeeperLookupResponse(responseCode = Some(VrmNotFound), None)))
+  val vehicleDetailsResponseNotFoundResponseCode: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                                      VehicleAndKeeperLookupSuccessResponse]]) =
+    (OK, Some(Right(VehicleAndKeeperLookupSuccessResponse(None))))
 
-  val vehicleDetailsResponseDocRefNumberNotLatest: (Int, Option[VehicleAndKeeperLookupResponse]) =
-    (OK, Some(VehicleAndKeeperLookupResponse(responseCode = Some(DocumentRecordMismatch), None)))
+  val vehicleDetailsResponseVRMNotFound: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                             VehicleAndKeeperLookupSuccessResponse]]) =
+    (INTERNAL_SERVER_ERROR, Some(Left(VehicleAndKeeperLookupFailureResponse(VrmNotFound))))
 
-  val vehicleDetailsResponseNotFoundResponseCode: (Int, Option[VehicleAndKeeperLookupResponse]) =
-    (OK, Some(VehicleAndKeeperLookupResponse(responseCode = None, None)))
+  val vehicleDetailsResponseDocRefNumberNotLatest: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                                       VehicleAndKeeperLookupSuccessResponse]]) =
+    (INTERNAL_SERVER_ERROR, Some(Left(VehicleAndKeeperLookupFailureResponse(DocumentRecordMismatch))))
 
-  val vehicleDetailsResponseUnhandledException: (Int, Option[VehicleAndKeeperLookupResponse]) =
-    (OK, Some(VehicleAndKeeperLookupResponse(responseCode = Some(DocumentRecordMismatch), None)))
+  val vehicleDetailsResponseUnhandledException: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                                    VehicleAndKeeperLookupSuccessResponse]]) =
+    (INTERNAL_SERVER_ERROR, Some(Left(VehicleAndKeeperLookupFailureResponse(DocumentRecordMismatch))))
 
-  val vehicleDetailsServerDown: (Int, Option[VehicleAndKeeperLookupResponse]) =
+  val vehicleDetailsServerDown: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                    VehicleAndKeeperLookupSuccessResponse]]) =
     (SERVICE_UNAVAILABLE, None)
 
-  val vehicleDetailsNoResponse: (Int, Option[VehicleAndKeeperLookupResponse]) =
+  val vehicleDetailsNoResponse: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                                    VehicleAndKeeperLookupSuccessResponse]]) =
     (OK, None)
 }

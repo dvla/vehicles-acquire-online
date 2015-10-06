@@ -31,9 +31,10 @@ import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService
 import common.webserviceclients.healthstats.HealthStats
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupFailureResponse
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupRequest
-import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupResponse
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
+import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupSuccessResponse
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
 import utils.helpers.Config
 import views.acquire.VehicleLookup.{VehicleSoldTo_Business, VehicleSoldTo_Private}
@@ -301,17 +302,22 @@ class VehicleLookupUnitSpec extends UnitSpec {
     (bruteForcePreventionService, bruteForcePreventionWebServiceMock)
   }
 
-  private def vehicleLookupControllerAndMocks(fullResponse: (Int, Option[VehicleAndKeeperLookupResponse]) = vehicleDetailsResponseSuccess,
-                                              bruteForceService: BruteForcePreventionService = bruteForceServiceImpl(permitted = true)
-                                             ): (VehicleLookup, VehicleAndKeeperLookupWebService) = {
+  private def vehicleLookupControllerAndMocks(
+            fullResponse: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                              VehicleAndKeeperLookupSuccessResponse]]) = vehicleDetailsResponseSuccess,
+            bruteForceService: BruteForcePreventionService = bruteForceServiceImpl(permitted = true)
+                                                              ): (VehicleLookup, VehicleAndKeeperLookupWebService) = {
     val (status, vehicleDetailsResponse) = fullResponse
     val ws: VehicleAndKeeperLookupWebService = mock[VehicleAndKeeperLookupWebService]
     when(ws.invoke(any[VehicleAndKeeperLookupRequest], any[TrackingId])).thenReturn(Future {
       val responseAsJson: Option[JsValue] = vehicleDetailsResponse match {
-        case Some(e) => Some(Json.toJson(e))
+        case Some(response) => response match {
+          case Left(failure) => Some(Json.toJson(failure))
+          case Right(success) => Some(Json.toJson(success))
+        }
         case _ => None
       }
-      new FakeResponse(status = status, fakeJson = responseAsJson) // Any call to a webservice will always return this successful response.
+      new FakeResponse(status = status, fakeJson = responseAsJson)
     })
     val vehicleAndKeeperLookupServiceImpl = new VehicleAndKeeperLookupServiceImpl(ws, healthStatsMock)
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
@@ -330,8 +336,10 @@ class VehicleLookupUnitSpec extends UnitSpec {
     (vehicleLookupController, ws)
   }
 
-  private def vehicleLookupResponseGenerator(fullResponse: (Int, Option[VehicleAndKeeperLookupResponse]) = vehicleDetailsResponseSuccess,
-                                             bruteForceService: BruteForcePreventionService = bruteForceServiceImpl(permitted = true)
+  private def vehicleLookupResponseGenerator(
+    fullResponse: (Int, Option[Either[VehicleAndKeeperLookupFailureResponse,
+                                      VehicleAndKeeperLookupSuccessResponse]]) = vehicleDetailsResponseSuccess,
+    bruteForceService: BruteForcePreventionService = bruteForceServiceImpl(permitted = true)
                                             ): VehicleLookup = {
     val (vehicleLookupController, _) = vehicleLookupControllerAndMocks(fullResponse, bruteForceService)
     vehicleLookupController

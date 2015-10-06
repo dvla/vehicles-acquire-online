@@ -251,9 +251,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
     webService.invoke(acquireRequest, trackingId).map {
       case (httpResponseCode, response) =>
-        Some(Redirect(nextPage(httpResponseCode, response)(acquireRequest, vehicleAndKeeperDetails, newKeeperDetailsView,
-          response.map(_.transactionId).getOrElse(""), transactionTimestamp, trackingId)))
-          .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.transactionId, transactionTimestamp)))
+        Some(Redirect(nextPage(httpResponseCode, response)
+          (acquireRequest, vehicleAndKeeperDetails, newKeeperDetailsView, transactionTimestamp, trackingId)))
+          .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.acquireResponse.transactionId, transactionTimestamp)))
           .map(_.withCookie(completeAndConfirmForm))
           .get
     }.recover {
@@ -263,25 +263,26 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     }
   }
 
-  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])(acquireRequest: AcquireRequestDto,
-                                                                  vehicleDetails: VehicleAndKeeperDetailsModel,
-                                                                  keeperDetails: NewKeeperDetailsViewModel,
-                                                                  transactionId: String,
-                                                                  transactionTimestamp: DateTime,
-                                                                  trackingId: TrackingId)(implicit request: Request[_]) = {
+  def nextPage(httpResponseCode: Int, response: Option[AcquireResponseDto])
+              (acquireRequest: AcquireRequestDto,
+               vehicleDetails: VehicleAndKeeperDetailsModel,
+               keeperDetails: NewKeeperDetailsViewModel,
+               transactionTimestamp: DateTime,
+               trackingId: TrackingId)(implicit request: Request[_]) = {
     response.foreach(r => logResponse(r))
 
-    response match {
-      case Some(r) if r.responseCode.isDefined =>
-        r.responseCode.get match {
-          case "X0001" | "W0075" =>
-            logRequestRequiringFurtherAction(r.responseCode.get, transactionId, acquireRequest)
-            createAndSendEmailRequiringFurtherAction(transactionId, acquireRequest)
-          case _ =>
+    (httpResponseCode, response) match {
+      case (OK, Some(r)) =>
+        for { ms <- r.response } yield {
+          if (ms.message == "ms.vehiclesService.response.furtherActionRequired") {
+            logRequestRequiringFurtherAction(ms.code, r.acquireResponse.transactionId, acquireRequest)
+            createAndSendEmailRequiringFurtherAction(r.acquireResponse.transactionId, acquireRequest)
+          }
         }
-        successReturn(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
+        successReturn(vehicleDetails, keeperDetails, r.acquireResponse.transactionId, transactionTimestamp, trackingId)
       case _ =>
-        handleHttpStatusCode(httpResponseCode)(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
+        logMessage(request.cookies.trackingId(), Warn, s"Acquire micro-service call failed. $httpResponseCode")
+        routes.MicroServiceError.present()
     }
   }
 
@@ -351,19 +352,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     )
   }
 
-  def handleHttpStatusCode(statusCode: Int)(vehicleDetails: VehicleAndKeeperDetailsModel,
-                                            keeperDetails: NewKeeperDetailsViewModel,
-                                            transactionId: String,
-                                            transactionTimestamp: DateTime,
-                                            trackingId: TrackingId)
-                          (implicit request: Request[_]): Call =
-    statusCode match {
-      case OK => successReturn(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
-      case _ =>
-        logMessage(request.cookies.trackingId(), Warn, s"Acquire micro-service call failed. $statusCode")
-        routes.MicroServiceError.present()
-    }
-
   private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
                             keeperDetails: NewKeeperDetailsViewModel,
                             transactionId: String,
@@ -426,11 +414,11 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     )
   }
 
-  private def logResponse(disposeResponse: AcquireResponseDto)(implicit request: Request[_]) = {
+  private def logResponse(response: AcquireResponseDto)(implicit request: Request[_]) = {
     logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",
-      Option(Seq(anonymize(disposeResponse.registrationNumber),
-      disposeResponse.responseCode.getOrElse(""),
-      anonymize(disposeResponse.transactionId)))
+      Option(Seq(anonymize(response.acquireResponse.registrationNumber),
+      s"${response.response.map(_.message)}",
+      anonymize(response.acquireResponse.transactionId)))
     )
   }
 
