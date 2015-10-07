@@ -17,3 +17,4 @@ class VersionIntegrationSpec extends UiSpec with TestHarness {
     }
   }
 }
+
