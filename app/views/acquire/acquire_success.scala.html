@@ -16,7 +16,6 @@
 ) {
 
 <div class="two-col clearfix acquire-success">
-
     <div class="second-col">
 
         <div class="alert-complete">
@@ -60,52 +59,52 @@
           <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
         }
 
-        <div class="form-steps">
+        <div class="form-steps desktop-only">
             <div class="step">
                 <button id="printDisposalSuccess"
-                    type="button"
-                    name="action"
-                    value="printDisposalSuccess"
-                    class="button js-only print-button">
+                        type="button"
+                        name="action"
+                        value="printDisposalSuccess"
+                        class="button js-only print-button">
                     @Messages("acquire_success.buttonnavprint")
                 </button>
             </div>
             <div class="step">
                 @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
-                    @csrfTokenHiddenField()
-                    <button id="@BuyAnotherId"
+                @csrfTokenHiddenField()
+                <button id="@BuyAnotherId"
                         type="submit"
                         name="action"
                         data-tracking="summary_action"
                         class="button button-new-disposal button-secondary success-buy-another-btn">
-                        @Messages("acquire_success.buyAnother")
-                    </button>
+                    @Messages("acquire_success.buyAnother")
+                </button>
                 }
             </div>
             <div class="step">
                 @form(action = controllers.routes.AcquireSuccess.finish()) {
-                    @csrfTokenHiddenField()
-                    @surveyUrl match {
-                        case Some(url) => {
-                            <button id="@FinishId"
-                                type="submit"
-                                name="action"
-                                onclick="window.open('@url', '_blank');"
-                                data-tracking="summary_action"
-                                class="button button-new-disposal button-secondary success-finish-btn">
-                                @Messages("acquire_success.finish")
-                            </button>
-                        }
-                        case None => {
-                            <button id="@FinishId"
-                                type="submit"
-                                name="action"
-                                data-tracking="summary_action"
-                                class="button button-new-disposal button-secondary success-finish-btn">
-                                @Messages("acquire_success.finish")
-                            </button>
-                        }
-                    }
+                @csrfTokenHiddenField()
+                @surveyUrl match {
+                case Some(url) => {
+                <button id="@FinishId"
+                        type="submit"
+                        name="action"
+                        onclick="window.open('@url', '_blank');"
+                        data-tracking="summary_action"
+                        class="button button-new-disposal button-secondary success-finish-btn">
+                    @Messages("acquire_success.finish")
+                </button>
+                }
+                case None => {
+                <button id="@FinishId"
+                        type="submit"
+                        name="action"
+                        data-tracking="summary_action"
+                        class="button button-new-disposal button-secondary success-finish-btn">
+                    @Messages("acquire_success.finish")
+                </button>
+                }
+                }
                 }
             </div>
         </div>
@@ -181,6 +180,56 @@
                     </dd>
                 </dl>
             </div>
+        </div>
+    </div>
+
+    <div class="form-steps mobile-only">
+        <div class="step">
+            <button id="printDisposalSuccessMobile"
+                    type="button"
+                    name="action"
+                    value="printDisposalSuccess"
+                    class="button js-only print-button">
+                @Messages("acquire_success.buttonnavprint")
+            </button>
+        </div>
+        <div class="step">
+            @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
+            @csrfTokenHiddenField()
+            <button id="@BuyAnotherId"
+                    type="submit"
+                    name="action"
+                    data-tracking="summary_action"
+                    class="button button-new-disposal button-secondary success-buy-another-btn">
+                @Messages("acquire_success.buyAnother")
+            </button>
+            }
+        </div>
+        <div class="step">
+            @form(action = controllers.routes.AcquireSuccess.finish()) {
+            @csrfTokenHiddenField()
+            @surveyUrl match {
+            case Some(url) => {
+            <button id="@FinishId"
+                    type="submit"
+                    name="action"
+                    onclick="window.open('@url', '_blank');"
+                    data-tracking="summary_action"
+                    class="button button-new-disposal button-secondary success-finish-btn">
+                @Messages("acquire_success.finish")
+            </button>
+            }
+            case None => {
+            <button id="@FinishId"
+                    type="submit"
+                    name="action"
+                    data-tracking="summary_action"
+                    class="button button-new-disposal button-secondary success-finish-btn">
+                @Messages("acquire_success.finish")
+            </button>
+            }
+            }
+            }
         </div>
     </div>
 </div>

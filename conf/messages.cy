@@ -598,6 +598,7 @@ closed.exit_button = Gadael
 # feedback
 common_feedback.title = Give Feedback
 common_feedback.message = Please don''t include any personal or financial information.
+common_feedback.warning = Mae'r dudalen hon ar gyfer adborth yn unig ac ni allwn gynnig ateb personol i'ch e-bost
 common_feedback.label = What went wrong, if anything? What went well? How could we improve this service?
 common_feedback.charactersRemaining = characters remaining
 common_feedback.placeholder = 500 characters remaining
