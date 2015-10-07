@@ -16,8 +16,6 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
                                           (implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
                                            config: Config) extends NewKeeperChooseYourAddressBase(addressLookupService) {
 
-  override protected def ordnanceSurveyUseUprn: Boolean = config.ordnanceSurveyUseUprn
-
   override protected def invalidFormResult(model: NewKeeperChooseYourAddressViewModel,
                                            name: String,
                                            postcode: String,
@@ -64,8 +62,4 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
     Redirect(routes.VehicleTaxOrSorn.present())
   }
 
-  override protected def upnpNotFoundRedirect(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.UprnNotFound.present()}")
-    Redirect(routes.UprnNotFound.present())
-  }
 }

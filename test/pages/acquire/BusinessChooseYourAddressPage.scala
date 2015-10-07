@@ -18,6 +18,8 @@ import BusinessChooseYourAddress.SelectId
 
 object BusinessChooseYourAddressPage extends Page {
   final val address = buildAppUrl("business-choose-your-address")
+  final val defaultSelectedAddress = "Not real street 1, Not real street2, Not real town, QQ9 9QQ"
+  final val selectedAddress = "presentationProperty stub, 123, property stub, street stub, town stub, area stub, QQ99QQ"
   override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select trader address"
   final val titleCy = "Dewiswch eich cyfeiriad masnach"
@@ -34,9 +36,7 @@ object BusinessChooseYourAddressPage extends Page {
 
   def happyPath(implicit driver: WebDriver) = {
     go to BusinessChooseYourAddressPage
-    // HACK for Northern Ireland
-    //    chooseAddress.value = traderUprnValid.toString
-    chooseAddress.value = "0"
+    chooseAddress.value = selectedAddress
     click on select
   }
 

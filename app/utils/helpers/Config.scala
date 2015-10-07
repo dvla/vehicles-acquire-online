@@ -23,8 +23,6 @@ trait Config extends VehicleLookupConfig {
 
   def acquire: AcquireConfig
 
-  def ordnanceSurveyUseUprn: Boolean
-  
   // Opening and closing times
   def openingTimeMinOfDay: Int
   def closingTimeMinOfDay: Int

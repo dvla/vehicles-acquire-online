@@ -24,7 +24,7 @@ class CheckKeeperEndDateBeforeProccessingAcquireTransaction(webBrowserDriver: We
     SetupTradeDetailsPage.traderEmail.value = "C@GMAIL.COM"
     SetupTradeDetailsPage.traderConfirmEmail.value = "C@GMAIL.COM"
     click on SetupTradeDetailsPage.lookup
-    BusinessChooseYourAddressPage.chooseAddress.value = "0"
+    BusinessChooseYourAddressPage.chooseAddress.value = BusinessChooseYourAddressPage.defaultSelectedAddress
     click on BusinessChooseYourAddressPage.select
     click on BusinessChooseYourAddressPage.next
   }

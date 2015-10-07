@@ -86,8 +86,6 @@ POST        /failure-acquire-finish                     @controllers.AcquireFail
 GET         /feedback                                   @controllers.FeedbackController.present
 POST        /feedback                                   @controllers.FeedbackController.submit
 
-GET         /uprn-not-found                             @controllers.UprnNotFound.present
-
 # Vehicle lookup failure
 GET         /vehicle-lookup-failure                     @controllers.VehicleLookupFailure.present
 POST        /vehicle-lookup-failure                     @controllers.VehicleLookupFailure.submit

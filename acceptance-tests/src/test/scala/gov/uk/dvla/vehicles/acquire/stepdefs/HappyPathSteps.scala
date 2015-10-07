@@ -149,7 +149,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   def goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps: Boolean = true) = {
     if (callNavigationSteps) goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
-    NewKeeperChooseYourAddressPage.chooseAddress.value = "0"
+    NewKeeperChooseYourAddressPage.chooseAddress.value = BusinessChooseYourAddressPage.defaultSelectedAddress
     click on NewKeeperChooseYourAddressPage.select
     pageTitle shouldEqual VehicleTaxOrSornPage.title withClue trackingId
   }
@@ -330,7 +330,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   @When("^the user navigates forwards from business choose your address page and there are no validation errors$")
   def the_user_navigates_forwards_from_business_choose_your_address_page_and_there_are_no_validation_errors() = {
-    BusinessChooseYourAddressPage.chooseAddress.value = "0"
+    BusinessChooseYourAddressPage.chooseAddress.value = BusinessChooseYourAddressPage.defaultSelectedAddress
     click on BusinessChooseYourAddressPage.select
     click on BusinessChooseYourAddressPage.next
   }
@@ -347,7 +347,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   @When("^the user navigates forwards from new keeper choose your address page$")
   def the_user_navigates_forwards_from_new_keeper_choose_your_address_page() = {
-    NewKeeperChooseYourAddressPage.chooseAddress.value = "0"
+    NewKeeperChooseYourAddressPage.chooseAddress.value = BusinessChooseYourAddressPage.defaultSelectedAddress
     click on NewKeeperChooseYourAddressPage.select
   }
 

@@ -29,8 +29,6 @@ class TestConfig extends Config {
 
   def startUrl: String = "/before-you-start"
 
-  def ordnanceSurveyUseUprn: Boolean = false
-
   // Opening and closing times
   def openingTimeMinOfDay: Int = getOptionalProperty[Int]("openingTimeMinOfDay").getOrElse(0)
   def closingTimeMinOfDay: Int = getOptionalProperty[Int]("closingTimeMinOfDay").getOrElse(1440)

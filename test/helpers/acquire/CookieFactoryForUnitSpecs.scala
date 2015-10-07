@@ -18,7 +18,7 @@ import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLoo
 import models.VehicleTaxOrSornFormModel
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import org.joda.time.{DateTime, LocalDate}
-import pages.acquire.{HelpPage, VehicleLookupPage}
+import pages.acquire.{BusinessChooseYourAddressPage, HelpPage, VehicleLookupPage}
 import pages.acquire.SetupTradeDetailsPage.{TraderBusinessNameValid, PostcodeValid}
 import play.api.mvc.Cookie
 import pages.acquire.BusinessKeeperDetailsPage.{FleetNumberValid, BusinessNameValid, EmailValid}
@@ -51,7 +51,7 @@ import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCa
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl._
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleModelValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionTimestampValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ReferenceNumberValid
@@ -99,13 +99,13 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def businessChooseYourAddressUseUprn(uprnSelected: String = UprnValid.toString): Cookie = {
+  def businessChooseYourAddressUseUprn(uprnSelected: String = selectedAddress): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
     val value = BusinessChooseYourAddressFormModel(uprnSelected = uprnSelected)
     createCookie(key, value)
   }
 
-  def businessChooseYourAddress(uprnSelected: String = "0"): Cookie = {
+  def businessChooseYourAddress(uprnSelected: String = BusinessChooseYourAddressPage.selectedAddress): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
     val value = BusinessChooseYourAddressFormModel(uprnSelected = uprnSelected)
     createCookie(key, value)
@@ -287,7 +287,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def newKeeperChooseYourAddress(uprnSelected: String = "0"): Cookie = {
+  def newKeeperChooseYourAddress(uprnSelected: String = BusinessChooseYourAddressPage.selectedAddress): Cookie = {
     val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
     val value = NewKeeperChooseYourAddressFormModel(uprnSelected = uprnSelected)
     createCookie(key, value)

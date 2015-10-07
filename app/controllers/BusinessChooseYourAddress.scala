@@ -30,17 +30,12 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     request.cookies.getModel[SetupTradeDetailsFormModel] match {
       case Some(setupTradeDetailsModel) =>
         val session = clientSideSessionFactory.getSession(request.cookies)
-        fetchAddresses(setupTradeDetailsModel, showBusinessName = Some(true))(session, request2lang).map { addresses =>
-          if (config.ordnanceSurveyUseUprn) Ok(views.html.acquire.business_choose_your_address(form.fill(),
+        fetchAddresses(setupTradeDetailsModel)(session, request2lang).map { addresses =>
+          Ok(views.html.acquire.business_choose_your_address(form.fill(),
             setupTradeDetailsModel.traderBusinessName,
             setupTradeDetailsModel.traderPostcode,
             setupTradeDetailsModel.traderEmail,
             addresses))
-          else Ok(views.html.acquire.business_choose_your_address(form.fill(),
-            setupTradeDetailsModel.traderBusinessName,
-            setupTradeDetailsModel.traderPostcode,
-            setupTradeDetailsModel.traderEmail,
-            index(addresses)))
         }
       case None => Future {
         logMessage(request.cookies.trackingId(), Warn,
@@ -56,20 +51,12 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetails) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            fetchAddresses(setupTradeDetails, showBusinessName = Some(true)).map { addresses =>
-              if (config.ordnanceSurveyUseUprn) {
+            fetchAddresses(setupTradeDetails).map { addresses =>
                 BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
                     setupTradeDetails.traderBusinessName,
                     setupTradeDetails.traderPostcode,
                     setupTradeDetails.traderEmail,
                     addresses))
-              } else {
-                BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
-                  setupTradeDetails.traderBusinessName,
-                  setupTradeDetails.traderPostcode,
-                  setupTradeDetails.traderEmail,
-                  index(addresses)))
-              }
             }
           case None => Future {
             logMessage(request.cookies.trackingId(), Warn,
@@ -82,10 +69,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetailsModel) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            if (config.ordnanceSurveyUseUprn)
-              lookupUprn(validForm, setupTradeDetailsModel.traderBusinessName, setupTradeDetailsModel.traderEmail)
-            else
-              lookupAddressByPostcodeThenIndex(validForm, setupTradeDetailsModel)
+            lookupAddressByPostcodeThenIndex(validForm, setupTradeDetailsModel)
           case None => Future {
             logMessage(request.cookies.trackingId(), Warn,
               s"Failed to find dealer details, redirecting to ${routes.SetUpTradeDetails.present()}")
@@ -101,35 +85,22 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       map { case (address, index) => (index.toString, address)} // Flip them around so index comes first.
   }
 
+  //  TODO : Renmae, handle possible missing values
   private def lookupAddressByPostcodeThenIndex(model: BusinessChooseYourAddressFormModel,
                                                setupBusinessDetailsForm: SetupTradeDetailsFormModel)
                                               (implicit request: Request[_], session: ClientSideSession): Future[Result] = {
-    fetchAddresses(setupBusinessDetailsForm, showBusinessName = Some(false))(session, request2lang).map { addresses =>
-      val indexSelected = model.uprnSelected.toInt
-      if (indexSelected < addresses.length) {
-        val lookedUpAddresses = index(addresses)
-        val lookedUpAddress = lookedUpAddresses(indexSelected) match {
-          case (index, address) => address
-        }
+    fetchAddresses(setupBusinessDetailsForm)(session, request2lang).map { addresses =>
+        val lookedUpAddress = model.uprnSelected
         val addressModel = VmAddressModel.from(lookedUpAddress)
         nextPage(model, setupBusinessDetailsForm.traderBusinessName, addressModel, setupBusinessDetailsForm.traderEmail)
-      }
-      else {
-        // Guard against IndexOutOfBoundsException
-        logMessage(request.cookies.trackingId(), Warn,
-          s"Failed to find address details, redirecting to ${routes.UprnNotFound.present()}")
-        Redirect(routes.UprnNotFound.present())
-      }
     }
   }
 
-  private def fetchAddresses(model: SetupTradeDetailsFormModel, showBusinessName: Option[Boolean])
+  private def fetchAddresses(model: SetupTradeDetailsFormModel)
                             (implicit session: ClientSideSession, lang: Lang): Future[Seq[(String, String)]] =
     addressLookupService.fetchAddressesForPostcode(
       model.traderPostcode,
-      session.trackingId,
-      showBusinessName = showBusinessName
-    )
+      session.trackingId)
 
   private def formWithReplacedErrors(form: Form[BusinessChooseYourAddressFormModel])(implicit request: Request[_]) =
     form.replaceError(AddressSelectId, "error.required",
@@ -138,19 +109,6 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         message = "disposal_businessChooseYourAddress.address.required",
         args = Seq.empty)
       ).distinctErrors
-
-  private def lookupUprn(model: BusinessChooseYourAddressFormModel, traderName: String, traderEmail: Option[String])
-                        (implicit request: Request[_], session: ClientSideSession) = {
-    val lookedUpAddress = addressLookupService.fetchAddressForUprn(model.uprnSelected.toString, session.trackingId)
-    lookedUpAddress.map {
-      case Some(addressViewModel) =>
-        nextPage(model, traderName, addressViewModel, traderEmail)
-      case None =>
-        logMessage(request.cookies.trackingId(), Warn,
-            s"Failed to find address details, redirecting to ${routes.UprnNotFound.present()}")
-        Redirect(routes.UprnNotFound.present())
-    }
-  }
 
   private def nextPage(model: BusinessChooseYourAddressFormModel,
                        traderName: String,

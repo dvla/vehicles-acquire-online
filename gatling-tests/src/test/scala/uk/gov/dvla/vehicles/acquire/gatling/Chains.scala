@@ -118,9 +118,8 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
         http(chainTitle)
           .post(url)
           .headers(headers_x_www_form_urlencoded)
-          .formParam("disposal_businessChooseYourAddress_addressSelect", "0") // UPRN disabled for Northern Ireland
+          .formParam("disposal_businessChooseYourAddress_addressSelect", "Not real street 1, Not real street2, Not real town, QQ9 9QQ")
           .check(regex(VehicleLookupPageTitle).exists)
-//          .check(regex(TraderPlayBackHeading).exists)
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
           .check(regex( """<input type="hidden" name="csrf_prevention_token" value="(.*)"/>""").saveAs("csrf_prevention_token"))
@@ -209,7 +208,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
         http(chainTitle)
           .post(url)
           .headers(headers_x_www_form_urlencoded)
-          .formParam("newKeeperChooseYourAddress_addressSelect", "0") // UPRN disabled for Northern Ireland
+          .formParam("newKeeperChooseYourAddress_addressSelect", "presentationProperty stub, 123, property stub, street stub, town stub, area stub, QQ99QQ") // UPRN disabled for Northern Ireland
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
           // Assertions

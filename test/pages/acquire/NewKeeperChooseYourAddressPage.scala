@@ -20,6 +20,8 @@ object NewKeeperChooseYourAddressPage extends Page {
   final val address = buildAppUrl("new-keeper-choose-your-address")
   override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title = "Select new keeper address"
+  val selectedAddressLine = "presentationProperty stub, 123, property stub, street stub, town stub, area stub, QQ99QQ"
+
   //final val titleCy = "Dewiswch eich cyfeiriad masnach"
 
   def chooseAddress(implicit driver: WebDriver): SingleSel = singleSel(id(AddressSelectId))
@@ -32,9 +34,7 @@ object NewKeeperChooseYourAddressPage extends Page {
 
   def happyPath(implicit driver: WebDriver) = {
     go to NewKeeperChooseYourAddressPage
-    // HACK for Northern Ireland
-//    chooseAddress.value = traderUprnValid.toString
-    chooseAddress.value = "0"
+    chooseAddress.value = selectedAddressLine
     click on select
   }
 

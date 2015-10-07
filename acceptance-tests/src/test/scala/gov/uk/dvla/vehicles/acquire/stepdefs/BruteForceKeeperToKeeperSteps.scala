@@ -31,7 +31,7 @@ class BruteForceKeeperToKeeperSteps(webBrowserDriver: WebBrowserDriver)
     SetupTradeDetailsPage.traderPostcode.value = "qq99qq"
     click on SetupTradeDetailsPage.emailInvisible
     click on SetupTradeDetailsPage.lookup
-    BusinessChooseYourAddressPage.chooseAddress.value = "0"
+    BusinessChooseYourAddressPage.chooseAddress.value = BusinessChooseYourAddressPage.defaultSelectedAddress
     click on BusinessChooseYourAddressPage.select
     click on BusinessChooseYourAddressPage.next
     pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
