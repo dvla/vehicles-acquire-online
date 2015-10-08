@@ -235,6 +235,7 @@ acquire_vehiclelookup.tradernamelabel = Trader name
 acquire_vehiclelookup.traderaddresslabel = Address
 acquire_vehiclelookup.traderpostcodelabel = Postcode
 acquire_vehiclelookup.traderemaillabel = Email
+acquire_vehiclelookup.traderresetdetails = Change these trader details?
 
 vehicleSoldTo = Vehicle sold to
 acquire_vehiclelookup.vehiclesoldto.label = Is the vehicle being sold to a private individual or a business?

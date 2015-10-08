@@ -20,6 +20,7 @@ GET         /before-you-start                           @controllers.BeforeYouSt
 
 #page 2 - Setup Trade Details
 GET         /setup-trade-details                        @controllers.SetUpTradeDetails.present
+GET         /setup-trade-details/reset                  @controllers.SetUpTradeDetails.reset
 POST        /setup-trade-details                        @controllers.SetUpTradeDetails.submit
 
 #page 3 - Business Choose Your Address

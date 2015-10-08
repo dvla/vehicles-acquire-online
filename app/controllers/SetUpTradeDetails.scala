@@ -6,7 +6,7 @@ import play.api.data.Form
 import play.api.mvc.{Result, Request}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.RichCookies
+import common.clientsidesession.CookieImplicits.{RichCookies, RichResult}
 import common.controllers.SetUpTradeDetailsBase
 import common.LogFormats.DVLALogger
 import common.model.SetupTradeDetailsFormModel
@@ -24,5 +24,11 @@ class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSid
   override def success(implicit request: Request[_]): Result = {
     logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
     Redirect(routes.BusinessChooseYourAddress.present())
+  }
+
+  def reset = play.api.mvc.Action { implicit request =>
+    logMessage(request.cookies.trackingId(), Info, s"Reset trader details")
+    Ok(views.html.acquire.setup_trade_details(form))
+      .discardingCookies(models.TraderDetailsCacheKeys)
   }
 }
