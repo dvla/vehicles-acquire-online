@@ -128,7 +128,6 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    // TODO : Put this back in
     "fetch the addresses for the new keeper's postcode from the address lookup micro service" ignore new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
@@ -311,19 +310,15 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
     new NewKeeperChooseYourAddress(addressLookupService)
   }
 
-  // TODO : remove commented out code
   private def newKeeperChooseYourAddressControllerAndMocks(uprnFound: Boolean = true,
                                                           isPrototypeBannerVisible: Boolean = true,
                                                           ordnanceSurveyUseUprn: Boolean): (NewKeeperChooseYourAddress, AddressLookupWebService) = {
     val responsePostcode = if (uprnFound) responseValidForPostcodeToAddress else responseValidForPostcodeToAddressNotFound
-//    val responseUprn = if (uprnFound) responseValidForUprnToAddress else responseValidForUprnToAddressNotFound
 
     val addressLookupWebServiceMock = mock[AddressLookupWebService]
     when(addressLookupWebServiceMock.callPostcodeWebService(
       anyString(), any[TrackingId]))
       .thenReturn(responsePostcode)
-//    when(addressLookupWebServiceMock.callUprnWebService(anyString(), any[TrackingId])(any[Lang]))
-//      .thenReturn(responseUprn)
 
     val healthStatsMock = mock[HealthStats]
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {

@@ -85,7 +85,6 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       map { case (address, index) => (index.toString, address)} // Flip them around so index comes first.
   }
 
-  //  TODO : Renmae, handle possible missing values
   private def lookupAddressByPostcodeThenIndex(model: BusinessChooseYourAddressFormModel,
                                                setupBusinessDetailsForm: SetupTradeDetailsFormModel)
                                               (implicit request: Request[_], session: ClientSideSession): Future[Result] = {
