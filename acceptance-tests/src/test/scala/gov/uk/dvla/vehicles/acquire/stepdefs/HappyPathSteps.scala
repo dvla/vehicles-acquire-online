@@ -301,7 +301,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToSelectNewKeeperAddressPageAfterFillingInNewBusinessKeeper()
   }
 
-  @Given("^the user is on the New keeper.value = address manually page$")
+  @Given("^the user is on the New keeper enter address manually page$")
   def the_user_is_on_the_New_keeper_enter_address_manually_page() {
     goToNewKeeperEnterAddressManuallyAfterFillingInNewBusinessKeeper()
   }
@@ -316,14 +316,14 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToVehicleTaxOrSornPageWithKeeperAddressFromLookup()
   }
 
-  @When("^the user navigates forwards from.value = address manually and there are no validation errors$")
+  @When("^the user navigates forwards from enter address manually and there are no validation errors$")
   def the_user_navigates_forwards_from_enter_address_manually_and_there_are_no_validation_errors() = {
     EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
     EnterAddressManuallyPage.addressPostTown.value = "Swansea"
     click on EnterAddressManuallyPage.next
   }
 
-  @When("^the user navigates backwards from the.value = address manually page$")
+  @When("^the user navigates backwards from the enter address manually page$")
   def the_user_navigates_backwards_from_the_enter_address_manually_page() = {
     click on EnterAddressManuallyPage.back
   }
@@ -335,7 +335,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on BusinessChooseYourAddressPage.next
   }
 
-  @When("^the user navigates forwards from business choose your address page to the.value = address manually page$")
+  @When("^the user navigates forwards from business choose your address page to the enter address manually page$")
   def the_user_navigates_forwards_from_business_choose_your_address_page_to_the_enter_address_manually_page() = {
     click on BusinessChooseYourAddressPage.manualAddress
   }
@@ -351,7 +351,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on NewKeeperChooseYourAddressPage.select
   }
 
-  @When("^the user navigates forwards from new keeper choose your address to the new keeper.value = address manually page$")
+  @When("^the user navigates forwards from new keeper choose your address to the new keeper enter address manually page$")
   def the_user_navigates_forwards_from_new_keeper_choose_your_address_to_the_new_keeper_enter_address_manually_page() = {
     click on NewKeeperChooseYourAddressPage.manualAddress
   }
@@ -361,14 +361,14 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on NewKeeperChooseYourAddressPage.back
   }
 
-  @When("^the user navigates forwards from new keeper.value = address manually and there are no validation errors$")
+  @When("^the user navigates forwards from new keeper enter address manually and there are no validation errors$")
   def the_user_navigates_forwards_from_new_keeper_enter_address_manually_and_there_are_no_validation_errors() = {
     NewKeeperEnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
     NewKeeperEnterAddressManuallyPage.addressPostTown.value = "Swansea"
     click on NewKeeperEnterAddressManuallyPage.next
   }
 
-  @When("^the user navigates backwards from the new keeper.value = address manually page$")
+  @When("^the user navigates backwards from the new keeper enter address manually page$")
   def the_user_navigates_backwards_from_the_new_keeper_enter_address_manually_page() = {
     click on NewKeeperEnterAddressManuallyPage.back
   }

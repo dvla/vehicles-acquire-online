@@ -36,7 +36,7 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
     pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
-  @When("^the user .value =the vehicle details which has a supression flag and click on submit$")
+  @When("^the user  enter the vehicle details which has a supression flag and click on submit$")
   def the_user_enter_the_vehicle_details_which_has_a_supression_flag_and_click_on_submit()  {
     VehicleLookupPage.vehicleRegistrationNumber.value ="AA11AAF"
     VehicleLookupPage.documentReferenceNumber.value ="88888888881"
