@@ -25,6 +25,7 @@ class EnterAddressManually @Inject()()(implicit clientSideSessionFactory: Client
   def present = Action { implicit request =>
     request.cookies.getModel[SetupTradeDetailsFormModel] match {
       case Some(setupTradeDetails) =>
+        logMessage(request.cookies.trackingId(), Info, "Presenting enter address manually view")
         Ok(enter_address_manually(form.fill(), traderPostcode = setupTradeDetails.traderPostcode))
       case None =>
         logMessage(request.cookies.trackingId(), Error,

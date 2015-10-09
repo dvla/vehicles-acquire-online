@@ -58,6 +58,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
       (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
         case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails), Some(vehicleSorn)) =>
+          logMessage(request.cookies.trackingId(), Info, "Presenting complete and confirm view")
           Ok(complete_and_confirm(CompleteAndConfirmViewModel(form.fill(),
             vehicleAndKeeperDetails,
             newKeeperDetails,
@@ -170,7 +171,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
       logMessage(request.cookies.trackingId(), Warn,
         "Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
-        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
+        s"Redirecting to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
       Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardedOnRedirectAway)
     }(c => action)
 
@@ -178,7 +179,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     request.cookies.getString(AllowGoingToCompleteAndConfirmPageCacheKey).fold {
       logMessage(request.cookies.trackingId(), Warn,
         "Could not find AllowGoingToCompleteAndConfirmPageCacheKey in the request. " +
-        s"Redirect to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
+        s"Redirecting to VehicleLookup discarding cookies $cookiesToBeDiscardedOnRedirectAway")
       Future.successful(Redirect(routes.VehicleLookup.present()).discardingCookies(cookiesToBeDiscardedOnRedirectAway))
     }(c => action)
 
@@ -220,8 +221,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                             vehicleLookup: VehicleLookupFormModel,
                             vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
                             traderDetails: TraderDetailsModel,
-                            taxOrSorn: VehicleTaxOrSornFormModel
-                             )
+                            taxOrSorn: VehicleTaxOrSornFormModel)
                            (implicit request: Request[AnyContent]): Future[Result] =
     acquireAction(
       validForm,
@@ -392,7 +392,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",
       Option(Seq(
         acquireRequest.webHeader.applicationCode,
-        acquireRequest.webHeader.originDateTime.toString(),
+        acquireRequest.webHeader.originDateTime.toString,
         acquireRequest.webHeader.serviceTypeCode,
         acquireRequest.webHeader.transactionId,
         acquireRequest.dateOfTransfer,
@@ -427,7 +427,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     logMessage(request.cookies.trackingId(), Error, "Further action required",
       Some(Seq(
         acquireRequest.webHeader.applicationCode,
-        acquireRequest.webHeader.originDateTime.toString(),
+        acquireRequest.webHeader.originDateTime.toString,
         acquireRequest.webHeader.serviceTypeCode,
         transactionId,
         acquireRequest.dateOfTransfer,

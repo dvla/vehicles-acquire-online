@@ -31,6 +31,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
       case Some(setupTradeDetailsModel) =>
         val session = clientSideSessionFactory.getSession(request.cookies)
         fetchAddresses(setupTradeDetailsModel)(session, request2lang).map { addresses =>
+          logMessage(request.cookies.trackingId(), Info, "Presenting business choose your address view")
           Ok(views.html.acquire.business_choose_your_address(form.fill(),
             setupTradeDetailsModel.traderBusinessName,
             setupTradeDetailsModel.traderPostcode,

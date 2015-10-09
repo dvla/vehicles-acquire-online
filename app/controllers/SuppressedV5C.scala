@@ -17,10 +17,12 @@ class SuppressedV5C @Inject()()(implicit clientSideSessionFactory: ClientSideSes
   def present = Action { implicit request =>
     request.cookies.getModel[VehicleAndKeeperDetailsModel] match {
       case Some(vehicleAndKeeperDetails) =>
+        logMessage(request.cookies.trackingId(), Info, "Presenting suppressed V5C page")
         Ok(views.html.acquire.suppressedV5C())
       case _ =>
-        logMessage(request.cookies.trackingId(), Warn,
-          s"Did not find VehicleDetailsModel cookie. Now redirecting to ${routes.SetUpTradeDetails.present()}")
+        val msg = "When presenting suppressed V5C, did not find VehicleDetailsModel cookie. " +
+          s"Now redirecting to ${routes.SetUpTradeDetails.present()}"
+        logMessage(request.cookies.trackingId(), Warn, msg)
         Redirect(routes.SetUpTradeDetails.present())
     }
   }

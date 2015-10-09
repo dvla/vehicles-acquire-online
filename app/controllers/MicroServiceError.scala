@@ -15,14 +15,15 @@ class MicroServiceError @Inject()(implicit clientSideSessionFactory: ClientSideS
   private final val DefaultRedirectUrl = VehicleLookup.present().url
 
   def present = Action { implicit request =>
-    logMessage(request.cookies.trackingId(), Debug, s"MicroService error page")
+    val trackingId = request.cookies.trackingId()
+    logMessage(trackingId, Info, "Presenting micro service error page")
 
     val referer = request.headers.get(REFERER).getOrElse(DefaultRedirectUrl)
     logMessage(request.cookies.trackingId(), Debug, s"Referer $referer")
 
-    ServiceUnavailable(views.html.acquire.micro_service_error()).
+    ServiceUnavailable(views.html.acquire.micro_service_error(trackingId))
       // Save the previous page URL (from the referer header) into a cookie.
-      withCookie(MicroServiceError.MicroServiceErrorRefererCacheKey, referer)
+      .withCookie(MicroServiceError.MicroServiceErrorRefererCacheKey, referer)
   }
 
   def back = Action { implicit request =>

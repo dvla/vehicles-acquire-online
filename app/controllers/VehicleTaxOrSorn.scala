@@ -35,6 +35,7 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
     val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
     (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt) match {
       case (Some(newKeeperDetails), Some(vehicleAndKeeperDetails)) =>
+        logMessage(request.cookies.trackingId(), Info, "Presenting vehicle tax or sorn view")
         Ok(vehicle_tax_or_sorn(VehicleTaxOrSornViewModel(form.fill(), vehicleAndKeeperDetails, newKeeperDetails)))
       case _ =>
         redirectToVehicleLookup(NoCookiesFoundMessage)

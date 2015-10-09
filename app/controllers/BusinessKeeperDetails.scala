@@ -15,8 +15,10 @@ class BusinessKeeperDetails @Inject()()(implicit protected override val clientSi
                                             val config: Config)
                                         extends BusinessKeeperDetailsBase with DVLALogger {
 
-  protected override def presentResult(model: BusinessKeeperDetailsViewModel)(implicit request: Request[_]): Result =
+  protected override def presentResult(model: BusinessKeeperDetailsViewModel)(implicit request: Request[_]): Result = {
+    logMessage(request.cookies.trackingId(), Info, "Presenting business keeper details view")
     Ok(views.html.acquire.business_keeper_details(model))
+  }
 
   protected def invalidFormResult(model:BusinessKeeperDetailsViewModel)(implicit request: Request[_]): Result =
     BadRequest(views.html.acquire.business_keeper_details(model))

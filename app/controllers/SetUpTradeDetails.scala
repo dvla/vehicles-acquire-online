@@ -15,8 +15,10 @@ import utils.helpers.Config
 class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                           config: Config) extends SetUpTradeDetailsBase with DVLALogger {
 
-  override def presentResult(model: Form[SetupTradeDetailsFormModel])(implicit request: Request[_]): Result =
+  override def presentResult(model: Form[SetupTradeDetailsFormModel])(implicit request: Request[_]): Result = {
+    logMessage(request.cookies.trackingId(), Info, "Presenting set up trade details view")
     Ok(views.html.acquire.setup_trade_details(model))
+  }
 
   override def invalidFormResult(model: Form[SetupTradeDetailsFormModel])(implicit request: Request[_]): Result =
     BadRequest(views.html.acquire.setup_trade_details(model))

@@ -37,10 +37,12 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
                                      email: Option[String],
                                      addresses: Seq[(String, String)],
                                      isBusinessKeeper: Boolean = false,
-                                     fleetNumber: Option[String] = None)(implicit request: Request[_]): Result =
+                                     fleetNumber: Option[String] = None)(implicit request: Request[_]): Result = {
+    logMessage(request.cookies.trackingId(), Info, "Presenting new keeper choose your address view")
     Ok(views.html.acquire.new_keeper_choose_your_address(
       model, name, postcode, email, addresses)
     )
+  }
 
   override protected def privateKeeperDetailsRedirect(implicit request: Request[_]) = {
     logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.PrivateKeeperDetails.present()}")

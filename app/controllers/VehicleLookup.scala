@@ -57,6 +57,7 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
   override def presentResult(implicit request: Request[_]) =
     request.cookies.getModel[TraderDetailsModel] match {
       case Some(traderDetails) =>
+        logMessage(request.cookies.trackingId(), Info, "Presenting vehicle lookup view")
         Ok(views.html.acquire.vehicle_lookup(
           VehicleLookupViewModel(
             form.fill(),
@@ -126,17 +127,19 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
                                     soldTo: String)(implicit request: Request[_]) = {
     val (call, discardedCookies) =
       if (soldTo == VehicleSoldTo_Private) {
-        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.PrivateKeeperDetails.present()}")
+        val msg = s"Dealing with an already disposed vehicle, now redirecting to ${routes.PrivateKeeperDetails.present()}"
+        logMessage(request.cookies.trackingId(), Debug, msg)
         (routes.PrivateKeeperDetails.present(), BusinessKeeperDetailsCacheKeys)
       }
       else {
-        logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.BusinessKeeperDetails.present()}")
+        val msg = s"Dealing with an already disposed vehicle, now redirecting to ${routes.BusinessKeeperDetails.present()}"
+        logMessage(request.cookies.trackingId(), Debug, msg)
         (routes.BusinessKeeperDetails.present(), PrivateKeeperDetailsCacheKeys)
       }
 
-    Redirect(call).
-      discardingCookies(discardedCookies).
-      withCookie(vehicleAndKeeperDetailsModel)
+    Redirect(call)
+      .discardingCookies(discardedCookies)
+      .withCookie(vehicleAndKeeperDetailsModel)
   }
 
   private def formWithReplacedErrors(invalidForm: Form[VehicleLookupFormModel]) =

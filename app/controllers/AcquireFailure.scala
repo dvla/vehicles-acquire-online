@@ -18,12 +18,11 @@ import utils.helpers.Config
 class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                        config: Config) extends Controller with DVLALogger {
 
-  private final val MissingCookiesAcquireFailure = "Missing cookies in cache. Acquire was failed, however cannot " +
+  private final val MissingCookiesAcquireFailure = "Missing cookies in cache. Acquire failed, however cannot " +
     "display failure page. Redirecting to BeforeYouStart"
   private final val MissingCookies = "Missing cookies in cache."
 
   def present = Action { implicit request =>
-    logMessage(request.cookies.trackingId(), Info, "Present acquireFailure page")
     (request.cookies.getModel[VehicleAndKeeperDetailsModel],
       request.cookies.getModel[TraderDetailsModel],
       request.cookies.getModel[NewKeeperDetailsViewModel],
@@ -33,6 +32,7 @@ class AcquireFailure @Inject()()(implicit clientSideSessionFactory: ClientSideSe
       ) match {
       case (Some(vehiclAndKeepereDetailsModel), Some(traderDetailsModel), Some(newKeeperDetailsModel),
       Some(completeAndConfirmModel), Some(taxOrSornModel), Some(responseModel)) =>
+        logMessage(request.cookies.trackingId(), Info, "Presenting acquire failure view")
         Ok(views.html.acquire.acquire_failure(AcquireCompletionViewModel(vehiclAndKeepereDetailsModel,
           traderDetailsModel, newKeeperDetailsModel, completeAndConfirmModel, taxOrSornModel, responseModel)))
       case _ => redirectToStart(MissingCookiesAcquireFailure)
