@@ -35,9 +35,10 @@ import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupFai
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupRequest
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupSuccessResponse
+import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
 import utils.helpers.Config
-import views.acquire.VehicleLookup.{VehicleSoldTo_Business, VehicleSoldTo_Private}
+import views.acquire.VehicleLookup.{ResetTraderDetailsId, VehicleSoldTo_Business, VehicleSoldTo_Private}
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
@@ -53,7 +54,6 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseFirstAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseSecondAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.VrmThrows
-import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 
 class VehicleLookupUnitSpec extends UnitSpec {
 
@@ -115,6 +115,14 @@ class VehicleLookupUnitSpec extends UnitSpec {
       val content = contentAsString(result)
       content should not include ReferenceNumberValid
       content should not include RegistrationNumberValid
+    }
+
+    "display reset trade details anchor" in new WithApplication {
+      val request = FakeRequest().
+        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val result = vehicleLookupResponseGenerator().present(request)
+      val content = contentAsString(result)
+      content should include(s"""a id="$ResetTraderDetailsId""")
     }
   }
 

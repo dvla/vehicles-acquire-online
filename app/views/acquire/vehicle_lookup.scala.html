@@ -4,6 +4,10 @@
   config: utils.helpers.Config
 )
 
+
+@import views.acquire.VehicleLookup.{BackId, SubmitId, ResetTraderDetailsId, VehicleSoldTo_Private, VehicleSoldTo_Business}
+@import views.html.acquire.main
+@import views.html.helper.form
 @import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
 @import scala.collection.mutable.LinkedHashMap
 @import uk.gov.dvla.vehicles.presentation.common
@@ -38,6 +42,20 @@
                     playbackItems += (Messages("acquire_vehiclelookup.traderemaillabel") -> viewModel.email.getOrElse(Messages("acquire_email_not_entered")))
                 }
             )()
+            <dl class="playback">
+                <dt><h2>@Messages("acquire_vehiclelookup.p2")</h2></dt>
+                <dt>@Messages("acquire_vehiclelookup.tradernamelabel")</dt>
+                <dd>@viewModel.traderName</dd>
+                <dt>@Messages("acquire_vehiclelookup.traderaddresslabel")</dt>
+                <dd>@for(addr <- viewModel.address) {@addr<br/>}</dd>
+                <dt>@Messages("acquire_vehiclelookup.traderemaillabel")</dt>
+                <dd>@viewModel.email.getOrElse(Messages("acquire_email_not_entered"))</dd>
+            </dl>
+            <div>
+                <a id="@ResetTraderDetailsId"
+                   href="@routes.SetUpTradeDetails.reset">@Messages("acquire_vehiclelookup.traderresetdetails")
+                </a>
+            </div>
         </div>
 
         <div class="second-col uppercase-input">

@@ -101,6 +101,11 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     click on VehicleLookupPage.back
   }
 
+  @When("^the user selects the 'Change these trader details\\?' function$")
+  def the_user_selects_the_change_trader_details_function()  {
+    click on VehicleLookupPage.resetTraderDetails
+  }
+
   @When("^the user navigates forwards from the business keeper details page and there are no validation errors$")
   def the_user_navigates_forwards_from_the_business_keeper_details_page_and_there_are_no_validation_errors() {
     BusinessKeeperDetailsPage.navigate()
@@ -119,6 +124,13 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   @When("^the user navigates backwards from private keeper details page$")
   def the_user_navigates_backwards_from_private_keeper_details_page() = {
     click on PrivateKeeperDetailsPage.back
+  }
+
+  @Then("^the user will be directed to the Provide Trader details page with the entry fields empty$")
+  def the_user_should_taken_to_provide_trader_details_page_with_empty_entry_fields()  {
+    pageTitle shouldEqual SetupTradeDetailsPage.title withClue trackingId
+    SetupTradeDetailsPage.traderName.value shouldBe empty
+    SetupTradeDetailsPage.traderPostcode.value shouldBe empty
   }
 
   @And("^the user performs the lookup$")

@@ -18,7 +18,7 @@ import org.scalatest.selenium.WebBrowser.find
 import org.scalatest.selenium.WebBrowser.id
 import org.scalatest.selenium.WebBrowser.Element
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService._
-import views.acquire.VehicleLookup.{VehicleSoldTo_Private, VehicleSoldTo_Business}
+import views.acquire.VehicleLookup.{ResetTraderDetailsId, VehicleSoldTo_Private, VehicleSoldTo_Business}
 
 object VehicleLookupPage extends Page {
   final val address = buildAppUrl("vehicle-lookup")
@@ -28,6 +28,8 @@ object VehicleLookupPage extends Page {
   def vehicleRegistrationNumber(implicit driver: WebDriver): TextField = textField(id(VehicleRegistrationNumberId))
 
   def documentReferenceNumber(implicit driver: WebDriver): TelField = telField(id(DocumentReferenceNumberId))
+
+  def resetTraderDetails(implicit driver: WebDriver): Element = find(id(ResetTraderDetailsId)).get
 
   def vehicleSoldToPrivateIndividual(implicit driver: WebDriver): RadioButton = radioButton(id(s"${VehicleSoldToId}_$VehicleSoldTo_Private"))
 
