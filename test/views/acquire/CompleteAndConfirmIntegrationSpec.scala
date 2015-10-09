@@ -10,6 +10,8 @@ import helpers.UiSpec
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.VehicleNewKeeperCompletionCacheKeys
 import org.openqa.selenium.{By, WebElement, WebDriver}
+import org.scalatest.concurrent.Eventually.{eventually, PatienceConfig, scaled}
+import org.scalatest.time.{Seconds, Span}
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
@@ -317,11 +319,17 @@ import play.api.test.FakeApplication
       cacheSetup()
       go to CompleteAndConfirmPage
 
-      click on useTodaysDate
+      // The javascript files are sometimes slow to load
+      val timeout: Span = scaled(Span(2, Seconds))
+      implicit val patienceConfig: PatienceConfig = PatienceConfig(timeout = timeout)
 
-      dayDateOfSaleTextBox.value should equal (DateOfAcquisitionDayValid)
-      monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
-      yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
+      eventually {
+        click on useTodaysDate
+
+        dayDateOfSaleTextBox.value should equal (DateOfAcquisitionDayValid)
+        monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
+        yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
+      }
     }
 
   }
