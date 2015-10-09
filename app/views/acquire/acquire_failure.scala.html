@@ -2,11 +2,13 @@
 token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
 config: utils.helpers.Config)
 
+@import scala.collection.mutable.LinkedHashMap
+@import uk.gov.dvla.vehicles.presentation.common
+@import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.playbackList
 @import views.acquire.AcquireFailure.{BuyAnotherId, FinishId}
 @import views.html.acquire.main
 @import views.html.helper.form
-@import uk.gov.dvla.vehicles.presentation.common
-@import common.views.html.widgets.base.csrfTokenHiddenField
 
 @main(
     title = Messages("acquire_acquirefailure.title")
@@ -14,13 +16,14 @@ config: utils.helpers.Config)
 <div class="two-col clearfix">
 
     <div class="first-col">
-        <dl class="playback">
-            <h1>@Messages("acquire_failure.transaction_details.header")</h1>
-            <dt>@Messages("acquire_failure.transaction_details.transaction_id")</dt>
-            <dd>@viewModel.completeAndConfirmResponseModel.transactionId</dd>
-            <dt>@Messages("acquire_failure.transaction_details.transaction_date")</dt>
-            <dd>@viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")</dd>
-        </dl>
+        @playbackList(
+            Messages("acquire_failure.transaction_details.header"),
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                playbackItems += (Messages("acquire_failure.transaction_details.transaction_id") -> viewModel.completeAndConfirmResponseModel.transactionId)
+                playbackItems += (Messages("acquire_failure.transaction_details.transaction_date") -> viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+            }
+        )()
     </div>
     <div class="second-col">
         <div class="alert-failed">

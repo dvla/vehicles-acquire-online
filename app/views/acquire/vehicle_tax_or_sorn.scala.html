@@ -6,11 +6,13 @@
 
 @import controllers.routes.VehicleTaxOrSorn
 @import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SelectId, TaxId}
+@import scala.collection.mutable.LinkedHashMap
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.html.widgets.base.valtechDeclareCheck
 @import common.views.html.widgets.listRadioGroup
+@import common.views.html.widgets.playbackList
 @import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
 @import views.html.acquire.main
 @import views.html.helper.form
@@ -26,27 +28,19 @@
 
 <div class="two-col clearfix" xmlns="http://www.w3.org/1999/html">
     <div class="first-col">
-        <dl class="playback">
-            <dt><h2>@Messages("acquire_vehicleTaxOrSorn.newkeeperDetails")</h2></dt>
-            <dt>@Messages("acquire_vehicleTaxOrSorn.displayName")</dt>
-            <dd>@viewModel.keeperDetails.displayName</dd>
-            <dt>@Messages("acquire_vehicleTaxOrSorn.address")</dt>
-            <dd>@for(addr <- viewModel.keeperDetails.address.address) {@addr<br/>}</dd>
-            <dt>@Messages("acquire_vehicleTaxOrSorn.email")</dt>
-            @if(viewModel.keeperDetails.email == None) {
-                <dd>@Messages("acquire_vehicleTaxOrSorn.emailNotEntered")</dd>
-            } else {
-                <dd>@viewModel.keeperDetails.email.get</dd>
+        @playbackList(
+            Messages("acquire_vehicleTaxOrSorn.newkeeperDetails"),
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                playbackItems += (Messages("acquire_vehicleTaxOrSorn.displayName") -> viewModel.keeperDetails.displayName)
+                playbackItems += (Messages("acquire_vehicleTaxOrSorn.address") -> viewModel.keeperDetails.address.address.mkString("<br/>"))
+                playbackItems += (Messages("acquire_vehicleTaxOrSorn.email") -> viewModel.keeperDetails.email.getOrElse(Messages("acquire_vehicleTaxOrSorn.emailNotEntered")))
+                if(viewModel.keeperDetails.isBusinessKeeper)
+                    playbackItems += (Messages("acquire_vehicleTaxOrSorn.fleetNumber") -> viewModel.keeperDetails.fleetNumber.getOrElse(Messages("acquire_vehicleTaxOrSorn.fleetNumberNotEntered")))
+                else
+                    playbackItems
             }
-            @if(viewModel.keeperDetails.isBusinessKeeper) {
-                <dt>@Messages("acquire_vehicleTaxOrSorn.fleetNumber")</dt>
-                @if(viewModel.keeperDetails.fleetNumber == None) {
-                    <dd>@Messages("acquire_vehicleTaxOrSorn.fleetNumberNotEntered")</dd>
-                } else {
-                    <dd>@viewModel.keeperDetails.fleetNumber.get</dd>
-                }
-            }
-        </dl>
+        )()
         @vehicle_detail_playback(viewModel.vehicleAndKeeperDetails)
     </div>
 
