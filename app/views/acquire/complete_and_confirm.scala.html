@@ -3,7 +3,7 @@
   token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
   config: utils.helpers.Config)
 
-@import views.html.helper.form
+@import scala.collection.mutable.LinkedHashMap
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.Mileage
 @import common.views.html.widgets.dates.inputDayMonthYearTextbox
@@ -11,9 +11,11 @@
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.{valtechInputText, valtechDeclareCheck}
 @import common.views.helpers.LabelHelper.optionalFieldKey
+@import common.views.html.widgets.playbackList
 @import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId, DateOfSaleId, TodaysDateId}
 @import views.acquire.CompleteAndConfirm.{BackId, SubmitId, modify}
 @import views.html.common.vehicle_detail_playback
+@import views.html.helper.form
 
 @main(
     progress = Some(Messages("acquire_progress_8")),
@@ -38,27 +40,19 @@
     <div class="two-col clearfix acquire-complete-confirm">
     
         <div class="first-col">
-            <dl class="playback">
-                <dt><h2>@Messages("acquire_completeandconfirm.newkeeperDetails")</h2></dt>
-                <dt>@Messages("acquire_completeandconfirm.displayName")</dt>
-                <dd>@data.keeperDetails.displayName</dd>
-                <dt>@Messages("acquire_completeandconfirm.address")</dt>
-                <dd>@for(addr <- data.keeperDetails.address.address) {@addr<br/>}</dd>
-                <dt>@Messages("acquire_completeandconfirm.email")</dt>
-                @if(data.keeperDetails.email == None) {
-                    <dd>@Messages("acquire_completeandconfirm.emailNotEntered")</dd>
-                } else {
-                    <dd>@data.keeperDetails.email.get</dd>
+            @playbackList(
+                Messages("acquire_completeandconfirm.newkeeperDetails"),
+                {
+                    val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                    playbackItems += (Messages("acquire_completeandconfirm.displayName") -> data.keeperDetails.displayName)
+                    playbackItems += (Messages("acquire_completeandconfirm.address") -> data.keeperDetails.address.address.mkString("<br/>"))
+                    playbackItems += (Messages("acquire_completeandconfirm.email") -> data.keeperDetails.email.getOrElse(Messages("acquire_vehicleTaxOrSorn.emailNotEntered")))
+                    if(data.keeperDetails.isBusinessKeeper)
+                        playbackItems += (Messages("acquire_completeandconfirm.fleetNumber") -> data.keeperDetails.fleetNumber.getOrElse(Messages("acquire_completeandconfirm.fleetNumberNotEntered")))
+                    else
+                        playbackItems
                 }
-                @if(data.keeperDetails.isBusinessKeeper) {
-                    <dt>@Messages("acquire_completeandconfirm.fleetNumber")</dt>
-                    @if(data.keeperDetails.fleetNumber == None) {
-                        <dd>@Messages("acquire_completeandconfirm.fleetNumberNotEntered")</dd>
-                    } else {
-                        <dd>@data.keeperDetails.fleetNumber.get</dd>
-                    }
-                }
-            </dl>
+            )()
             @vehicle_detail_playback(data.vehicleAndKeeperDetails)
         </div>
 
