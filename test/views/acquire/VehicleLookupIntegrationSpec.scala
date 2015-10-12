@@ -6,8 +6,8 @@ import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import org.openqa.selenium.{By, WebElement, WebDriver}
-import org.openqa.selenium.support.ui.{ExpectedConditions}
+import org.openqa.selenium.{JavascriptExecutor, By, WebElement, WebDriver}
+import org.openqa.selenium.support.ui.{ExpectedCondition, ExpectedConditions}
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
 import org.scalatest.selenium.WebBrowser.pageSource
@@ -79,7 +79,7 @@ class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       csrf.getAttribute("value").length > 0 should equal(true)
     }
 
-    "display the v5c image on the page with Javascript disabled" taggedAs UiTag in new WebBrowserForSelenium {
+    "display the v5c image on the page with Javascript disabled" taggedAs UiTag in new WebBrowserWithJsDisabled {
       go to BeforeYouStartPage
       cacheSetup()
       go to VehicleLookupPage
@@ -96,6 +96,19 @@ class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       val v5c = By.xpath("//div[@data-tooltip='tooltip_documentReferenceNumber']")
       Wait.until(ExpectedConditions.presenceOfElementLocated(v5c), 5)
       Wait.until(ExpectedConditions.invisibilityOfElementLocated(v5c), 5)
+    }
+
+    "focus Vehicle Registration Number input on page load" taggedAs UiTag in new WebBrowserWithJs {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to VehicleLookupPage
+
+      Wait.until(new ExpectedCondition[Boolean] {
+        override def apply(d: WebDriver) =
+          VehicleLookupPage.vehicleRegistrationNumber.equals(
+            webDriver.asInstanceOf[JavascriptExecutor].executeScript("return document.activeElement;")
+          )
+      })
     }
   }
 
