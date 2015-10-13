@@ -271,8 +271,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                trackingId: TrackingId)(implicit request: Request[_]) = {
     response.foreach(r => logResponse(r))
 
+    // NOTE: This is correct behaviour. Any response, regardless of http status, should be treated as a success.
     (httpResponseCode, response) match {
-      case (OK, Some(r)) =>
+      case (_, Some(r)) =>
         for { ms <- r.response } yield {
           if (ms.message == "ms.vehiclesService.response.furtherActionRequired") {
             logRequestRequiringFurtherAction(ms.code, r.acquireResponse.transactionId, acquireRequest)
@@ -280,7 +281,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
           }
         }
         successReturn(vehicleDetails, keeperDetails, r.acquireResponse.transactionId, transactionTimestamp, trackingId)
-      case _ =>
+      case _ => // Should only be Service Unavailable
         logMessage(request.cookies.trackingId(), Warn, s"Acquire micro-service call failed. $httpResponseCode")
         routes.MicroServiceError.present()
     }
