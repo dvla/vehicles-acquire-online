@@ -320,7 +320,7 @@ import play.api.test.FakeApplication
       go to CompleteAndConfirmPage
 
       // The javascript files are sometimes slow to load
-      val timeout: Span = scaled(Span(2, Seconds))
+      val timeout: Span = scaled(Span(5, Seconds))
       implicit val patienceConfig: PatienceConfig = PatienceConfig(timeout = timeout)
 
       eventually {
