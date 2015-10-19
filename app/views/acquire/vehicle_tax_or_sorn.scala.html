@@ -34,7 +34,7 @@
                 val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
                 playbackItems += (Messages("acquire_vehicleTaxOrSorn.displayName") -> viewModel.keeperDetails.displayName)
                 playbackItems += (Messages("acquire_vehicleTaxOrSorn.address") -> viewModel.keeperDetails.address.address.mkString("<br/>"))
-                playbackItems += (Messages("acquire_vehicleTaxOrSorn.email") -> viewModel.keeperDetails.email.getOrElse(Messages("acquire_vehicleTaxOrSorn.emailNotEntered")))
+                playbackItems += (Messages("acquire_vehicleTaxOrSorn.email") -> (viewModel.keeperDetails.email match { case Some(email) => "<span class=\"lowercase-text\">" + email + "</span>" ; case _ => Messages("acquire_vehicleTaxOrSorn.emailNotEntered") }))
                 if(viewModel.keeperDetails.isBusinessKeeper)
                     playbackItems += (Messages("acquire_vehicleTaxOrSorn.fleetNumber") -> viewModel.keeperDetails.fleetNumber.getOrElse(Messages("acquire_vehicleTaxOrSorn.fleetNumberNotEntered")))
                 else

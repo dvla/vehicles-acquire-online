@@ -38,7 +38,11 @@
             @if(traderEmail == None) {
             <dd>@Messages("acquire_businessChooseYourAddress.emailNotEntered")</dd>
             } else {
-            <dd>@Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail.get)</dd>
+            <dd>
+                <span class="lowercase-text">
+                    @Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail.get)
+                </span>
+            </dd>
             }
         </dl>
 

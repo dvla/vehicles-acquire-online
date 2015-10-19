@@ -39,7 +39,7 @@
                     val playbackItems: LinkedHashMap[String, String] = LinkedHashMap();
                     playbackItems += (Messages("acquire_vehiclelookup.tradernamelabel") -> viewModel.traderName)
                     playbackItems += (Messages("acquire_vehiclelookup.traderaddresslabel") -> viewModel.address.mkString("<br/>"))
-                    playbackItems += (Messages("acquire_vehiclelookup.traderemaillabel") -> viewModel.email.getOrElse(Messages("acquire_email_not_entered")))
+                    playbackItems += (Messages("acquire_vehiclelookup.traderemaillabel") -> (viewModel.email match { case Some(email) => "<span class=\"lowercase-text\">" + email + "</span>" ; case _ => Messages("acquire_email_not_entered") } ))
                 }
             )()
             <div>
