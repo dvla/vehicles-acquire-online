@@ -227,7 +227,7 @@
         <dd>@for(addr <- viewModel.traderDetails.traderAddress.address) {@addr<br/>}</dd>
         <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
         @if(viewModel.traderDetails.traderEmail == None) {
-        <dd>@Messages("acquire_email_not_entered"))</dd>
+        <dd>@Messages("acquire_email_not_entered")</dd>
         } else {
         <dd><span class="lowercase-text">@viewModel.traderDetails.traderEmail.get</span></dd>
         }
