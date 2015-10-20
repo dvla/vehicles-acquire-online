@@ -22,8 +22,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
     "redirect to setuptraderdetails on if traderDetailsModel is not in cache" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
+        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       val result = vehicleLookupFailure.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -33,8 +32,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
     "redirect to setuptraderdetails on if bruteForcePreventionViewModel is not in cache" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
+        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       val result = vehicleLookupFailure.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -44,19 +42,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
     "redirect to setuptraderdetails on if VehicleLookupFormModelCache is not in cache" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
-      val result = vehicleLookupFailure.present(request)
-      whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
-      }
-    }
-
-    "redirect to setuptraderdetails on if only vehicleLookupResponseCode is not in cache" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
       val result = vehicleLookupFailure.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
