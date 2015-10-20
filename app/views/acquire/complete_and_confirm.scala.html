@@ -6,7 +6,7 @@
 @import scala.collection.mutable.LinkedHashMap
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.mappings.Mileage
-@import common.views.html.widgets.dates.inputDayMonthYearTextbox
+@import common.views.html.widgets.dates.valtechDate
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.base.{valtechInputText, valtechDeclareCheck}
@@ -67,16 +67,14 @@
                     <div class="popup-modal">
                         <p>@Messages("acquire_completeandconfirm.dateofsale.warning", data.dateOfDisposal.getOrElse("NOT FOUND"))</p>
                         <div id=@DateOfSaleId>
-                        @inputDayMonthYearTextbox(
-                            field = data.form(DateOfSaleId),
-                            args = Map(
-                                '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
-                            ),
-                            dateService = dateService,
-                            showTodaysDateButton = true,
-                            showTodaysDateButtonId = Some(TodaysDateId),
-                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
-                        )
+                            @valtechDate(
+                                field = data.form(DateOfSaleId),
+                                labelText = Messages("acquire_completeAndConfirm.dateofsale.label"),
+                                hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint")),
+                                showTodaysDateButton = true,
+                                showTodaysDateButtonId = Some(TodaysDateId)
+                            )
+
                         </div>
 
                         <div class="form-steps">
@@ -96,27 +94,23 @@
 
                 <div id=@DateOfSaleId class="form-steps">
                     @if(data.isSaleDateBeforeDisposalDate) {
-                        @inputDayMonthYearTextbox(
+                        @valtechDate(
                             field = data.form(DateOfSaleId),
-                            args = Map(
-                                'tabindex -> -1,
-                                '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
-                            ),
-                            dateService = dateService,
+                            labelText = Messages("acquire_completeAndConfirm.dateofsale.label"),
+                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint")),
                             showTodaysDateButton = true,
                             showTodaysDateButtonId = Some(TodaysDateId),
-                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
+                            args = Map(
+                                'tabindex -> -1
+                            )
                         )
                     } else {
-                        @inputDayMonthYearTextbox(
+                        @valtechDate(
                             field = data.form(DateOfSaleId),
-                            args = Map(
-                                '_label -> Messages("acquire_completeAndConfirm.dateofsale.label")
-                            ),
-                            dateService = dateService,
+                            labelText = Messages("acquire_completeAndConfirm.dateofsale.label"),
+                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint")),
                             showTodaysDateButton = true,
-                            showTodaysDateButtonId = Some(TodaysDateId),
-                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint"))
+                            showTodaysDateButtonId = Some(TodaysDateId)
                         )
                     }
                 </div>

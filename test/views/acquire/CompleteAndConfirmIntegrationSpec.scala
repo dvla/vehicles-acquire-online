@@ -9,6 +9,7 @@ import helpers.tags.UiTag
 import helpers.UiSpec
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.VehicleNewKeeperCompletionCacheKeys
+import org.joda.time.DateTime
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.concurrent.Eventually.{eventually, PatienceConfig, scaled}
 import org.scalatest.time.{Seconds, Span}
@@ -326,9 +327,9 @@ import play.api.test.FakeApplication
       eventually {
         click on useTodaysDate
 
-        dayDateOfSaleTextBox.value should equal (DateOfAcquisitionDayValid)
-        monthDateOfSaleTextBox.value should equal (DateOfAcquisitionMonthValid)
-        yearDateOfSaleTextBox.value should equal (DateOfAcquisitionYearValid)
+        dayDateOfSaleTextBox.value should equal (DateTime.now.dayOfMonth.get.toString)
+        monthDateOfSaleTextBox.value should equal (DateTime.now.monthOfYear.get.toString)
+        yearDateOfSaleTextBox.value should equal (DateTime.now.year.get.toString)
       }
     }
 
