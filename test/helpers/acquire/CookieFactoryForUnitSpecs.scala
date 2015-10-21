@@ -114,7 +114,8 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   def enterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
                            line2: Option[String] = Some(Line2Valid),
                            line3: Option[String] = Some(Line3Valid),
-                           postTown: String = PostTownValid): Cookie = {
+                           postTown: String = PostTownValid,
+                           postCode: String = PostcodeValid): Cookie = {
     val key = EnterAddressManuallyCacheKey
     val value = EnterAddressManuallyFormModel(
       addressAndPostcodeModel = AddressAndPostcodeViewModel(
@@ -123,7 +124,8 @@ object CookieFactoryForUnitSpecs extends TestComposition {
           line2 = line2,
           line3 = line3,
           postTown = postTown
-        )
+        ),
+        postCode = postCode
       )
     )
     createCookie(key, value)
@@ -138,7 +140,8 @@ object CookieFactoryForUnitSpecs extends TestComposition {
           line2 = Some(Line2Valid),
           line3 = Some(Line3Valid),
           postTown = PostTownValid
-        )
+        ),
+          postCode = PostcodeValid
       )
     )
     createCookie(key, value)

@@ -323,6 +323,14 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on EnterAddressManuallyPage.next
   }
 
+  @When("^the user changes the postcode to \"(.+?)\" and navigates forwards from enter address manually and there are no validation errors$")
+  def the_user_changes_the_postcode_and_navigates_forwards_from_enter_address_manually_and_there_are_no_validation_errors(postCode: String) = {
+    EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
+    EnterAddressManuallyPage.addressPostTown.value = "Swansea"
+    EnterAddressManuallyPage.addressPostCode.value = postCode
+    click on EnterAddressManuallyPage.next
+  }
+
   @When("^the user navigates backwards from the enter address manually page$")
   def the_user_navigates_backwards_from_the_enter_address_manually_page() = {
     click on EnterAddressManuallyPage.back
@@ -365,6 +373,14 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   def the_user_navigates_forwards_from_new_keeper_enter_address_manually_and_there_are_no_validation_errors() = {
     NewKeeperEnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
     NewKeeperEnterAddressManuallyPage.addressPostTown.value = "Swansea"
+    click on NewKeeperEnterAddressManuallyPage.next
+  }
+
+  @When("^the user changes the postcode to \"(.+?)\" and navigates forwards from new keeper enter address manually and there are no validation errors$")
+  def the_user_changes_the_postcode_and_navigates_forwards_from_new_keeper_enter_address_manually_and_there_are_no_validation_errors(postCode: String) = {
+    NewKeeperEnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
+    NewKeeperEnterAddressManuallyPage.addressPostTown.value = "Swansea"
+    NewKeeperEnterAddressManuallyPage.addressPostCode.value = postCode
     click on NewKeeperEnterAddressManuallyPage.next
   }
 

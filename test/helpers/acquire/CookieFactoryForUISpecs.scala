@@ -106,15 +106,18 @@ object CookieFactoryForUISpecs {
   def enterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
                            line2: Option[String] = Some(Line2Valid),
                            line3: Option[String] = Some(Line3Valid),
-                           postTown: String = PostTownValid)(implicit webDriver: WebDriver) = {
+                           postTown: String = PostTownValid,
+                           postCode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
     val key = EnterAddressManuallyCacheKey
     val value = EnterAddressManuallyFormModel(addressAndPostcodeModel = AddressAndPostcodeViewModel(
       addressLinesModel = AddressLinesViewModel(
         buildingNameOrNumber = buildingNameOrNumber,
         line2 = line2,
         line3 = line3,
-        postTown = postTown)
-    ))
+        postTown = postTown
+      ),
+      postCode = postCode)
+    )
     addCookie(key, value)
     this
   }
@@ -261,14 +264,17 @@ object CookieFactoryForUISpecs {
   def newKeeperEnterAddressManually(buildingNameOrNumber: String = BuildingNameOrNumberValid,
                            line2: Option[String] = Some(Line2Valid),
                            line3: Option[String] = Some(Line3Valid),
-                           postTown: String = PostTownValid)(implicit webDriver: WebDriver) = {
+                           postTown: String = PostTownValid,
+                           postCode: String = PostcodeValid)(implicit webDriver: WebDriver) = {
     val key = newKeeperEnterAddressManuallyCacheKey
     val value = EnterAddressManuallyFormModel(addressAndPostcodeModel = AddressAndPostcodeViewModel(
       addressLinesModel = AddressLinesViewModel(
         buildingNameOrNumber = buildingNameOrNumber,
         line2 = line2,
         line3 = line3,
-        postTown = postTown)
+        postTown = postTown
+      ),
+      postCode = postCode
     ))
     addCookie(key, value)
     this

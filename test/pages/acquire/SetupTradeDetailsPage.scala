@@ -29,7 +29,6 @@ object SetupTradeDetailsPage extends Page {
   override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Provide trader details"
 
-
   def traderName(implicit driver: WebDriver): TextField = textField(id(TraderNameId))
 
   def traderPostcode(implicit driver: WebDriver): TextField = textField(id(TraderPostcodeId))
@@ -45,7 +44,6 @@ object SetupTradeDetailsPage extends Page {
 
   def emailInvisible(implicit driver: WebDriver): RadioButton =
     radioButton(id(s"${TraderEmailOptionId}_$Invisible"))
-
 
   def happyPath(traderBusinessName: String = TraderBusinessNameValid,
                 traderBusinessPostcode: String = PostcodeValid,
