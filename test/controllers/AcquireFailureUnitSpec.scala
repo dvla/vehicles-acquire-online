@@ -53,13 +53,13 @@ class AcquireFailureUnitSpec extends UnitSpec {
     "present a full page when all cookies are present for failure" in new WithApplication {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         firstName = Some(FirstNameValid),
         lastName = Some(LastNameValid),
         email = Some(EmailValid)
@@ -73,15 +73,15 @@ class AcquireFailureUnitSpec extends UnitSpec {
 
   "buyAnother" should {
     "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireFailure.buyAnother(request)
       whenReady(result) { r =>
@@ -100,9 +100,9 @@ class AcquireFailureUnitSpec extends UnitSpec {
     }
 
     "redirect to the vehicle lookup page" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireFailure.buyAnother(request)
       whenReady(result) { r =>
@@ -113,15 +113,15 @@ class AcquireFailureUnitSpec extends UnitSpec {
 
   "finish" should {
     "discard all cookies" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-        withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel()).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+        .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
 
       val result = acquireFailure.finish(request)
       whenReady(result) { r =>
@@ -155,13 +155,13 @@ class AcquireFailureUnitSpec extends UnitSpec {
 
   private lazy val present = {
     val AcquireFailure = injector.getInstance(classOf[AcquireFailure])
-    val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel()).
-      withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel()).
-      withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
+    val request = FakeRequest()
+      .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+      .withCookies(CookieFactoryForUnitSpecs.completeAndConfirmResponseModelModel())
     AcquireFailure.present(request)
   }
 }

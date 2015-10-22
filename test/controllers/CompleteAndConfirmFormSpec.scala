@@ -33,8 +33,8 @@ class CompleteAndConfirmFormSpec extends UnitSpec {
     }
 
     "reject if form has no fields completed" in new WithApplication {
-      formWithValidDefaults(dayDateOfSale = "", monthDateOfSale = "", yearDateOfSale = "", consent = "").
-        errors.flatMap(_.messages) should contain theSameElementsAs
+      formWithValidDefaults(dayDateOfSale = "", monthDateOfSale = "", yearDateOfSale = "", consent = "")
+        .errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.date.invalid", "error.required")
     }
   }

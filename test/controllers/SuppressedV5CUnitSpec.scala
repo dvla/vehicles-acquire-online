@@ -56,7 +56,6 @@ class SuppressedV5CUnitSpec extends UnitSpec {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
         .withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddress())
-
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = suppressedV5C.finish(request)

@@ -15,7 +15,8 @@ class Application @Inject()(implicit config: Config,
   private final val startUrl: String = config.startUrl
 
   def index = Action { implicit request =>
-    logMessage(request.cookies.trackingId(), Debug, s"Redirecting to $startUrl...")
+    val msg = s"User has entered on application root, nor redirecting to $startUrl..."
+    logMessage(request.cookies.trackingId(), Debug, msg)
     Redirect(startUrl)
   }
 }

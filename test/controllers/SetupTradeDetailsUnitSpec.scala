@@ -100,8 +100,8 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       "replace required and min length error messages for traderBusinessName with standard error message " in new WithApplication {
         val request = buildCorrectlyPopulatedRequest(dealerName = "")
         val result = setUpTradeDetails.submit(request)
-        val count = "Must be between 2 and 58 characters and only contain valid characters".
-          r.findAllIn(contentAsString(result)).length
+        val count = "Must be between 2 and 58 characters and only contain valid characters"
+          .r.findAllIn(contentAsString(result)).length
         count should equal(2)
       }
     }

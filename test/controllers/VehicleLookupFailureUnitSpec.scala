@@ -19,30 +19,30 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to setuptraderdetails on if traderDetailsModel is not in cache" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+    "redirect to setup trader details on if traderDetailsModel is not in cache" in new WithApplication {
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       val result = vehicleLookupFailure.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
       }
     }
 
-    "redirect to setuptraderdetails on if bruteForcePreventionViewModel is not in cache" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+    "redirect to setup trader details on if bruteForcePreventionViewModel is not in cache" in new WithApplication {
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       val result = vehicleLookupFailure.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
       }
     }
 
-    "redirect to setuptraderdetails on if VehicleLookupFormModelCache is not in cache" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
+    "redirect to setup trader details on if VehicleLookupFormModelCache is not in cache" in new WithApplication {
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
       val result = vehicleLookupFailure.present(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -70,17 +70,17 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to vehiclelookup on submit" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+    "redirect to vehicle lookup on submit" in new WithApplication {
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       val result = vehicleLookupFailure.submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
       }
     }
 
-    "redirect to setuptraderdetails on submit when cache is empty" in new WithApplication {
+    "redirect to setup trader details on submit when cache is empty" in new WithApplication {
       val request = FakeRequest()
       val result = vehicleLookupFailure.submit(request)
       whenReady(result) { r =>
@@ -94,11 +94,11 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
   }
 
   private lazy val present = {
-    val request = FakeRequest().
-      withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-      withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel()).
-      withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel()).
-      withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
+    val request = FakeRequest()
+      .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
     vehicleLookupFailure.present(request)
   }
 }

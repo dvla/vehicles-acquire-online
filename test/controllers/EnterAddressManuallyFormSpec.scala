@@ -10,7 +10,6 @@ import common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId
 import common.views.models.AddressLinesViewModel.Form.Line2Id
 import common.views.models.AddressLinesViewModel.Form.Line3Id
 import common.views.models.AddressLinesViewModel.Form.LineMaxLength
-import common.views.models.AddressLinesViewModel.Form.PostTownId
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.PostTownId
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
@@ -19,6 +18,7 @@ import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 
 class EnterAddressManuallyFormSpec extends UnitSpec {
+
   "form" should {
     "accept if form is valid with all fields filled in" in new WithApplication { 
       val model = formWithValidDefaults().get.addressAndPostcodeModel
@@ -49,8 +49,8 @@ class EnterAddressManuallyFormSpec extends UnitSpec {
     }
 
     "reject when all fields are blank" in new WithApplication { 
-      formWithValidDefaults(buildingNameOrNumber = "", line2 = "", line3 = "", postTown = "").
-        errors.flatMap(_.messages) should contain theSameElementsAs
+      formWithValidDefaults(buildingNameOrNumber = "", line2 = "", line3 = "", postTown = "")
+        .errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.minLength", "error.required", "error.minLength", "error.required")
     }
 
@@ -65,8 +65,8 @@ class EnterAddressManuallyFormSpec extends UnitSpec {
     }
 
     "accept if post town starts with spaces" in new WithApplication { 
-      formWithValidDefaults(postTown = " Swansea").get.addressAndPostcodeModel.addressLinesModel.
-        postTown should equal("SWANSEA")
+      formWithValidDefaults(postTown = " Swansea").get.addressAndPostcodeModel.addressLinesModel
+        .postTown should equal("SWANSEA")
     }
 
     "reject if buildingNameOrNumber is blank" in new WithApplication { 
@@ -102,13 +102,13 @@ class EnterAddressManuallyFormSpec extends UnitSpec {
     }
 
     "reject if line3 is more than max length" in new WithApplication { 
-      formWithValidDefaults(line2 = "", line3 = "a" * (LineMaxLength + 1), postTown = PostTownValid).
-        errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
+      formWithValidDefaults(line2 = "", line3 = "a" * (LineMaxLength + 1), postTown = PostTownValid)
+        .errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
 
     "reject if postTown is more than max length" in new WithApplication { 
-      formWithValidDefaults(line2 = "", line3 = "", postTown = "a" * (LineMaxLength + 1)).
-        errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
+      formWithValidDefaults(line2 = "", line3 = "", postTown = "a" * (LineMaxLength + 1))
+        .errors.flatMap(_.messages) should contain theSameElementsAs List("error.maxLength")
     }
 
     "reject if postTown is less than min length" in new WithApplication { 

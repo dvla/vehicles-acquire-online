@@ -43,9 +43,9 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "display selected field when cookie exists" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails()).
-        withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddressUseUprn())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+        .withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddressUseUprn())
       val result = businessChooseYourAddressController(uprnFound = true).present(request)
       val content = contentAsString(result)
       content should include(TraderBusinessNameValid)
@@ -53,8 +53,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "display expected drop-down values" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "")
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController().submit(request)
       val content = contentAsString(result)
       content should include( s"""<option value="$selectedAddress" >""")
@@ -79,8 +79,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "not display prototype message when config set to false" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController(
         isPrototypeBannerVisible = false
       ).present(request)
@@ -88,8 +88,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "fetch the addresses for the trader's postcode from the address lookup micro service" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.present(request)
       whenReady(result) { r =>
@@ -100,8 +100,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
 
   "submit" should {
     "redirect to VehicleLookup page after a valid submit" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController(uprnFound = true).submit(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
@@ -109,8 +109,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "return a bad request if no address selected" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "")
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController(uprnFound = true).submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
@@ -118,8 +118,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "display expected drop-down values when no address selected" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "")
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = businessChooseYourAddressController().submit(request)
       val content = contentAsString(result)
       content should include( s"""<option value="$selectedAddress" >""")
@@ -142,9 +142,9 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "write cookies and remove enter address manually cookie when UPRN found" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails()).
-        withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+        .withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
       val result = businessChooseYourAddressController(uprnFound = true).submit(request)
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
@@ -159,8 +159,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "still call the micro service to fetch back addresses even though an invalid submission is made" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(addressSelected = "").
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = buildCorrectlyPopulatedRequest(addressSelected = "")
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
       whenReady(result, timeout) { r =>
@@ -170,8 +170,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     }
 
     "call the micro service to lookup the address by UPRN when a valid submission is made" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
       whenReady(result) { r =>
@@ -211,8 +211,8 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     val responsePostcode = if (uprnFound) responseValidForPostcodeToAddress else responseValidForPostcodeToAddressNotFound
 
     val addressLookupWebServiceMock = mock[AddressLookupWebService]
-    when(addressLookupWebServiceMock.callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])).
-      thenReturn(responsePostcode)
+    when(addressLookupWebServiceMock.callPostcodeWebService(anyString(), any[TrackingId])(any[Lang]))
+      .thenReturn(responsePostcode)
 
     val healthStatsMock = mock[HealthStats]
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {

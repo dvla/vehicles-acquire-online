@@ -115,8 +115,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
 
     "play back private keeper details as expected" in new WithApplication() {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         firstName = Some(FirstNameValid),
         lastName = Some(LastNameValid),
         email = Some(EmailValid),
@@ -239,8 +239,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val acquireServiceMock = mock[AcquireService]
       val completeAndConfirm = acquireController(acquireServiceMock)
 
-      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId])).
-        thenReturn(Future.successful {
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId]))
+        .thenReturn(Future.successful {
         (OK, Some(acquireResponseSuccess))
       })
 
@@ -266,8 +266,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val acquireServiceMock = mock[AcquireService]
       val completeAndConfirm = acquireController(acquireServiceMock)
 
-      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId])).
-        thenReturn(Future.successful {
+      when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId]))
+        .thenReturn(Future.successful {
         (OK, Some(acquireResponseSuccess))
       })
 

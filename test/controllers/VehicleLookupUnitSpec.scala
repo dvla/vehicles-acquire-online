@@ -76,9 +76,9 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "display populated fields when cookie exists" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
       content should include(ReferenceNumberValid)
@@ -86,8 +86,8 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "display data captured in previous pages" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
 
@@ -100,8 +100,8 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "display trader email captured in previous pages" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
 
@@ -109,8 +109,8 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "display empty fields when cookie does not exist" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
       content should not include ReferenceNumberValid
@@ -118,8 +118,8 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "display reset trade details anchor" in new WithApplication {
-      val request = FakeRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = FakeRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
       content should include(s"""a id="$ResetTraderDetailsId""")
@@ -128,32 +128,32 @@ class VehicleLookupUnitSpec extends UnitSpec {
 
   "submit" should {
     "replace max length error message for document reference number with standard error message" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(referenceNumber = "1" * (DocumentReferenceNumber.MaxLength + 1)).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = buildCorrectlyPopulatedRequest(referenceNumber = "1" * (DocumentReferenceNumber.MaxLength + 1))
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
       // check the validation summary text
-      "Document reference number - Document reference number must be an 11-digit number".
-        r.findAllIn(contentAsString(result)).length should equal(1)
+      "Document reference number - Document reference number must be an 11-digit number"
+        .r.findAllIn(contentAsString(result)).length should equal(1)
       // check the form item validation
-      "\"error\">Document reference number must be an 11-digit number".
-        r.findAllIn(contentAsString(result)).length should equal(1)
+      "\"error\">Document reference number must be an 11-digit number"
+        .r.findAllIn(contentAsString(result)).length should equal(1)
     }
 
     "replace required and min length error messages for document reference number with standard error message" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(referenceNumber = "").
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = buildCorrectlyPopulatedRequest(referenceNumber = "")
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
       // check the validation summary text
-      "Document reference number - Document reference number must be an 11-digit number".
-        r.findAllIn(contentAsString(result)).length should equal(1)
+      "Document reference number - Document reference number must be an 11-digit number"
+        .r.findAllIn(contentAsString(result)).length should equal(1)
       // check the form item validation
-      "\"error\">Document reference number must be an 11-digit number".
-        r.findAllIn(contentAsString(result)).length should equal(1)
+      "\"error\">Document reference number must be an 11-digit number"
+        .r.findAllIn(contentAsString(result)).length should equal(1)
     }
 
     "replace max length error message for vehicle registration number with standard error message (US43)" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(registrationNumber = "PJ05YYYX").
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = buildCorrectlyPopulatedRequest(registrationNumber = "PJ05YYYX")
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
       val count = "Must be as shown on the latest V5C".r.findAllIn(contentAsString(result)).length
 
@@ -161,8 +161,8 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "replace required and min length error messages for vehicle registration number with standard error message" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(registrationNumber = "").
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = buildCorrectlyPopulatedRequest(registrationNumber = "")
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
       val count = "Must be as shown on the latest V5C".r.findAllIn(contentAsString(result)).length
 
@@ -177,24 +177,24 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "redirect to EnterAddressManually when back button is pressed and the user has manually entered an address" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.enterAddressManually())
       val result = vehicleLookupResponseGenerator().back(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(EnterAddressManuallyPage.address))
     }
 
     "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+      val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private)
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
     }
 
     "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+      val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business)
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))
@@ -217,10 +217,10 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "remove all business keeper cookies when private keeper is selected" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest().
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid))).
-        withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
 
       val result = vehicleLookupResponseGenerator().submit(request)
       whenReady(result) { r =>
@@ -230,10 +230,10 @@ class VehicleLookupUnitSpec extends UnitSpec {
     }
 
     "remove all private keeper cookies when business keeper is selected" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(soldTo = VehicleSoldTo_Business).
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid))).
-        withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel()).
-        withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
+      val request = buildCorrectlyPopulatedRequest(soldTo = VehicleSoldTo_Business)
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
 
       val result = vehicleLookupResponseGenerator().submit(request)
       whenReady(result) { r =>
@@ -257,8 +257,8 @@ class VehicleLookupUnitSpec extends UnitSpec {
     "not call the vehicle lookup micro service after a invalid request" in new WithApplication {
       val (bruteForceService, bruteForceWebServiceMock) = bruteForceServiceAndWebServiceMock(permitted = true)
       val (vehicleLookupController, vehicleLookupMicroServiceMock) = vehicleLookupControllerAndMocks(bruteForceService = bruteForceService)
-      val request = buildCorrectlyPopulatedRequest(registrationNumber = "").
-        withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+      val request = buildCorrectlyPopulatedRequest(registrationNumber = "")
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupController.submit(request)
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
@@ -283,19 +283,19 @@ class VehicleLookupUnitSpec extends UnitSpec {
       val bruteForcePreventionWebServiceMock: BruteForcePreventionWebService = mock[BruteForcePreventionWebService]
       val trackingId = TrackingId("default_test_tracking_id")
 
-      when(bruteForcePreventionWebServiceMock.callBruteForce(RegistrationNumberValid, trackingId)).
-        thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseFirstAttempt)))
+      when(bruteForcePreventionWebServiceMock.callBruteForce(RegistrationNumberValid, trackingId))
+        .thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseFirstAttempt)))
 
-      when(bruteForcePreventionWebServiceMock.callBruteForce(FakeBruteForcePreventionWebServiceImpl.VrmAttempt2, trackingId)).
-        thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseSecondAttempt)))
+      when(bruteForcePreventionWebServiceMock.callBruteForce(FakeBruteForcePreventionWebServiceImpl.VrmAttempt2, trackingId))
+        .thenReturn(Future.successful(new FakeResponse(status = status, fakeJson = responseSecondAttempt)))
 
-      when(bruteForcePreventionWebServiceMock.callBruteForce(FakeBruteForcePreventionWebServiceImpl.VrmLocked, trackingId)).
-        thenReturn(Future.successful(new FakeResponse(status = status)))
+      when(bruteForcePreventionWebServiceMock.callBruteForce(FakeBruteForcePreventionWebServiceImpl.VrmLocked, trackingId))
+        .thenReturn(Future.successful(new FakeResponse(status = status)))
 
       when(bruteForcePreventionWebServiceMock.callBruteForce(VrmThrows, trackingId)).thenReturn(responseThrows)
 
-      when(bruteForcePreventionWebServiceMock.reset(any[String], any[TrackingId])).
-        thenReturn(Future.successful(new FakeResponse(status = play.api.http.Status.OK)))
+      when(bruteForcePreventionWebServiceMock.reset(any[String], any[TrackingId]))
+        .thenReturn(Future.successful(new FakeResponse(status = play.api.http.Status.OK)))
 
       bruteForcePreventionWebServiceMock
     }

@@ -20,8 +20,8 @@ import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForU
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 
-
 class BusinessChooseYourAddressFormSpec extends UnitSpec {
+
   "form" should {
     "accept when all fields contain valid responses" in new WithApplication {
       formWithValidDefaults().get.uprnSelected should equal(UprnValid.toString)
