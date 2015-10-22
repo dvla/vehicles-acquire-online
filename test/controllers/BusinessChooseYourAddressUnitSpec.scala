@@ -158,14 +158,14 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "not call the micro service to lookup the address by UPRN when an invalid submission is made" ignore new WithApplication {
+    "still call the micro service to fetch back addresses even though an invalid submission is made" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(addressSelected = "").
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
-      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = true)
+      val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
       whenReady(result, timeout) { r =>
         r.header.status should equal(BAD_REQUEST)
-        verify(addressServiceMock, never()).callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])
       }
     }
 

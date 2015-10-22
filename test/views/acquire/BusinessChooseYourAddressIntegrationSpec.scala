@@ -59,18 +59,18 @@ class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
       pageTitle should equal(SetupTradeDetailsPage.title)
     }
 
-    "display appropriate content when address service returns addresses" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "display appropriate content when address service returns addresses" taggedAs UiTag in new WebBrowserForSelenium {
       SetupTradeDetailsPage.happyPath()
       pageSource.contains("No addresses found for that postcode") should equal(false) // Does not contain message
       pageSource should include( """<a id="enterAddressManuallyButton" href""")
     }
 
-    "display the postcode entered in the previous page" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "display the postcode entered in the previous page" taggedAs UiTag in new WebBrowserForSelenium {
       SetupTradeDetailsPage.happyPath()
       pageSource.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
     }
 
-    "display expected addresses in dropdown when address service returns addresses" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "display expected addresses in dropdown when address service returns addresses" taggedAs UiTag in new WebBrowserForSelenium {
       SetupTradeDetailsPage.happyPath()
 
       pageSource should include(
@@ -108,7 +108,7 @@ class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
       }
     }
 
-    "contain the hidden csrfToken field" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       SetupTradeDetailsPage.happyPath()
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
