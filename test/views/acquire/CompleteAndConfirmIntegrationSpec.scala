@@ -47,9 +47,6 @@ import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
-import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionDayValid
-import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionMonthValid
-import webserviceclients.fakes.FakeDateServiceImpl.DateOfAcquisitionYearValid
 
 class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -332,7 +329,6 @@ import play.api.test.FakeApplication
         yearDateOfSaleTextBox.value should equal (DateTime.now.year.get.toString)
       }
     }
-
   }
 
   "back" should {
