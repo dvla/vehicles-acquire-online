@@ -128,7 +128,7 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "fetch the addresses for the new keeper's postcode from the address lookup micro service" ignore new WithApplication {
+    "fetch the addresses for the new keeper's postcode from the address lookup micro service" in new WithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
@@ -267,19 +267,19 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
       }
     }
 
-    "not call the micro service to lookup the address by UPRN when an invalid submission is made" ignore new WithApplication {
+    "still call the micro service to fetch back addresses even though an invalid submission is made" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest(newKeeperUprn = "").
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
-      val (controller, addressServiceMock) = newKeeperChooseYourAddressControllerAndMocks(uprnFound = true, ordnanceSurveyUseUprn = true)
+      val (controller, addressServiceMock) = newKeeperChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
       whenReady(result, timeout) { r =>
         r.header.status should equal(BAD_REQUEST)
-        verify(addressServiceMock, never()).callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])
+        verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])
       }
     }
 
-    "call the micro service to lookup the address by UPRN when a valid submission is made" ignore new WithApplication {
+    "call the micro service to lookup the address by UPRN when a valid submission is made" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest().
         withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel()).
         withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
@@ -317,7 +317,7 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
 
     val addressLookupWebServiceMock = mock[AddressLookupWebService]
     when(addressLookupWebServiceMock.callPostcodeWebService(
-      anyString(), any[TrackingId]))
+      anyString(), any[TrackingId])(any[Lang]))
       .thenReturn(responsePostcode)
 
     val healthStatsMock = mock[HealthStats]

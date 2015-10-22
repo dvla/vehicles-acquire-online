@@ -162,7 +162,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       )
     }
 
-    "display appropriate content when address service returns no addresses for a new private keeper" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "display appropriate content when address service returns no addresses for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -173,7 +173,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       pageSource should include("No addresses found for that postcode") // Does not contain the positive message
     }
 
-    "display appropriate content when address service returns no addresses for a new business keeper" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "display appropriate content when address service returns no addresses for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs
         .setupTradeDetails()
@@ -192,7 +192,7 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       pageTitle should equal(NewKeeperEnterAddressManuallyPage.title)
     }
 
-    "allow navigation to manual address entry when no addresses have been found" taggedAs UiTag ignore new WebBrowserForSelenium {
+    "allow navigation to manual address entry when no addresses have been found" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       PrivateKeeperDetailsPage.submitPostcodeWithoutAddresses
