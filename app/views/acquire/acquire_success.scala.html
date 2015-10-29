@@ -34,14 +34,8 @@
             <li>@Messages("acquire_success.further_information.p2")</li>
         </ul>
 
-        @transactionDetails("mobile-only")
-
-        <div class="related vehicle-sold-by mobile-only">
-            @traderDetails
-        </div>
-
         @alertWarning() {
-          <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
+            <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
         }
 
         <div class="form-steps desktop-only">
@@ -96,61 +90,94 @@
     </div>
 
     <div class="first-col">
-        @transactionDetails("desktop-only")
 
-        <div class="related vehicle-sold-by desktop-only">
-            @traderDetails
-        </div>
+        @playbackList(
+            Messages("acquire_success.transaction_details.header"),
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                playbackItems += (Messages("acquire_success.transaction_details.transaction_id") -> viewModel.completeAndConfirmResponseModel.transactionId)
+                playbackItems += (Messages("acquire_success.transaction_details.transaction_date") -> viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+            },
+            List("transaction-details")
+        )()
+
+        @playbackList(
+            Messages("acquire_success.vehicle_details.p1"),
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                val flaggedRegNumberLabel: String = "REG_" + Messages("acquire_success.vehicle_details.registration_number")
+                playbackItems += (flaggedRegNumberLabel -> viewModel.vehicleDetails.registrationNumber)
+
+                viewModel.vehicleDetails.make match {
+                    case Some(make) => playbackItems += (Messages("acquire_success.vehicle_details.make") -> make)
+                    case None => playbackItems
+                }
+
+                viewModel.vehicleDetails.model match {
+                    case Some(model) => playbackItems += (Messages("acquire_success.vehicle_details.model") -> model)
+                    case None => playbackItems
+                }
+
+                if(viewModel.completeAndConfirmDetails.mileage == None) {
+                    playbackItems += (Messages("acquire_success.vehicle_details.mileage") -> Messages("acquire_success.vehicle_details.mileage_not_entered"))
+                } else {
+                    playbackItems += (Messages("acquire_success.vehicle_details.mileage") -> java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get))
+                }
+            },
+            List("related")
+        ) {
+            <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
+            @if(viewModel.vehicleSorn.sornVehicle == None) {
+                <dd class="tax-or-sorn">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
+            } else {
+                <dd class="tax-or-sorn">
+                @Messages(
+                    "acquire_success.vehicle_details.sornEntered",
+                    viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")
+                )
+                </dd>
+                <dd class="word-wrap-only tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
+            }
+        }
 
         <div class="acquire-success-summary-playback">
-            <h2>@Messages("acquire_success.vehicle_details.p1")</h2>
-            <div class="info-notice">
-                <dl class="playback">
-                    <dt>@Messages("acquire_success.vehicle_details.registration_number")</dt>
-                    <dd>@viewModel.vehicleDetails.registrationNumber</dd>
-                    <dt>@Messages("acquire_success.vehicle_details.make")</dt>
-                    <dd>@viewModel.vehicleDetails.make</dd>
-                    <dt>@Messages("acquire_success.vehicle_details.model")</dt>
-                    <dd>@viewModel.vehicleDetails.model</dd>
-                    <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
-
-                    @if(viewModel.vehicleSorn.sornVehicle == None) {
-                    <dd class="tax-or-sorn">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
+            <div class="vehicle-sold-by">
+                @playbackList(
+                    Messages("acquire_success.trader_details.header"),
+                    {
+                        val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                        playbackItems += (Messages("acquire_success.trader_details.trader_name") -> viewModel.traderDetails.traderName)
+                        playbackItems += (Messages("acquire_success.trader_details.trader_address") -> viewModel.traderDetails.traderAddress.address.mkString("<br/>"))
+                    },
+                    List("bg-plain")
+                ){
+                    <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
+                    @if(viewModel.traderDetails.traderEmail == None) {
+                        <dd>@Messages("acquire_email_not_entered")</dd>
                     } else {
-                    <dd class="tax-or-sorn">
-                        @Messages("acquire_success.vehicle_details.sornEntered",
-                            viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")
-                        )
-                    </dd>
-                    <dd class="word-wrap-only tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
+                        <dd><span class="lowercase-text">@viewModel.traderDetails.traderEmail.get</span></dd>
                     }
-                    <dt>@Messages("acquire_success.vehicle_details.mileage")</dt>
-                    @if(viewModel.completeAndConfirmDetails.mileage == None) {
-                    <dd>@Messages("acquire_success.vehicle_details.mileage_not_entered")</dd>
-                    } else {
-                    <dd>
-                        @{java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get)}
-                    </dd>
-                    }
-                </dl>
+                    <dt>@Messages("acquire_success.date_of_sale.label")</dt>
+                    <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
+                }
             </div>
 
-            <h2>@Messages("acquire_success.new_keeper_details.p1")</h2>
-
-            <div class="info-notice">
-                <dl class="playback">
-                    <dt>@Messages("acquire_success.vehicle_details.name")</dt>
-                    <dd>@viewModel.newKeeperDetails.displayName</dd>
-                    <dt>@Messages("acquire_success.vehicle_details.address")</dt>
-                    <dd>@for(addr <- viewModel.newKeeperDetails.address.address) {@addr<br/>}</dd>
-                    <dt>@Messages("acquire_success.vehicle_details.email")</dt>
-                    @if(viewModel.newKeeperDetails.email == None) {
+            @playbackList(
+                Messages("acquire_success.new_keeper_details.p1"),
+                {
+                    val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                    playbackItems += (Messages("acquire_success.vehicle_details.name") -> viewModel.newKeeperDetails.displayName)
+                    playbackItems += (Messages("acquire_success.vehicle_details.address") -> viewModel.newKeeperDetails.address.address.mkString("<br/>"))
+                },
+                List("bg-plain")
+            ){
+                <dt>@Messages("acquire_success.vehicle_details.email")</dt>
+                @if(viewModel.newKeeperDetails.email == None) {
                     <dd>@Messages("acquire_email_not_entered")</dd>
-                    } else {
+                } else {
                     <dd><span class="lowercase-text">@viewModel.newKeeperDetails.email.get</span></dd>
-                    }
-                </dl>
-            </div>
+                }
+            }
         </div>
     </div>
 
@@ -204,34 +231,4 @@
         </div>
     </div>
 </div>
-}
-
-@transactionDetails(screen: String) = {
-    @playbackList(
-        Messages("acquire_success.transaction_details.header"),
-        {
-            val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
-            playbackItems += (Messages("acquire_success.transaction_details.transaction_id") -> viewModel.completeAndConfirmResponseModel.transactionId)
-            playbackItems += (Messages("acquire_success.transaction_details.transaction_date") -> viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
-        },
-        List("transaction-details", screen)
-    )()
-}
-
-@traderDetails() = {
-    <dl class="playback bg-plain">
-        <dt><h2>@Messages("acquire_success.trader_details.header")</h2></dt>
-        <dt>@Messages("acquire_success.trader_details.trader_name")</dt>
-        <dd>@viewModel.traderDetails.traderName</dd>
-        <dt>@Messages("acquire_success.trader_details.trader_address")</dt>
-        <dd>@for(addr <- viewModel.traderDetails.traderAddress.address) {@addr<br/>}</dd>
-        <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
-        @if(viewModel.traderDetails.traderEmail == None) {
-        <dd>@Messages("acquire_email_not_entered")</dd>
-        } else {
-        <dd><span class="lowercase-text">@viewModel.traderDetails.traderEmail.get</span></dd>
-        }
-        <dt>@Messages("acquire_success.date_of_sale.label")</dt>
-        <dd>@viewModel.completeAndConfirmDetails.dateOfSale.toString("dd/MM/yyyy")</dd>
-    </dl>
 }

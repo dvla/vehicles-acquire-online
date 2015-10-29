@@ -24,12 +24,11 @@
             color: $grey-1;
             font-weight: normal;
             text-transform: none;
-            &.transaction-details {
+        }
+        .transaction-details {
                 background: $light-blue-25;
                 padding: 1em;
-            }
         }
-
         .acquire-success-summary-playback {
           padding: 1em;
           .info-notice {
@@ -37,7 +36,6 @@
             padding: 0;
           }
         }
-
     }
 
     .sorn-text, .tax-text, .neither-text {
