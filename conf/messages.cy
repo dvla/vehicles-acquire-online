@@ -116,6 +116,7 @@ error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
 error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.date.notBefore = We cannot accept a date of sale more than 5 years in the past. Please check and enter the correct date. If the date is correct then please submit the transaction via post.
 error.date.inTheFuture = Must be a valid date DD MM YYYY and not be in the future.
 error.date.invalid = Must be a valid date DD MM YYYY and not be in the future.
 
@@ -234,7 +235,7 @@ acquire_vehiclelookupfailure.title = Unable to find a vehicle record
 acquire_vehiclelookupfailure.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
 acquire_vehiclelookupfailure.button = Try again
 acquire_vehiclelookupfailure.button2 = Exit
-vehicle_and_keeper_lookup_failure.p0 = The VRM and / or the V5C document Reference number entered is either not valid or does not come from the latest V5C issued for this vehicle.
+vehicle_and_keeper_lookup_failure.p0 = The VRM and / or the V5C document reference number entered is either not valid or does not come from the latest V5C issued for this vehicle.
 vehicle_and_keeper_lookup_failure.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
 vehicle_and_keeper_lookup_failure.p2 = If you are sure that these details have been entered correctly then please send your completed V5C to DVLA, Swansea, SA99 1BD
 vehicle_and_keeper_lookup_failure.p3 = Only a limited number of attempts can be made to retrieve vehicle details for each vehicle registration number entered.
