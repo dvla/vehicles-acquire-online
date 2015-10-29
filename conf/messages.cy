@@ -116,6 +116,7 @@ error.dropDownInvalid = Please select a value from the drop down list.
 error.titleInvalid = Please select a title from the drop down list.
 error.validFirstName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
 error.validLastName = Must contain between 1 and 25 characters from the following a-z, A-Z, 0-9 and .,- “’ and space
+error.date.notBefore = We cannot accept a date of sale more than 5 years in the past. Please check and enter the correct date. If the date is correct then please submit the transaction via post.
 error.date.inTheFuture = Must be a valid date DD MM YYYY and not be in the future.
 error.date.invalid = Must be a valid date DD MM YYYY and not be in the future.
 

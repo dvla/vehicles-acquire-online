@@ -8,7 +8,7 @@ import play.api.data.validation.{Valid, ValidationError, Invalid, Constraint}
 import play.api.i18n.Messages
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
-import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notInTheFuture}
+import uk.gov.dvla.vehicles.presentation.common.mappings.Date.{dateMapping, notBefore, notInTheFuture}
 import uk.gov.dvla.vehicles.presentation.common.mappings.Mileage.mileage
 import uk.gov.dvla.vehicles.presentation.common.services.DateService
 
@@ -37,9 +37,14 @@ object CompleteAndConfirmFormModel {
     final val TodaysDateId = "todays_date"
     final val ConsentId = "Consent"
 
+    final val validYearsInThePast = 5
+
     final def detailMapping(implicit dateService: DateService) = mapping(
       MileageId -> mileage,
-      DateOfSaleId -> dateMapping.verifying(notInTheFuture()).verifying(notOne()),
+      DateOfSaleId -> dateMapping
+        .verifying(notBefore(new LocalDate().minusYears(validYearsInThePast)))
+        .verifying(notInTheFuture())
+        .verifying(notOne()),
       ConsentId -> consent
     )(CompleteAndConfirmFormModel.apply)(CompleteAndConfirmFormModel.unapply)
   }
