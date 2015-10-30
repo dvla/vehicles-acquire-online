@@ -204,7 +204,6 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     new BusinessChooseYourAddress(addressLookupService)
   }
 
-// TODO : verify that this is correct
   private def businessChooseYourAddressControllerAndMocks(uprnFound: Boolean = true,
                                         isPrototypeBannerVisible: Boolean = true,
                                         ordnanceSurveyUseUprn: Boolean): (BusinessChooseYourAddress, AddressLookupWebService) = {

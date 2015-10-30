@@ -485,7 +485,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     pageTitle shouldEqual PrivateKeeperDetailsPage.title withClue trackingId
   }
 
-  @Then("^the user will be on confirmed transaction failure screen$") // todo remove confirmed
+  @Then("^the user will be on confirmed transaction failure screen$")
   def the_user_will_be_on_confirmed_transaction_failure_screen() {
     pageTitle shouldEqual AcquireFailurePage.title withClue trackingId
   }

@@ -68,15 +68,6 @@ class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       click on VehicleTaxOrSornPage.next
 
       webDriver.getWindowHandles.size should equal(2)
-
-      // TODO: Commented for now out because when it runs on jenkins we cannot access the url
-      // (it may be a skyscape routing problem) catch up with chris about this once he gets an update
-//      import scala.collection.JavaConversions.asScalaSet
-//      webDriver.getWindowHandles.filterNot(_ == webDriver.getWindowHandle).foreach(winHandle => {
-//          webDriver.switchTo().window(winHandle)
-//          webDriver.getCurrentUrl should equal("https://www.gov.uk/vehicle-tax")
-//        }
-//      )
     }
   }
 
