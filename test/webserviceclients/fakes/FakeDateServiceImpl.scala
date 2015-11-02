@@ -29,4 +29,8 @@ object FakeDateServiceImpl {
   final val DateOfAcquisitionDayValid = "25"
   final val DateOfAcquisitionMonthValid = "11"
   final val DateOfAcquisitionYearValid = "1970"
+  private final val dateTime = DateTime.now
+  final val TodayDay = dateTime.toString("dd")
+  final val TodayMonth = dateTime.toString("MM")
+  final val TodayYear = dateTime.getYear.toString
 }

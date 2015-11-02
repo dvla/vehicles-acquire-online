@@ -52,8 +52,8 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
   def the_user_enters_a_date_of_sale_in_the_past_and_submits_the_form() = {
     val oldDate = DateTime.now().minusYears(5).minusDays(1)
     happyPath.fillInCompleteAndConfirm(
-      day = oldDate.getDayOfMonth.toString,
-      month = oldDate.getMonthOfYear.toString,
+      day = oldDate.toString("dd"),
+      month = oldDate.toString("MM"),
       year = oldDate.getYear.toString
     )
     the_user_confirms_the_transaction()

@@ -47,6 +47,9 @@ import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
 import webserviceclients.fakes.FakeAcquireWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import webserviceclients.fakes.FakeDateServiceImpl.TodayDay
+import webserviceclients.fakes.FakeDateServiceImpl.TodayMonth
+import webserviceclients.fakes.FakeDateServiceImpl.TodayYear
 
 class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
 
@@ -324,9 +327,9 @@ import play.api.test.FakeApplication
       eventually {
         click on useTodaysDate
 
-        dayDateOfSaleTextBox.value should equal (DateTime.now.dayOfMonth.get.toString)
-        monthDateOfSaleTextBox.value should equal (DateTime.now.monthOfYear.get.toString)
-        yearDateOfSaleTextBox.value should equal (DateTime.now.year.get.toString)
+        dayDateOfSaleTextBox.value should equal (TodayDay)
+        monthDateOfSaleTextBox.value should equal (TodayMonth)
+        yearDateOfSaleTextBox.value should equal (TodayYear)
       }
     }
   }
