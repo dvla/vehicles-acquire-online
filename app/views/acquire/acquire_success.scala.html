@@ -95,8 +95,14 @@
             Messages("acquire_success.transaction_details.header"),
             {
                 val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
-                playbackItems += (Messages("acquire_success.transaction_details.transaction_id") -> viewModel.completeAndConfirmResponseModel.transactionId)
-                playbackItems += (Messages("acquire_success.transaction_details.transaction_date") -> viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+                playbackItems += (
+                    Messages("acquire_success.transaction_details.transaction_id") ->
+                    viewModel.completeAndConfirmResponseModel.transactionId
+                )
+                playbackItems += (
+                    Messages("acquire_success.transaction_details.transaction_date") ->
+                    viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")
+                )
             },
             List("transaction-details")
         )()
@@ -123,6 +129,8 @@
                 } else {
                     playbackItems += (Messages("acquire_success.vehicle_details.mileage") -> java.text.NumberFormat.getIntegerInstance().format(viewModel.completeAndConfirmDetails.mileage.get))
                 }
+
+
             },
             List("related")
         ) {
@@ -146,10 +154,16 @@
                     Messages("acquire_success.trader_details.header"),
                     {
                         val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
-                        playbackItems += (Messages("acquire_success.trader_details.trader_name") -> viewModel.traderDetails.traderName)
-                        playbackItems += (Messages("acquire_success.trader_details.trader_address") -> viewModel.traderDetails.traderAddress.address.mkString("<br/>"))
+                        playbackItems += (
+                            Messages("acquire_success.trader_details.trader_name") ->
+                            viewModel.traderDetails.traderName
+                        )
+                        playbackItems += (
+                            Messages("acquire_success.trader_details.trader_address") ->
+                            viewModel.traderDetails.traderAddress.address.mkString("<br/>")
+                        )
                     },
-                    List("bg-plain")
+                    List("related", "bg-plain")
                 ){
                     <dt>@Messages("acquire_success.trader_details.trader_email")</dt>
                     @if(viewModel.traderDetails.traderEmail == None) {
@@ -166,10 +180,16 @@
                 Messages("acquire_success.new_keeper_details.p1"),
                 {
                     val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
-                    playbackItems += (Messages("acquire_success.vehicle_details.name") -> viewModel.newKeeperDetails.displayName)
-                    playbackItems += (Messages("acquire_success.vehicle_details.address") -> viewModel.newKeeperDetails.address.address.mkString("<br/>"))
+                    playbackItems += (
+                        Messages("acquire_success.vehicle_details.name") ->
+                        viewModel.newKeeperDetails.displayName
+                    )
+                    playbackItems += (
+                        Messages("acquire_success.vehicle_details.address") ->
+                        viewModel.newKeeperDetails.address.address.mkString("<br/>")
+                    )
                 },
-                List("bg-plain")
+                List("related", "bg-plain")
             ){
                 <dt>@Messages("acquire_success.vehicle_details.email")</dt>
                 @if(viewModel.newKeeperDetails.email == None) {
