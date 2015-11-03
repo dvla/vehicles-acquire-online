@@ -59,7 +59,8 @@
                     data.form(ConsentId),
                     args = modify(Map(
                         '_showConstraints -> false,
-                        '_label -> Messages("acquire_keeperdetailscomplete.consent")
+                        '_label -> Messages("acquire_keeperdetailscomplete.consent"),
+                        'autoFocus -> true
                     ), data.isSaleDateBeforeDisposalDate)
                 )
 

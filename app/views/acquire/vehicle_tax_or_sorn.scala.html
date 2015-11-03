@@ -68,7 +68,7 @@
                         <div class="radio" id="select">
                             <div class="form-item">
                                 <label class="form-radio selectable" for="tax">
-                                    <input id="tax" class="option-visible ga-track-value" data-ga-action="Tax-or-SORN" data-ga-label="Tax" name="select" type="radio"
+                                    <input id="tax" class="option-visible ga-track-value" data-ga-action="Tax-or-SORN" data-ga-label="Tax" name="select" type="radio" autofocus="true"
                                     @if(form.get("select").exists(_ == "T")) { checked }
                                     aria-required="true" value="T"/><span>@Messages("acquire_vehicleTaxOrSorn.taxVehicle")</span>
                                 </label>
