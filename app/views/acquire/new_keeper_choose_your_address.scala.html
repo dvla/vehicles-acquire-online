@@ -11,12 +11,12 @@
 @import common.model.NewKeeperChooseYourAddressFormModel.Form.AddressSelectId
 @import common.views.helpers.BaseTemplate.fieldConstructor
 @import common.views.html.widgets.alertWarning
+@import common.views.html.widgets.vehicleDetailPlayback
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.html.widgets.base.valtechSelect
 @import views.acquire.NewKeeperChooseYourAddress.{BackId, EnterAddressManuallyButtonId, SelectId}
 @import views.html.acquire.main
 @import views.html.helper.form
-@import views.html.common.vehicle_detail_playback
 
 @main(
     progress = Some(Messages("acquire_progress_6")),
@@ -29,7 +29,7 @@
 
 <div class="two-col clearfix">
     <div class="first-col">
-        @vehicle_detail_playback(viewModel.vehicleDetails)
+        @vehicleDetailPlayback(viewModel.vehicleDetails)()
         @alertWarning(List("print-message")) {
           <p><strong>@Messages("acquire_newKeeperChooseYourAddress.p4")</strong></p>
         }
