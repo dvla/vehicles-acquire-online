@@ -8,6 +8,7 @@ import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
+import models.IdentifierCacheKey
 import models.VehicleLookupFormModel
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
@@ -80,6 +81,11 @@ object CookieFactoryForUISpecs {
     val key = Play.langCookieName
     val value = EnId
     addCookie(key, value)
+    this
+  }
+
+  def withIdentifier(id: String)(implicit webDriver: WebDriver) = {
+    webDriver.manage().addCookie(new Cookie(IdentifierCacheKey, id))
     this
   }
 

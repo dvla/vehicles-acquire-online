@@ -25,7 +25,11 @@ object SetupTradeDetailsPage extends Page {
   final val PostcodeValid = "QQ99QQ"
   final val TraderEmailValid = "example@example.co.uk"
 
-  final val address = buildAppUrl("setup-trade-details")
+  private final val route = "setup-trade-details"
+
+  final val address = buildAppUrl(route)
+
+  lazy val cegUrl: String = WebDriverFactory.testUrl + buildAppUrl(s"${route}/ceg").substring(1)
   override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override val title: String = "Provide trader details"
 

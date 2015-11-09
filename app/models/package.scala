@@ -22,6 +22,7 @@ package object models {
   final val HelpCacheKey = s"${CookiePrefix}help"
   final val SeenCookieMessageCacheKey = "seen_cookie_message" // Same value across all exemplars
   final val SurveyRequestTriggerDateCacheKey = s"${CookiePrefix}surveyRequestTriggerDate"
+  final val IdentifierCacheKey = s"${CookiePrefix}identifier"
 
   final val AcquireCacheKeys = Set(
     newKeeperChooseYourAddressCacheKey,
@@ -72,10 +73,11 @@ package object models {
     .++(PrivateKeeperDetailsCacheKeys)
     .++(BusinessKeeperDetailsCacheKeys)
     .++(CompletionCacheKeys)
-    .++(Set(HelpCacheKey))
+    .+(HelpCacheKey)
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page
   final val AllCacheKeys =
     VehicleNewKeeperCompletionCacheKeys
     .++(TraderDetailsCacheKeys)
+    .+(IdentifierCacheKey)
 }

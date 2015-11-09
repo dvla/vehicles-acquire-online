@@ -58,18 +58,32 @@ class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       val csrf: WebElement = webDriver.findElement(By.name(CsrfPreventionAction.TokenName))
       csrf.getAttribute("type") should equal("hidden")
       csrf.getAttribute("name") should equal(uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.TokenName)
-      csrf.getAttribute("value").size > 0 should equal(true)
+      csrf.getAttribute("value").nonEmpty should equal(true)
     }
   }
 
   "Clicking buy another vehicle button" should {
     "go to VehicleLookupPage" taggedAs UiTag in new WebBrowserForSelenium {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to AcquireSuccessPage
-      click on AcquireSuccessPage.buyAnother
-      pageTitle should equal(VehicleLookupPage.title)
+      buyAnotherVehicle()
     }
+
+    "go to VehicleLookupPage with ceg identifier cookie" taggedAs UiTag in new WebBrowserForSelenium {
+      buyAnotherVehicle(ceg = true)
+    }
+  }
+
+  private def buyAnotherVehicle(ceg: Boolean = false)(implicit webDriver: WebDriver) = {
+    val identifier = "ceg"
+    go to BeforeYouStartPage
+    if (ceg) cacheSetup().withIdentifier(identifier)
+    else cacheSetup()
+    go to AcquireSuccessPage
+    click on AcquireSuccessPage.buyAnother
+    pageTitle should equal(VehicleLookupPage.title)
+    if (ceg)
+      webDriver.manage.getCookieNamed(models.IdentifierCacheKey).getValue() should equal(identifier)
+    else
+      webDriver.manage.getCookieNamed(models.IdentifierCacheKey) should equal(null)
   }
 
   private def cacheSetup()(implicit webDriver: WebDriver) =
