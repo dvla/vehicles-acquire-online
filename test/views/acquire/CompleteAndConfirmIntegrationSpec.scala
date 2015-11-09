@@ -11,7 +11,9 @@ import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCach
 import models.VehicleNewKeeperCompletionCacheKeys
 import org.joda.time.DateTime
 import org.openqa.selenium.{By, WebElement, WebDriver}
-import org.scalatest.concurrent.Eventually.{eventually, PatienceConfig, scaled}
+import org.scalatest.concurrent.Eventually
+import org.scalatest.concurrent.Eventually.eventually
+import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.selenium.WebBrowser.click
@@ -51,7 +53,7 @@ import webserviceclients.fakes.FakeDateServiceImpl.TodayDay
 import webserviceclients.fakes.FakeDateServiceImpl.TodayMonth
 import webserviceclients.fakes.FakeDateServiceImpl.TodayYear
 
-class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness {
+class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness with Eventually with IntegrationPatience {
 
   "go to page" should {
     "display the page for a new keeper" taggedAs UiTag in new WebBrowserForSelenium {
@@ -319,10 +321,6 @@ import play.api.test.FakeApplication
       go to BeforeYouStartPage
       cacheSetup()
       go to CompleteAndConfirmPage
-
-      // The javascript files are sometimes slow to load (5 seconds to give it enough time to work in Travis)
-      val timeout: Span = scaled(Span(5, Seconds))
-      implicit val patienceConfig: PatienceConfig = PatienceConfig(timeout = timeout)
 
       eventually {
         click on useTodaysDate
