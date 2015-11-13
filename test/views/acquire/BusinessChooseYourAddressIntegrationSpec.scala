@@ -8,6 +8,7 @@ import helpers.UiSpec
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.selenium.WebBrowser.click
+import org.scalatest.selenium.WebBrowser.currentUrl
 import org.scalatest.selenium.WebBrowser.go
 import org.scalatest.selenium.WebBrowser.pageSource
 import org.scalatest.selenium.WebBrowser.pageTitle
@@ -124,6 +125,16 @@ class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
       go to BusinessChooseYourAddressPage
       click on back
       pageTitle should equal(SetupTradeDetailsPage.title)
+      currentUrl should equal(SetupTradeDetailsPage.url)
+    }
+
+    "display previous page with ceg route" taggedAs UiTag in new WebBrowserForSelenium {
+      go to BeforeYouStartPage
+      cacheSetup().withIdentifier("ceg")
+      go to BusinessChooseYourAddressPage
+      click on back
+      pageTitle should equal(SetupTradeDetailsPage.title)
+      currentUrl should equal(SetupTradeDetailsPage.cegUrl)
     }
   }
 

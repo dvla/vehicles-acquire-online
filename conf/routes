@@ -19,6 +19,7 @@ GET         /                                           @controllers.Application
 GET         /before-you-start                           @controllers.BeforeYouStart.present
 
 #page 2 - Setup Trade Details
+GET         /setup-trade-details/ceg                    @controllers.SetUpTradeDetails.ceg
 GET         /setup-trade-details                        @controllers.SetUpTradeDetails.present
 GET         /setup-trade-details/reset                  @controllers.SetUpTradeDetails.reset
 POST        /setup-trade-details                        @controllers.SetUpTradeDetails.submit
