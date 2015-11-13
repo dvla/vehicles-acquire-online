@@ -1,17 +1,15 @@
 package controllers
 
 import composition.WithApplication
-import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
-import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId}
-import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, FleetNumberValid, EmailValid}
-import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
+import helpers.acquire.CookieFactoryForUnitSpecs
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornId, SornVehicleId}
+import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, EmailValid, FleetNumberValid}
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
+import pages.acquire.{CompleteAndConfirmPage, VehicleLookupPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, contentAsString, defaultAwaitTimeout}
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleMakeValid
-import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.VehicleModelValid
+import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{RegistrationNumberValid, VehicleMakeValid, VehicleModelValid}
 
 class VehicleTaxOrSornUnitSpec extends UnitSpec {
 
@@ -119,7 +117,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
   private def buildCorrectlyPopulatedRequest() = {
     FakeRequest().withFormUrlEncodedBody(
       SornVehicleId -> "true",
-      SelectId -> "S"
+      SelectId -> SornId
     )
   }
   private lazy val vehicleTaxOrSorn = {

@@ -3,38 +3,31 @@ package controllers
 import com.google.inject.Inject
 import email.EmailMessageBuilder
 import models.AcquireCacheKeyPrefix.CookiePrefix
-import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import models.CompleteAndConfirmFormModel.Form.{MileageId, ConsentId}
-import models.CompleteAndConfirmResponseModel
-import models.CompleteAndConfirmViewModel
-import models.VehicleLookupFormModel
-import models.VehicleNewKeeperCompletionCacheKeys
-import models.VehicleTaxOrSornFormModel
-import org.joda.time.{DateTimeZone, DateTime, LocalDate}
+import models.CompleteAndConfirmFormModel.Form.{ConsentId, MileageId}
+import models.{CompleteAndConfirmFormModel, CompleteAndConfirmResponseModel, CompleteAndConfirmViewModel, VehicleLookupFormModel}
+import models.{VehicleNewKeeperCompletionCacheKeys, VehicleTaxOrSornFormModel}
+import models.VehicleTaxOrSornFormModel.Form.{NeitherId, SornId, TaxId}
 import org.joda.time.format.ISODateTimeFormat
-import play.api.data.{FormError, Form}
+import org.joda.time.{DateTime, DateTimeZone, LocalDate}
+import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.{TrackingId, ClientSideSessionFactory}
-import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.LogFormats.{DVLALogger, anonymize, optionNone}
-import common.mappings.TitleType
-import common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
-import common.services.{SEND, DateService}
-import common.views.helpers.FormExtensions.formBinding
-import common.webserviceclients.acquire.AcquireRequestDto
-import common.webserviceclients.acquire.AcquireResponseDto
-import common.webserviceclients.acquire.AcquireService
-import common.webserviceclients.acquire.KeeperDetailsDto
-import common.webserviceclients.acquire.TitleTypeDto
-import common.webserviceclients.acquire.TraderDetailsDto
-import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
-import common.webserviceclients.emailservice.EmailService
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger, anonymize, optionNone}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClientSideSessionFactory, TrackingId}
+import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
+import uk.gov.dvla.vehicles.presentation.common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common.services.{DateService, SEND}
+import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireResponseDto, AcquireService}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{KeeperDetailsDto, TitleTypeDto, TraderDetailsDto}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailService
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class CompleteAndConfirm @Inject()(webService: AcquireService,
                                    emailService: EmailService)
@@ -317,7 +310,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       mileage = completeAndConfirmFormModel.mileage,
       keeperConsent = checkboxValueToBoolean(completeAndConfirmFormModel.consent),
       transactionTimestamp = dateTimeFormatter.print(timestamp),
-      requiresSorn = taxOrSornModel.select == "S"
+      requiresSorn = taxOrSornModel.select == SornId
     )
   }
 
@@ -529,9 +522,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         |${startLine}Mileage: ${acquireRequest.mileage.getOrElse("NOT ENTERED")}${endLine}
         |${startLine}Date of Sale:  ${DateTime.parse(acquireRequest.dateOfTransfer).toString("dd/MM/yy")}${endLine}
         |${startLine}Tax Choice:  ${request.cookies.getModel[VehicleTaxOrSornFormModel].get.select match {
-                                       case "T" => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.taxVehicle")
-                                       case "S" => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.sornNow")
-                                       case "N" => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.neither")
+                                       case TaxId => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.taxVehicle")
+                                       case SornId => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.sornNow")
+                                       case NeitherId => play.api.i18n.Messages("acquire_vehicleTaxOrSorn.neither")
                                      }
                                    }${endLine}
         |${startLine}Transaction ID:  ${transactionId}${endLine}
@@ -570,8 +563,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                          trackingId: TrackingId)(implicit request: Request[_]) =
     keeperDetails.email match {
       case Some(emailAddr) =>
-        import scala.language.postfixOps
-        import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
+        import SEND._
+
+        import scala.language.postfixOps // Keep this local so that we don't pollute rest of the class with unnecessary imports.
 
         implicit val emailConfiguration = config.emailConfiguration
         implicit val implicitEmailService = implicitly[EmailService](emailService)

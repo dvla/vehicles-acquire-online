@@ -3,22 +3,18 @@ package controllers
 import com.google.inject.Inject
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
-import models.ErrorType
-import models.NoSelection
-import models.NoSorn
-import models.VehicleTaxOrSornFormModel
-import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornVehicleId, SornFormError}
-import models.VehicleTaxOrSornViewModel
-import play.api.data.{FormError, Form}
-import play.api.mvc.{Request, Action, Controller}
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
-import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import common.LogFormats.DVLALogger
-import common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
-import common.views.helpers.FormExtensions.formBinding
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornFormError, SornId, SornVehicleId}
+import models.{ErrorType, NoSelection, NoSorn, VehicleTaxOrSornFormModel, VehicleTaxOrSornViewModel}
+import play.api.data.{Form, FormError}
+import play.api.mvc.{Action, Controller, Request}
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.DVLALogger
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import uk.gov.dvla.vehicles.presentation.common.model.{NewKeeperDetailsViewModel, NewKeeperEnterAddressManuallyFormModel, VehicleAndKeeperDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
 import utils.helpers.Config
 import views.html.acquire.vehicle_tax_or_sorn
+
 
 class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                                    config: Config) extends Controller with DVLALogger {
@@ -86,7 +82,7 @@ class VehicleTaxOrSorn @Inject()()(implicit clientSideSessionFactory: ClientSide
 
   private def formWithReplacedErrors(form: Form[VehicleTaxOrSornFormModel]): (Form[VehicleTaxOrSornFormModel], ErrorType) = {
     (
-      if ( form.data.get("select").exists(_ == "S") && form.globalError.isDefined) {
+      if ( form.data.get("select").exists(_ == SornId) && form.globalError.isDefined) {
         form.replaceError(
           "", FormError(key = SornFormError, message = "error.sornformerror", args = Seq.empty)
         ).replaceError(

@@ -1,12 +1,8 @@
 package pages.acquire
 
-import models.VehicleTaxOrSornFormModel.Form.{TaxId, SornId}
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornId, TaxId}
 import org.openqa.selenium.WebDriver
-import org.scalatest.selenium.WebBrowser.click
-import org.scalatest.selenium.WebBrowser.go
-import org.scalatest.selenium.WebBrowser.find
-import org.scalatest.selenium.WebBrowser.id
-import org.scalatest.selenium.WebBrowser.Element
+import org.scalatest.selenium.WebBrowser.{Element, click, find, go, id}
 import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{Page, WebDriverFactory}
 import views.acquire.VehicleTaxOrSorn.{BackId, SubmitId}
 
@@ -19,9 +15,9 @@ object VehicleTaxOrSornPage extends Page {
 
   def next(implicit driver: WebDriver): Element = find(id(SubmitId)).get
 
-  def sornSelect(implicit driver: WebDriver): Element = find(id(SornId)).get
+  def sornSelect(implicit driver: WebDriver): Element = find(id(SelectId + "_" + SornId)).get
 
-  def taxSelect(implicit driver: WebDriver): Element = find(id(TaxId)).get
+  def taxSelect(implicit driver: WebDriver): Element = find(id(SelectId + "_" + TaxId)).get
 
   def navigate()(implicit driver: WebDriver) = {
     go to VehicleTaxOrSornPage

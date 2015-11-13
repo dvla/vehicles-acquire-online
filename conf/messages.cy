@@ -431,8 +431,7 @@ select = TAX/SORN
 VehicleTaxOrSornFormModel = SORN Now
 error.sornformerror = You must accept the SORN option.
 error.nosornformerror = you must select the SORN now option.
-error.sornselectid = One of the options must be selected.  acquire_vehicleTaxOrSorn.selectidError = One of the options must be selected.  error.email.confirm.required = Please confirm the email address
-acquire_vehicleTaxOrSorn.selectidError = One of the options must be selected.
+error.sornselectid = One of the options must be selected.
 error.email.confirm.required = Please confirm the email address
 error.email.not.match = The email addresses did not match
 email.verify.label = Confirm email address
@@ -500,6 +499,7 @@ acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off R
 acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
 acquire_vehicleTaxOrSorn.submitbutton = Next
 acquire_vehicleTaxOrSorn.backbutton = Back
+acquire_vehicleTaxOrSorn.label = Do you want to:
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm

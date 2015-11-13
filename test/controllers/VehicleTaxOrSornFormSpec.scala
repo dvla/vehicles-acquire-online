@@ -2,7 +2,7 @@ package controllers
 
 import composition.WithApplication
 import helpers.UnitSpec
-import models.VehicleTaxOrSornFormModel.Form.{SornVehicleId, SelectId}
+import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornId, SornVehicleId}
 
 class VehicleTaxOrSornFormSpec extends UnitSpec {
 
@@ -14,12 +14,9 @@ class VehicleTaxOrSornFormSpec extends UnitSpec {
       formWithValidDefaults().get.sornVehicle should equal(Some("true"))
     }
 
-//    "accept when sorn is not selected" in new WithApplication {
-//      formWithValidDefaults(sornVehicle = SornNotSelected, selectedId = "T").get.sornVehicle should equal(None)
-//    }
   }
 
-  private def formWithValidDefaults(sornVehicle: String = SornSelected, selectedId: String = "S") = {
+  private def formWithValidDefaults(sornVehicle: String = SornSelected, selectedId: String = SornId) = {
     injector.getInstance(classOf[VehicleTaxOrSorn])
       .form.bind(
         Map(

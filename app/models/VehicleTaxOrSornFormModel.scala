@@ -1,10 +1,9 @@
 package models
 
+import models.AcquireCacheKeyPrefix.CookiePrefix
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.libs.json.Json
-import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.CacheKey
-import models.AcquireCacheKeyPrefix.CookiePrefix
+import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CacheKey
 
 final case class VehicleTaxOrSornFormModel(sornVehicle: Option[String], select: String)
 
@@ -16,9 +15,10 @@ object VehicleTaxOrSornFormModel {
   object Form {
 
     final val SornFormError = "VehicleTaxOrSornFormModel"
-    final val TaxId = "tax"
-    final val SornId = "sorn"
-    final val NeitherId = "neither"
+    // these Ids must be one character since they are passed to VSS where they are limited to one character length (see vehicles-acquire-fulfil)
+    final val TaxId = "T"
+    final val SornId = "S"
+    final val NeitherId = "N"
 
     final val SornVehicleId = "sornVehicle"
     final val SelectId = "select"
@@ -26,8 +26,6 @@ object VehicleTaxOrSornFormModel {
     final val Mapping = mapping(
       SornVehicleId -> optional(text),
       SelectId -> nonEmptyText
-    )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply)//.verifying(SornFormError, form =>
-     // form.select == "S" && form.sornVehicle.isDefined || form.select != "S" && !form.sornVehicle.isDefined
-     // )
+    )(VehicleTaxOrSornFormModel.apply)(VehicleTaxOrSornFormModel.unapply)
   }
 }

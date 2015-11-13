@@ -159,24 +159,18 @@ define(['jquery', 'jquery-migrate', "page-init"], function($, jqueryMigrate, pag
             enableSendingGaEventsOnSubmit();
 
             // Run the common code that is not common to all but this exemplar needs
+
+            // private keeper details page - see titlePicker widget
             pageInit.hideEmailOnOther('#privatekeeper_title_titleOption_4', '.form-item #privatekeeper_title_titleText');
-            pageInit.hideEmailOnOther('#tax', '#tax_details');
-            pageInit.hideEmailOnOther('#sorn', '#sorn_details');
-            pageInit.hideEmailOnOther('#neither', '#neither_details');
+            // vehicle_tax_or_sorn page
+            pageInit.hideEmailOnOther('#select_T', '#tax_details');
+            pageInit.hideEmailOnOther('#select_N', '#neither_details');
             addGaEventToTaxLink();
             addGaEventToTodayDate();
             addGaEventToV5Chint();
             addGaEventToBuyAnother();
             addGaEventToFinish();
             addGaEventToPrint();
-
-            // SORN form reset
-            $('.sorn-tax-radio-wrapper label input').on('click', function() {
-                var targetSorn = $(this).attr('id');
-                if (targetSorn != "sorn") {
-                    $('#sornVehicle').removeAttr("checked");
-                }
-            });
 
             // Call initAll on the pageInit object to run all the common js in vehicles-presentation-common
             pageInit.initAll();
