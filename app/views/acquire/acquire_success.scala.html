@@ -6,14 +6,15 @@
 @import controllers.routes.SetUpTradeDetails
 @import scala.collection.mutable.LinkedHashMap
 @import uk.gov.dvla.vehicles.presentation.common
-@import views.html.helper.form
-@import views.acquire.AcquireSuccess.{BuyAnotherId, FinishId}
 @import common.views.html.widgets.alertWarning
 @import common.views.html.widgets.alertSuccess
 @import common.views.html.widgets.base.csrfTokenHiddenField
+@import common.views.html.widgets.formSteps
 @import common.views.html.widgets.playbackList
 @import common.views.html.widgets.vehicleDetailPlayback
+@import views.acquire.AcquireSuccess.{BuyAnotherId, FinishId}
 @import views.acquire.BeforeYouStart.NextId
+@import views.html.helper.form
 
 @main(
     progress = Some(Messages("acquire_progress_9")),
@@ -39,55 +40,13 @@
             <p><strong>@Messages("acquire_success.further_information.alert")</strong></p>
         }
 
-        <div class="form-steps desktop-only">
-            <div class="step">
-                <button id="printDisposalSuccess"
-                        type="button"
-                        name="action"
-                        value="printDisposalSuccess"
-                        class="button js-only print-button">
-                    @Messages("acquire_success.buttonnavprint")
-                </button>
-            </div>
-            <div class="step">
-                @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
-                @csrfTokenHiddenField()
-                <button id="@BuyAnotherId"
-                        type="submit"
-                        name="action"
-                        data-tracking="summary_action"
-                        class="button button-new-disposal button-secondary success-buy-another-btn">
-                    @Messages("acquire_success.buyAnother")
-                </button>
-                }
-            </div>
-            <div class="step">
-                @form(action = controllers.routes.AcquireSuccess.finish()) {
-                @csrfTokenHiddenField()
-                @surveyUrl match {
-                case Some(url) => {
-                <button id="@FinishId"
-                        type="submit"
-                        name="action"
-                        onclick="window.open('@url', '_blank');"
-                        data-tracking="summary_action"
-                        class="button button-new-disposal button-secondary success-finish-btn">
-                    @Messages("acquire_success.finish")
-                </button>
-                }
-                case None => {
-                <button id="@FinishId"
-                        type="submit"
-                        name="action"
-                        data-tracking="summary_action"
-                        class="button button-new-disposal button-secondary success-finish-btn">
-                    @Messages("acquire_success.finish")
-                </button>
-                }
-                }
-                }
-            </div>
-        </div>
+        @formSteps(
+            controllers.routes.AcquireSuccess.finish(),
+            FinishId,
+            surveyUrl,
+            cssClasses = List("desktop-only"),
+            args = Map('target -> controllers.routes.AcquireSuccess.buyAnother(), 'buttonId -> BuyAnotherId)
+        )
     </div>
 
     <div class="first-col">
@@ -188,54 +147,12 @@
         </div>
     </div>
 
-    <div class="form-steps mobile-only">
-        <div class="step">
-            <button id="printDisposalSuccessMobile"
-                    type="button"
-                    name="action"
-                    value="printDisposalSuccess"
-                    class="button js-only print-button">
-                @Messages("acquire_success.buttonnavprint")
-            </button>
-        </div>
-        <div class="step">
-            @form(action = controllers.routes.AcquireSuccess.buyAnother()) {
-            @csrfTokenHiddenField()
-            <button id="@BuyAnotherId"
-                    type="submit"
-                    name="action"
-                    data-tracking="summary_action"
-                    class="button button-new-disposal button-secondary success-buy-another-btn">
-                @Messages("acquire_success.buyAnother")
-            </button>
-            }
-        </div>
-        <div class="step">
-            @form(action = controllers.routes.AcquireSuccess.finish()) {
-            @csrfTokenHiddenField()
-            @surveyUrl match {
-            case Some(url) => {
-            <button id="@FinishId"
-                    type="submit"
-                    name="action"
-                    onclick="window.open('@url', '_blank');"
-                    data-tracking="summary_action"
-                    class="button button-new-disposal button-secondary success-finish-btn">
-                @Messages("acquire_success.finish")
-            </button>
-            }
-            case None => {
-            <button id="@FinishId"
-                    type="submit"
-                    name="action"
-                    data-tracking="summary_action"
-                    class="button button-new-disposal button-secondary success-finish-btn">
-                @Messages("acquire_success.finish")
-            </button>
-            }
-            }
-            }
-        </div>
-    </div>
+    @formSteps(
+        controllers.routes.AcquireSuccess.finish(),
+        FinishId,
+        surveyUrl,
+        cssClasses = List("mobile-only"),
+        args = Map('target -> controllers.routes.AcquireSuccess.buyAnother(), 'buttonId -> BuyAnotherId)
+    )
 </div>
 }
