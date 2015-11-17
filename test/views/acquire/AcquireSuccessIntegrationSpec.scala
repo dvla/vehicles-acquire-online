@@ -73,7 +73,7 @@ class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
   }
 
   private def buyAnotherVehicle(ceg: Boolean = false)(implicit webDriver: WebDriver) = {
-    val identifier = "ceg"
+    val identifier = "CEG"
     go to BeforeYouStartPage
     if (ceg) cacheSetup().withIdentifier(identifier)
     else cacheSetup()

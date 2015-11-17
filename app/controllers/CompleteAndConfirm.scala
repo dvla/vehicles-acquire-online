@@ -238,7 +238,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     val transactionTimestamp = dateService.now.toDateTime
 
     val acquireRequest = buildMicroServiceRequest(vehicleLookup, completeAndConfirmForm,
-      newKeeperDetailsView, traderDetails, taxOrSorn, transactionTimestamp, trackingId)
+      newKeeperDetailsView, traderDetails, taxOrSorn, transactionTimestamp, trackingId,
+      request.cookies.getString(models.IdentifierCacheKey)
+    )
 
     logRequest(acquireRequest)
 
@@ -285,7 +287,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                                newKeeperDetailsViewModel: NewKeeperDetailsViewModel,
                                traderDetailsModel: TraderDetailsModel, taxOrSornModel: VehicleTaxOrSornFormModel,
                                timestamp: DateTime,
-                               trackingId: TrackingId): AcquireRequestDto = {
+                               trackingId: TrackingId,
+                               identifier: Option[String]): AcquireRequestDto = {
 
     val keeperDetails = buildKeeperDetails(newKeeperDetailsViewModel)
 
@@ -298,7 +301,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
     val dateTimeFormatter = ISODateTimeFormat.dateTime()
 
-    AcquireRequestDto(buildWebHeader(trackingId),
+    AcquireRequestDto(buildWebHeader(trackingId, identifier),
       referenceNumber = vehicleLookup.referenceNumber,
       registrationNumber = vehicleLookup.registrationNumber,
       keeperDetails,
@@ -372,15 +375,15 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     address.take(getLines)
   }
 
-  private def buildWebHeader(trackingId: TrackingId): VssWebHeaderDto =
+  private def buildWebHeader(trackingId: TrackingId, identifier: Option[String]): VssWebHeaderDto =
     VssWebHeaderDto(transactionId = trackingId.value,
       originDateTime = new DateTime,
       applicationCode = config.applicationCode,
       serviceTypeCode = config.vssServiceTypeCode,
-      buildEndUser())
+      buildEndUser(identifier))
 
-  private def buildEndUser(): VssWebEndUserDto =
-    VssWebEndUserDto(endUserId = config.orgBusinessUnit, orgBusUnit = config.orgBusinessUnit)
+  private def buildEndUser(identifier: Option[String]): VssWebEndUserDto =
+    VssWebEndUserDto(endUserId = identifier.getOrElse(config.orgBusinessUnit), orgBusUnit = config.orgBusinessUnit)
 
   private def logRequest(acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
     logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",

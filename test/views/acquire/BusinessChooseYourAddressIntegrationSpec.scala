@@ -130,7 +130,7 @@ class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
 
     "display previous page with ceg route" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
-      cacheSetup().withIdentifier("ceg")
+      cacheSetup().withIdentifier("CEG")
       go to BusinessChooseYourAddressPage
       click on back
       pageTitle should equal(SetupTradeDetailsPage.title)

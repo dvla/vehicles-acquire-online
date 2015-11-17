@@ -42,7 +42,7 @@ class SetUpTradeDetails @Inject()()(implicit clientSideSessionFactory: ClientSid
       .discardingCookies(models.TraderDetailsCacheKeys)
   }
 
-  val identifier = "ceg"
+  val identifier = "CEG"
   def ceg = Action { implicit request =>
     logMessage(request.cookies.trackingId(), Info, s"Presenting set up trade details view for identifier ${identifier}")
     Ok(views.html.acquire.setup_trade_details(form.fill()))
