@@ -111,4 +111,4 @@ GET         /healthcheck                                @uk.gov.dvla.vehicles.pr
 
 GET         /version                                    @controllers.Version.version
 
-GET         /cookie-policy                              @controllers.CookiePolicyController.present
+GET         /cookie-policy                              @controllers.CookiePolicy.present
