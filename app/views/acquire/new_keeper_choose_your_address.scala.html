@@ -17,6 +17,8 @@
 @import views.acquire.NewKeeperChooseYourAddress.{BackId, EnterAddressManuallyButtonId, SelectId}
 @import views.html.acquire.main
 @import views.html.helper.form
+@import scala.collection.mutable.LinkedHashMap
+@import common.views.html.widgets.playbackList
 
 @main(
     progress = Some(Messages("acquire_progress_6")),
@@ -38,18 +40,21 @@
     <div class="second-col">
     @form(action = NewKeeperChooseYourAddress.submit()) {
         @csrfTokenHiddenField()
-        <dl class="playback">
-            <dt>@Messages("acquire_newKeeperChooseYourAddress_newKeeperName_label")</dt>
-            <dd>@Messages("acquire_newKeeperChooseYourAddress_newKeeperName", newKeeperName)</dd>
-            <dt>@Messages("acquire_newKeeperChooseYourAddress_newKeeperEmail_label")</dt>
-            @if(newKeeperEmail == None) {
-            <dd>@Messages("acquire_newKeeperChooseYourAddress.emailNotEntered")</dd>
-            } else {
-            <dd><span class="lowercase-text">@newKeeperEmail.get</span></dd>
+
+        @playbackList(
+            null,
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                playbackItems += Messages("acquire_newKeeperChooseYourAddress_newKeeperName_label") ->
+                    Messages("acquire_newKeeperChooseYourAddress_newKeeperName", newKeeperName)
+                playbackItems += Messages("acquire_newKeeperChooseYourAddress_newKeeperEmail_label") ->
+                    (if(newKeeperEmail == None)
+                        Messages("acquire_newKeeperChooseYourAddress.emailNotEntered")
+                    else
+                        ("<span class=\"lowercase-text\">" + newKeeperEmail.get + "</span>"))
+                playbackItems += Messages("acquire_newKeeperChooseYourAddress_newKeeperpostcode_label") -> newKeeperPostcode
             }
-            <dt>@Messages("acquire_newKeeperChooseYourAddress_newKeeperpostcode_label")</dt>
-            <dd>@newKeeperPostcode</dd>
-        </dl>
+        )()
 
         <br/>
 

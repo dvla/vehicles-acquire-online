@@ -15,6 +15,8 @@
 @import views.html.acquire.main
 @import views.html.helper.form
 @import models.BusinessChooseYourAddressFormModel.Form.AddressSelectId
+@import scala.collection.mutable.LinkedHashMap
+@import common.views.html.widgets.playbackList
 
 @main(
     progress = Some(Messages("acquire_progress_3")),
@@ -27,24 +29,21 @@
     @form(action = BusinessChooseYourAddress.submit()) {
         @csrfTokenHiddenField()
 
-        <dl class="playback">
-            <dt>@Messages("acquire_businessChooseYourAddress_businessName_label")</dt>
-            <dd>@Messages("acquire_businessChooseYourAddress_businessName", traderBusinessName)</dd>
-
-            <dt>@Messages("acquire_businessChooseYourAddress_postcode_label")</dt>
-            <dd>@traderPostcode</dd>
-
-            <dt>@Messages("acquire_businessChooseYourAddress_businessEmail_label")</dt>
-            @if(traderEmail == None) {
-            <dd>@Messages("acquire_businessChooseYourAddress.emailNotEntered")</dd>
-            } else {
-            <dd>
-                <span class="lowercase-text">
-                    @Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail.get)
-                </span>
-            </dd>
+        @playbackList(
+            null,
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                playbackItems += Messages("acquire_businessChooseYourAddress_businessName_label") ->
+                    Messages("acquire_businessChooseYourAddress_businessName", traderBusinessName)
+                playbackItems += Messages("acquire_businessChooseYourAddress_postcode_label") -> traderPostcode
+                playbackItems += Messages("acquire_businessChooseYourAddress_businessEmail_label") ->
+                    (if(traderEmail == None)
+                        Messages("acquire_businessChooseYourAddress.emailNotEntered")
+                    else
+                        ("<span class=\"lowercase-text\">" + Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail.get) + "</span>")
+                    )
             }
-        </dl>
+        )()
 
         <br/>
 
