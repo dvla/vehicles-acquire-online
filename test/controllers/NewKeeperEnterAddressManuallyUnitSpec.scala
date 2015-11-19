@@ -3,7 +3,6 @@ package controllers
 import Common.PrototypeHtml
 import helpers.JsonUtils.deserializeJsonToModel
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.common.CookieHelper.fetchCookiesFromHeaders
 import helpers.{UnitSpec, WithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
@@ -16,6 +15,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.CookieHelper.fetchCookiesFromHeaders
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.AddressLinesId
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId

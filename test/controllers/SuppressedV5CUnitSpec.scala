@@ -2,7 +2,6 @@ package controllers
 
 import composition.WithApplication
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
@@ -12,6 +11,8 @@ import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPa
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.CookieHelper.fetchCookiesFromHeaders
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.CookieHelper.verifyCookieHasBeenDiscarded
 
 class SuppressedV5CUnitSpec extends UnitSpec {
 

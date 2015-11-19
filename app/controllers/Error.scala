@@ -7,7 +7,8 @@ import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSess
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichResult
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.RichCookies
 import uk.gov.dvla.vehicles.presentation.common.LogFormats.DVLALogger
-import utils.helpers.{CookieHelper, Config}
+import uk.gov.dvla.vehicles.presentation.common.utils.helpers.CookieHelper
+import utils.helpers.Config
 
 class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
                               config: Config) extends Controller with DVLALogger {
@@ -24,6 +25,6 @@ class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFact
       Some(Seq(exceptionDigest))
     )
 
-    CookieHelper.discardAllCookies
+    CookieHelper.discardAllCookies(routes.BeforeYouStart.present)
   }
 }

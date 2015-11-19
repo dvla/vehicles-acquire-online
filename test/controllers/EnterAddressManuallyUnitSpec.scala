@@ -2,8 +2,6 @@ package controllers
 
 import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.common.CookieHelper.fetchCookiesFromHeaders
-import helpers.common.CookieHelper.{verifyCookieHasBeenDiscarded, verifyCookieHasNotBeenDiscarded}
 import helpers.JsonUtils.deserializeJsonToModel
 import helpers.{UnitSpec, WithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
@@ -20,6 +18,9 @@ import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.model.TraderDetailsModel
 import common.model.TraderDetailsModel.traderDetailsCacheKey
+import common.testhelpers.CookieHelper.fetchCookiesFromHeaders
+import common.testhelpers.CookieHelper.verifyCookieHasBeenDiscarded
+import common.testhelpers.CookieHelper.verifyCookieHasNotBeenDiscarded
 import common.views.helpers.FormExtensions
 import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config

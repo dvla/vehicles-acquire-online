@@ -2,7 +2,6 @@ package controllers
 
 import composition.WithApplication
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
@@ -14,6 +13,7 @@ import play.api.test.FakeRequest
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
+import common.testhelpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 
 class KeeperStillOnRecordUnitSpec extends UnitSpec {
 

@@ -2,7 +2,6 @@ package controllers
 
 import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.{UnitSpec, WithApplication}
 import models.HelpCacheKey
 import org.mockito.Mockito.when
@@ -10,6 +9,8 @@ import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{LOCATION, OK, REFERER, contentAsString, defaultAwaitTimeout, status}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.CookieHelper.fetchCookiesFromHeaders
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.CookieHelper.verifyCookieHasBeenDiscarded
 import utils.helpers.Config
 
 class HelpUnitSpec extends UnitSpec {

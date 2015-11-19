@@ -1,7 +1,6 @@
 package controllers
 
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.common.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
 import helpers.UnitSpec
 import helpers.WithApplication
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
@@ -35,9 +34,9 @@ import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupFai
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupRequest
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupServiceImpl
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupSuccessResponse
-import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 import common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupWebService
-import utils.helpers.Config
+import common.testhelpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
+import pages.acquire.BusinessKeeperDetailsPage.EmailValid
 import views.acquire.VehicleLookup.{ResetTraderDetailsId, VehicleSoldTo_Business, VehicleSoldTo_Private}
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
@@ -54,6 +53,7 @@ import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWe
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseFirstAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.responseSecondAttempt
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.VrmThrows
+import utils.helpers.Config
 
 class VehicleLookupUnitSpec extends UnitSpec {
 
