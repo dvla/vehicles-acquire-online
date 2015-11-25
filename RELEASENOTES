@@ -1,5 +1,6 @@
 ======= 1.23 =======
 Time of release binary creation
+Wed Nov 25 13:31:11 UTC 2015
 
 US3942	Record CEG Identifier to Distinguish Assisted Digital Transactions from Others
 US3956	Review each exemplar and make sure all form controls are displayed through a widget in vehicles-presentation-common
