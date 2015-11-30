@@ -36,12 +36,10 @@
                 playbackItems += Messages("acquire_businessChooseYourAddress_businessName_label") ->
                     Messages("acquire_businessChooseYourAddress_businessName", traderBusinessName)
                 playbackItems += Messages("acquire_businessChooseYourAddress_postcode_label") -> traderPostcode
-                playbackItems += Messages("acquire_businessChooseYourAddress_businessEmail_label") ->
-                    (if(traderEmail == None)
-                        Messages("acquire_businessChooseYourAddress.emailNotEntered")
-                    else
-                        ("<span class=\"lowercase-text\">" + Messages("acquire_businessChooseYourAddress_businessEmail", traderEmail.get) + "</span>")
-                    )
+                traderEmail match {
+                    case Some(email) => playbackItems += ("EMAIL_" + Messages("acquire_businessChooseYourAddress_businessEmail_label") -> email)
+                    case None => playbackItems += (Messages("acquire_businessChooseYourAddress_businessEmail_label") ->
+                        Messages("acquire_businessChooseYourAddress.emailNotEntered") )}
             }
         )()
 
