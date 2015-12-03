@@ -5,7 +5,6 @@ import play.api.data.Forms.mapping
 import play.api.libs.json.Json
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.CacheKey
-import common.mappings.ThreeAlphasConstraint.threeAlphasConstraint
 import common.views.models.AddressAndPostcodeViewModel
 
 final case class EnterAddressManuallyFormModel(addressAndPostcodeModel: AddressAndPostcodeViewModel)
@@ -19,7 +18,7 @@ object EnterAddressManuallyFormModel {
   object Form {
     final val AddressAndPostcodeId = "addressAndPostcode"
     final val Mapping = mapping(
-      AddressAndPostcodeId -> AddressAndPostcodeViewModel.Form.Mapping.verifying(threeAlphasConstraint)
+      AddressAndPostcodeId -> AddressAndPostcodeViewModel.Form.Mapping
     )(EnterAddressManuallyFormModel.apply)(EnterAddressManuallyFormModel.unapply)
   }
 }
