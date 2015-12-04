@@ -43,10 +43,9 @@ lazy val gatlingTestsProject = Project("gatling-tests", file("gatling-tests"))
   .enablePlugins(GatlingPlugin)
 
 libraryDependencies ++= Seq(
-  cache,
   filters,
   "dvla" %% "vehicles-presentation-common" % "2.38-SNAPSHOT" withSources() withJavadoc() exclude("junit", "junit-dep"),
-  "dvla" %% "vehicles-presentation-common" % "2.38-SNAPSHOT" % "test" withSources() classifier "tests" withJavadoc() exclude("junit", "junit-dep"),
+  "dvla" %% "vehicles-presentation-common" % "2.38-SNAPSHOT" % "test" classifier "tests" withSources() withJavadoc() exclude("junit", "junit-dep"),
   "com.google.guava" % "guava" % "15.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "org.seleniumhq.selenium" % "selenium-java" % "2.43.0" % "test" withSources() withJavadoc(),
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),
@@ -59,8 +58,8 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.9" withSources() withJavadoc(),
   "org.apache.httpcomponents" % "httpclient" % "4.3.4" withSources() withJavadoc(),
   "org.webjars" % "requirejs" % "2.1.14-1",
-  "junit" % "junit" % "4.11",
-  "junit" % "junit-dep" % "4.11"
+  "junit" % "junit" % "4.11" % "test",
+  "junit" % "junit-dep" % "4.11" % "test"
 )
 
 pipelineStages := Seq(rjs, digest, gzip)
