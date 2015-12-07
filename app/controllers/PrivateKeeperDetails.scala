@@ -12,6 +12,9 @@ import common.model.{PrivateKeeperDetailsFormModel, VehicleAndKeeperDetailsModel
 import common.services.DateService
 import utils.helpers.Config
 
+
+
+
 class PrivateKeeperDetails @Inject()()(implicit protected override val clientSideSessionFactory: ClientSideSessionFactory,
                                        dateService: DateService,
                                        config: Config) extends PrivateKeeperDetailsBase {
@@ -19,7 +22,7 @@ class PrivateKeeperDetails @Inject()()(implicit protected override val clientSid
   protected override def presentResult(model: VehicleAndKeeperDetailsModel, form: Form[PrivateKeeperDetailsFormModel])
                                       (implicit request: Request[_]): Result = {
     logMessage(request.cookies.trackingId(), Info, "Presenting private keeper details view")
-    Ok(views.html.acquire.private_keeper_details(model, form))
+    Ok(views.html.acquire.private_keeper_details(model,form))
   }
 
   protected override def missingVehicleDetails(implicit request: Request[_]): Result = {
