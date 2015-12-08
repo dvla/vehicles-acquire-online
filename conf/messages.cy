@@ -52,6 +52,7 @@ error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
 error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
 error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
+
 error.validTitle = Must be a valid title
 
 datePlaceholder.day=Day
@@ -262,18 +263,20 @@ addressAndPostcode.addressLines.line3 = Area
 addressAndPostcode.addressLines.postTown = Town or city
 addressAndPostcode.addressLines.postTown.hint = e.g. SWANSEA
 
-error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
-error.postTown.characterInvalid = Town or city contains invalid characters
 error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 
 addressAndPostcode = Building name or number
 addressAndPostcode.addressLines = Address
 addressAndPostcode.postcode = Postcode
 addressAndPostcode.addressLines.buildingNameOrNumber = Building name or number
+
+# common to both addressPicker widget and addressAndPostcode widget
 error.address.buildingNameOrNumber.invalid = Building/number and street must contain between 4 and 30 characters
+error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
+#error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
 error.address.postTown = Town or city must contain a minimum of 3 characters
-error.address.postcode.invalid = Must be between five and eight characters and in a valid format, eg. AB1 2Ba or AB12BA
-error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
+error.address.postTown.characterInvalid = Town or city contains invalid characters
+error.address.threeAlphas = Must have at least 3 alpha characters
 
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
