@@ -12,7 +12,9 @@ import common.model.VehicleAndKeeperDetailsModel
 import utils.helpers.Config
 
 class KeeperStillOnRecord @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                       config: Config) extends Controller with DVLALogger {
+                                       config: Config,
+                                      dateService: uk.gov.dvla.vehicles.presentation.common.services.DateService)
+                                      extends Controller with DVLALogger {
 
   def present = Action { implicit request =>
     logMessage(request.cookies.trackingId(), Warn, "Keeper still on record")
