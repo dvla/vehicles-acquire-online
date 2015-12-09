@@ -1,7 +1,7 @@
 Master [![Build Status](https://travis-ci.org/dvla/vehicles-acquire-online.svg?branch=master)](https://travis-ci.org/dvla/vehicles-acquire-online)
 
 DVLA Vehicles Acquire Online
-====================
+=====================
 
 `vehicles-acquire-online` is the Web frontend for acquiring service from the motor trade vehicles online..
 
