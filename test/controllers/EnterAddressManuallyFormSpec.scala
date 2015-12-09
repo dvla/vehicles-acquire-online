@@ -61,7 +61,7 @@ class EnterAddressManuallyFormSpec extends UnitSpec {
 
     "reject if post town contains numbers" in new WithApplication {
       formWithValidDefaults(postTown = "123456").errors.flatMap(_.messages) should contain theSameElementsAs
-        List("error.postTown.characterInvalid")
+        List("error.address.postTown.characterInvalid")
     }
 
     "accept if post town starts with spaces" in new WithApplication {
@@ -97,7 +97,7 @@ class EnterAddressManuallyFormSpec extends UnitSpec {
 
     "reject if buildingNameOrNumber doesn't contain at least three alpha characters" in new WithApplication {
       formWithValidDefaults(buildingNameOrNumber = "1-12").errors.flatMap(_.messages) should contain theSameElementsAs
-      List("error.threeAlphas")
+      List("error.address.threeAlphas")
     }
 
     "reject if line2 is more than max length" in new WithApplication {

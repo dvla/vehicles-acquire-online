@@ -1,6 +1,7 @@
 @(data: uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel)(implicit lang: Lang,
 token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
-config: utils.helpers.Config)
+config: utils.helpers.Config,
+dateService: uk.gov.dvla.vehicles.presentation.common.services.DateService)
 
 @import controllers.routes.BeforeYouStart
 @import controllers.routes.VehicleLookup
@@ -8,6 +9,7 @@ config: utils.helpers.Config)
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.html.widgets.base.csrfTokenHiddenField
 @import common.views.html.widgets.vehicleDetailPlayback
+@import common.views.html.widgets.xmasOpeningTimes
 
 @main(
     title = Messages("acquire_keeperstillonrecord.title")
@@ -22,6 +24,7 @@ config: utils.helpers.Config)
         <div class="second-col">
             <p>@Messages("acquire_keeperstillonrecord.text1")</p>
             <p>@Messages("acquire_keeperstillonrecord.text2")</p>
+            @xmasOpeningTimes()
             <p>@Messages("acquire_keeperstillonrecord.text3")</p>
             <p><a href="@{Messages("acquire_keeperstillonrecord.link")}"> @{Messages("acquire_keeperstillonrecord.text4")}</a></p>
             <p>@Messages("acquire_keeperstillonrecord.text5")</p>

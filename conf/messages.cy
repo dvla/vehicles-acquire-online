@@ -52,6 +52,7 @@ error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
 error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
 error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
+
 error.validTitle = Must be a valid title
 
 datePlaceholder.day=Day
@@ -135,17 +136,17 @@ acquire_beforeyoustart.p4 = Please note: this service updates our records immedi
 acquire_beforeyoustart.p5 = Once you’ve finished:
 acquire_beforeyoustart.p6 = Other ways to apply:
 acquire_beforeyoustart.p7 = If you do not use the online service, you must complete the V5C and post it to DVLA, Swansea, SA99 1BA
-acquire_beforeyoustart.listitem1 = No vehicle or tax class changes can be made online
-acquire_beforeyoustart.listitem2.1 = You will not be able to use this online service to assign or transfer a vehicle registration number.
+acquire_beforeyoustart.listitem1 = no vehicle or tax class changes can be made online
+acquire_beforeyoustart.listitem2.1 = you will not be able to use this online service to assign or transfer a vehicle registration number.
 acquire_beforeyoustart.listitem2.link = Apply to retain a vehicle registration number (V317)
 acquire_beforeyoustart.listitem2.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-acquire_beforeyoustart.listitem3 = This vehicle must be taxed before it can be driven on the road. You can tax or SORN your vehicle on behalf of the buyer as part of this service.
+acquire_beforeyoustart.listitem3 = this vehicle must be taxed before it can be driven on the road. You can tax or SORN your vehicle on behalf of the buyer as part of this service.
 acquire_beforeyoustart.listitem4 = DVLA cannot record joint keepers
-acquire_beforeyoustart.listitem5 = This service is currently available Mon-Sat, 8am – 6pm
-acquire_beforeyoustart.listitem6 = The 11 digit document reference number from the latest registration certificate (V5C).
-acquire_beforeyoustart.listitem7 = The consent of the buyer of the vehicle to act on their behalf
-acquire_beforeyoustart.listitem8 = The new keeper (buyer) should receive a new V5C within 5 working days.
-acquire_beforeyoustart.listitem9 = The original V5C used to transact online must be destroyed and must not be sent to DVLA
+acquire_beforeyoustart.listitem5 = this service is currently available Mon-Sat, 8am – 6pm
+acquire_beforeyoustart.listitem6 = the 11 digit document reference number from the latest registration certificate (V5C).
+acquire_beforeyoustart.listitem7 = the consent of the buyer of the vehicle to act on their behalf
+acquire_beforeyoustart.listitem8 = the new keeper (buyer) should receive a new V5C within 5 working days.
+acquire_beforeyoustart.listitem9 = the original V5C used to transact online must be destroyed and must not be sent to DVLA
 acquire_beforeyoustart.link1 = Motor traders: tell DVLA about the sale of a vehicle
 acquire_beforeyoustart.link2 = Vehicle tax changes
 
@@ -262,18 +263,20 @@ addressAndPostcode.addressLines.line3 = Area
 addressAndPostcode.addressLines.postTown = Town or city
 addressAndPostcode.addressLines.postTown.hint = e.g. SWANSEA
 
-error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
-error.postTown.characterInvalid = Town or city contains invalid characters
 error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 
 addressAndPostcode = Building name or number
 addressAndPostcode.addressLines = Address
 addressAndPostcode.postcode = Postcode
 addressAndPostcode.addressLines.buildingNameOrNumber = Building name or number
+
+# common to both addressPicker widget and addressAndPostcode widget
 error.address.buildingNameOrNumber.invalid = Building/number and street must contain between 4 and 30 characters
+error.address.characterInvalid = Must only contain valid characters A-Z, 0-9, etc
+#error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
 error.address.postTown = Town or city must contain a minimum of 3 characters
-error.address.postcode.invalid = Must be between five and eight characters and in a valid format, eg. AB1 2Ba or AB12BA
-error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
+error.address.postTown.characterInvalid = Town or city contains invalid characters
+error.address.threeAlphas = Must have at least 3 alpha characters
 
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
@@ -363,8 +366,8 @@ acquire_success.vehicle_details.email = Contact email address
 acquire_success.vehicle_details.p1 = Details of the vehicle being purchased
 acquire_success.new_keeper_details.p1 = Details of the new keeper DVLA has put on record for this vehicle
 acquire_success.further_information.header = What happens next?
-acquire_success.further_information.p1 = Within 4 weeks a new vehicle registration certificate (V5C) will be sent to the new keeper.
-acquire_success.further_information.p2 = If they do not receive a new V5C in 4 weeks they must contact DVLA Customer Enquiries on 0300 790 6802
+acquire_success.further_information.p1 = within 4 weeks a new vehicle registration certificate (V5C) will be sent to the new keeper.
+acquire_success.further_information.p2 = if they do not receive a new V5C in 4 weeks they must contact DVLA Customer Enquiries on 0300 790 6802
 acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the vehicle registration certificate (V5C)
 acquire_success.buttonnavprint = Print
 acquire_success.buyAnother = Buy another vehicle
@@ -596,7 +599,7 @@ closed.exit_button = Gadael
 # feedback
 common_feedback.title = Give Feedback
 common_feedback.message = Please don''t include any personal or financial information.
-common_feedback.warning = Mae'r dudalen hon ar gyfer adborth yn unig ac ni allwn gynnig ateb personol i'ch e-bost
+common_feedback.warning = Mae'r dudalen hon ar gyfer adborth yn unig ac ni allwn gynnig ateb personol i'ch ebost
 common_feedback.label = What went wrong, if anything? What went well? How could we improve this service?
 common_feedback.charactersRemaining = characters remaining
 common_feedback.placeholder = 500 characters remaining
