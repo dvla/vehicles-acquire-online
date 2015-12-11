@@ -67,7 +67,8 @@
                                 '_showConstraints -> false,
                                 'NO_OPTIONAL_LABEL -> false
                             ) ++ (if(config.isHtml5ValidationEnabled) Map('pattern -> FleetNumber.Pattern) else Nil)
-                        )
+                        ),
+                        gaTrackValue = true
                     )
 
                     @optionalToggle(
@@ -80,7 +81,8 @@
                             labelText = Messages("acquire_businesskeeperdetails.email"),
                             hintText = None,
                             args = Map('maxLength -> EmailMaxLength)
-                        )
+                        ),
+                        gaTrackValue = true
                     )
 
                     <div class="uppercase-input">

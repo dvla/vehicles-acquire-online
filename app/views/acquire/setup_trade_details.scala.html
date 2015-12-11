@@ -48,7 +48,8 @@ config: utils.helpers.Config)
                     labelText = Messages("acquire_setuptradedetails.traderemaillabel"),
                     hintText = None,
                     args = Map('maxLength -> EmailMaxLength)
-                )
+                ),
+                gaTrackValue = true
             )
         <div class="uppercase-input">
             @valtechInputText(traderLookupForm(TraderPostcodeId),
