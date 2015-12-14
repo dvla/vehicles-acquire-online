@@ -5,6 +5,7 @@
     .acquire-complete-confirm {
         .playback dd.tax-or-sorn {
             @include long-text-wrap('word');
+            font-weight: bold;
         }
     }
 
@@ -22,7 +23,7 @@
             -moz-hyphens: none;
             hyphens: none;
             color: $grey-1;
-            font-weight: normal;
+            font-weight: bold;
             text-transform: none;
         }
         .transaction-details {

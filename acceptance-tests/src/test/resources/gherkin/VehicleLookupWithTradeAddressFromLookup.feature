@@ -23,7 +23,7 @@ Feature:
 
   Scenario: The user wishes to change the trader details
     When the user selects the 'Change these trader details?' function
-    Then the user will be directed to the Provide Trader details page with the entry fields empty
+    Then the user will be directed to the Provide trader details page with the entry fields empty
 
   Scenario: vehicle lookup fails because the document reference number returned from the search does not match
     When the user fills in data that results in document reference mismatch error from the micro service

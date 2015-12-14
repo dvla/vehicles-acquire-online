@@ -79,12 +79,12 @@ error.dateOfBirth.invalid = Must be a valid date DD MM YYYY and not be in the fu
 error.dateOfBirth.110yearsInThePast = Date of birth cannot be more than 110 years in the past
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 
-error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
+error.validDriverNumber = The driver number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss/Other and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
 error.threeAlphas = Must have at least 3 alpha characters
 select = TAX/SORN
-VehicleTaxOrSornFormModel = SORN Now
+VehicleTaxOrSornFormModel = SORN now
 error.sornformerror = You must accept the SORN option.
 error.nosornformerror = you must select the SORN now option.
 error.sornselectid = One of the options must be selected.
@@ -128,7 +128,7 @@ acquire_progress_9 = Step 9 of 9
 
 # help
 #disposal.help.title = Help
-#disposal.help.p1 = This service is in Private Beta phase
+#disposal.help.p1 = This service is in private beta phase
 #disposal.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
 #disposal.help.p2.2 = send an email
 #disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
@@ -166,7 +166,7 @@ acquire_beforeyoustart.listitem3 = this vehicle must be taxed before it can be d
 acquire_beforeyoustart.listitem4 = DVLA cannot record joint keepers
 acquire_beforeyoustart.listitem5 = this service is currently available Mon-Sat, 8am – 6pm
 acquire_beforeyoustart.listitem6 = the 11 digit document reference number from the latest registration certificate (V5C).
-acquire_beforeyoustart.listitem7 = the consent of the buyer of the vehicle to act on their behalf
+acquire_beforeyoustart.listitem7 =the consent of the buyer of the vehicle to act on their behalf
 acquire_beforeyoustart.listitem8 = the new keeper (buyer) should receive a new V5C within 5 working days.
 acquire_beforeyoustart.listitem9 = the original V5C used to transact online must be destroyed and must not be sent to DVLA
 acquire_beforeyoustart.link1 = Motor traders: tell DVLA about the sale of a vehicle
@@ -223,7 +223,7 @@ acquire_vehiclelookup.warning.p2 = Retain or transfer personal registrations bef
 acquire_vehiclelookup.img.hint = Where to find this
 acquire_vehiclelookup.img.h2 = Help finding your V5C document reference number?
 acquire_vehiclelookup.img.alt = V5C document reference number
-acquire_vehiclelookup.v5c = Vehicle Registration Certificate (V5C)
+acquire_vehiclelookup.v5c = Vehicle registration certificate (V5C)
 acquire_vehiclelookup.refnumlabel = Latest V5C document reference number
 acquire_vehiclelookup.vrninputlabel = Vehicle registration number
 acquire_vehiclelookup.backbutton = Back
@@ -299,7 +299,7 @@ error.address.threeAlphas = Must have at least 3 alpha characters
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
-acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA Customer Services on 0300 790 6802 (please enter code 756 when prompted).
+acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA customer services on 0300 790 6802 (please enter code 756 when prompted).
 acquire_keeperstillonrecord.text3 = You can notify us of the vehicle''s sale to the motor trade using our online service -
 acquire_keeperstillonrecord.text4 = Bought a vehicle into the trade.
 acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
@@ -315,9 +315,9 @@ acquire_keeperstillonrecord.vehiclemodel = Model
 error_suppressedV5C.title = Vehicle is part of a suppressed fleet
 error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
 error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a vehicle registration certificate (V5C) from the DVLA. This can be done using the
-error_suppressedV5C.text3 = View Vehicle Record service.
+error_suppressedV5C.text3 = View vehicle record service.
 error_suppressedV5C.link = https://www.gov.uk/dvla-fleet-vehicle-info
-error_suppressedV5C.button1 = Notify Another Sale
+error_suppressedV5C.button1 = Notify another sale
 error_suppressedV5C.button2 = Finish
 
 #private keeper details
@@ -368,7 +368,7 @@ acquire_businesskeeperdetails.businessname.hint = If the business buying this ve
 acquire_businesskeeperdetails.email = Email address of new keeper
 acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
-acquire_businesskeeperdetails.consent = I have the consent of the party named above to notify DVLAabo.
+acquire_businesskeeperdetails.consent = I have the consent of the party named above to notify DVLA.
 acquire_businesskeeperdetails.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
 acquire_businesskeeperdetails.postcodelabel = Postcode
 acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
@@ -435,19 +435,19 @@ acquire_vehicleTaxOrSorn.vehicleModel = Model
 acquire_vehicleTaxOrSorn.taxVehicle = Tax Vehicle
 acquire_vehicleTaxOrSorn.sornNow = SORN now
 acquire_vehicleTaxOrSorn.neither = Neither
-acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a Statutory Off Road Notification (SORN) made when it is purchased.
+acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a statutory off road notification (SORN) made when it is purchased.
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
 acquire_vehicleTaxOrSorn.p2 = Or
 acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from the V5C/2 (green slip) section of the registration certificate as a new keeper.
 acquire_vehicleTaxOrSorn.taxText-2 = Once taxing is completed please return to this page and select 'Next' to continue.
-acquire_vehicleTaxOrSorn.sornText = Make a Statutory Off Road Notification (SORN) as part of this service.
+acquire_vehicleTaxOrSorn.sornText = Make a statutory sff road notification (SORN) as part of this service.
 acquire_vehicleTaxOrSorn.sornText-p1 =  Please select 'Next' to continue
 
 acquire_vehicleTaxOrSorn.neitherText.p1 = If you have not already taxed or declared SORN for this vehicle, you must remind the new keeper that it's their responsibility to ensure the vehicle is taxed if it is driven on the road.
 acquire_vehicleTaxOrSorn.neitherText.p2 = If the vehicle is being kept off road, the new keeper must make a SORN.
-acquire_vehicleTaxOrSorn.neitherText.p3 = Please select Next to continue.
+acquire_vehicleTaxOrSorn.neitherText.p3 = Please select next to continue.
 
-acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off Road Notification (SORN) now as part of this service?
+acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a statutory off road notification (SORN) now as part of this service?
 acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
 acquire_vehicleTaxOrSorn.submitbutton = Next
 acquire_vehicleTaxOrSorn.backbutton = Back
@@ -484,7 +484,7 @@ acquire_keeperdetailscomplete.consent = I have the consent of the party named to
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
 
 #acquire success
-acquire_success.complete.header = Thank You
+acquire_success.complete.header = Thank you
 acquire_success.complete.p1 = The application is being processed
 acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C.
 acquire_success.transaction_details.header = Transaction details
@@ -518,7 +518,7 @@ acquire_success.further_information.p1 = within 5 working days we will send a ne
 acquire_success.further_information.p2 = if they do not receive a new V5C in 2 weeks they must contact DVLA Customer Enquiries.
 acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the vehicle registration certificate (V5C)
 acquire_success.buttonnavprint = Print
-acquire_success.buyAnother = Notify Another Sale
+acquire_success.buyAnother = Notify another sale
 acquire_success.finish = Finish
 
 #page 7 - acquire failure
@@ -534,7 +534,7 @@ acquire_failure.transaction_details.header = Transaction details
 acquire_failure.transaction_details.transaction_id = Transaction ID
 acquire_failure.transaction_details.transaction_date = Transaction date
 acquire_failure.buttonnavprint = Print
-acquire_failure.buyAnother = Notify Another Sale
+acquire_failure.buyAnother = Notify another sale
 acquire_failure.finish = Finish
 
 #micro-service error page
@@ -546,11 +546,11 @@ micro_service_error.exit.button=Exit
 
 #vrm locked
 vrm_locked.title=Registration number is locked
-vrm_locked.text1= There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Notify Another Sale" below.
+vrm_locked.text1= There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Notify another sale" below.
 vrm_locked.text2=Locked at
 vrm_locked.text3.1= If you are sure that the details entered are correct then please send your completed V5C to
 vrm_locked.text3.2=DVLA, Swansea SA99 1BA
-vrm_locked.buyanother.button= Notify Another Sale
+vrm_locked.buyanother.button= Notify another sale
 vrm_locked.exit.button=Exit
 
 # Date labels
@@ -574,13 +574,13 @@ error.title.illegalCharacters = Other title field can only contain characters fr
 error.date.notOne = Year cannot be 0000
 
 # micro-service response codes
-ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful
+ms.vehiclesService.response.unableToProcessApplication-title = Transaction unsuccessful
 ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to
 ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
 # help
 acquire.help.title = Help
-acquire.help.p1 = This service is in Private Beta phase
+acquire.help.p1 = This service is in private beta phase
 acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
 acquire.help.p2.2 = send an email
 acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
@@ -588,12 +588,12 @@ acquire.help.exit_button = Exit
 acquire.help.back_button = Back
 
 # closed
-closed.title = Service Unavailable
+closed.title = Service unavailable
 closed.p1 = This service is only available Monday to Saturday {0} to {1}.
 closed.exit_button = Exit
 
 # feedback
-common_feedback.title = Give Feedback
+common_feedback.title = Give feedback
 common_feedback.message = Please don''t include any personal or financial information.
 common_feedback.warning = This page is for feedback only and we are unable to offer a personal reply to your email
 common_feedback.label = What went wrong, if anything? What went well? How could we improve this service?
@@ -601,7 +601,7 @@ common_feedback.charactersRemaining = characters remaining
 common_feedback.placeholder = 500 characters remaining
 common_feedback.submit_button = Submit feedback
 common_feedback.thankyou = Thank you for your feedback
-common_feedback.subject = Buy from the trade - Feedback
+common_feedback.subject = Buy from the trade - feedback
 common_feedback.name = Name
 common_feedback.email = Email
 common_feedback.feedbackTitle = Please leave your name and email address in case we need to contact you
@@ -609,6 +609,6 @@ error.feedback = Feedback cannot exceed 500 characters
 error.feedbackName = Name cannot be more than 60 characters
 feedbackEmail = Email
 feedbackName = Name
-feedback = Feedback Form
+feedback = Feedback form
 feedback_return = ◄ Return to your application
 feedback_close = Please close this page to return to your application
