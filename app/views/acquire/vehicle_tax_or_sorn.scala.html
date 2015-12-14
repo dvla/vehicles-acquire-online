@@ -58,7 +58,7 @@ backButton = Some(controllers.routes.VehicleTaxOrSorn.back())
                 @listRadioGroup(field = viewModel.form(SelectId),
                     optionsWithHint = Seq(
                         RadioWithHint(TaxId, Messages("acquire_vehicleTaxOrSorn.taxVehicle"), "",
-                            """<div class="tax-text panel-indent-wrapper">
+                            """<div class="tax-text panel-indent-wrapper show-on-selected no-js-only">
                                     <div id="tax_details" class="panel-indent">
                                         <a class="large" href="https://www.gov.uk/vehicle-tax" ga-event-category="taxsorn" ga-event-action="tax_through" target="_blank">""" + Messages("acquire_vehicleTaxOrSorn.link") + """</a>
                                         <p class="form-hint">""" + Messages("acquire_vehicleTaxOrSorn.taxText") + """</p>
@@ -71,7 +71,7 @@ backButton = Some(controllers.routes.VehicleTaxOrSorn.back())
                             gaCategory = "field_value", gaAction="Tax-or-SORN", gaLabel="SORN"),
 
                         RadioWithHint(NeitherId, Messages("acquire_vehicleTaxOrSorn.neither"), "",
-                            """<div class="neither-text panel-indent-wrapper">
+                            """<div class="neither-text panel-indent-wrapper show-on-selected no-js-only">
                                     <div id="neither_details" class="panel-indent">
                                         <p class="form-hint">""" + Messages("acquire_vehicleTaxOrSorn.neitherText.p1") + """</p>
                                         <p class="form-hint">""" + Messages("acquire_vehicleTaxOrSorn.neitherText.p2") + """</p>
