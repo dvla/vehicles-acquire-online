@@ -91,7 +91,7 @@ acquire_progress_9 = Step 9 of 9
 
 # help
 #disposal.help.title = Help
-#disposal.help.p1 = This service is in Private Beta phase
+#disposal.help.p1 = This service is in private beta phase
 #disposal.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
 #disposal.help.p2.2 = send an email
 #disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
@@ -202,7 +202,7 @@ acquire_vehiclelookup.warning.p2 = Retain or transfer personal registrations bef
 acquire_vehiclelookup.img.hint = Where to find this
 acquire_vehiclelookup.img.h2 = Help finding your V5C document reference number?
 acquire_vehiclelookup.img.alt = V5C document reference number
-acquire_vehiclelookup.v5c = Vehicle Registration Certificate (V5C)
+acquire_vehiclelookup.v5c = Vehicle registration certificate (V5C)
 acquire_vehiclelookup.refnumlabel = Latest V5C document reference number
 acquire_vehiclelookup.vrninputlabel = Vehicle registration number
 acquire_vehiclelookup.backbutton = Back
@@ -263,7 +263,7 @@ addressAndPostcode.addressLines.line3 = Area
 addressAndPostcode.addressLines.postTown = Town or city
 addressAndPostcode.addressLines.postTown.hint = e.g. SWANSEA
 
-error.validDriverNumber = The Driver Number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
+error.validDriverNumber = The driver number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 
 addressAndPostcode = Building name or number
 addressAndPostcode.addressLines = Address
@@ -281,7 +281,7 @@ error.address.threeAlphas = Must have at least 3 alpha characters
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
-acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA Customer Services on 0300 790 6802 (please enter code 756 when prompted).
+acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA customer services on 0300 790 6802 (please enter code 756 when prompted).
 acquire_keeperstillonrecord.text3 = You can notify us of the vehicle''s sale to the motor trade.
 acquire_keeperstillonrecord.text4 = Bought a vehicle into the trade.
 acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
@@ -297,9 +297,9 @@ acquire_keeperstillonrecord.vehiclemodel = Model
 error_suppressedV5C.title = Vehicle is part of a suppressed fleet
 error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
 error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a vehicle registration certificate (V5C) from the DVLA. This can be done using the
-error_suppressedV5C.text3 = View Vehicle Record service.
+error_suppressedV5C.text3 = View vehicle record service.
 error_suppressedV5C.link = https://www.gov.uk/dvla-fleet-vehicle-info
-error_suppressedV5C.button1 = Notify Another Sale
+error_suppressedV5C.button1 = Notify another sale
 error_suppressedV5C.button2 = Finish
 
 #private keeper details
@@ -422,7 +422,7 @@ change_keeper_newKeeperChooseYourAddress.address.required = Please select a vali
 #date of birth field
 dateOfBirthInput.label = Date of Birth
 privatekeeper_dateofbirth = Date of Birth
-dateOfBirthInput.hint = for example, 20 3 1976
+dateOfBirthInput.hint = For example, 20 3 1976
 error.dateOfBirth.inTheFuture = Date of birth cannot be in the future
 error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY for example 20 3 1976 or 1 03 1976
 error.dateOfBirth.110yearsInThePast = Date of birth cannot be more than 110 years in the past
@@ -431,9 +431,9 @@ error.fleetNumber = The fleet number can only be a 6 digit number, please try ag
 error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss/Other and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
 error.threeAlphas = Must have at least 3 alpha characters
 select = TAX/SORN
-VehicleTaxOrSornFormModel = SORN Now
+VehicleTaxOrSornFormModel = SORN now
 error.sornformerror = You must accept the SORN option.
-error.nosornformerror = you must select the SORN now option.
+error.nosornformerror = You must select the SORN now option.
 error.sornselectid = One of the options must be selected.
 error.email.confirm.required = Please confirm the email address
 error.email.not.match = The email addresses did not match
@@ -488,17 +488,17 @@ acquire_vehicleTaxOrSorn.vehicleModel = Model
 acquire_vehicleTaxOrSorn.taxVehicle = Tax Vehicle
 acquire_vehicleTaxOrSorn.sornNow = SORN now
 acquire_vehicleTaxOrSorn.neither = Neither
-acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a Statutory Off Road Notification (SORN) made when it is purchased.
+acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a statutory off road notification (SORN) made when it is purchased.
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
 acquire_vehicleTaxOrSorn.p2 = Or
 acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from the V5C/2 (green slip) section of the registration certificate as a new keeper.
 acquire_vehicleTaxOrSorn.taxText-2 = Once taxing is completed please return to this page and select 'Next' to continue.
-acquire_vehicleTaxOrSorn.sornText = Make a Statutory Off Road Notification (SORN) as part of this service.
+acquire_vehicleTaxOrSorn.sornText = Make a statutory off road notification (SORN) as part of this service.
 acquire_vehicleTaxOrSorn.sornText-p1 =  Please select 'Next' to continue
 acquire_vehicleTaxOrSorn.neitherText.p1 = If you have not already taxed or declared SORN for this vehicle, you must remind the new keeper that it's their responsibility to ensure the vehicle is taxed if it is driven on the road.
 acquire_vehicleTaxOrSorn.neitherText.p2 = If the vehicle is being kept off road, the new keeper must make a SORN.
-acquire_vehicleTaxOrSorn.neitherText.p3 = Please select Next to continue.
-acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a Statutory Off Road Notification (SORN) now as part of this service?
+acquire_vehicleTaxOrSorn.neitherText.p3 = Please select next to continue.
+acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a statutory off road notification (SORN) now as part of this service?
 acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
 acquire_vehicleTaxOrSorn.submitbutton = Next
 acquire_vehicleTaxOrSorn.backbutton = Back
@@ -538,7 +538,7 @@ acquire_success.finish = Finish
 
 #page 7 - acquire failure
 acquire_failure.buttonnavprint = Print
-acquire_failure.buyAnother = Notify Another Sale
+acquire_failure.buyAnother = Notify another sale
 acquire_failure.finish = Finish
 
 #micro-service error page
@@ -554,7 +554,7 @@ vrm_locked.text1= There have been repeated unsuccessful attempts to access the v
 vrm_locked.text2=Locked at
 vrm_locked.text3.1= If you are sure that the details entered are correct then please send your completed V5C to
 vrm_locked.text3.2=DVLA, Swansea SA99 1BA
-vrm_locked.buyanother.button= Notify Another Sale
+vrm_locked.buyanother.button= Notify another sale
 vrm_locked.exit.button=Exit
 
 #date labels
@@ -578,13 +578,13 @@ error.title.illegalCharacters = Other title field can only contain characters fr
 error.date.notOne = Year cannot be 0000
 
 # micro-service response codes
-ms.vehiclesService.response.unableToProcessApplication-title = Transaction Unsuccessful
+ms.vehiclesService.response.unableToProcessApplication-title = Transaction unsuccessful
 ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to
 ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
 # help
 acquire.help.title = Help
-acquire.help.p1 = This service is in Private Beta phase
+acquire.help.p1 = This service is in private beta phase
 acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
 acquire.help.p2.2 = send an email
 acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
@@ -597,7 +597,7 @@ closed.p1 = Mae’r gwasanaeth ar gael o ddydd Llun i ddydd Sadwrn yn unig {0} t
 closed.exit_button = Gadael
 
 # feedback
-common_feedback.title = Give Feedback
+common_feedback.title = Give feedback
 common_feedback.message = Please don''t include any personal or financial information.
 common_feedback.warning = Mae'r dudalen hon ar gyfer adborth yn unig ac ni allwn gynnig ateb personol i'ch ebost
 common_feedback.label = What went wrong, if anything? What went well? How could we improve this service?
@@ -613,6 +613,6 @@ error.feedback = Feedback cannot exceed 500 characters
 error.feedbackName = Name cannot be more than 60 characters
 feedbackEmail = Email
 feedbackName = Name
-feedback = Feedback Form
+feedback = Feedback form
 feedback_return = ◄ Return to your application
 feedback_close = Please close this page to return to your application

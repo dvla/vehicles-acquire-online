@@ -82,15 +82,17 @@
         ){
             <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
             @if(viewModel.vehicleSorn.sornVehicle == None) {
-                <dd class="tax-or-sorn">@Messages("acquire_success.vehicle_details.sornNotEntered")</dd>
+                <dt class="tax-or-sorn"><strong>@Messages("acquire_success.vehicle_details.sornNotEntered")</strong></dt>
             } else {
-                <dd class="tax-or-sorn">
+                <dt class="tax-or-sorn"><strong>
+
                 @Messages(
                     "acquire_success.vehicle_details.sornEntered",
                     viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")
                 )
-                </dd>
-                <dd class="word-wrap-only tax-or-sorn-sub">@Messages("acquire_success.vehicle_details.sornEntered.p1")</dd>
+
+                </strong></dt>
+                <dt class="word-wrap-only tax-or-sorn"><strong>@Messages("acquire_success.vehicle_details.sornEntered.p1")</strong></dt>
             }
         }
 
