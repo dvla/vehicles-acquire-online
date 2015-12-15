@@ -22,7 +22,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
   // Will result in the legacy stubs throwing a GetVehicleAndKeeperDetailsVehicleNotFoundException
   // and the ms will return a response code of
   // VMPR1 - vehicle_and_keeper_lookup_vrm_not_found
-  private final val VrnNotFound = "C1"
+  private final val VrnNotFound = "VNF1"
   private final val ValidDocReferenceNumber = "1" * 11
   // Legacy stubs will return doc ref of 11111111111 so we get a response code from the ms of
   // L0002 - vehicle_and_keeper_lookup_document_reference_mismatch

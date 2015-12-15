@@ -2,7 +2,6 @@ package controllers
 
 import composition.WithApplication
 import helpers.UnitSpec
-import helpers.common.RandomVrmGenerator
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
 import helpers.disposal_of_vehicle.ValidVRMFormat.allValidVrmFormats
 import models.VehicleLookupFormModel.Form.{DocumentReferenceNumberId, VehicleRegistrationNumberId, VehicleSoldToId}
@@ -17,6 +16,7 @@ import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.{TrackingId, ClientSideSessionFactory}
 import common.services.DateServiceImpl
+import common.testhelpers.RandomVrmGenerator
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionWebService

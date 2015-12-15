@@ -10,6 +10,7 @@ import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{BusinessChooseYourAddressPage, SetupTradeDetailsPage, VehicleLookupPage, BusinessKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.helpers
 import helpers.webbrowser.{WebBrowserDriver,WithClue}
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
 class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
 
@@ -48,7 +49,7 @@ class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with 
 
   @When("^the user enters the vehicle details which does not have a supression flag and click on Next button without any validation errors$")
   def the_user_enters_the_vehicle_details_which_does_not_have_a_supression_flag_and_click_on_Next_button_without_any_validation_errors()  {
-    VehicleLookupPage.vehicleRegistrationNumber.value ="A1"
+    VehicleLookupPage.vehicleRegistrationNumber.value =RandomVrmGenerator.vrm
     VehicleLookupPage.documentReferenceNumber.value ="11111111111"
     click on VehicleLookupPage.vehicleSoldToBusiness
     click on VehicleLookupPage.next
