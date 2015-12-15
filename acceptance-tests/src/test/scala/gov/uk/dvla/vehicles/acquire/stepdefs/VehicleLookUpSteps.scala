@@ -126,7 +126,7 @@ class VehicleLookUpSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl wi
     click on PrivateKeeperDetailsPage.back
   }
 
-  @Then("^the user will be directed to the Provide Trader details page with the entry fields empty$")
+  @Then("^the user will be directed to the Provide trader details page with the entry fields empty$")
   def the_user_should_taken_to_provide_trader_details_page_with_empty_entry_fields()  {
     pageTitle shouldEqual SetupTradeDetailsPage.title withClue trackingId
     SetupTradeDetailsPage.traderName.value shouldBe empty

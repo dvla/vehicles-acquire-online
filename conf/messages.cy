@@ -26,13 +26,18 @@ global.serviceClosed = Service now closed. Service is available {0} to {1}
 footer.builtbyintro = Built by
 footer.builtby = Driver & Vehicle Licensing Agency
 footer.text1 = All content is available under the
-footer.link = Open Government Licence v2.0
+footer.link = open government licence v2.0
 footer.text2 = , except where otherwise stated
 
 #prototype
 prototype.banner = This service is under development -
 prototype.link =  find out more
 prototype.link.source = https://www.gov.uk/help/beta
+
+#prototype
+prototype.banner = This is a new service -
+prototype.link =  your feedback
+prototype.link.source = mailto:vm.feedback@digital.dvla.gov.uk?Subject=Buy%20from%20the%20trade%20feedback
 prototype.bannerPart2 = will help us to improve it
 
 #widget messages
@@ -283,7 +288,7 @@ acquire_keeperstillonrecord.title = A keeper is on the record
 acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
 acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA customer services on 0300 790 6802 (please enter code 756 when prompted).
 acquire_keeperstillonrecord.text3 = You can notify us of the vehicle''s sale to the motor trade.
-acquire_keeperstillonrecord.text4 = Bought a vehicle into the trade.
+acquire_keeperstillonrecord.text4 = bought a vehicle into the trade.
 acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
 acquire_keeperstillonrecord.text5 = Before you do this, ensure you have the consent of the keeper we currently have on record.
 acquire_keeperstillonrecord.button1 = Buy another vehicle
@@ -297,7 +302,7 @@ acquire_keeperstillonrecord.vehiclemodel = Model
 error_suppressedV5C.title = Vehicle is part of a suppressed fleet
 error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
 error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a vehicle registration certificate (V5C) from the DVLA. This can be done using the
-error_suppressedV5C.text3 = View vehicle record service.
+error_suppressedV5C.text3 = view vehicle record service.
 error_suppressedV5C.link = https://www.gov.uk/dvla-fleet-vehicle-info
 error_suppressedV5C.button1 = Notify another sale
 error_suppressedV5C.button2 = Finish
@@ -340,7 +345,7 @@ acquire_keeperdetailscomplete.consent = I have the consent of the party named ab
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
 
 #acquire success
-acquire_success.complete.header = Thank You
+acquire_success.complete.header = Thank you
 acquire_success.complete.p1 = The application is being processed
 acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C.
 acquire_success.transaction_details.header = Transaction details
@@ -428,9 +433,9 @@ error.dateOfBirth.invalid = Please enter a valid date in the format DD MM YYYY f
 error.dateOfBirth.110yearsInThePast = Date of birth cannot be more than 110 years in the past
 
 error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
-error.titlePlusFirstName.tooLong = The combined length of your Title e.g. Mr/Mrs/Miss/Other and First name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
+error.titlePlusFirstName.tooLong = The combined length of your title e.g. Mr/Mrs/Miss/Other and first name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
 error.threeAlphas = Must have at least 3 alpha characters
-select = TAX/SORN
+select = Tax/SORN
 VehicleTaxOrSornFormModel = SORN now
 error.sornformerror = You must accept the SORN option.
 error.nosornformerror = You must select the SORN now option.
@@ -593,7 +598,7 @@ acquire.help.back_button = Back
 
 # closed
 closed.title = Nid yw’r Gwasanaeth ar gael
-closed.p1 = Mae’r gwasanaeth ar gael o ddydd Llun i ddydd Sadwrn yn unig {0} to {1}
+closed.p1 = Mae’r gwasanaeth ar gael o ddydd llun i ddydd sadwrn yn unig {0} to {1}
 closed.exit_button = Gadael
 
 # feedback
@@ -605,7 +610,7 @@ common_feedback.charactersRemaining = characters remaining
 common_feedback.placeholder = 500 characters remaining
 common_feedback.submit_button = Submit feedback
 common_feedback.thankyou = Thank you for your feedback
-common_feedback.subject = Buy from the trade - Feedback
+common_feedback.subject = Buy from the trade - feedback
 common_feedback.name = Name
 common_feedback.email = Email
 common_feedback.feedbackTitle = Please leave your name and email address in case we need to contact you
