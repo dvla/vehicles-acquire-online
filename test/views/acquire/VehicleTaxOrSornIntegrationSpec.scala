@@ -6,19 +6,18 @@ import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
-import org.scalatest.selenium.WebBrowser.click
-import org.scalatest.selenium.WebBrowser.go
-import org.scalatest.selenium.WebBrowser.pageSource
-import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.NewKeeperChooseYourAddressPage
 import pages.acquire.NewKeeperEnterAddressManuallyPage
 import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.VehicleTaxOrSornPage.back
+import pages.acquire.CompleteAndConfirmPage
+import pages.acquire.AcquireSuccessPage
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
 import webserviceclients.fakes.FakeAddressLookupService.{addressWithUprn, addressWithoutUprn}
+import org.scalatest.selenium.WebBrowser.{click, currentUrl, go, pageTitle, pageSource}
 
 class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
 
@@ -69,6 +68,24 @@ class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
 
       webDriver.getWindowHandles.size should equal(2)
     }
+    "display sorn entered message on acquire success page when SORN selected" taggedAs UiTag in new WebBrowserWithJs {
+      go to BeforeYouStartPage
+      cacheSetup()
+      go to VehicleTaxOrSornPage
+
+      click on VehicleTaxOrSornPage.sornSelect
+      click on VehicleTaxOrSornPage.next
+
+      go to CompleteAndConfirmPage
+      click on CompleteAndConfirmPage.consent
+      click on CompleteAndConfirmPage.useTodaysDate
+      click on CompleteAndConfirmPage.next
+
+      go to AcquireSuccessPage
+      pageSource should include ("DVLA will not send you a SORN acknowledgement letter. The SORN will be valid until the vehicle is taxed, sold, permanently exported or scrapped. Please ensure that the vehicle is taxed before it is driven on public roads.")
+      pageSource should not include ("If the vehicle has not been taxed during this service it will need to be before being driven on the road.")
+    }
+
   }
 
   "back" should {

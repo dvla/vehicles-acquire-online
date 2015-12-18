@@ -81,7 +81,7 @@
             List("related")
         ){
             <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
-            @if(viewModel.vehicleSorn.sornVehicle == None) {
+            @if(viewModel.vehicleSorn.select != "S") {
                 <dt class="tax-or-sorn"><strong>@Messages("acquire_success.vehicle_details.sornNotEntered")</strong></dt>
             } else {
                 <dt class="tax-or-sorn"><strong>
