@@ -17,6 +17,8 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   lazy val happyPath = new HappyPathSteps(webBrowserDriver)
 
+  val today = DateTime.now()
+
   @Given("^the user is on the Complete and confirm page$")
   def the_user_is_on_the_complete_and_confirm_page() {
     happyPath.goToCompleteAndConfirmPage()
@@ -50,7 +52,7 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   @When("^the user enters a date of sale in the past and submits the form$")
   def the_user_enters_a_date_of_sale_in_the_past_and_submits_the_form() = {
-    val oldDate = DateTime.now().minusYears(5).minusDays(1)
+    val oldDate = today.minusYears(5).minusDays(1)
     happyPath.fillInCompleteAndConfirm(
       day = oldDate.toString("dd"),
       month = oldDate.toString("MM"),
@@ -61,14 +63,14 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
 
   @When("^the user enters a date of sale in the future and submits the form$")
   def the_user_enters_a_date_of_sale_in_the_future_and_submits_the_form() = {
-    val nextYear = DateTime.now().plusDays(365)
-    happyPath.fillInCompleteAndConfirm(year = nextYear.getYear.toString)
+    val futureDay = today.plusDays(1)
+    happyPath.fillInCompleteAndConfirm(day = f"${futureDay.getDayOfMonth}%02d", month = f"${futureDay.getMonthOfYear}%02d", year = f"${futureDay.getYear}%02d")
     the_user_confirms_the_transaction()
   }
 
   @When("^the user enters a date of sale before the date of disposal and submits the form$")
   def the_user_enters_a_date_of_sale_before_the_date_of_disposal_and_submits_the_form() = {
-    happyPath.fillInCompleteAndConfirm(year = "2013")
+    happyPath.fillInCompleteAndConfirm(year = (today.getYear()-2).toString)
     the_user_confirms_the_transaction()
   }
 
@@ -82,16 +84,16 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaD
     pageTitle should equal(CompleteAndConfirmPage.title)
     pageSource should include("<div class=\"popup-modal\">")
   }
-  
+
   @When("^the user enters a date of sale same as date of disposal and submits the form$")
   def the_user_enters_a_date_of_sale_same_as_date_of_disposal_and_submits_the_form()  {
-    happyPath.fillInCompleteAndConfirm(day = "29", month = "12", year = "2014")
+    happyPath.fillInCompleteAndConfirm(day = "29", month = "12", year = (today.getYear()-1).toString)
     the_user_confirms_the_transaction()
   }
 
   @When("^the user enters a date of sale after the date of disposal and submits the form$")
   def the_user_enters_a_date_of_sale_after_the_date_of_disposal_and_submits_the_form()  {
-    happyPath.fillInCompleteAndConfirm(day = "30", month = "12", year = "2014")
+    happyPath.fillInCompleteAndConfirm(day = "30", month = "12", year = (today.getYear()-1).toString)
     the_user_confirms_the_transaction()
   }
 

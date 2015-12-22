@@ -55,6 +55,9 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   private final val LastName = "bloggs"
   private final val ValidDocRefNum = "1" * 11
 
+  private final val today = DateTime.now
+  private final val previousYear = today.minusYears(1).getYear
+
   def goToSetupTradeDetailsPage() = {
     go to BeforeYouStartPage
     pageTitle shouldEqual BeforeYouStartPage.title withClue trackingId
@@ -166,7 +169,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.back
   }
 
-  def fillInCompleteAndConfirm(day: String = "01", month: String = "01", year: String = "2015") = {
+  def fillInCompleteAndConfirm(day: String = "01", month: String = "01", year: String = previousYear.toString) = {
     CompleteAndConfirmPage.dayDateOfSaleTextBox.value = day
     CompleteAndConfirmPage.monthDateOfSaleTextBox.value = month
     CompleteAndConfirmPage.yearDateOfSaleTextBox.value = year
@@ -179,67 +182,6 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     click on CompleteAndConfirmPage.next
     pageTitle shouldEqual AcquireSuccessPage.title withClue trackingId
   }
-
-////
-  /*
-  def fillInBusinessKeeperDetailsPage() = {
-    fillInVehicleDetailsPage()
-    click on VehicleLookupPage.vehicleSoldToBusiness
-    click on VehicleLookupPage.next
-    pageTitle should equal(BusinessKeeperDetailsPage.title)
-    BusinessKeeperDetailsPage.fleetNumberField.value = "112233"
-    BusinessKeeperDetailsPage.businessNameField.value = "sole"
-    BusinessKeeperDetailsPage.emailField.value = "a@gmail.com"
-    BusinessKeeperDetailsPage.postcodeField.value = NoAddressesPostcode
-    click on BusinessKeeperDetailsPage.next
-  }
-
-  def fillInPrivateKeeperDetailsPage() = {
-    fillInVehicleDetailsPage()
-    click on VehicleLookupPage.vehicleSoldToPrivateIndividual
-    click on VehicleLookupPage.next
-    pageTitle should equal(PrivateKeeperDetailsPage.title)
-    click on PrivateKeeperDetailsPage.mr
-    PrivateKeeperDetailsPage.firstNameTextBox.value = FirstName
-    PrivateKeeperDetailsPage.lastNameTextBox.value = LastName
-    PrivateKeeperDetailsPage.postcodeTextBox.value = NoAddressesPostcode
-    click on PrivateKeeperDetailsPage.next
-  }
-
-  def fillInNewKeeperChooseYourAddress() = {
-    click on NewKeeperChooseYourAddressPage.manualAddress
-    pageTitle should equal(NewKeeperEnterAddressManuallyPage.title)
-    EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 highrate"
-    EnterAddressManuallyPage.addressPostTown.value = "swansea"
-    click on EnterAddressManuallyPage.next
-  }
-
-  def navigateAfterCustomerTypeSelection(navigateToNextPage: Boolean) = {
-    fillInNewKeeperChooseYourAddress()
-    click on VehicleTaxOrSornPage.sornVehicle
-    click on VehicleTaxOrSornPage.next
-    CompleteAndConfirmPage.dayDateOfSaleTextBox.value = "07"
-    CompleteAndConfirmPage.monthDateOfSaleTextBox.value = "08"
-    CompleteAndConfirmPage.yearDateOfSaleTextBox.value = "1999"
-    click on CompleteAndConfirmPage.consent
-    if(navigateToNextPage)
-      click on CompleteAndConfirmPage.next
-    else{
-      click on CompleteAndConfirmPage.back
-    }
-  }
-
-  def fillInPrivateKeeperDetailsPageWithFailureScreen() = {
-    fillInVehicleDetailsPage()
-    click on VehicleLookupPage.vehicleSoldToPrivateIndividual
-    click on VehicleLookupPage.next
-    click on PrivateKeeperDetailsPage.mr
-    PrivateKeeperDetailsPage.firstNameTextBox.value = NameWhichResultsInTransactionFailure
-    PrivateKeeperDetailsPage.lastNameTextBox.value = LastName
-    PrivateKeeperDetailsPage.postcodeTextBox.value = NoAddressesPostcode
-    click on PrivateKeeperDetailsPage.next
-  }
-*/
 
   def goToCompleteAndConfirmPageWithTransactionFailureData() {
     goToPrivateKeeperDetailsPage()
@@ -255,11 +197,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     goToCompleteAndConfirmPage(callNavigationSteps = false)
     CompleteAndConfirmPage.dayDateOfSaleTextBox.value = "01"
     CompleteAndConfirmPage.monthDateOfSaleTextBox.value = "01"
-    CompleteAndConfirmPage.yearDateOfSaleTextBox.value = "2015"
+    CompleteAndConfirmPage.yearDateOfSaleTextBox.value = previousYear.toString
     click on CompleteAndConfirmPage.consent
   }
 
-  private def fillInPrivateKeeperDetails(day: String = "01", month: String = "01", year: String = "2015") = {
+  private def fillInPrivateKeeperDetails(day: String = "01", month: String = "01", year: String = previousYear.toString) = {
     click on PrivateKeeperDetailsPage.mr
     PrivateKeeperDetailsPage.firstNameTextBox.value = FirstName
     PrivateKeeperDetailsPage.lastNameTextBox.value = LastName
@@ -404,19 +346,6 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
     CompleteAndConfirmPage.navigate()
   }
 
-
-//  @When("^the trader entered through successful postcode lookup$")
-//  def the_trader_entered_through_successful_postcode_lookup() {
-//    SetupTradeDetailsPage.happyPath()
-//  }
-
-//  @When("^entered valid registration number and doc reference number$")
-//  def entered_valid_registration_number_and_doc_reference_number() {
-//    fillInBusinessKeeperDetailsPage()
-//    navigateAfterCustomerTypeSelection(navigateToNextPage = true)
-//  }
-
-
   @When("^the user chooses private keeper and performs the vehicle lookup$")
   def the_user_chooses_private_keeper_and_performs_the_vehicle_lookup() = {
     goToPrivateKeeperDetailsPage()
@@ -434,13 +363,14 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
 
   @When("^the user enters a date of birth more than 110 years in the past and submits the form$")
   def the_user_enters_a_date_of_birth_more_than_110_years_in_the_past_and_submits_the_form() = {
-    fillInPrivateKeeperDetails(year = "1800")
+    val veryOldYear = today.minusYears(111)
+    fillInPrivateKeeperDetails(year = veryOldYear.getYear.toString)
   }
 
   @When("^the user enters a date of birth in the future and submits the form$")
   def the_user_enters_a_date_of_birth_in_the_future_and_submits_the_form() = {
-    val nextYear = DateTime.now().plusDays(365)
-    fillInPrivateKeeperDetails(year = nextYear.getYear.toString)
+    val futureDay = today.plusDays(1)
+    fillInPrivateKeeperDetails(day = f"${futureDay.getDayOfMonth}%02d", month = f"${futureDay.getMonthOfYear}%02d", year = f"${futureDay.getYear}%02d")
   }
 
   @When("^the user on Business Keeper details page and entered through successful postcode lookup$")
@@ -452,33 +382,6 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with E
   def the_trader_entered_through_unsuccessful_postcode_lookup() {
     goToVehicleLookupPageAfterManuallyEnteringAddress()
   }
-
-/*
-  @When("^the user on Business Keeper details page and entered through unsuccessful postcode lookup$")
-  def the_user_on_Business_Keeper_details_page_and_entered_through_unsuccessful_postcode_lookup() {
-    fillInBusinessKeeperDetailsPage()
-    navigateAfterCustomerTypeSelection(navigateToNextPage = true)
-  }
-
-  @When("^the user on Private Keeper details page and entered through unsuccessful postcode lookup$")
-  def the_user_on_Private_Keeper_details_page_and_entered_through_unsuccessful_postcode_lookup() {
-    fillInPrivateKeeperDetailsPage()
-    navigateAfterCustomerTypeSelection(navigateToNextPage = true)
-  }
-
-  @When("^the user on Private Keeper details page and entered through unsuccessful postcode lookup with failure data$")
-  def the_user_on_Private_Keeper_details_page_and_entered_through_unsuccessful_postcode_lookup_with_failure_data() {
-    fillInPrivateKeeperDetailsPageWithFailureScreen()
-    navigateAfterCustomerTypeSelection(navigateToNextPage = true)
-  }
-
-  @Then("^the user will be on confirmed summary page$")
-  def the_user_will_be_on_confirmed_summary_page() {
-    fillInPrivateKeeperDetailsPage()
-    navigateAfterCustomerTypeSelection(navigateToNextPage = true)
-    pageTitle should equal(AcquireSuccessPage.title)
-  }
-*/
 
   @Then("^the user is taken to the Private Keeper details page$")
   def the_user_is_taken_to_the_private_keeper_details_page() {

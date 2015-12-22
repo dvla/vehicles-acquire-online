@@ -23,7 +23,7 @@ object CompleteAndConfirmPage extends Page {
   final val MileageValid = "1000"
   final val DayDateOfSaleValid = "19"
   final val MonthDateOfSaleValid = "10"
-  final val YearDateOfSaleValid = "2012"
+  final val YearDateOfSaleValid = org.joda.time.LocalDate.now.minusYears(2).getYear.toString
   final val ConsentTrue = "Consent"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get

@@ -45,6 +45,8 @@ import webserviceclients.fakes.FakeResponse
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
+  private val saleYear = org.joda.time.LocalDate.now.minusYears(2).getYear.toString
+
   "present" should {
     "display the page with new keeper cached" in new WithApplication {
       whenReady(present) { r =>
@@ -203,8 +205,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
 
     "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new WithApplication {
-      // The date of acquisition is 19-10-2012
-      val disposalDate = DateTime.parse("20-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      // The date of acquisition is 19-10-${saleYear}
+      val disposalDate = DateTime.parse(s"20-10-${saleYear}", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -225,8 +227,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
 
     "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new WithApplication {
-      // The date of acquisition is 19-10-2012
-      val disposalDate = DateTime.parse("18-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      // The date of acquisition is 19-10-${saleYear}
+      val disposalDate = DateTime.parse(s"18-10-${saleYear}", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -252,8 +254,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
 
     "call the micro service when the date of acquisition is the same as the date of disposal and redirect to the next page" in new WithApplication {
-      // The date of acquisition is 19-10-2012
-      val disposalDate = DateTime.parse("19-10-2012", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      // The date of acquisition is 19-10-${saleYear}
+      val disposalDate = DateTime.parse(s"19-10-${saleYear}", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -343,7 +345,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "Render dates in the correct timezone" in new WithApplication {
       timeZoneFixture {
-        val disposalDate = DateTime.parse("2015-04-02T00:00.000+01:00")
+        val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
+
+        val disposalDate = DateTime.parse(s"${year}-04-02T00:00.000+01:00")
 
         val request = buildCorrectlyPopulatedRequest()
           .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -354,7 +358,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
           .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
         val result = completeAndConfirm.submitWithDateCheck(request)
-        contentAsString(result) should include("02/04/2015")
+        contentAsString(result) should include(s"02/04/${year}")
       }
     }
   }
@@ -386,7 +390,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
   private def dateServiceStubbed(day: Int = 1,
                                  month: Int = 1,
-                                 year: Int = 2014) = {
+                                 year: Int = org.joda.time.LocalDate.now.minusYears(1).getYear) = {
     val dateService = mock[DateService]
     when(dateService.today).thenReturn(new DayMonthYear(day = day,
       month = month,

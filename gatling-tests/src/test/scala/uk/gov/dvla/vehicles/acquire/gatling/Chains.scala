@@ -282,6 +282,9 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
   def completeAndConfirmSubmit = {
     val url = "/complete-and-confirm"
     val chainTitle = s"POST $url"
+    import java.util.Calendar
+    val year = Calendar.getInstance.get(Calendar.YEAR).toString
+    val expectedTransactionDate = "${dateDay}/${dateMonth}/" + year
     exitBlockOnFail(
       exec(
         http(chainTitle)
@@ -290,7 +293,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .formParam("mileage", "${mileage}")
           .formParam("dateofsale.day", "${dateDay}")
           .formParam("dateofsale.month", "${dateMonth}")
-          .formParam("dateofsale.year", "${dateYear}")
+          .formParam("dateofsale.year", year)
           .formParam("Consent", "${consent}")
           .formParam("csrf_prevention_token", "${csrf_prevention_token}")
           .formParam("action", "")
@@ -299,7 +302,7 @@ class Chains(data: RecordSeqFeederBuilder[String]) {
           .check(regex(SummaryPageTitle).exists)
           .check(regex(TransactionDetailsPlaybackHeading).exists)
           .check(regex("${expected_transactionId}").exists)
-          .check(regex("${expected_transactionDate}").exists)
+          .check(regex(expectedTransactionDate).exists)
       )
     )
   }

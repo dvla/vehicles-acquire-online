@@ -26,9 +26,11 @@ final class FakeDateServiceImpl extends DateService {
 }
 
 object FakeDateServiceImpl {
+  final val VALID_AGE:Integer = 30
+
   final val DateOfAcquisitionDayValid = "25"
   final val DateOfAcquisitionMonthValid = "11"
-  final val DateOfAcquisitionYearValid = "1970"
+  final val DateOfAcquisitionYearValid = (DateTime.now.getYear - VALID_AGE).toString
   private final val dateTime = DateTime.now
   final val TodayDay = dateTime.toString("dd")
   final val TodayMonth = dateTime.toString("MM")
