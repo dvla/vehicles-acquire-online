@@ -108,6 +108,7 @@ GET         /help                                       @controllers.Help.presen
 GET         /help/back                                  @controllers.Help.back
 
 GET         /healthcheck                                @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.respond
+GET         /healthcheck/debug                          @uk.gov.dvla.vehicles.presentation.common.controllers.HealthCheck.debug
 
 GET         /version                                    @controllers.Version.version
 
