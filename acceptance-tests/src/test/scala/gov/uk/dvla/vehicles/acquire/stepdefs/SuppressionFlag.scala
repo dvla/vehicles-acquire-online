@@ -1,18 +1,16 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
-import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
-import org.scalatest.Matchers
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.pageSource
 import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{BusinessChooseYourAddressPage, SetupTradeDetailsPage, VehicleLookupPage, BusinessKeeperDetailsPage}
 import uk.gov.dvla.vehicles.presentation.common.helpers
-import helpers.webbrowser.{WebBrowserDriver,WithClue}
+import helpers.webbrowser.WebBrowserDriver
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
-class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
+class SuppressionFlag(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.vehicles.acquire.helpers.AcceptanceTestHelper {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 

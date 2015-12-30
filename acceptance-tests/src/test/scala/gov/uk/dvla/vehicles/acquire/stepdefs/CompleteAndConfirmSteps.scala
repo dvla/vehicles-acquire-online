@@ -1,17 +1,15 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
-import cucumber.api.scala.{EN, ScalaDsl}
 import org.joda.time.DateTime
 import org.openqa.selenium.WebDriver
-import org.scalatest.Matchers
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.pageSource
 import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.CompleteAndConfirmPage
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver,WithClue}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebBrowserDriver
 
-class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
+class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.vehicles.acquire.helpers.AcceptanceTestHelper {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 

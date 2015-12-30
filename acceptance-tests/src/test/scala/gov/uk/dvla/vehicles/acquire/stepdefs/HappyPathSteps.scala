@@ -1,10 +1,8 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Then, When, Given}
-import cucumber.api.scala.{EN, ScalaDsl}
 import org.joda.time.DateTime
 import org.openqa.selenium.WebDriver
-import org.scalatest.Matchers
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
 import org.scalatest.selenium.WebBrowser.pageSource
@@ -22,7 +20,7 @@ import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleTaxOrSornPage
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver,WithClue}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.WebBrowserDriver
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
 
 /**
@@ -44,7 +42,7 @@ import uk.gov.dvla.vehicles.presentation.common.testhelpers.RandomVrmGenerator
  * acquire-success    acquire-failure
  *
  */
-class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue {
+class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.vehicles.acquire.helpers.AcceptanceTestHelper {
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
 

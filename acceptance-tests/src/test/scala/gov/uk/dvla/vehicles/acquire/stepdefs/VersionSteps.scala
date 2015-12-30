@@ -1,17 +1,15 @@
 package gov.uk.dvla.vehicles.acquire.stepdefs
 
 import cucumber.api.java.en.{Given, Then}
-import cucumber.api.scala.{EN, ScalaDsl}
 import java.security.cert.X509Certificate
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.conn.ssl.{TrustStrategy, SSLContexts}
 import org.apache.http.impl.client.HttpClientBuilder
 import org.openqa.selenium.WebDriver
-import org.scalatest.Matchers
 import scala.io.Source.fromInputStream
-import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebDriverFactory, WithClue}
+import uk.gov.dvla.vehicles.presentation.common.helpers.webbrowser.{WebBrowserDriver, WebDriverFactory}
 
-class VersionSteps(webBrowserDriver: WebBrowserDriver) extends ScalaDsl with EN with Matchers with WithClue{
+class VersionSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.vehicles.acquire.helpers.AcceptanceTestHelper {
   private var versionString: String = null
 
   implicit val webDriver = webBrowserDriver.asInstanceOf[WebDriver]
