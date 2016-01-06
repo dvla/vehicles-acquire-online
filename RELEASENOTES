@@ -1,6 +1,6 @@
 ======= 1.25 =======
 Time of release binary creation
-
+Wed Jan 06 15:47:09 UTC 2016
 
 DE831   Acquire success pages does not show correct message if SORN was selected during transaction
 US2400  Override spanScaleFactor to scale test timeouts
