@@ -206,7 +206,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new WithApplication {
       // The date of acquisition is 19-10-${saleYear}
-      val disposalDate = DateTime.parse(s"20-10-${saleYear}", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      val disposalDate = DateTime.parse(s"20-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -228,7 +228,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new WithApplication {
       // The date of acquisition is 19-10-${saleYear}
-      val disposalDate = DateTime.parse(s"18-10-${saleYear}", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      val disposalDate = DateTime.parse(s"18-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -255,7 +255,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "call the micro service when the date of acquisition is the same as the date of disposal and redirect to the next page" in new WithApplication {
       // The date of acquisition is 19-10-${saleYear}
-      val disposalDate = DateTime.parse(s"19-10-${saleYear}", DateTimeFormat.forPattern("dd-MM-yyyy"))
+      val disposalDate = DateTime.parse(s"19-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -347,7 +347,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       timeZoneFixture {
         val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
 
-        val disposalDate = DateTime.parse(s"${year}-04-02T00:00.000+01:00")
+        val disposalDate = DateTime.parse(s"$year-04-02T00:00.000+01:00")
 
         val request = buildCorrectlyPopulatedRequest()
           .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -358,7 +358,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
           .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
         val result = completeAndConfirm.submitWithDateCheck(request)
-        contentAsString(result) should include(s"02/04/${year}")
+        contentAsString(result) should include(s"02/04/$year")
       }
     }
   }
@@ -430,8 +430,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     val emailServiceMock: EmailService = mock[EmailService]
     when(emailServiceMock.invoke(any[EmailServiceSendRequest](), any[TrackingId])).
       thenReturn(Future(EmailServiceSendResponse()))
+    val healthStatsMock = mock[HealthStats]
 
-    new CompleteAndConfirm(acquireService, emailServiceMock)
+    new CompleteAndConfirm(acquireService, emailServiceMock, healthStatsMock)
   }
 
   private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,

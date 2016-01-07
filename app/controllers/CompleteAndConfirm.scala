@@ -3,37 +3,47 @@ package controllers
 import com.google.inject.Inject
 import email.EmailMessageBuilder
 import models.AcquireCacheKeyPrefix.CookiePrefix
+import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, MileageId}
-import models.{CompleteAndConfirmFormModel, CompleteAndConfirmResponseModel, CompleteAndConfirmViewModel, VehicleLookupFormModel}
+import models.CompleteAndConfirmResponseModel
+import models.CompleteAndConfirmViewModel
+import models.VehicleLookupFormModel
 import models.{VehicleNewKeeperCompletionCacheKeys, VehicleTaxOrSornFormModel}
 import models.VehicleTaxOrSornFormModel.Form.{NeitherId, SornId, TaxId}
 import org.joda.time.format.ISODateTimeFormat
 import org.joda.time.{DateTime, DateTimeZone, LocalDate}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger, anonymize, optionNone}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClientSideSessionFactory, TrackingId}
+import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger, anonymize, optionNone}
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import uk.gov.dvla.vehicles.presentation.common.model.{NewKeeperDetailsViewModel, TraderDetailsModel, VehicleAndKeeperDetailsModel}
+import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
+import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
+import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 import uk.gov.dvla.vehicles.presentation.common.services.{DateService, SEND}
 import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{AcquireRequestDto, AcquireResponseDto, AcquireService}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.{KeeperDetailsDto, TitleTypeDto, TraderDetailsDto}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireRequestDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireResponseDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.KeeperDetailsDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.TitleTypeDto
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.TraderDetailsDto
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailService
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
 class CompleteAndConfirm @Inject()(webService: AcquireService,
-                                   emailService: EmailService)
+                                   emailService: EmailService,
+                                   healthStats: HealthStats)
                                   (implicit clientSideSessionFactory: ClientSideSessionFactory,
-                                                               dateService: DateService,
-                                                               config: Config) extends Controller with DVLALogger {
+                                   dateService: DateService,
+                                   config: Config) extends Controller with DVLALogger {
   private val cookiesToBeDiscardedOnRedirectAway =
     VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
 
@@ -449,15 +459,6 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
   private def createAndSendEmailRequiringFurtherAction(transactionId: String, acquireRequest: AcquireRequestDto)
                                                       (implicit request: Request[_]) = {
 
-    import SEND._ // Keep this local so that we don't pollute rest of the class with unnecessary imports.
-
-    implicit val emailConfiguration = config.emailConfiguration
-    implicit val implicitEmailService = implicitly[EmailService](emailService)
-
-    val email = config.emailConfiguration.feedbackEmail.email
-
-    val dateTime = acquireRequest.webHeader.originDateTime.toString("dd/MM/yy HH:mm")
-
     val htmlTemplateStart = (title: String ) =>
       s"""
          |<!DOCTYPE html>
@@ -476,6 +477,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       """.stripMargin
 
     val message1Title = s"Acquire Failure (1 of 2) ${transactionId}"
+
+    val dateTime = acquireRequest.webHeader.originDateTime.toString("dd/MM/yy HH:mm")
 
     val message1Template = (start: (String) => String, end: String, startLine: String, endLine: String) =>
       start(message1Title) +
@@ -541,6 +544,14 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                                         "</li>", "<li style='padding-left: 11.2em'>",
                                         "</li>", "<li style='padding-left: 8.5em'>")
 
+    import SEND.Contents // Keep this local so that we don't pollute rest of the class with unnecessary imports.
+
+    implicit val emailConfiguration = config.emailConfiguration
+    implicit val implicitEmailService = implicitly[EmailService](emailService)
+    implicit val implicitHealthStats = implicitly[HealthStats](healthStats)
+
+    val email = config.emailConfiguration.feedbackEmail.email
+
     SEND
       .email(Contents(message1Html, message1))
       .withSubject(message1Title)
@@ -566,18 +577,23 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                          trackingId: TrackingId)(implicit request: Request[_]) =
     keeperDetails.email match {
       case Some(emailAddr) =>
-        import SEND._
 
         import scala.language.postfixOps // Keep this local so that we don't pollute rest of the class with unnecessary imports.
 
         implicit val emailConfiguration = config.emailConfiguration
         implicit val implicitEmailService = implicitly[EmailService](emailService)
+        implicit val implicitHealthStats = implicitly[HealthStats](healthStats)
 
-        val template = EmailMessageBuilder.buildWith(vehicleDetails, transactionId,
-          config.imagesPath, transactionTimestamp)
+        val template = EmailMessageBuilder.buildWith(
+          vehicleDetails,
+          transactionId,
+          config.imagesPath,
+          transactionTimestamp
+        )
 
         // This sends the email.
-        SEND email template withSubject s"${vehicleDetails.registrationNumber} Confirmation of new vehicle keeper" to emailAddr send trackingId
+        val subject = s"${vehicleDetails.registrationNumber} Confirmation of new vehicle keeper"
+        SEND email template withSubject subject to emailAddr send trackingId
 
       case None => logMessage(request.cookies.trackingId(), Warn, "Tried to send an email with no keeper details")
     }
