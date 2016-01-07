@@ -1,3 +1,16 @@
+======= 1.25 =======
+Time of release binary creation
+Wed Jan 06 15:47:09 UTC 2016
+
+DE831   Acquire success pages does not show correct message if SORN was selected during transaction
+US2400  Override spanScaleFactor to scale test timeouts
+US4008  Remove localize Javascript function in vrm-locked
+US4045  Review and correct tests with hard coded date values
+US4062  Ensure sentence case consistency for all headings and sub-headings across all services
+US4074  Remove require.js, call javascript resources directly, and fallback to no-js if a file does not load
+US4076  Update acceptance tests to reset locked VRMs
+US4140  Extend the health check to all web apps
+
 ======= 1.24 =======
 Time of release binary creation
 Wed Dec 09 10:00:20 UTC 2015
