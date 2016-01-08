@@ -24,7 +24,7 @@ import pages.acquire.PrivateKeeperDetailsPage.LastNameValid
 import pages.acquire.PrivateKeeperDetailsPage.MonthDateOfBirthValid
 import pages.acquire.PrivateKeeperDetailsPage.YearDateOfBirthValid
 import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameValid}
-import pages.acquire.{BusinessChooseYourAddressPage, HelpPage, VehicleLookupPage}
+import pages.acquire.{BusinessChooseYourAddressPage, VehicleLookupPage}
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.Cookie
 import uk.gov.dvla.vehicles.presentation.common
@@ -340,12 +340,6 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   def vehicleTaxOrSornFormModel(sornVehicle: Option[String] = None): Cookie = {
     val key = VehicleTaxOrSornCacheKey
     val value = VehicleTaxOrSornFormModel(sornVehicle = sornVehicle, select = SornId)
-    createCookie(key, value)
-  }
-
-  def help(origin: String = HelpPage.address): Cookie = {
-    val key = HelpCacheKey
-    val value = origin
     createCookie(key, value)
   }
 

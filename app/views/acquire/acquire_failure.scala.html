@@ -14,17 +14,6 @@ config: utils.helpers.Config)
     title = Messages("acquire_acquirefailure.title")
 ){
 <div class="two-col clearfix">
-
-    <div class="first-col">
-        @playbackList(
-            Messages("acquire_failure.transaction_details.header"),
-            {
-                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
-                playbackItems += (Messages("acquire_failure.transaction_details.transaction_id") -> viewModel.completeAndConfirmResponseModel.transactionId)
-                playbackItems += (Messages("acquire_failure.transaction_details.transaction_date") -> viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
-            }
-        )()
-    </div>
     <div class="second-col">
         <div class="alert-failed">
             <h2>@Messages("ms.vehiclesService.response.unableToProcessApplication-title")</h2>
@@ -35,9 +24,17 @@ config: utils.helpers.Config)
             </p>
         </div>
     </div>
-
+    <div class="first-col">
+        @playbackList(
+            Messages("acquire_failure.transaction_details.header"),
+            {
+                val playbackItems: LinkedHashMap[String, String] = LinkedHashMap()
+                playbackItems += (Messages("acquire_failure.transaction_details.transaction_id") -> viewModel.completeAndConfirmResponseModel.transactionId)
+                playbackItems += (Messages("acquire_failure.transaction_details.transaction_date") -> viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))
+            }
+        )()
+    </div>
     <div class="form-steps">
-
         <div class="step">
             <button id="printDisposalSuccess" type="button" name="action" value="printDisposalSuccess" class="button js-only print-button">
                 @Messages("acquire_failure.buttonnavprint")
