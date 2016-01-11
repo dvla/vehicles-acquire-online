@@ -587,15 +587,6 @@ ms.vehiclesService.response.unableToProcessApplication-title = Transaction unsuc
 ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to
 ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
-# help
-acquire.help.title = Help
-acquire.help.p1 = This service is in private beta phase
-acquire.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
-acquire.help.p2.2 = send an email
-acquire.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Buy%20from%20the%20trade%20help
-acquire.help.exit_button = Exit
-acquire.help.back_button = Back
-
 # closed
 closed.title = Nid yw’r Gwasanaeth ar gael
 closed.p1 = Mae’r gwasanaeth ar gael o ddydd llun i ddydd sadwrn yn unig {0} to {1}
