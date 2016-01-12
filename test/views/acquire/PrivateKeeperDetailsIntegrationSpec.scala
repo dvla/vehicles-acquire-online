@@ -1,9 +1,7 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
-import ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
@@ -45,20 +43,6 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       cacheSetup()
       go to PrivateKeeperDetailsPage
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to PrivateKeeperDetailsPage
-      pageSource.contains(progressStep(5)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to PrivateKeeperDetailsPage
-      pageSource.contains(progressStep(5)) should equal(false)
     }
 
     "Redirect when no vehicle details are cached" taggedAs UiTag in new WebBrowserForSelenium {

@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.WebDriver
@@ -32,13 +31,6 @@ class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       go to VehicleLookupFailurePage
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
-    }
-
-    "not display any progress indicator when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to VehicleLookupFailurePage
-      pageSource should not contain ProgressBar.div
     }
 
     "redirect to setuptrade details if cache is empty on page load" taggedAs UiTag in new WebBrowserForSelenium {

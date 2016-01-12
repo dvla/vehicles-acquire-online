@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
@@ -20,7 +19,6 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
 import pages.common.ErrorPanel
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
@@ -39,20 +37,6 @@ class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       go to BusinessChooseYourAddressPage
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to BusinessChooseYourAddressPage
-      pageSource.contains(progressStep(3)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to BusinessChooseYourAddressPage
-      pageSource.contains(progressStep(3)) should equal(false)
     }
 
     "redirect when no traderBusinessName is cached" taggedAs UiTag in new WebBrowserForSelenium {

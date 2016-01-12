@@ -14,9 +14,6 @@ trait Config extends VehicleLookupConfig {
   // Google analytics
   def googleAnalyticsTrackingId: Option[String]
 
-  // Progress step indicator
-  def isProgressBarEnabled: Boolean
-
   def isHtml5ValidationEnabled: Boolean
 
   def startUrl: String

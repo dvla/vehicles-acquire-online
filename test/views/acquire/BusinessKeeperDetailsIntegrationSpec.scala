@@ -1,7 +1,6 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
@@ -14,7 +13,6 @@ import pages.common.ErrorPanel
 import pages.acquire.{BeforeYouStartPage, BusinessKeeperDetailsPage, NewKeeperChooseYourAddressPage, VehicleLookupPage}
 import pages.acquire.BusinessKeeperDetailsPage.{navigate, back}
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
 
@@ -34,20 +32,6 @@ class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
       go to BusinessKeeperDetailsPage
 
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to BusinessKeeperDetailsPage
-      pageSource.contains(progressStep(5)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to BusinessKeeperDetailsPage
-      pageSource.contains(progressStep(5)) should equal(false)
     }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {

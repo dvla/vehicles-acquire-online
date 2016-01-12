@@ -1,11 +1,11 @@
-@(progress: Option[String] = None,
+@(
 title: String,
 currentForm: Option[Form[_]] = None,
         showBanner: Boolean = true,
         backButton: Option[Call] = None)(content: Html)(implicit lang: Lang,
 config: utils.helpers.Config)
 
-@import views.html.common.{progressBar, protoType}
+@import views.html.common.{protoType}
 @import views.html.common.govMainDefault
 @import uk.gov.dvla.vehicles.presentation.common
 @import common.views.html.widgets.errorsSummary
@@ -17,9 +17,7 @@ config: utils.helpers.Config)
     }
 
     <div class="section-content">
-        @progressBar(progress)
-
-        @backButton.map { back =>
+           @backButton.map { back =>
             <a class="back" id="back" href="@back">
             @Messages("acquire.backbutton")
             </a>

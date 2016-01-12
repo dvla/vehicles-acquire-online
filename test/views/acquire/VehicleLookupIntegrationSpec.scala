@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
@@ -22,7 +21,6 @@ import pages.acquire.VehicleLookupPage.{happyPath, back}
 import pages.acquire.PrivateKeeperDetailsPage
 import pages.acquire.KeeperStillOnRecordPage
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
@@ -45,20 +43,6 @@ class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       go to VehicleLookupPage
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to VehicleLookupPage
-      pageSource.contains(progressStep(4)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to VehicleLookupPage
-      pageSource.contains(progressStep(4)) should equal(false)
     }
 
     "Redirect when no traderBusinessName is cached" taggedAs UiTag in new WebBrowserForSelenium {

@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.common.ProgressBar
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
@@ -12,7 +11,6 @@ import org.scalatest.selenium.WebBrowser.pageSource
 import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{AcquireSuccessPage, BeforeYouStartPage, VehicleLookupPage}
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 
 class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
@@ -23,20 +21,6 @@ class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
       cacheSetup()
       go to AcquireSuccessPage
       pageTitle should equal(AcquireSuccessPage.title)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to AcquireSuccessPage
-      pageSource.contains(progressStep(9)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to AcquireSuccessPage
-      pageSource.contains(progressStep(9)) should equal(false)
     }
 
     "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {

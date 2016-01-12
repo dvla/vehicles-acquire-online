@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebDriver, WebElement}
@@ -31,19 +30,6 @@ class EnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness {
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to EnterAddressManuallyPage
-      pageSource.contains(progressStep(3)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetup()
-      go to EnterAddressManuallyPage
-      pageSource.contains(progressStep(3)) should equal(false)
-    }
 
     "contain the hidden csrfToken field" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage

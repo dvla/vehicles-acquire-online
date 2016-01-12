@@ -1,7 +1,6 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.common.ProgressBar.progressStep
 import helpers.tags.UiTag
 import helpers.UiSpec
 import org.scalatest.selenium.WebBrowser.go
@@ -23,16 +22,6 @@ class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
     "contain feedback email facility with appropriate subject" taggedAs UiTag in new WebBrowserForSelenium {
       go to SetupTradeDetailsPage
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to SetupTradeDetailsPage
-      pageSource.contains(progressStep(2)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to SetupTradeDetailsPage
-      pageSource.contains(progressStep(2)) should equal(false)
     }
   }
 

@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.UiSpec
-import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import org.openqa.selenium.WebDriver
@@ -26,10 +25,6 @@ class MicroServiceErrorIntegrationSpec extends UiSpec with TestHarness {
       pageSource.contains(AcquireEmailFeedbackLink) should equal(true)
     }
 
-    "not display any progress indicator when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to MicroServiceErrorPage
-      pageSource should not contain ProgressBar.div
-    }
   }
 
   "tryAgain button" should {

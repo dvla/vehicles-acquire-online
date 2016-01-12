@@ -23,9 +23,6 @@ class ConfigImpl extends Config {
   // Google analytics
   override val googleAnalyticsTrackingId: Option[String] = getOptionalProperty[String]("googleAnalytics.id.acquire")
 
-  // Progress step indicator
-  override val isProgressBarEnabled: Boolean = getProperty[Boolean]("progressBar.enabled")
-
   override val isHtml5ValidationEnabled: Boolean = getProperty[Boolean]("html5Validation.enabled")
 
   override val startUrl: String = getProperty[String]("start.page")

@@ -1,7 +1,6 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.common.ProgressBar
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
@@ -19,7 +18,6 @@ import pages.acquire.NewKeeperEnterAddressManuallyPage
 import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.NewKeeperChooseYourAddressPage.{back, manualAddress, sadPath, happyPath}
-import ProgressBar.progressStep
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
 import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
@@ -46,20 +44,6 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
       pageTitle should equal(NewKeeperChooseYourAddressPage.title)
-    }
-
-    "display the progress of the page when progressBar is set to true" taggedAs UiTag in new ProgressBarTrue {
-      go to BeforeYouStartPage
-      cacheSetupPrivateKeeper
-      go to NewKeeperChooseYourAddressPage
-      pageSource.contains(progressStep(6)) should equal(true)
-    }
-
-    "not display the progress of the page when progressBar is set to false" taggedAs UiTag in new ProgressBarFalse {
-      go to BeforeYouStartPage
-      cacheSetupPrivateKeeper
-      go to NewKeeperChooseYourAddressPage
-      pageSource.contains(progressStep(6)) should equal(false)
     }
 
     "redirect to vehicle lookup when no keeper cookies are in cache" taggedAs UiTag in new WebBrowserForSelenium {
