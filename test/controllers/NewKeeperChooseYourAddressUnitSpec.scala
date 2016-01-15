@@ -41,13 +41,13 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page if private new keeper details cached" in new WithApplication {
-      whenReady(presentWithPrivateNewKeeper(ordnanceSurveyUseUprn = true), timeout) { r =>
+      whenReady(presentWithPrivateNewKeeper(ordnanceSurveyUseUprn = true)) { r =>
         r.header.status should equal(OK)
       }
     }
 
     "display the page if business new keeper details cached" in new WithApplication {
-      whenReady(presentWithBusinessNewKeeper(ordnanceSurveyUseUprn = true), timeout) { r =>
+      whenReady(presentWithBusinessNewKeeper(ordnanceSurveyUseUprn = true)) { r =>
         r.header.status should equal(OK)
       }
     }
@@ -275,7 +275,7 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
       val (controller, addressServiceMock) = newKeeperChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
-      whenReady(result, timeout) { r =>
+      whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
         verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])
       }

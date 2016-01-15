@@ -38,7 +38,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page if dealer details cached" in new WithApplication {
-      whenReady(present, timeout) { r =>
+      whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
@@ -164,7 +164,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
         .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val (controller, addressServiceMock) = businessChooseYourAddressControllerAndMocks(ordnanceSurveyUseUprn = true)
       val result = controller.submit(request)
-      whenReady(result, timeout) { r =>
+      whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
         verify(addressServiceMock, times(1)).callPostcodeWebService(anyString(), any[TrackingId])(any[Lang])
       }
