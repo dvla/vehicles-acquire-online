@@ -1,15 +1,11 @@
-import de.johoop.jacoco4sbt.JacocoPlugin._
-import org.scalastyle.sbt.ScalastylePlugin
 import Common._
-import uk.gov.dvla.vehicles.sandbox
-import sandbox.ProjectDefinitions.{osAddressLookup, vehicleAndKeeperLookup, vehiclesAcquireFulfil, legacyStubs, gatlingTests}
-import uk.gov.dvla.vehicles.sandbox.ProjectDefinitions.emailService
-import sandbox.Sandbox
-import sandbox.SandboxSettings
-import sandbox.Tasks
-import io.gatling.sbt.GatlingPlugin
-import GatlingPlugin.Gatling
 import com.typesafe.sbt.rjs.Import.RjsKeys.webJarCdns
+import io.gatling.sbt.GatlingPlugin
+import io.gatling.sbt.GatlingPlugin.Gatling
+import org.scalastyle.sbt.ScalastylePlugin
+import uk.gov.dvla.vehicles.sandbox
+import uk.gov.dvla.vehicles.sandbox.ProjectDefinitions.{emailService, legacyStubs, osAddressLookup, vehicleAndKeeperLookup, vehiclesAcquireFulfil}
+import uk.gov.dvla.vehicles.sandbox.{Sandbox, SandboxSettings, Tasks}
 
 name := "vehicles-acquire-online"
 
@@ -87,10 +83,6 @@ concurrentRestrictions in Global := Seq(Tags.limit(Tags.CPU, 4), Tags.limit(Tags
 
 sbt.Keys.fork in Test := false
 
-jacoco.settings
-
-parallelExecution in jacoco.Config := false
-
 parallelExecution in Test in acceptanceTestsProject := true
 
 // Using node to do the javascript optimisation cuts the time down dramatically
@@ -102,6 +94,13 @@ sources in doc in Compile := List()
 ScalastylePlugin.Settings
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
+
+coverageExcludedPackages := "<empty>;Reverse.*"
+
+coverageMinimum := 70
+
+coverageFailOnMinimum := false
+
 
 webJarCdns := Map()
 
