@@ -18,8 +18,7 @@ import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 
 package object models {
-  
-  final val HelpCacheKey = s"${CookiePrefix}help"
+
   final val SurveyRequestTriggerDateCacheKey = s"${CookiePrefix}surveyRequestTriggerDate"
   final val IdentifierCacheKey = s"${CookiePrefix}identifier"
 
@@ -72,7 +71,6 @@ package object models {
     .++(PrivateKeeperDetailsCacheKeys)
     .++(BusinessKeeperDetailsCacheKeys)
     .++(CompletionCacheKeys)
-    .+(HelpCacheKey)
 
   // The full set of cache keys. These are removed at the start of the process in the "before_you_start" page
   final val AllCacheKeys =

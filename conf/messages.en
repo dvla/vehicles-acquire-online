@@ -1,6 +1,3 @@
-#main
-main.banner.help = Help
-
 #global
 global.cookiemessage = GOV.UK uses cookies to make the site simpler.
 global.cookiefindoutmore = Find out more about cookies
@@ -115,15 +112,6 @@ error.invalid = Invalid value
 # ACQUIRE VEHICLE
 ##
 
-
-# help
-#disposal.help.title = Help
-#disposal.help.p1 = This service is in private beta phase
-#disposal.help.p2.1 = If you require any help using it then please contact Julie Riseley on 01792 788410 or
-#disposal.help.p2.2 = send an email
-#disposal.help.email =  mailto:julie.riseley@dvla.gsi.gov.uk?Subject=Sell%20to%20the%20Trade%20Help
-#disposal.help.exit_button = Exit
-#disposal.help.back_button = Back
 acquire.backbutton = Back
 
 # 404 onHandlerNotFound
