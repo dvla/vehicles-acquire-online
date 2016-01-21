@@ -42,13 +42,6 @@ errorsummary.title = Please correct the details below
 errorsummary.p1 = Please fix the following:
 widget.optional = (optional)
 
-#vehicle details playback
-acquire_playback.vehicledetails = Vehicle details
-acquire_playback.vehiclereg = Registration number
-acquire_playback.vehiclemake = Make
-acquire_playback.vehiclemodel = Model
-
-
 #customer validation messages
 error.restricted.validNumberOnly = This field only accepts numbers
 error.restricted.validVrnOnly = Must be as shown on the latest V5C
@@ -81,6 +74,7 @@ error.invalid = Invalid value
 ##
 
 acquire.backbutton = Back
+acquire_vehicledetails.warning = If the vehicle details shown are incorrect please abandon this transaction and send the V5C with a covering letter to DVLA, Swansea, SA99 1DZ.
 
 # 404 onHandlerNotFound
 onHandlerNotFound.title=This page cannot be found
@@ -271,10 +265,6 @@ acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/moto
 acquire_keeperstillonrecord.text5 = Before you do this, ensure you have the consent of the keeper we currently have on record.
 acquire_keeperstillonrecord.button1 = Buy another vehicle
 acquire_keeperstillonrecord.button2 = Finish
-acquire_keeperstillonrecord.vehicledetails = Vehicle details
-acquire_keeperstillonrecord.vehiclereg = Registration
-acquire_keeperstillonrecord.vehiclemake = Make
-acquire_keeperstillonrecord.vehiclemodel = Model
 
 #v5c is suppressed
 error_suppressedV5C.title = Vehicle is part of a suppressed fleet
@@ -287,19 +277,11 @@ error_suppressedV5C.button2 = Finish
 
 #private keeper details
 acquire_privatekeeperdetails.title = Enter keeper details
-acquire_privatekeeperdetails.vehicledetails = Vehicle details
-acquire_privatekeeperdetails.vehiclereg = Registration
-acquire_privatekeeperdetails.vehiclemake = Make
-acquire_privatekeeperdetails.vehiclemodel = Model
-acquire_privatekeeperdetails.backbutton = Back
 acquire_privatekeeperdetails.submitbutton = Submit
-acquire_privatekeeperdetails.titlelabel = Title
 acquire_privatekeeperdetails.firstnamelabel = First name(s)
 acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address
 acquire_privatekeeperdetails.p1 = Enter the details of the person buying this vehicle.
-acquire_privatekeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
-acquire_privatekeeperdetails.p3 = An email address is optional, and only used to send a receipt to the new keeper for this transaction.
 privatekeeper_title = Title
 privatekeeper_email = Email
 privatekeeper_firstname = First name
@@ -371,20 +353,11 @@ acquire_failure.transaction_details.transaction_date = Transaction date
 #business keeper details
 acquire_businesskeeperdetails.title = Enter new keeper details
 acquire_businesskeeperdetails.p1 = Enter the details of the person buying the vehicle.
-acquire_businesskeeperdetails.p2 = These details will be used to create a new registration certificate (V5c).
-acquire_businesskeeperdetails.p3 = An email address is optional, and only used to send an optional receipt to the new keeper at the end of this transaction.
-acquire_businesskeeperdetails.vehicledetails = Vehicle details
-acquire_businesskeeperdetails.vehiclereg = Registration
-acquire_businesskeeperdetails.vehiclemake = Make
-acquire_businesskeeperdetails.vehiclemodel = Model
 acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
 acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it to register this vehicle into their fleet e.g. 012345 or 54321-
 acquire_businesskeeperdetails.email = Business email
-acquire_businesskeeperdetails.backbutton = Back
 acquire_businesskeeperdetails.nextbutton = Next
-acquire_businesskeeperdetails.consent = I have the consent of the party named above to notify DVLA that they are the new keeper of this vehicle.
-acquire_businesskeeperdetails.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
 acquire_businesskeeperdetails.postcodelabel = Postcode
 acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 acquire_businesskeeperdetails.traderemailoption = Does the new keeper want an email confirmation of the sale?
@@ -433,27 +406,15 @@ acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Postcode
 acquire_newKeeperChooseYourAddress_newKeeperAddress_label = New keeper address
 acquire_newKeeperChooseYourAddress_addressSelect = Choose the new keeper's address
 acquire_newKeeperChooseYourAddress_addressSelect_label = Choose the new keeper's address
-acquire_newKeeperChooseYourAddress.backbutton = Back
 acquire_newKeeperChooseYourAddress.submitbutton = Next
 acquire_newKeeperChooseYourAddress.manualAddressEntry = Address is not in the list
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
-acquire_newKeeperChooseYourAddress.vehicledetails = Vehicle details
-acquire_newKeeperChooseYourAddress.vehiclereg = Registration
-acquire_newKeeperChooseYourAddress.vehiclemake = Make
-acquire_newKeeperChooseYourAddress.vehiclemodel = Model
-acquire_newKeeperChooseYourAddress.p4 = If the details above do not match the vehicle to be sold, please send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
 
 #[optional] - new keeper manual address entry
 acquire_newKeeperEnterAddressManually.title = Enter keeper address
 acquire_newKeeperEnterAddressManually.submitbutton = Next
-acquire_newKeeperEnterAddressManually.backbutton = Back
-acquire_newKeeperEnterAddressManually.vehicleDetails = Vehicle details
-acquire_newKeeperEnterAddressManually.vehicleReg = Registration
-acquire_newKeeperEnterAddressManually.vehicleMake = Make
-acquire_newKeeperEnterAddressManually.vehicleModel = Model
-acquire_newKeeperEnterAddressManually.p4 = If the details above do not match the vehicle to be sold, please send the registration certificate V5C with a covering letter to the DVLA, Swansea, SA99 1DZ.
 
 #vehicle tax or sorn
 acquire_vehicleTaxOrSorn_title = Vehicle tax or SORN
@@ -464,10 +425,6 @@ acquire_vehicleTaxOrSorn.email = Email
 acquire_vehicleTaxOrSorn.emailNotEntered = Not entered
 acquire_vehicleTaxOrSorn.fleetNumber = Fleet number
 acquire_vehicleTaxOrSorn.fleetNumberNotEntered = Not entered
-acquire_vehicleTaxOrSorn.vehicleDetails = Vehicle details
-acquire_vehicleTaxOrSorn.vehicleReg = Registration
-acquire_vehicleTaxOrSorn.vehicleMake = Make
-acquire_vehicleTaxOrSorn.vehicleModel = Model
 acquire_vehicleTaxOrSorn.taxVehicle = Tax Vehicle
 acquire_vehicleTaxOrSorn.sornNow = SORN now
 acquire_vehicleTaxOrSorn.neither = Neither
@@ -499,10 +456,6 @@ acquire_completeandconfirm.email = Email
 acquire_completeandconfirm.emailNotEntered = Not entered
 acquire_completeandconfirm.fleetNumber = Fleet number
 acquire_completeandconfirm.fleetNumberNotEntered = Not entered
-acquire_completeandconfirm.vehicleDetails = Vehicle details
-acquire_completeandconfirm.vehicleReg = Registration
-acquire_completeandconfirm.vehicleMake = Make
-acquire_completeandconfirm.vehicleModel = Model
 acquire_completeAndConfirm.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
 acquire_completeAndConfirm.mileage.label = Vehicle mileage
 acquire_completeAndConfirm.submitbutton = Confirm new keeper
