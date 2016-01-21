@@ -52,7 +52,10 @@
                 options = dropDownOptions.toSeq,
                 args = Map(
                     '_label -> Messages("acquire_businessChooseYourAddress_addressSelect_label"),
-                    'autoFocus -> true
+                    'autoFocus -> true,
+                    'class -> "ga-track-value ga-track-region",
+                    Symbol("data-ga-category") -> "field_value",
+                    Symbol("data-ga-action") -> "address_region"
                 )
             )
         }
