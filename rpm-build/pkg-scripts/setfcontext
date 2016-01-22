@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set SELinux file types to allow logrotation
-APP="vehicles-acquire"
+APP="vehicles-acquire-online"
 
 semanage fcontext -a -t var_log_t "/opt/$APP/logs(/.*)?"
 restorecon -r /opt/$APP/logs
