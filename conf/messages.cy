@@ -74,7 +74,7 @@ error.invalid = Invalid value
 ##
 
 acquire.backbutton = Back
-acquire_vehicledetails.warning = If the vehicle details shown are incorrect please abandon this transaction and send the V5C with a covering letter to DVLA, Swansea, SA99 1DZ.
+acquire_vehicledetails.warning = If the vehicle details shown are incorrect please abandon this transaction and send the V5C with a covering letter to DVLA, Swansea, SA99 1BA.
 
 # 404 onHandlerNotFound
 onHandlerNotFound.title=This page cannot be found
