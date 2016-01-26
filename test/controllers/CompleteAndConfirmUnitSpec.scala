@@ -25,22 +25,25 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{TrackingId, ClientSideSessionFactory}
-import uk.gov.dvla.vehicles.presentation.common.mappings.DayMonthYear.{DayId, MonthId, YearId}
-import uk.gov.dvla.vehicles.presentation.common.services.DateService
-import uk.gov.dvla.vehicles.presentation.common.views.models.DayMonthYear
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireRequestDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireResponseDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireServiceImpl
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireWebService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailServiceSendRequest
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailServiceSendResponse
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.{TrackingId, ClientSideSessionFactory}
+import common.mappings.DayMonthYear.{DayId, MonthId, YearId}
+import common.services.DateService
+import common.services.SEND.EmailConfiguration
+import common.views.models.DayMonthYear
+import common.webserviceclients.acquire.AcquireConfig
+import common.webserviceclients.acquire.AcquireRequestDto
+import common.webserviceclients.acquire.AcquireResponseDto
+import common.webserviceclients.acquire.AcquireService
+import common.webserviceclients.acquire.AcquireServiceImpl
+import common.webserviceclients.acquire.AcquireWebService
+import common.webserviceclients.emailservice.EmailService
+import common.webserviceclients.emailservice.EmailServiceSendRequest
+import common.webserviceclients.emailservice.EmailServiceSendResponse
+import common.webserviceclients.emailservice.From
+import common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
-import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseApplicationBeingProcessed, acquireResponseSuccess}
+import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseApplicationBeingProcessed, acquireResponseFurtherActionRequired, acquireResponseSuccess}
 import webserviceclients.fakes.FakeResponse
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
@@ -361,6 +364,80 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         contentAsString(result) should include(s"02/04/$year")
       }
     }
+
+    "send two internal emails when further action required" in new WithApplication {
+      verifyEmail(
+        acquireResponse = acquireResponseFurtherActionRequired,
+        keeperEmail = None,
+        traderEmail = None,
+        expected = times(2)
+      )
+    }
+
+    "not send any confirmation of sale email" in new WithApplication {
+      verifyEmail(
+        keeperEmail = None,
+        traderEmail = None,
+        expected = never()
+      )
+    }
+
+    "send confirmation of sale email to trader" in new WithApplication {
+       verifyEmail(
+         keeperEmail = None,
+         traderEmail = Some(EmailValid),
+         expected = times(1)
+       )
+    }
+
+    "send confirmation email to new keeper" in new WithApplication {
+       verifyEmail(
+         keeperEmail = Some(EmailValid),
+         traderEmail = None,
+         expected = times(1)
+       )
+    }
+
+    "send confirmation email to trader and new keeper" in new WithApplication {
+       verifyEmail(
+         keeperEmail = Some(EmailValid),
+         traderEmail = Some(EmailValid),
+         expected = times(2)
+       )
+    }
+  }
+
+  private def verifyEmail(acquireResponse: AcquireResponseDto = acquireResponseSuccess,
+                          keeperEmail: Option[String],
+                          traderEmail: Option[String],
+                          expected: org.mockito.verification.VerificationMode) {
+
+    val request = buildCorrectlyPopulatedRequest()
+      .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(email = keeperEmail))
+      .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+      .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(traderEmail = traderEmail))
+      .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+      .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+
+    val acquireServiceMock = mock[AcquireService]
+    when(acquireServiceMock.invoke(any[AcquireRequestDto], any[TrackingId]))
+      .thenReturn(Future.successful {
+      (OK, Some(acquireResponse))
+    })
+
+    val emailServiceMock = emailServiceStubbed()
+
+    val acquireSuccess = acquireController(
+      acquireService = acquireServiceMock,
+      emailService = emailServiceMock
+    )
+
+    val result = acquireSuccess.submitWithDateCheck(request)
+    whenReady(result) { r =>
+      r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
+      verify(emailServiceMock, expected).invoke(any[EmailServiceSendRequest], any[TrackingId])
+    }
   }
 
   private def timeZoneFixture(test: => Unit): Unit = {
@@ -404,12 +481,26 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     dateService
   }
 
+  private def emailServiceStubbed() = {
+    val emailServiceMock = mock[EmailService]
+    when(emailServiceMock.invoke(any[EmailServiceSendRequest](), any[TrackingId])).
+      thenReturn(Future(EmailServiceSendResponse()))
+    emailServiceMock
+  }
+
   private val config: Config = {
     val config = mock[Config]
     when(config.isPrototypeBannerVisible).thenReturn(true)
     when(config.googleAnalyticsTrackingId).thenReturn(Some("trackingId"))
     when(config.acquire).thenReturn(new AcquireConfig)
     when(config.assetsUrl).thenReturn(None)
+
+    val emailConfiguration = EmailConfiguration(
+      from = From(email = "", name = ""),
+      feedbackEmail = From(email = "", name = ""),
+      whiteList = None
+    )
+    when(config.emailConfiguration). thenReturn(emailConfiguration)
     config
   }
 
@@ -422,17 +513,14 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     acquireController(acquireService)
   }
 
-  private def acquireController(acquireService: AcquireService)
+  private def acquireController(acquireService: AcquireService,
+                                emailService: EmailService = emailServiceStubbed())
                                (implicit config: Config = config,
                                 dateService: DateService = dateServiceStubbed()): CompleteAndConfirm = {
     implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
 
-    val emailServiceMock: EmailService = mock[EmailService]
-    when(emailServiceMock.invoke(any[EmailServiceSendRequest](), any[TrackingId])).
-      thenReturn(Future(EmailServiceSendResponse()))
     val healthStatsMock = mock[HealthStats]
-
-    new CompleteAndConfirm(acquireService, emailServiceMock, healthStatsMock)
+    new CompleteAndConfirm(acquireService, emailService, healthStatsMock)
   }
 
   private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,

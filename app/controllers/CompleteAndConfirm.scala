@@ -17,24 +17,27 @@ import play.api.data.{Form, FormError}
 import play.api.mvc.{Action, AnyContent, Call, Controller, Request, Result}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.{ClientSideSessionFactory, TrackingId}
-import uk.gov.dvla.vehicles.presentation.common.LogFormats.{DVLALogger, anonymize, optionNone}
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
-import uk.gov.dvla.vehicles.presentation.common.services.{DateService, SEND}
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions.formBinding
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireRequestDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireResponseDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.KeeperDetailsDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.TitleTypeDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.TraderDetailsDto
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.EmailService
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.HealthStats
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
+import common.clientsidesession.TrackingId
+import common.LogFormats.{DVLALogger, anonymize, optionNone}
+import common.mappings.TitleType
+import common.model.NewKeeperDetailsViewModel
+import common.model.TraderDetailsModel
+import common.model.VehicleAndKeeperDetailsModel
+import common.services.{DateService, SEND}
+import common.services.SEND.Contents
+import common.views.helpers.FormExtensions.formBinding
+import common.webserviceclients.acquire.AcquireRequestDto
+import common.webserviceclients.acquire.AcquireResponseDto
+import common.webserviceclients.acquire.AcquireService
+import common.webserviceclients.acquire.KeeperDetailsDto
+import common.webserviceclients.acquire.TitleTypeDto
+import common.webserviceclients.acquire.TraderDetailsDto
+import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
+import common.webserviceclients.emailservice.EmailService
+import common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
@@ -257,7 +260,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     webService.invoke(acquireRequest, trackingId).map {
       case (httpResponseCode, response) =>
         Some(Redirect(nextPage(httpResponseCode, response)
-          (acquireRequest, vehicleAndKeeperDetails, newKeeperDetailsView, transactionTimestamp, trackingId)))
+          (acquireRequest, vehicleAndKeeperDetails, newKeeperDetailsView, traderDetails, transactionTimestamp, trackingId)))
           .map(_.withCookie(CompleteAndConfirmResponseModel(response.get.acquireResponse.transactionId, transactionTimestamp)))
           .map(_.withCookie(completeAndConfirmForm))
           .get
@@ -272,6 +275,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
               (acquireRequest: AcquireRequestDto,
                vehicleDetails: VehicleAndKeeperDetailsModel,
                keeperDetails: NewKeeperDetailsViewModel,
+               traderDetails: TraderDetailsModel,
                transactionTimestamp: DateTime,
                trackingId: TrackingId)(implicit request: Request[_]) = {
     response.foreach(r => logResponse(r))
@@ -285,7 +289,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
             createAndSendEmailRequiringFurtherAction(r.acquireResponse.transactionId, acquireRequest)
           }
         }
-        successReturn(vehicleDetails, keeperDetails, r.acquireResponse.transactionId, transactionTimestamp, trackingId)
+        successReturn(vehicleDetails, keeperDetails, traderDetails, r.acquireResponse.transactionId, transactionTimestamp, trackingId)
       case _ => // Should only be Service Unavailable
         logMessage(request.cookies.trackingId(), Warn, s"Acquire micro-service call failed. $httpResponseCode")
         routes.MicroServiceError.present()
@@ -361,11 +365,12 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   private def successReturn(vehicleDetails: VehicleAndKeeperDetailsModel,
                             keeperDetails: NewKeeperDetailsViewModel,
+                            traderDetails: TraderDetailsModel,
                             transactionId: String,
                             transactionTimestamp: DateTime,
                             trackingId: TrackingId)
                            (implicit request: Request[_]): Call = {
-    createAndSendEmail(vehicleDetails, keeperDetails, transactionId, transactionTimestamp, trackingId)
+    createAndSendEmail(vehicleDetails, keeperDetails, traderDetails, transactionId, transactionTimestamp, trackingId)
     logMessage(request.cookies.trackingId(), Info, s"Redirecting to ${routes.AcquireSuccess.present()}")
     routes.AcquireSuccess.present()
   }
@@ -566,35 +571,64 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
   }
 
   /**
-   * Calling this method on a successful submission, will send an email if we have the new keeper details.
+   * Calling this method on a successful submission, will send an email if we have the new keeper and/or trader details.
    * @param keeperDetails the keeper model from the cookie.
+   * @param traderDetails the trader model from the cookie.
    * @return
    */
   def createAndSendEmail(vehicleDetails: VehicleAndKeeperDetailsModel,
                          keeperDetails: NewKeeperDetailsViewModel,
+                         traderDetails: TraderDetailsModel,
                          transactionId: String,
                          transactionTimestamp: DateTime,
-                         trackingId: TrackingId)(implicit request: Request[_]) =
-    keeperDetails.email match {
-      case Some(emailAddr) =>
+                         trackingId: TrackingId)(implicit request: Request[_]) = {
 
-        import scala.language.postfixOps // Keep this local so that we don't pollute rest of the class with unnecessary imports.
+    sendEmail(
+      keeperDetails.email,
+      "Confirmation of new vehicle keeper",
+      EmailMessageBuilder.buildNewKeeperConfirmationWith,
+      vehicleDetails,
+      transactionId,
+      transactionTimestamp,
+      trackingId
+    )
+
+    sendEmail(
+      traderDetails.traderEmail,
+      "Confirmation of sale",
+      EmailMessageBuilder.buildTraderConfirmationWith,
+      vehicleDetails,
+      transactionId,
+      transactionTimestamp,
+      trackingId
+    )
+  }
+
+  def sendEmail(email: Option[String],
+                subject: String,
+                template: (VehicleAndKeeperDetailsModel, String, String, DateTime) => Contents,
+                vehicleDetails: VehicleAndKeeperDetailsModel,
+                transactionId: String,
+                transactionTimestamp: DateTime,
+                trackingId: TrackingId)(implicit request: Request[_]) = {
+
+    email match {
+      case Some(emailAddr) =>
+        import scala.language.postfixOps // don't pollute class with unnecessary imports.
 
         implicit val emailConfiguration = config.emailConfiguration
         implicit val implicitEmailService = implicitly[EmailService](emailService)
         implicit val implicitHealthStats = implicitly[HealthStats](healthStats)
 
-        val template = EmailMessageBuilder.buildWith(
+        val emailTemplate = template(
           vehicleDetails,
           transactionId,
           config.imagesPath,
           transactionTimestamp
         )
 
-        // This sends the email.
-        val subject = s"${vehicleDetails.registrationNumber} Confirmation of new vehicle keeper"
-        SEND email template withSubject subject to emailAddr send trackingId
-
-      case None => logMessage(request.cookies.trackingId(), Warn, "Tried to send an email with no keeper details")
+        SEND email emailTemplate withSubject s"${vehicleDetails.registrationNumber} $subject" to emailAddr send trackingId
+      case None => logMessage(trackingId, Warn, s"No email supplied to send $subject")
     }
+  }
 }

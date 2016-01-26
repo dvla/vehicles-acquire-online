@@ -58,6 +58,11 @@ object FakeAcquireWebServiceImpl {
     AcquireResponse(transactionId = TransactionIdValid, registrationNumber = RegistrationNumberValid)
   )
 
+  val acquireResponseFurtherActionRequired = AcquireResponseDto(
+    Some(MicroserviceResponse("X0001", "ms.vehiclesService.response.furtherActionRequired")),
+    AcquireResponse(transactionId = TransactionIdValid, registrationNumber = "")
+  )
+
   final val ConsentValid = "true"
   final val MileageValid = "20000"
   final val MileageInvalid = "INVALID"
