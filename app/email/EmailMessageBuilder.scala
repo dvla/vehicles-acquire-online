@@ -136,7 +136,7 @@ object EmailMessageBuilder {
        |                            <p>The application details are:</p>
        |
        |                            <p>
-       |                            Vehicle Registration Number: <strong>${vehicleDetails.registrationNumber}</strong><br>
+       |                            Vehicle registration number: <strong>${vehicleDetails.registrationNumber}</strong><br>
        |                            Transaction ID: <strong>$transactionId</strong><br>
        |                            Application made on: <strong>$transactionTimestamp</strong>
        |                            </p>
