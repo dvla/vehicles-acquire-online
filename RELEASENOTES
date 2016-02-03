@@ -1,3 +1,11 @@
+======= 1.27 =======
+
+
+US4182 	Add Trader Email Confirmation Functionality To Provide Trader Details Page on Acquire
+US4183 	Amend and Relocate 'Warning Message' on All VM Services to Better Inform the User
+US4187 	Google Analytics - Identify, Collate and Report on Northern Ireland Address Use by Service and Customer Type
+US4195 	Change the postcode shown where we playback vehicle details to SA99 1BA
+
 ======= 1.26 =======
 Wed Jan 20 11:55:49 UTC 2016
 
