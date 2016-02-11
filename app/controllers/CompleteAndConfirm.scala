@@ -371,7 +371,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
                             trackingId: TrackingId)
                            (implicit request: Request[_]): Call = {
     createAndSendEmail(vehicleDetails, keeperDetails, traderDetails, transactionId, transactionTimestamp, trackingId)
-    logMessage(request.cookies.trackingId(), Info, s"Redirecting to ${routes.AcquireSuccess.present()}")
+    val msg = s"Acquiring the vehicle was successful, redirecting to ${routes.AcquireSuccess.present()}"
+    logMessage(request.cookies.trackingId(), Info, msg)
     routes.AcquireSuccess.present()
   }
 
@@ -401,7 +402,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     VssWebEndUserDto(endUserId = identifier.getOrElse(config.orgBusinessUnit), orgBusUnit = config.orgBusinessUnit)
 
   private def logRequest(acquireRequest: AcquireRequestDto)(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",
+    logMessage(request.cookies.trackingId(), Debug, "Calling acquire vehicle micro-service with request",
       Option(Seq(
         acquireRequest.webHeader.applicationCode,
         acquireRequest.webHeader.originDateTime.toString,
@@ -427,7 +428,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
   }
 
   private def logResponse(response: AcquireResponseDto)(implicit request: Request[_]) = {
-    logMessage(request.cookies.trackingId(), Debug, "Change keeper micro-service request",
+    logMessage(request.cookies.trackingId(), Debug, "Acquire vehicle micro-service returned response",
       Option(Seq(anonymize(response.acquireResponse.registrationNumber),
       s"${response.response.map(_.message)}",
       anonymize(response.acquireResponse.transactionId)))
