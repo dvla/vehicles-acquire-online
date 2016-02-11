@@ -22,7 +22,7 @@ import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.{AcquireSuccessPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, LOCATION, OK}
+import play.api.test.Helpers.{BAD_REQUEST, contentAsString, defaultAwaitTimeout, FORBIDDEN, LOCATION, OK}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common
@@ -43,7 +43,10 @@ import common.webserviceclients.emailservice.EmailServiceSendResponse
 import common.webserviceclients.emailservice.From
 import common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
-import webserviceclients.fakes.FakeAcquireWebServiceImpl.{acquireResponseApplicationBeingProcessed, acquireResponseFurtherActionRequired, acquireResponseSuccess}
+import webserviceclients.fakes.FakeAcquireWebServiceImpl.acquireResponseApplicationBeingProcessed
+import webserviceclients.fakes.FakeAcquireWebServiceImpl.acquireResponseFurtherActionRequired
+import webserviceclients.fakes.FakeAcquireWebServiceImpl.acquireResponseGeneralError
+import webserviceclients.fakes.FakeAcquireWebServiceImpl.acquireResponseSuccess
 import webserviceclients.fakes.FakeResponse
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
@@ -207,6 +210,20 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
+    "replace numeric mileage error message with standard error message" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest(mileage = "$$")
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
+      replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
+    }
+
     "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new WithApplication {
       // The date of acquisition is 19-10-${saleYear}
       val disposalDate = DateTime.parse(s"20-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
@@ -301,21 +318,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "replace numeric mileage error message for with standard error message" in new WithApplication {
-      val request = buildCorrectlyPopulatedRequest(mileage = "$$")
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
-        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
-
-      val result = completeAndConfirm.submitWithDateCheck(request)
-      val replacementMileageErrorMessage = "You must enter a valid mileage between 0 and 999999"
-      replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
-    }
-
-    "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
+   "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -328,6 +331,23 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
         acquireWebService(acquireServiceResponse = Some(acquireResponseApplicationBeingProcessed)))
 
       val result = acquireSuccess.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
+      }
+    }
+
+    "redirect to next page when acquire web service returns forbidden" in new WithApplication {
+      val request = buildCorrectlyPopulatedRequest()
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+
+      val acquireFailure = acquireController(acquireWebService =
+        acquireWebService(FORBIDDEN, Some(acquireResponseGeneralError)))
+      val result = acquireFailure.submitWithDateCheck(request)
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(AcquireSuccessPage.address))
       }
@@ -459,7 +479,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     when(acquireWebService.callAcquireService(any[AcquireRequestDto], any[TrackingId])).
       thenReturn(Future.successful {
       val fakeJson = acquireServiceResponse map (Json.toJson(_))
-      new FakeResponse(status = acquireServiceStatus, fakeJson = fakeJson) // Any call to a webservice will always return this successful response.
+      new FakeResponse(status = acquireServiceStatus, fakeJson = fakeJson)
     })
 
     acquireWebService

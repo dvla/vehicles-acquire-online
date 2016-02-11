@@ -1,7 +1,7 @@
 package webserviceclients.fakes
 
 import play.api.Logger
-import play.api.http.Status.OK
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.TrackingId
@@ -17,16 +17,16 @@ class FakeAcquireWebServiceImpl extends AcquireWebService {
   import FakeAcquireWebServiceImpl._
 
   override def callAcquireService(request: AcquireRequestDto, trackingId: TrackingId): Future[WSResponse] = Future.successful {
-    val acquireResponse: AcquireResponseDto = {
+    val (status: Int, acquireResponse: AcquireResponseDto) = {
       request.referenceNumber match {
         case SimulateMicroServiceUnavailable => throw new RuntimeException("simulateMicroServiceUnavailable")
-        case SimulateSoapEndpointFailure => acquireResponseSoapEndpointFailure
-        case _ => acquireResponseSuccess
+        case SimulateSoapEndpointFailure => (INTERNAL_SERVER_ERROR, acquireResponseSoapEndpointFailure)
+        case _ => (OK, acquireResponseSuccess)
       }
     }
     val responseAsJson = Json.toJson(acquireResponse)
     Logger.debug(s"FakeVehicleLookupWebService callVehicleLookupService with: $responseAsJson")
-    new FakeResponse(status = OK, fakeJson = Some(responseAsJson)) // Any call to a webservice will always return this successful response.
+    new FakeResponse(status = status, fakeJson = Some(responseAsJson))
   }
 }
 
@@ -49,8 +49,8 @@ object FakeAcquireWebServiceImpl {
 
   // We should always get back a transaction id even for failure scenarios. Only exception is if the soap endpoint is down
   val acquireResponseGeneralError = AcquireResponseDto(
-    Some(MicroserviceResponse("", "ms.vehiclesService.error.generalError")),
-    AcquireResponse(transactionId = TransactionIdValid, registrationNumber = "")
+    Some(MicroserviceResponse("U0020", "ms.vehiclesService.error.generalError")),
+    AcquireResponse(transactionId = TransactionIdValid, registrationNumber = "AA11AAC")
   )
 
   val acquireResponseApplicationBeingProcessed = AcquireResponseDto(
