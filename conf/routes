@@ -79,11 +79,6 @@ GET         /acquire-success                            @controllers.AcquireSucc
 POST        /acquire-another                            @controllers.AcquireSuccess.buyAnother
 POST        /acquire-finish                             @controllers.AcquireSuccess.finish
 
-# Failure
-GET         /buy-from-the-trade-failure                 @controllers.AcquireFailure.present
-POST        /failure-acquire-another                    @controllers.AcquireFailure.buyAnother
-POST        /failure-acquire-finish                     @controllers.AcquireFailure.finish
-
 # feedback
 GET         /feedback                                   @controllers.FeedbackController.present
 POST        /feedback                                   @controllers.FeedbackController.submit

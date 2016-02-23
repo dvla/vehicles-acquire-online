@@ -14,7 +14,8 @@ class Error @Inject()()(implicit clientSideSessionFactory: ClientSideSessionFact
                               config: Config) extends Controller with DVLALogger {
 
   def present(exceptionDigest: String) = Action { implicit request =>
-    logMessage(request.cookies.trackingId(), Error, "Error - Displaying generic error page",
+    logMessage(request.cookies.trackingId(), Error,
+      "Error - Displaying generic error page",
       Some(Seq(exceptionDigest)))
     Ok(views.html.acquire.error(exceptionDigest)).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
   }

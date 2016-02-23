@@ -7,7 +7,6 @@ import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
 import org.scalatest.selenium.WebBrowser.pageSource
 import org.scalatest.selenium.WebBrowser.pageTitle
-import pages.acquire.AcquireFailurePage
 import pages.acquire.AcquireSuccessPage
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.BusinessChooseYourAddressPage
@@ -384,11 +383,6 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
   @Then("^the user is taken to the Private Keeper details page$")
   def the_user_is_taken_to_the_private_keeper_details_page() {
     pageTitle shouldEqual PrivateKeeperDetailsPage.title withClue trackingId
-  }
-
-  @Then("^the user will be on confirmed transaction failure screen$")
-  def the_user_will_be_on_confirmed_transaction_failure_screen() {
-    pageTitle shouldEqual AcquireFailurePage.title withClue trackingId
   }
 
   @Then("^there will be an error message displayed \"(.*?)\"$")

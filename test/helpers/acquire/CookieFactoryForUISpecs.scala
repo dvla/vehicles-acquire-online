@@ -275,7 +275,7 @@ object CookieFactoryForUISpecs {
   }
 
   def preventGoingToCompleteAndConfirmPageCookie()(implicit webDriver: WebDriver) = {
-    addCookie(CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey, "")
+    addCookie(CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey, "true")
   }
 
   def completeAndConfirmResponseModelModel(id: String = TransactionIdValid,
