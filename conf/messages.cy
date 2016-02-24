@@ -524,22 +524,4 @@ closed.p1 = Mae’r gwasanaeth ar gael o ddydd llun i ddydd sadwrn yn unig {0} t
 closed.exit_button = Gadael
 
 # feedback
-common_feedback.title = Give feedback
-common_feedback.message = Please don''t include any personal or financial information.
-common_feedback.warning = Mae'r dudalen hon ar gyfer adborth yn unig ac ni allwn gynnig ateb personol i'ch ebost
-common_feedback.label = What went wrong, if anything? What went well? How could we improve this service?
-common_feedback.charactersRemaining = characters remaining
-common_feedback.placeholder = 500 characters remaining
-common_feedback.submit_button = Submit feedback
-common_feedback.thankyou = Thank you for your feedback
 common_feedback.subject = Buy from the trade - feedback
-common_feedback.name = Name
-common_feedback.email = Email
-common_feedback.feedbackTitle = Please leave your name and email address in case we need to contact you
-error.feedback = Feedback cannot exceed 500 characters
-error.feedbackName = Name cannot be more than 60 characters
-feedbackEmail = Email
-feedbackName = Name
-feedback = Feedback form
-feedback_return = ◄ Return to your application
-feedback_close = Please close this page to return to your application
