@@ -1,10 +1,19 @@
+======= 1.29 =======
+TIME OF RELEASE BINARIES CREATION:
+
+DE845 	Feedback - error message wording
+US4175 	Remove failure pages/controllers etc from Acquire and K2K
+US4206 	Change gatling tests to only log failures
+
 ======= 1.28 =======
+TIME OF RELEASE BINARIES CREATION:
 Wed Feb 17 12:44:38 UTC 2016
 
 US4216 	vehicle-and-keeper-lookup is incorrectly using INTERNAL_SERVER_ERROR for business rules errors
 US4217 	vehicles-acquire-fulfil is incorrectly using INTERNAL_SERVER_ERROR for business rules errors
 
 ======= 1.27 =======
+TIME OF RELEASE BINARIES CREATION:
 Wed Feb 03 12:20:50 UTC 2016
 
 US4182 	Add Trader Email Confirmation Functionality To Provide Trader Details Page on Acquire
@@ -13,6 +22,7 @@ US4187 	Google Analytics - Identify, Collate and Report on Northern Ireland Addr
 US4195 	Change the postcode shown where we playback vehicle details to SA99 1BA
 
 ======= 1.26 =======
+TIME OF RELEASE BINARIES CREATION:
 Wed Jan 20 11:55:49 UTC 2016
 
 US2404 	Mixin trait eventually with testComposition and IntegrationPatience on any file that contains selenium code
