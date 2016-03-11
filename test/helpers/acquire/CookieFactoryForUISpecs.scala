@@ -1,11 +1,11 @@
 package helpers.acquire
 
-import helpers.acquire.CookieFactoryForUnitSpecs.{ConsentTrue, VehicleLookupFailureResponseCode}
+import helpers.acquire.CookieFactoryForUnitSpecs.{ConsentTrue, VehicleLookupFailureResponseMessage}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.{BusinessChooseYourAddressFormModel, CompleteAndConfirmFormModel, CompleteAndConfirmResponseModel, EnterAddressManuallyFormModel}
 import models.{IdentifierCacheKey, VehicleLookupFormModel, VehicleTaxOrSornFormModel}
 import models.VehicleTaxOrSornFormModel.Form.SornId
@@ -19,21 +19,25 @@ import pages.acquire.SetupTradeDetailsPage.{PostcodeValid, TraderBusinessNameVal
 import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.controllers.AlternateLanguages.{CyId, EnId}
-import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import uk.gov.dvla.vehicles.presentation.common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.TraderDetailsModel.traderDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.model.{AddressModel, BruteForcePreventionModel, BusinessKeeperDetailsFormModel}
-import uk.gov.dvla.vehicles.presentation.common.model.{NewKeeperDetailsViewModel, PrivateKeeperDetailsFormModel, SetupTradeDetailsFormModel}
-import uk.gov.dvla.vehicles.presentation.common.model.{TraderDetailsModel, VehicleAndKeeperDetailsModel}
-import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.controllers.AlternateLanguages.{CyId, EnId}
+import common.mappings.TitleType
+import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
+import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import common.model.MicroserviceResponseModel
+import common.model.MicroserviceResponseModel.MsResponseCacheKey
+import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
+import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
+import common.model.TraderDetailsModel.traderDetailsCacheKey
+import common.model.{AddressModel, BruteForcePreventionModel, BusinessKeeperDetailsFormModel}
+import common.model.{NewKeeperDetailsViewModel, PrivateKeeperDetailsFormModel, SetupTradeDetailsFormModel}
+import common.model.{TraderDetailsModel, VehicleAndKeeperDetailsModel}
+import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
+import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import common.webserviceclients.common.MicroserviceResponse
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, addressWithoutUprn}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
@@ -142,10 +146,10 @@ object CookieFactoryForUISpecs {
     this
   }
 
-  def vehicleLookupResponseCode(responseCode: String = VehicleLookupFailureResponseCode)
-                               (implicit webDriver: WebDriver) = {
-    val key = VehicleLookupResponseCodeCacheKey
-    val value = responseCode
+  def vehicleLookupResponse(responseMessage: String = VehicleLookupFailureResponseMessage)
+                           (implicit webDriver: WebDriver) = {
+    val key = MsResponseCacheKey
+    val value = MicroserviceResponseModel(MicroserviceResponse("", responseMessage))
     addCookie(key, value)
     this
   }

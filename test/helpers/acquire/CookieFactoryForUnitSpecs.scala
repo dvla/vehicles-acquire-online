@@ -6,7 +6,7 @@ import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
-import models.VehicleLookupFormModel.{VehicleLookupFormModelCacheKey, VehicleLookupResponseCodeCacheKey}
+import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
 import models.BusinessChooseYourAddressFormModel
 import models.CompleteAndConfirmFormModel
 import models.CompleteAndConfirmResponseModel
@@ -32,6 +32,8 @@ import common.clientsidesession.{ClearTextClientSideSession, ClientSideSessionFa
 import common.mappings.TitleType
 import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
+import common.model.MicroserviceResponseModel
+import common.model.MicroserviceResponseModel.MsResponseCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
 import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
@@ -48,6 +50,7 @@ import common.model.VehicleAndKeeperDetailsModel
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.model.SeenCookieMessageCacheKey
 import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
+import common.webserviceclients.common.MicroserviceResponse
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.{selectedAddress, UprnValid}
@@ -66,7 +69,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
   final val KeeperEmail = "abc@def.com"
   final val SeenCookieTrue = "yes"
   final val ConsentTrue = "true"
-  final val VehicleLookupFailureResponseCode = "disposal_vehiclelookupfailure"
+  final val VehicleLookupFailureResponseMessage = "disposal_vehiclelookupfailure"
   private val session = new ClearTextClientSideSession(TrackingId(TrackingIdValue))
 
   private def createCookie[A](key: String, value: A)(implicit tjs: Writes[A]): Cookie = {
@@ -218,8 +221,8 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def vehicleLookupResponseCode(responseCode: String = VehicleLookupFailureResponseCode): Cookie =
-    createCookie(VehicleLookupResponseCodeCacheKey, responseCode)
+  def vehicleLookupResponse(responseMessage: String = VehicleLookupFailureResponseMessage): Cookie =
+    createCookie(MsResponseCacheKey, MicroserviceResponseModel(MicroserviceResponse("", responseMessage)))
 
   def privateKeeperDetailsModel(title: TitleType = TitleType(1, ""),
                                 firstName: String = FirstNameValid,

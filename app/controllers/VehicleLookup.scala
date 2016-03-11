@@ -7,7 +7,6 @@ import models.PrivateKeeperDetailsCacheKeys
 import models.EnterAddressManuallyFormModel
 import models.VehicleLookupFormModel.{Key, JsonFormat}
 import models.{VehicleLookupFormModel, VehicleLookupViewModel}
-import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import play.api.data.{Form, FormError}
 import play.api.mvc.{Result, Action, Request}
 import scala.concurrent.Future
@@ -16,6 +15,7 @@ import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.{RichCookies, RichForm, RichResult}
 import common.controllers.VehicleLookupBase
 import common.model.BruteForcePreventionModel
+import common.model.MicroserviceResponseModel.MsResponseCacheKey
 import common.model.TraderDetailsModel
 import common.model.VehicleAndKeeperDetailsModel
 import common.services.DateService
@@ -34,7 +34,7 @@ class VehicleLookup @Inject()(implicit bruteForceService: BruteForcePreventionSe
                               config: Config) extends VehicleLookupBase[VehicleLookupFormModel] {
 
   override val form = Form(VehicleLookupFormModel.Form.Mapping)
-  override val responseCodeCacheKey: String = VehicleLookupResponseCodeCacheKey
+  override val responseCodeCacheKey: String = MsResponseCacheKey
 
   override def vrmLocked(bruteForcePreventionModel: BruteForcePreventionModel, formModel: VehicleLookupFormModel)
                         (implicit request: Request[_]): Result = {

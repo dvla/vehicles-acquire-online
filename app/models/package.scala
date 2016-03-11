@@ -4,15 +4,15 @@ import models.CompleteAndConfirmFormModel.CompleteAndConfirmCacheKey
 import models.CompleteAndConfirmResponseModel.AcquireCompletionResponseCacheKey
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import models.VehicleTaxOrSornFormModel.VehicleTaxOrSornCacheKey
 import uk.gov.dvla.vehicles.presentation.common
 import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
 import common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
-import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
+import common.model.MicroserviceResponseModel.MsResponseCacheKey
 import common.model.NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
 import common.model.NewKeeperEnterAddressManuallyFormModel.newKeeperEnterAddressManuallyCacheKey
 import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
@@ -38,7 +38,7 @@ package object models {
   final val VehicleLookupCacheKeys = Set(
     VehicleLookupFormModelCacheKey,
     vehicleAndKeeperLookupDetailsCacheKey,
-    VehicleLookupResponseCodeCacheKey
+    MsResponseCacheKey
   )
 
   // Set of cookies related to all data entered for a private keeper
@@ -60,7 +60,7 @@ package object models {
     VehicleTaxOrSornCacheKey,
     newKeeperDetailsCacheKey,
     CompleteAndConfirmCacheKey,
-    VehicleLookupResponseCodeCacheKey,
+    MsResponseCacheKey,
     AcquireCompletionResponseCacheKey
   )
 

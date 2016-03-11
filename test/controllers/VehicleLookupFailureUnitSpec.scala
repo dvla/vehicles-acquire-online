@@ -94,7 +94,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
       .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       .withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
       .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-      .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponse())
     vehicleLookupFailure.present(request)
   }
 }

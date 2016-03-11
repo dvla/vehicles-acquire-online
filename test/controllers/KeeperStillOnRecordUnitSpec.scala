@@ -6,11 +6,11 @@ import helpers.UnitSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
 import models.VehicleLookupFormModel.VehicleLookupFormModelCacheKey
-import models.VehicleLookupFormModel.VehicleLookupResponseCodeCacheKey
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.test.Helpers.{LOCATION, OK, SEE_OTHER}
 import play.api.test.FakeRequest
 import uk.gov.dvla.vehicles.presentation.common
+import common.model.MicroserviceResponseModel.MsResponseCacheKey
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.VehicleAndKeeperDetailsModel.vehicleAndKeeperLookupDetailsCacheKey
 import common.testhelpers.CookieHelper.{fetchCookiesFromHeaders, verifyCookieHasBeenDiscarded}
@@ -37,7 +37,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponseCode())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupResponse())
       val result = keeperStillOnRecord.buyAnotherVehicle(request)
 
       whenReady(result) { r =>
@@ -45,7 +45,7 @@ class KeeperStillOnRecordUnitSpec extends UnitSpec {
         cookies.size should equal(3)
         verifyCookieHasBeenDiscarded(VehicleLookupFormModelCacheKey, cookies)
         verifyCookieHasBeenDiscarded(vehicleAndKeeperLookupDetailsCacheKey, cookies)
-        verifyCookieHasBeenDiscarded(VehicleLookupResponseCodeCacheKey, cookies)
+        verifyCookieHasBeenDiscarded(MsResponseCacheKey, cookies)
 
         r.header.status should equal(SEE_OTHER)
         r.header.headers.get(LOCATION) should equal(Some(VehicleLookupPage.address))
