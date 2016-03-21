@@ -3,11 +3,14 @@
         token: uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction.CsrfPreventionToken,
         config: utils.helpers.Config)
 
-@import uk.gov.dvla.vehicles.presentation.common
-@import common.views.html.widgets.cookiesPolicy
+@import uk.gov.dvla.vehicles.presentation.common.views.html.widgets.cookiesPolicy
 
 @main(
     title = Messages("cookie-policy-title")
 ) {
-    @cookiesPolicy(cookiesPolicyMap)
+    <div class="two-col clearfix">
+        <div class="second-col">
+            @cookiesPolicy(cookiesPolicyMap)
+        </div>
+    </div>
 }
