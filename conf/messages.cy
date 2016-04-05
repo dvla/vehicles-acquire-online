@@ -20,12 +20,6 @@ global.serviceCloseWarning = Bydd y gwasanaeth yn cau cyn bo hir - yr amser bell
 global.serviceCloseWarning.p2 = to complete this service.
 global.serviceClosed = Service now closed. Service is available {0} to {1}
 
-footer.builtbyintro = Built by
-footer.builtby = Driver & Vehicle Licensing Agency
-footer.text1 = All content is available under the
-footer.link = open government licence v2.0
-footer.text2 = , except where otherwise stated
-
 #prototype
 prototype.banner = This service is under development -
 prototype.link =  find out more
