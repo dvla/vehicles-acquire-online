@@ -15,8 +15,7 @@ import pages.common.Feedback.AcquireEmailFeedbackLink
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 
 class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {
-  val expectedString = "Only a limited number of attempts can be made to retrieve vehicle details " +
-    "for each vehicle registration number entered."
+  val expectedString = "You will only have a limited number of attempts to enter the vehicle details for this vehicle."
 
   "go to page" should {
     "display the page" taggedAs UiTag in new WebBrowserForSelenium {

@@ -29,7 +29,7 @@ Feature:
     When the user fills in data that results in document reference mismatch error from the micro service
     And the user performs the lookup
     Then the user will be redirected to the vehicle lookup failure page
-    Then the page will contain text "Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct."
+    Then the page will contain text "Please check that the vehicle registration number and V5C document reference number are correct and select the ‘Try again’ button below."
 
   Scenario: vehicle lookup is performed on a vehicle that has not yet been disposed
     When the user fills in data for a vehicle which has not been disposed
