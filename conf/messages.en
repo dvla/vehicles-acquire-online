@@ -270,7 +270,7 @@ acquire_keeperstillonrecord.text3 = You can notify us of the vehicle''s sale to 
 acquire_keeperstillonrecord.text4 = Bought a vehicle into the trade.
 acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
 acquire_keeperstillonrecord.text5 = Before you do this, ensure you have the consent of the keeper we currently have on record.
-acquire_keeperstillonrecord.button1 = Notify Another Sale
+acquire_keeperstillonrecord.button1 = Notify another sale
 acquire_keeperstillonrecord.button2 = Finish
 
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
@@ -450,7 +450,7 @@ acquire_success.finish = Finish
 acquire_acquirefailure.title = Selling a vehicle out of trade: failure
 acquire_acquirefailure.name = Failure
 acquire_acquirefailure.p1 = It has not been possible to complete your transaction. Please call 0300 790 6802
-acquire_acquirefailure.button = Notify Another Sale
+acquire_acquirefailure.button = Notify another sale
 acquire_acquirefailure.button2 = Finish
 acquire_acquirefailure.button3 = Print
 acquire_acquirefailure.transactiontext = Your transaction ID is:
