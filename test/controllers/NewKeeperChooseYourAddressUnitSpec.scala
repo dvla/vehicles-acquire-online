@@ -8,6 +8,8 @@ import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{times, verify, when}
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
+import org.scalatest.concurrent.PatienceConfiguration.Timeout
+import org.scalatest.time.{Second, Span}
 import pages.acquire.BusinessKeeperDetailsPage.BusinessNameValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.{VehicleLookupPage, VehicleTaxOrSornPage}
@@ -41,7 +43,7 @@ class NewKeeperChooseYourAddressUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page if private new keeper details cached" in new WithApplication {
-      whenReady(presentWithPrivateNewKeeper(ordnanceSurveyUseUprn = true)) { r =>
+      whenReady(presentWithPrivateNewKeeper(ordnanceSurveyUseUprn = true), Timeout(Span(1, Second))) { r =>
         r.header.status should equal(OK)
       }
     }

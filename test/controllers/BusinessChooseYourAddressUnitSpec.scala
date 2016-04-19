@@ -1,7 +1,8 @@
 package controllers
 
 import Common.PrototypeHtml
-import helpers.{UnitSpec, WithApplication}
+import composition.WithApplication
+import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
@@ -11,6 +12,8 @@ import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{times, verify, when}
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
+import org.scalatest.concurrent.PatienceConfiguration.Timeout
+import org.scalatest.time.{Second, Span}
 import pages.acquire.SetupTradeDetailsPage.TraderBusinessNameValid
 import pages.acquire.{SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.i18n.Lang
@@ -38,7 +41,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
 
   "present" should {
     "display the page if dealer details cached" in new WithApplication {
-      whenReady(present) { r =>
+      whenReady(present, Timeout(Span(1, Second))) { r =>
         r.header.status should equal(OK)
       }
     }

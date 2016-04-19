@@ -1,7 +1,8 @@
 package controllers
 
 import Common.PrototypeHtml
-import helpers.{UnitSpec, WithApplication}
+import composition.WithApplication
+import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage}
