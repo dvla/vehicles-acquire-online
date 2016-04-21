@@ -155,7 +155,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
       val request = buildCorrectlyPopulatedRequest(registrationNumber = "PJ05YYYX")
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
-      val count = "Must be as shown on the latest V5C".r.findAllIn(contentAsString(result)).length
+      val count = "Must be as shown on the latest V5C registration certificate \\(logbook\\)".r.findAllIn(contentAsString(result)).length
 
       count should equal(2)
     }
@@ -164,7 +164,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
       val request = buildCorrectlyPopulatedRequest(registrationNumber = "")
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
-      val count = "Must be as shown on the latest V5C".r.findAllIn(contentAsString(result)).length
+      val count = "Must be as shown on the latest V5C registration certificate \\(logbook\\)".r.findAllIn(contentAsString(result)).length
 
       count should equal(2) // The same message is displayed in 2 places - once in the validation-summary at the top of the page and once above the field.
     }

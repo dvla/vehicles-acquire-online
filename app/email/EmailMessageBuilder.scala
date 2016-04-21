@@ -116,7 +116,7 @@ object EmailMessageBuilder {
        |
        |                            <p>The online Transaction ID is <strong>$transactionId</strong></p>
        |
-       |                            <p>You should receive your new V5C (log book) within 2 weeks.</p>
+       |                            <p>You should receive your new V5C registration certificate (logbook) within 2 weeks.</p>
        |
        |                            <p>Since 1st October 2014, vehicle tax can no longer be transferred as part of the sale. This is because the seller will automatically receive a refund of any remaining tax.</p>
        |
@@ -131,7 +131,7 @@ object EmailMessageBuilder {
                               transactionTimestamp: String): String =
 
     s"""
-       |                            <p>Thank you for using DVLA’s online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.</p>
+       |                            <p>Thank you for using DVLA’s online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C registration certificate (logbook) as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.</p>
        |
        |                            <p>The application details are:</p>
        |
@@ -141,7 +141,7 @@ object EmailMessageBuilder {
        |                            Application made on: <strong>$transactionTimestamp</strong>
        |                            </p>
        |
-       |                            <p>The new keeper should receive their new V5C within 2 weeks.</p>
+       |                            <p>The new keeper should receive their new V5C registration certificate (logbook) within 2 weeks.</p>
        |
        |                            <p>As vehicle tax or SORN can no longer be transferred as part of the sale, the new keeper must tax this vehicle before it is driven on the road at <a href="http://www.gov.uk/vehicletax" target="_blank">www.gov.uk/vehicletax</a>. They can make a SORN at <a href="http://www.gov.uk/sorn" target="_blank">www.gov.uk/sorn</a>.</p>
        |
@@ -167,7 +167,7 @@ object EmailMessageBuilder {
          |
          |The online Transaction ID is $transactionId
          |
-         |You should receive your new V5C (log book) within 2 weeks.
+         |You should receive your new V5C registration certificate (logbook) within 2 weeks.
          |
          |Since 1st October 2014, vehicle tax can no longer be transferred as part of the sale. This is because the seller will automatically receive a refund of any remaining tax.
          |
@@ -180,7 +180,7 @@ object EmailMessageBuilder {
                                transactionId: String,
                                transactionTimestamp: String): String =
       s"""
-         |Thank you for using DVLA's online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.
+         |Thank you for using DVLA's online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C registration certificate (logbook) as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.
          |
          |The application details are:
          |
@@ -188,7 +188,7 @@ object EmailMessageBuilder {
          |Transaction ID is $transactionId
          |Application made on: $transactionTimestamp
          |
-         |The new keeper should receive their new V5C within 2 weeks.
+         |The new keeper should receive their new V5C registration certificate (logbook) within 2 weeks.
          |
          |As vehicle tax or SORN can no longer be transferred as part of the sale, the new keeper must tax this vehicle before it is driven on the road at http://www.gov.uk/vehicletax. They can make a SORN at http://www.gov.uk/sorn.
       """.stripMargin

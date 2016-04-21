@@ -38,7 +38,7 @@ widget.optional = (optional)
 
 #customer validation messages
 error.restricted.validNumberOnly = This field only accepts numbers
-error.restricted.validVrnOnly = Must be as shown on the latest V5C
+error.restricted.validVrnOnly = Must be as shown on the latest V5C registration certificate (logbook)
 error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
 error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
 
@@ -68,7 +68,7 @@ error.invalid = Invalid value
 ##
 
 acquire.backbutton = Back
-acquire_vehicledetails.warning = If the vehicle details shown are incorrect please abandon this transaction and send the V5C with a covering letter to DVLA, Swansea, SA99 1BA.
+acquire_vehicledetails.warning = If the vehicle details shown are incorrect please abandon this transaction and send the V5C registration certificate (logbook) with a covering letter to DVLA, Swansea, SA99 1BA.
 
 # 404 onHandlerNotFound
 onHandlerNotFound.title=This page cannot be found
@@ -106,7 +106,7 @@ acquire_beforeyoustart.p3 = To use this service you will need:
 acquire_beforeyoustart.p4 = Please note: this service updates our records immediately.
 acquire_beforeyoustart.p5 = Once you’ve finished:
 acquire_beforeyoustart.p6 = Other ways to apply:
-acquire_beforeyoustart.p7 = If you do not use the online service, you must complete the V5C and post it to DVLA, Swansea, SA99 1BA
+acquire_beforeyoustart.p7 = If you do not use the online service, you must complete the V5C registration certificate (logbook) and post it to DVLA, Swansea, SA99 1BA
 acquire_beforeyoustart.listitem1 = no vehicle or tax class changes can be made online
 acquire_beforeyoustart.listitem2.1 = you will not be able to use this online service to assign or transfer a vehicle registration number.
 acquire_beforeyoustart.listitem2.link = Apply to retain a vehicle registration number (V317)
@@ -114,10 +114,10 @@ acquire_beforeyoustart.listitem2.2 =, you will need to send the completed applic
 acquire_beforeyoustart.listitem3 = this vehicle must be taxed before it can be driven on the road. You can tax or SORN your vehicle on behalf of the buyer as part of this service.
 acquire_beforeyoustart.listitem4 = DVLA cannot record joint keepers
 acquire_beforeyoustart.listitem5 = this service is currently available Mon-Sat, 8am – 6pm
-acquire_beforeyoustart.listitem6 = the 11 digit document reference number from the latest registration certificate (V5C).
+acquire_beforeyoustart.listitem6 = the 11 digit document reference number from the latest V5C registration certificate (logbook).
 acquire_beforeyoustart.listitem7 = the consent of the buyer of the vehicle to act on their behalf
-acquire_beforeyoustart.listitem8 = the new keeper (buyer) should receive a new V5C within 5 working days.
-acquire_beforeyoustart.listitem9 = the original V5C used to transact online must be destroyed and must not be sent to DVLA
+acquire_beforeyoustart.listitem8 = the new keeper (buyer) should receive a new V5C registration certificate (logbook) within 5 working days.
+acquire_beforeyoustart.listitem9 = the original V5C registration certificate (logbook) used to transact online must be destroyed and must not be sent to DVLA
 acquire_beforeyoustart.link1 = Motor traders: tell DVLA about the sale of a vehicle
 acquire_beforeyoustart.link2 = Vehicle tax changes
 
@@ -171,10 +171,10 @@ acquire_vehiclelookup.p2 = Vehicle being sold from
 acquire_vehiclelookup.warning.p1 = Do not dispose of a vehicle with a personal registration unless the current keeper understands that the registration will be disposed of along with the vehicle.
 acquire_vehiclelookup.warning.p2 = Retain or transfer personal registrations before disposing to the trade.
 acquire_vehiclelookup.img.hint = Where to find this
-acquire_vehiclelookup.img.h2 = Help finding your V5C document reference number?
-acquire_vehiclelookup.img.alt = V5C document reference number
-acquire_vehiclelookup.v5c = Vehicle registration certificate (V5C)
-acquire_vehiclelookup.refnumlabel = Latest V5C document reference number
+acquire_vehiclelookup.img.h2 = Help finding your V5C registration certificate (logbook) document reference number?
+acquire_vehiclelookup.img.alt = V5C registration certificate (logbook) document reference number
+acquire_vehiclelookup.v5c = V5C registration certificate (logbook)
+acquire_vehiclelookup.refnumlabel = Latest V5C registration certificate (logbook) document reference number
 acquire_vehiclelookup.vrninputlabel = Vehicle registration number
 acquire_vehiclelookup.backbutton = Back
 acquire_vehiclelookup.button = Next
@@ -204,13 +204,13 @@ acquire_uprnnotfound.setuptradedetailsbutton = Manually enter address
 
 #vehicle lookup failure
 acquire_vehiclelookupfailure.title = Unable to find a vehicle record
-acquire_vehiclelookupfailure.p1 = Please select the ‘Try again’ button below and check that the V5C document reference number and vehicle registration number that you entered are correct.
+acquire_vehiclelookupfailure.p1 = Please select the ‘Try again’ button below and check that the V5C registration certificate (logbook) document reference number and vehicle registration number that you entered are correct.
 acquire_vehiclelookupfailure.button = Try again
 acquire_vehiclelookupfailure.button2 = Exit
-vehicle_and_keeper_lookup_failure.p0 = The vehicle registration number and/or the V5C document reference number entered is either incorrect or does not come from the latest V5C issued for this vehicle.
-vehicle_and_keeper_lookup_failure.p1 = Please check that the vehicle registration number and V5C document reference number are correct and select the ‘Try again’ button below.
-vehicle_and_keeper_lookup_failure.p2 = If you are sure that the details have been entered correctly then you may be using an old V5C and it’s likely that we have issued you with a new one since.
-vehicle_and_keeper_lookup_failure.p3 = If you do not have the latest issued V5C, you will need to send your completed V5C to DVLA, Swansea, SA99 1BD.
+vehicle_and_keeper_lookup_failure.p0 = The vehicle registration number and/or the V5C registration certificate (logbook) document reference number entered is either incorrect or does not come from the latest V5C issued for this vehicle.
+vehicle_and_keeper_lookup_failure.p1 = Please check that the vehicle registration number and V5C registration certificate (logbook) document reference number are correct and select the ‘Try again’ button below.
+vehicle_and_keeper_lookup_failure.p2 = If you are sure that the details have been entered correctly then you may be using an old V5C registration certificate (logbook) and it’s likely that we have issued you with a new one since.
+vehicle_and_keeper_lookup_failure.p3 = If you do not have the latest issued V5C registration certificate (logbook), you will need to send your completed V5C to DVLA, Swansea, SA99 1BD.
 vehicle_and_keeper_lookup_failure.p4 = You will only have a limited number of attempts to enter the vehicle details for this vehicle.
 
 #page 3 [optional] - manual address entry
@@ -264,7 +264,7 @@ acquire_keeperstillonrecord.button2 = Finish
 #v5c is suppressed
 error_suppressedV5C.title = Vehicle is part of a suppressed fleet
 error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
-error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a vehicle registration certificate (V5C) from the DVLA. This can be done using the
+error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a V5C registration certificate (logbook) from the DVLA. This can be done using the
 error_suppressedV5C.text3 = view vehicle record service.
 error_suppressedV5C.link = https://www.gov.uk/dvla-fleet-vehicle-info
 error_suppressedV5C.button1 = Notify another sale
@@ -302,7 +302,7 @@ acquire_keeperdetailscomplete.consentError = You must have the consent of the ne
 #acquire success
 acquire_success.complete.header = Thank you
 acquire_success.complete.p1 = The application is being processed
-acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C.
+acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C registration certificate (logbook).
 acquire_success.transaction_details.header = Transaction details
 acquire_success.transaction_details.transaction_id = Transaction ID
 acquire_success.transaction_details.transaction_date = Transaction date
@@ -326,9 +326,9 @@ acquire_success.vehicle_details.email = Contact email address
 acquire_success.vehicle_details.p1 = Details of the vehicle being purchased
 acquire_success.new_keeper_details.p1 = Details of the new keeper DVLA has put on record for this vehicle
 acquire_success.further_information.header = What happens next?
-acquire_success.further_information.p1 = within 4 weeks a new vehicle registration certificate (V5C) will be sent to the new keeper.
-acquire_success.further_information.p2 = if they do not receive a new V5C in 4 weeks they must contact DVLA customer enquiries on 0300 790 6802
-acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the vehicle registration certificate (V5C)
+acquire_success.further_information.p1 = within 4 weeks a new V5C registration certificate (logbook) will be sent to the new keeper.
+acquire_success.further_information.p2 = if they do not receive a new V5C registration certificate (logbook) in 4 weeks they must contact DVLA customer enquiries on 0300 790 6802
+acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the V5C registration certificate (logbook)
 acquire_success.buttonnavprint = Print
 acquire_success.buyAnother = Buy another vehicle
 
@@ -426,7 +426,7 @@ acquire_vehicleTaxOrSorn.neither = Neither
 acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a statutory off road notification (SORN) made when it is purchased.
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
 acquire_vehicleTaxOrSorn.p2 = Or
-acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from the V5C/2 (green slip) section of the registration certificate as a new keeper.
+acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from the V5C/2 (green slip) section of the V5C registration certificate (logbook) as a new keeper.
 acquire_vehicleTaxOrSorn.taxText-2 = Once taxing is completed please return to this page and select 'Next' to continue.
 acquire_vehicleTaxOrSorn.sornText = Make a statutory off road notification (SORN) as part of this service.
 acquire_vehicleTaxOrSorn.sornText-p1 =  Please select 'Next' to continue
@@ -483,7 +483,7 @@ micro_service_error.exit.button=Exit
 vrm_locked.title=Registration number is locked
 vrm_locked.text1= There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Notify another sale" below.
 vrm_locked.text2=Locked at
-vrm_locked.text3.1= If you are sure that the details entered are correct then please send your completed V5C to
+vrm_locked.text3.1= If you are sure that the details entered are correct then please send your completed V5C registration certificate (logbook) to
 vrm_locked.text3.2=DVLA, Swansea SA99 1BA
 vrm_locked.buyanother.button= Notify another sale
 vrm_locked.exit.button=Exit
@@ -510,7 +510,7 @@ error.date.notOne = Year cannot be 0000
 
 # micro-service response codes
 ms.vehiclesService.response.unableToProcessApplication-title = Transaction unsuccessful
-ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C to
+ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C registration certificate (logbook) to
 ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
 # closed
