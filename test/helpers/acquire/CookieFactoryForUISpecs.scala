@@ -54,14 +54,14 @@ object CookieFactoryForUISpecs {
     manage.addCookie(cookie)
   }
 
-  def withLanguageCy()(implicit webDriver: WebDriver, clientSideSessionFactory: ClientSideSessionFactory) = {
+  def withLanguageCy()(implicit webDriver: WebDriver) = {
     val key = Play.langCookieName
     val value = CyId
     addCookie(key, value)
     this
   }
 
-  def withLanguageEn()(implicit webDriver: WebDriver, clientSideSessionFactory: ClientSideSessionFactory) = {
+  def withLanguageEn()(implicit webDriver: WebDriver) = {
     val key = Play.langCookieName
     val value = EnId
     addCookie(key, value)

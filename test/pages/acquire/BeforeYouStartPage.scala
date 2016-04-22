@@ -13,7 +13,7 @@ object BeforeYouStartPage extends Page {
   final val address = buildAppUrl("before-you-start")
   override val url: String = WebDriverFactory.testUrl + address.substring(1)
   final override lazy val title: String = "Selling a vehicle out of trade"
-  final val titleCy: String = "Cael gwared cerbyd i mewn i'r fasnach foduron"
+  //final val titleCy: String = TODO uncomment and set when Welsh translation complete
 
   def startNow(implicit driver: WebDriver): Element = find(id(NextId)).get
 }

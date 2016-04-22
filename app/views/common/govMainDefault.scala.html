@@ -1,8 +1,7 @@
-@(title: String)(content: Html)(implicit lang: Lang,
+@(title: String, showLanguageSwitch: Boolean)(content: Html)(implicit lang: Lang,
         config: utils.helpers.Config)
 
 @import views.html.common.alternateLanguages
-@import controllers.StaticAssets
 @import play.api.Play
 @import play.api.Play.current
 @import views.common.ProtoType.FeedbackId
@@ -35,7 +34,7 @@
         <link rel="apple-touch-icon-precomposed" href="@controllers.StaticAssets.versioned(config.assetsUrl)("lib/vehicles-presentation-common/images/apple-touch-icon-144x144.png")" sizes="144x144">
         <link rel="apple-touch-icon-precomposed" href="@controllers.StaticAssets.versioned(config.assetsUrl)("lib/vehicles-presentation-common/images/apple-touch-icon-152x152.png")" sizes="152X152">
 
-
+        <!-- Google Analytics -->
         <script>
         var _gaq = _gaq || [];
         @if(config.googleAnalyticsTrackingId.isDefined) {
@@ -56,11 +55,12 @@
             <!-- End Google Analytics -->
         }
         </script>
+        <!-- End Google Analytics -->
     </head>
 
     <body data-closing-time="@config.closingTimeMinOfDay" class="js-disabled">
-    <script type="text/javascript">document.body.className = document.body.className.replace('js-disabled','js-enabled');</script>
-    @serviceClosingWarning(config.openingTimeMinOfDay, config.closingTimeMinOfDay, config.closingWarnPeriodMins)
+        <script type="text/javascript">document.body.className = document.body.className.replace('js-disabled','js-enabled');</script>
+        @serviceClosingWarning(config.openingTimeMinOfDay, config.closingTimeMinOfDay, config.closingWarnPeriodMins)
         <a href="#main" class="visuallyhidden">Skip to main content</a>
 
         <div id="global-cookie-message">
@@ -99,6 +99,9 @@
                     <div class="footer-meta-inner">
                         <ul>
                             <li><a href="@routes.CookiePolicy.present()" target="_blank">@Messages("footer.cookies")</a></li>
+                            @if(showLanguageSwitch) {
+                                <li>@alternateLanguages(showLanguageSwitch)</li>
+                            }
                             <li><a href="@routes.TermsAndConditions.present()" target="_blank">@Messages("footer.tandc")</a></li>
                             <li><a href="@routes.PrivacyPolicy.present()" target="_blank">@Messages("footer.privacy")</a></li>
                             <li>@{Messages("footer.builtbyintro")}&nbsp;<a href="https://www.gov.uk/government/organisations/driver-and-vehicle-licensing-agency" target="_blank">@{Messages("footer.builtby")}</a></li>
@@ -130,9 +133,6 @@
         @pleaseWait()
 
         <div id="global-app-error" class="app-error hidden"></div>
-
-
-        <!-- Open feedback form with JS if enabled -->
         <script type="text/javascript" src="@controllers.StaticAssets.versioned(config.assetsUrl)("lib/jquery/jquery.min.js")"></script>
         <script type="text/javascript" src="@controllers.StaticAssets.versioned(config.assetsUrl)("lib/vehicles-presentation-common/javascripts/common.js")"></script>
         <script type="text/javascript">
