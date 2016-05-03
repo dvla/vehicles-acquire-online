@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import Common.PrototypeHtml
 import helpers.UnitSpec
 import org.mockito.Mockito.when
@@ -13,17 +13,17 @@ import utils.helpers.Config
 class BeforeYouStartUnitSpec extends UnitSpec {
 
   "present" should {
-    "display the page" in new WithApplication {
+    "display the page" in new TestWithApplication {
       val result = beforeYouStart.present(FakeRequest())
       status(result) should equal(OK)
     }
 
-    "display prototype message when config set to true" in new WithApplication {
+    "display prototype message when config set to true" in new TestWithApplication {
       val result = beforeYouStart.present(FakeRequest())
       contentAsString(result) should include(PrototypeHtml)
     }
 
-    "not display prototype message when config set to false" in new WithApplication {
+    "not display prototype message when config set to false" in new TestWithApplication {
       val request = FakeRequest()
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
@@ -38,7 +38,7 @@ class BeforeYouStartUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to next page after the button is clicked" in new WithApplication {
+    "redirect to next page after the button is clicked" in new TestWithApplication {
       val result = beforeYouStart.submit(FakeRequest())
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))

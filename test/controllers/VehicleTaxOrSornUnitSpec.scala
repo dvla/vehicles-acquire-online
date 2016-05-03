@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornId, SornVehicleId}
@@ -14,13 +14,13 @@ import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{Registratio
 class VehicleTaxOrSornUnitSpec extends UnitSpec {
 
   "present" should {
-    "display the page" in new WithApplication {
+    "display the page" in new TestWithApplication {
       whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
-    "present a pre-poulated form when the vehicle sorn cookie indicates the user has sorned the vehicle" in new WithApplication {
+    "present a pre-poulated form when the vehicle sorn cookie indicates the user has sorned the vehicle" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -29,7 +29,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       content should include("checked") // Sorn checkbox value
     }
 
-    "redirect to vehicle lookup when no new keeper details cookie is in cache" in new WithApplication {
+    "redirect to vehicle lookup when no new keeper details cookie is in cache" in new TestWithApplication {
       val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
       val result = vehicleTaxOrSorn.present(request)
       whenReady(result) { r =>
@@ -37,7 +37,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to vehicle lookup when no vehicle details cookie is in cache" in new WithApplication {
+    "redirect to vehicle lookup when no vehicle details cookie is in cache" in new TestWithApplication {
       val request = FakeRequest().withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
       val result = vehicleTaxOrSorn.present(request)
       whenReady(result) { r =>
@@ -45,7 +45,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       }
     }
 
-    "play back business keeper details as expected" in new WithApplication() {
+    "play back business keeper details as expected" in new TestWithApplication() {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         businessName = Some(BusinessNameValid),
@@ -62,7 +62,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       content should include(s"$EmailValid")
     }
 
-    "play back private keeper details as expected" in new WithApplication() {
+    "play back private keeper details as expected" in new TestWithApplication() {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         firstName = Some(FirstNameValid),
@@ -78,7 +78,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       content should include(s"$EmailValid")
     }
 
-    "play back vehicle details as expected" in new WithApplication {
+    "play back vehicle details as expected" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -91,7 +91,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to next page without sorning the vehicle" in new WithApplication {
+    "redirect to next page without sorning the vehicle" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -102,7 +102,7 @@ class VehicleTaxOrSornUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to next page with sorning the vehicle" in new WithApplication {
+    "redirect to next page with sorning the vehicle" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())

@@ -1,7 +1,7 @@
 package controllers
 
 import com.tzavellas.sse.guice.ScalaModule
-import composition.WithApplication
+import helpers.TestWithApplication
 import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
@@ -44,17 +44,17 @@ class AcquireSuccessUnitSpec extends UnitSpec {
   val testDuration = 7.days.toMillis
 
   "present" should {
-    "display the page with new keeper cached" in new WithApplication {
+    "display the page with new keeper cached" in new TestWithApplication {
       whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
-    "display prototype message when config set to true" in new WithApplication {
+    "display prototype message when config set to true" in new TestWithApplication {
       contentAsString(present) should include(PrototypeHtml)
     }
 
-    "not display prototype message when config set to false" in new WithApplication {
+    "not display prototype message when config set to false" in new TestWithApplication {
       val request = FakeRequest()
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
@@ -66,7 +66,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "redirect to before you start when no completion cookie is present" in new WithApplication {
+    "redirect to before you start when no completion cookie is present" in new TestWithApplication {
       val request = FakeRequest()
       val result = acquireSuccess.present(request)
       whenReady(result) { r =>
@@ -74,7 +74,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "present a full page with private keeper cached details when all cookies are present for new keeper success" in new WithApplication {
+    "present a full page with private keeper cached details when all cookies are present for new keeper success" in new TestWithApplication {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = fakeRequest.withCookies(
@@ -99,7 +99,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       content should include(TransactionIdValid)
     }
 
-    "present a full page with business keeper cached details when all cookies are present for new keeper success" in new WithApplication {
+    "present a full page with business keeper cached details when all cookies are present for new keeper success" in new TestWithApplication {
       val fmt = DateTimeFormat.forPattern("dd/MM/yyyy")
 
       val request = fakeRequest.withCookies(
@@ -123,13 +123,13 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       content should include(TransactionIdValid)
     }
 
-    "offer the survey on first successful dispose" in new WithApplication {
+    "offer the survey on first successful dispose" in new TestWithApplication {
       implicit val config = mockSurveyConfig()
       val acquireSuccess = acquireWithMockConfig(config)
       contentAsString(acquireSuccess.present(requestFullyPopulated)) should include(config.surveyUrl.get)
     }
 
-    "not offer the survey for one just after the initial survey offering" in new WithApplication {
+    "not offer the survey for one just after the initial survey offering" in new TestWithApplication {
       implicit val config = mockSurveyConfig()
       val aMomentAgo = (Instant.now.getMillis - 100).toString
 
@@ -139,7 +139,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       )) should not include config.surveyUrl.get
     }
 
-    "offer the survey one week after the first offering" in new WithApplication {
+    "offer the survey one week after the first offering" in new TestWithApplication {
       implicit val config = mockSurveyConfig()
       val moreThen7daysAgo = (Instant.now.getMillis - config.surveyInterval - 1.minute.toMillis).toString
 
@@ -149,7 +149,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       )) should include(config.surveyUrl.get)
     }
 
-    "not offer the survey less than one week after the first offering" in new WithApplication {
+    "not offer the survey less than one week after the first offering" in new TestWithApplication {
       implicit val config = mockSurveyConfig()
       val lessThen7daysАgo = (Instant.now.getMillis - config.surveyInterval + 1.minute.toMillis).toString
 
@@ -159,7 +159,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       )) should not include config.surveyUrl.get
     }
 
-    "not offer the survey if the survey url is not set in the config" in new WithApplication {
+    "not offer the survey if the survey url is not set in the config" in new TestWithApplication {
       implicit val config: Config = mockSurveyConfig(None)
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val surveyUrl = new SurveyUrl()(clientSideSessionFactory, config, new FakeDateServiceImpl)
@@ -172,7 +172,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
   }
 
   "buyAnother" should {
-    "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
+    "discard the vehicle, new keeper and confirm cookies" in new TestWithApplication {
       val request = fakeRequest
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
@@ -195,7 +195,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the vehicle lookup page" in new WithApplication {
+    "redirect to the vehicle lookup page" in new TestWithApplication {
       val request = fakeRequest
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
@@ -208,7 +208,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
   }
 
   "finish" should {
-    "discard the vehicle, new keeper and confirm cookies" in new WithApplication {
+    "discard the vehicle, new keeper and confirm cookies" in new TestWithApplication {
       val request = fakeRequest
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
@@ -221,7 +221,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "discard the vehicle, new keeper and confirm cookies with ceg identifier" in new WithApplication {
+    "discard the vehicle, new keeper and confirm cookies with ceg identifier" in new TestWithApplication {
       val request = fakeRequest
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
@@ -236,7 +236,7 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the before you start page" in new WithApplication {
+    "redirect to the before you start page" in new TestWithApplication {
       val request = fakeRequest
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())

@@ -2,7 +2,7 @@ package views.acquire
 
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
-import composition.{GlobalLike, TestComposition, TestGlobal, TestHarness}
+import composition.{GlobalWithFilters, TestComposition, TestGlobalWithFilters, TestHarness}
 import helpers.acquire.CookieFactoryForUISpecs
 import helpers.tags.UiTag
 import helpers.UiSpec
@@ -187,8 +187,8 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness with Eve
       }
     }
 
-    object MockAcquireServiceCompositionGlobal extends GlobalLike with TestComposition {
-      override lazy val injector: Injector = TestGlobal.testInjector(new ScalaModule with MockitoSugar {
+    object MockAcquireServiceCompositionGlobal extends GlobalWithFilters with TestComposition {
+      override lazy val injector: Injector = TestGlobalWithFilters.testInjector(new ScalaModule with MockitoSugar {
         override def configure() {
           bind[AcquireWebService].toInstance(countingWebService)
         }

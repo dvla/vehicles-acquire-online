@@ -1,7 +1,7 @@
 package pages
 
 package object acquire {
-   final val applicationContext = "/"
+  final val applicationContext = "/"
 
   def buildAppUrl(urlPart: String) = {
     val appContextWithSlash = if (!applicationContext.endsWith("/")) s"$applicationContext/" else applicationContext

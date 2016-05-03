@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.UnitSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
@@ -18,13 +18,13 @@ import common.testhelpers.CookieHelper.verifyCookieHasBeenDiscarded
 class SuppressedV5CUnitSpec extends UnitSpec {
 
   "present" should {
-    "display the page" in new WithApplication {
+    "display the page" in new TestWithApplication {
       whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
-    "redirect to setup trade details when no cookies are in the request" in new WithApplication {
+    "redirect to setup trade details when no cookies are in the request" in new TestWithApplication {
       whenReady(presentWithNoCookies) { r =>
         r.header.status should equal(SEE_OTHER)
         r.header.headers.get(LOCATION) should equal(Some(SetupTradeDetailsPage.address))
@@ -33,7 +33,7 @@ class SuppressedV5CUnitSpec extends UnitSpec {
   }
 
   "clicking buyAnotherVehicle button" should {
-    "remove all vehicle related cookies and redirect to vehicle lookup page" in new WithApplication {
+    "remove all vehicle related cookies and redirect to vehicle lookup page" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -54,7 +54,7 @@ class SuppressedV5CUnitSpec extends UnitSpec {
   }
 
   "clicking finish button" should {
-    "move to the before you start page and remove cookies" in new WithApplication {
+    "move to the before you start page and remove cookies" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
         .withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddress())

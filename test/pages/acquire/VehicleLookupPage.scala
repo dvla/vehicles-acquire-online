@@ -44,6 +44,7 @@ object VehicleLookupPage extends Page {
                 isVehicleSoldToPrivateIndividual: Boolean = true)
                (implicit driver: WebDriver) = {
     go to VehicleLookupPage
+
     documentReferenceNumber.value = referenceNumber
     VehicleLookupPage.vehicleRegistrationNumber.value = registrationNumber
 

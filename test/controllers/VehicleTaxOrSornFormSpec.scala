@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import helpers.UnitSpec
 import models.VehicleTaxOrSornFormModel.Form.{SelectId, SornId, SornVehicleId}
 
@@ -10,7 +10,7 @@ class VehicleTaxOrSornFormSpec extends UnitSpec {
   final val SornNotSelected = ""
 
   "form" should {
-    "accept when sorn is selected" in new WithApplication {
+    "accept when sorn is selected" in new TestWithApplication {
       formWithValidDefaults().get.sornVehicle should equal(Some("true"))
     }
 

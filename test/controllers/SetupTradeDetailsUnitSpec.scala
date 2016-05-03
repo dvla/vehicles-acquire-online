@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.JsonUtils.deserializeJsonToModel
@@ -25,20 +25,20 @@ import utils.helpers.Config
 class SetupTradeDetailsUnitSpec extends UnitSpec {
 
   "present" should {
-    "display the page" in new WithApplication {
+    "display the page" in new TestWithApplication {
       whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
-   "not contain an identifier cookie if default route" in new WithApplication {
+   "not contain an identifier cookie if default route" in new TestWithApplication {
       whenReady(present) { r =>
         val cookies = fetchCookiesFromHeaders(r)
         cookies.find(_.name == IdentifierCacheKey) should equal(None)
       }
     }
 
-    "contain an identifier cookie of type ceg if ceg route" in new WithApplication {
+    "contain an identifier cookie of type ceg if ceg route" in new TestWithApplication {
       val result = setUpTradeDetails.ceg(FakeRequest())
       whenReady(result) { r =>
         val cookies = fetchCookiesFromHeaders(r)
@@ -46,7 +46,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       }
     }
 
-    "display populated fields when cookie exists" in new WithApplication {
+    "display populated fields when cookie exists" in new TestWithApplication {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
       val result = setUpTradeDetails.present(request)
@@ -55,17 +55,17 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
       content should include(PostcodeValid)
     }
 
-    "display empty fields when cookie does not exist" in new WithApplication {
+    "display empty fields when cookie does not exist" in new TestWithApplication {
       val content = contentAsString(present)
       content should not include TraderBusinessNameValid
       content should not include PostcodeValid
     }
 
-    "display prototype message when config set to true" in new WithApplication {
+    "display prototype message when config set to true" in new TestWithApplication {
       contentAsString(present) should include(PrototypeHtml)
     }
 
-    "not display prototype message when config set to false" in new WithApplication {
+    "not display prototype message when config set to false" in new TestWithApplication {
       val request = FakeRequest()
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
@@ -81,7 +81,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
   }
 
     "submit" should {
-      "redirect to next page when the form is completed successfully" in new WithApplication {
+      "redirect to next page when the form is completed successfully" in new TestWithApplication {
         val request = buildCorrectlyPopulatedRequest()
         val result = setUpTradeDetails.submit(request)
         whenReady(result) { r =>
@@ -99,7 +99,7 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
         }
       }
 
-      "return a bad request if no details are entered" in new WithApplication {
+      "return a bad request if no details are entered" in new TestWithApplication {
         val request = buildCorrectlyPopulatedRequest(dealerName = "", dealerPostcode = "")
         val result = setUpTradeDetails.submit(request)
         whenReady(result) { r =>
@@ -107,13 +107,13 @@ class SetupTradeDetailsUnitSpec extends UnitSpec {
         }
       }
 
-      "replace max length error message for traderBusinessName with standard error message " in new WithApplication {
+      "replace max length error message for traderBusinessName with standard error message " in new TestWithApplication {
         val request = buildCorrectlyPopulatedRequest(dealerName = "a" * (BusinessName.MaxLength + 1))
         val result = setUpTradeDetails.submit(request)
         contentAsString(result) should include("Must be between 2 and 58 characters and only contain valid characters")
       }
 
-      "replace required and min length error messages for traderBusinessName with standard error message " in new WithApplication {
+      "replace required and min length error messages for traderBusinessName with standard error message " in new TestWithApplication {
         val request = buildCorrectlyPopulatedRequest(dealerName = "")
         val result = setUpTradeDetails.submit(request)
         val count = "Must be between 2 and 58 characters and only contain valid characters"

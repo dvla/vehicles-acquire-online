@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
@@ -54,17 +54,17 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   private val saleYear = org.joda.time.LocalDate.now.minusYears(2).getYear.toString
 
   "present" should {
-    "display the page with new keeper cached" in new WithApplication {
+    "display the page with new keeper cached" in new TestWithApplication {
       whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
-    "display prototype message when config set to true" in new WithApplication {
+    "display prototype message when config set to true" in new TestWithApplication {
       contentAsString(present) should include(PrototypeHtml)
     }
 
-    "not display prototype message when config set to false" in new WithApplication {
+    "not display prototype message when config set to false" in new TestWithApplication {
       val request = FakeRequest()
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
@@ -76,7 +76,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       contentAsString(result) should not include PrototypeHtml
     }
 
-    "present a full form when new keeper, vehicle details and vehicle sorn cookies are present for new keeper" in new WithApplication {
+    "present a full form when new keeper, vehicle details and vehicle sorn cookies are present for new keeper" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -90,14 +90,14 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       content should include( s"""value="$YearDateOfSaleValid"""")
     }
 
-    "display empty fields when new keeper complete cookie does not exist" in new WithApplication {
+    "display empty fields when new keeper complete cookie does not exist" in new TestWithApplication {
       val request = FakeRequest()
       val result = completeAndConfirm.present(request)
       val content = contentAsString(result)
       content should not include MileageValid
     }
 
-    "redirect to vehicle lookup when no new keeper details cookie is present" in new WithApplication {
+    "redirect to vehicle lookup when no new keeper details cookie is present" in new TestWithApplication {
       val request = FakeRequest()
       val result = completeAndConfirm.present(request)
       whenReady(result) { r =>
@@ -105,7 +105,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "play back new keeper details as expected" in new WithApplication() {
+    "play back new keeper details as expected" in new TestWithApplication() {
       val request = FakeRequest().
         withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         businessName = Some(BusinessNameValid),
@@ -122,7 +122,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       content should include(s"$EmailValid")
     }
 
-    "play back private keeper details as expected" in new WithApplication() {
+    "play back private keeper details as expected" in new TestWithApplication() {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel(
         firstName = Some(FirstNameValid),
@@ -140,7 +140,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to SetUpTradeDetails when trader details cookie is missing" in new WithApplication {
+    "redirect to SetUpTradeDetails when trader details cookie is missing" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
@@ -154,7 +154,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to VehicleLookup when new keeper details cookie data is missing" in new WithApplication {
+    "redirect to VehicleLookup when new keeper details cookie data is missing" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
@@ -168,7 +168,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to VehicleLookup when vehicle lookup cookie data is missing" in new WithApplication {
+    "redirect to VehicleLookup when vehicle lookup cookie data is missing" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
@@ -182,7 +182,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to VehicleLookup when vehicle and keeper details cookie data is missing" in new WithApplication {
+    "redirect to VehicleLookup when vehicle and keeper details cookie data is missing" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
@@ -196,7 +196,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to VehicleLookup when tax or sorn cookie data is missing" in new WithApplication {
+    "redirect to VehicleLookup when tax or sorn cookie data is missing" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
@@ -210,7 +210,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "replace numeric mileage error message with standard error message" in new WithApplication {
+    "replace numeric mileage error message with standard error message" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest(mileage = "$$")
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -224,7 +224,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
 
-    "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new WithApplication {
+    "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new TestWithApplication {
       // The date of acquisition is 19-10-${saleYear}
       val disposalDate = DateTime.parse(s"20-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
@@ -246,7 +246,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new WithApplication {
+    "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new TestWithApplication {
       // The date of acquisition is 19-10-${saleYear}
       val disposalDate = DateTime.parse(s"18-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
@@ -273,7 +273,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "call the micro service when the date of acquisition is the same as the date of disposal and redirect to the next page" in new WithApplication {
+    "call the micro service when the date of acquisition is the same as the date of disposal and redirect to the next page" in new TestWithApplication {
       // The date of acquisition is 19-10-${saleYear}
       val disposalDate = DateTime.parse(s"19-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
 
@@ -300,7 +300,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to next page when all fields are complete for new keeper" in new WithApplication {
+    "redirect to next page when all fields are complete for new keeper" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -318,7 +318,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-   "redirect to next page when mandatory fields are complete for new keeper" in new WithApplication {
+   "redirect to next page when mandatory fields are complete for new keeper" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -336,7 +336,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to next page when acquire web service returns forbidden" in new WithApplication {
+    "redirect to next page when acquire web service returns forbidden" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -353,7 +353,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "return a bad request if consent is not ticked" in new WithApplication {
+    "return a bad request if consent is not ticked" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest(consent = "")
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
@@ -366,7 +366,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "Render dates in the correct timezone" in new WithApplication {
+    "Render dates in the correct timezone" in new TestWithApplication {
       timeZoneFixture {
         val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
 
@@ -385,7 +385,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "send two internal emails when further action required" in new WithApplication {
+    "send two internal emails when further action required" in new TestWithApplication {
       verifyEmail(
         acquireResponse = acquireResponseFurtherActionRequired,
         keeperEmail = None,
@@ -394,7 +394,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       )
     }
 
-    "not send any confirmation of sale email" in new WithApplication {
+    "not send any confirmation of sale email" in new TestWithApplication {
       verifyEmail(
         keeperEmail = None,
         traderEmail = None,
@@ -402,7 +402,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       )
     }
 
-    "send confirmation of sale email to trader" in new WithApplication {
+    "send confirmation of sale email to trader" in new TestWithApplication {
        verifyEmail(
          keeperEmail = None,
          traderEmail = Some(EmailValid),
@@ -410,7 +410,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
        )
     }
 
-    "send confirmation email to new keeper" in new WithApplication {
+    "send confirmation email to new keeper" in new TestWithApplication {
        verifyEmail(
          keeperEmail = Some(EmailValid),
          traderEmail = None,
@@ -418,7 +418,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
        )
     }
 
-    "send confirmation email to trader and new keeper" in new WithApplication {
+    "send confirmation email to trader and new keeper" in new TestWithApplication {
        verifyEmail(
          keeperEmail = Some(EmailValid),
          traderEmail = Some(EmailValid),

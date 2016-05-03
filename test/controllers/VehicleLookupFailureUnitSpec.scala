@@ -1,7 +1,7 @@
 package controllers
 
 import Common.PrototypeHtml
-import composition.WithApplication
+import helpers.TestWithApplication
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
 import org.mockito.Mockito.when
@@ -14,13 +14,13 @@ import utils.helpers.Config
 class VehicleLookupFailureUnitSpec extends UnitSpec {
 
   "present" should {
-    "display the page" in new WithApplication {
+    "display the page" in new TestWithApplication {
       whenReady(present) { r =>
         r.header.status should equal(OK)
       }
     }
 
-    "redirect to setup trader details on if traderDetailsModel is not in cache" in new WithApplication {
+    "redirect to setup trader details on if traderDetailsModel is not in cache" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
@@ -30,7 +30,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to setup trader details on if bruteForcePreventionViewModel is not in cache" in new WithApplication {
+    "redirect to setup trader details on if bruteForcePreventionViewModel is not in cache" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
@@ -40,7 +40,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to setup trader details on if VehicleLookupFormModelCache is not in cache" in new WithApplication {
+    "redirect to setup trader details on if VehicleLookupFormModelCache is not in cache" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.bruteForcePreventionViewModel())
@@ -50,11 +50,11 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
       }
     }
 
-    "display prototype message when config set to true" in new WithApplication {
+    "display prototype message when config set to true" in new TestWithApplication {
       contentAsString(present) should include(PrototypeHtml)
     }
 
-    "not display prototype message when config set to false" in new WithApplication {
+    "not display prototype message when config set to false" in new TestWithApplication {
       val request = FakeRequest()
       implicit val clientSideSessionFactory = injector.getInstance(classOf[ClientSideSessionFactory])
       implicit val config: Config = mock[Config]
@@ -67,7 +67,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
   }
 
   "submit" should {
-    "redirect to vehicle lookup on submit" in new WithApplication {
+    "redirect to vehicle lookup on submit" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
@@ -77,7 +77,7 @@ class VehicleLookupFailureUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to setup trader details on submit when cache is empty" in new WithApplication {
+    "redirect to setup trader details on submit when cache is empty" in new TestWithApplication {
       val request = FakeRequest()
       val result = vehicleLookupFailure.submit(request)
       whenReady(result) { r =>

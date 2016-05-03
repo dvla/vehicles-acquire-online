@@ -1,6 +1,6 @@
 package controllers
 
-import composition.WithApplication
+import helpers.TestWithApplication
 import helpers.UnitSpec
 import helpers.disposal_of_vehicle.InvalidVRMFormat.allInvalidVrmFormats
 import helpers.disposal_of_vehicle.ValidVRMFormat.allValidVrmFormats
@@ -38,23 +38,23 @@ import webserviceclients.fakes.{FakeDateServiceImpl, FakeResponse}
 class VehicleLookupFormSpec extends UnitSpec {
 
   "form" should {
-    "accept when all fields contain valid responses" in new WithApplication {
+    "accept when all fields contain valid responses" in new TestWithApplication {
       formWithValidDefaults().get.referenceNumber should equal(ReferenceNumberValid)
       formWithValidDefaults().get.registrationNumber should equal(RegistrationNumberValid)
     }
   }
 
   "referenceNumber" should {
-    allInvalidVrmFormats.foreach(vrm => "reject invalid vehicle registration mark : " + vrm in new WithApplication {
+    allInvalidVrmFormats.foreach(vrm => "reject invalid vehicle registration mark : " + vrm in new TestWithApplication {
       formWithValidDefaults(registrationNumber = vrm).errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.restricted.validVrnOnly")
     })
 
-    allValidVrmFormats.foreach(vrm => "accept valid vehicle registration mark : " + vrm in new WithApplication {
+    allValidVrmFormats.foreach(vrm => "accept valid vehicle registration mark : " + vrm in new TestWithApplication {
       formWithValidDefaults(registrationNumber = vrm).get.registrationNumber should equal(vrm)
     })
 
-    "reject if blank" in new WithApplication {
+    "reject if blank" in new TestWithApplication {
       val vehicleLookupFormError = formWithValidDefaults(referenceNumber = "").errors
       val expectedKey = DocumentReferenceNumberId
       
@@ -67,58 +67,58 @@ class VehicleLookupFormSpec extends UnitSpec {
       vehicleLookupFormError(2).message should equal("error.restricted.validNumberOnly")
     }
 
-    "reject if less than min length" in new WithApplication {
+    "reject if less than min length" in new TestWithApplication {
       formWithValidDefaults(referenceNumber = "1234567891").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.minLength")
     }
 
-    "reject if greater than max length" in new WithApplication {
+    "reject if greater than max length" in new TestWithApplication {
       formWithValidDefaults(referenceNumber = "123456789101").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.maxLength")
     }
 
-    "reject if contains letters" in new WithApplication {
+    "reject if contains letters" in new TestWithApplication {
       formWithValidDefaults(referenceNumber = "qwertyuiopl").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.restricted.validNumberOnly")
     }
 
-    "reject if contains special characters" in new WithApplication {
+    "reject if contains special characters" in new TestWithApplication {
       formWithValidDefaults(referenceNumber = "£££££££££££").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.restricted.validNumberOnly")
     }
 
-    "accept if valid" in new WithApplication {
+    "accept if valid" in new TestWithApplication {
       formWithValidDefaults(registrationNumber = RegistrationNumberValid).get.referenceNumber should equal(ReferenceNumberValid)
     }
   }
 
   "registrationNumber" should {
-    "reject if empty" in new WithApplication {
+    "reject if empty" in new TestWithApplication {
       formWithValidDefaults(registrationNumber = "").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.minLength", "error.required", "error.restricted.validVrnOnly")
     }
 
-    "reject if less than min length" in new WithApplication {
+    "reject if less than min length" in new TestWithApplication {
       formWithValidDefaults(registrationNumber = "a").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.minLength", "error.restricted.validVrnOnly")
     }
 
-    "reject if more than max length" in new WithApplication {
+    "reject if more than max length" in new TestWithApplication {
       formWithValidDefaults(registrationNumber = "AB53WERT").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.restricted.validVrnOnly")
     }
 
-    "reject if more than max length 2" in new WithApplication {
+    "reject if more than max length 2" in new TestWithApplication {
       formWithValidDefaults(registrationNumber = "PJ056YYY").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.restricted.validVrnOnly")
     }
 
-    "reject if contains special characters" in new WithApplication {
+    "reject if contains special characters" in new TestWithApplication {
       formWithValidDefaults(registrationNumber = "ab53ab%").errors.flatMap(_.messages) should contain theSameElementsAs
         List("error.restricted.validVrnOnly")
     }
 
-    "accept a selection of randomly generated vrms that all satisfy vrm regex" in new WithApplication {
+    "accept a selection of randomly generated vrms that all satisfy vrm regex" in new TestWithApplication {
       for (i <- 1 to 100) {
         val randomVrm = RandomVrmGenerator.vrm
         formWithValidDefaults(registrationNumber = randomVrm).get.registrationNumber should equal(randomVrm)
