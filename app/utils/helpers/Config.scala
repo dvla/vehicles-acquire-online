@@ -3,8 +3,9 @@ package utils.helpers
 import uk.gov.dvla.vehicles.presentation.common.controllers.VehicleLookupConfig
 import uk.gov.dvla.vehicles.presentation.common.services.SEND.EmailConfiguration
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.utils.helpers.CommonConfig
 
-trait Config extends VehicleLookupConfig {
+trait Config extends VehicleLookupConfig with CommonConfig {
   
   def assetsUrl: Option[String]
 
