@@ -63,7 +63,7 @@ class AcquireSuccess @Inject()()(implicit clientSideSessionFactory: ClientSideSe
   }
 
   def finish = Action { implicit request =>
-    Redirect(routes.BeforeYouStart.present())
+    Redirect("https://www.gov.uk")
       .discardingCookies(AllCacheKeys)
       .withCookie(SurveyRequestTriggerDateCacheKey, dateService.now.getMillis.toString)
   }

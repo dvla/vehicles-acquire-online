@@ -236,14 +236,14 @@ class AcquireSuccessUnitSpec extends UnitSpec {
       }
     }
 
-    "redirect to the before you start page" in new TestWithApplication {
+    "redirect to gov.uk" in new TestWithApplication {
       val request = fakeRequest
         .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
         .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
 
       val result = acquireSuccess.finish(request)
       whenReady(result) { r =>
-        r.header.headers.get(LOCATION) should equal(Some(BeforeYouStartPage.address))
+        r.header.headers.get(LOCATION) should equal(Some("https://www.gov.uk"))
       }
     }
   }
