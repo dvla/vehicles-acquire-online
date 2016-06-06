@@ -1,7 +1,2 @@
-require(['config'], function() {
-    require(["acquire-page-init"], function(acquirePageInit) {
-        $(function() {
-            acquirePageInit.init();
-        });
-    });
-});
+// This file is left intentionally blank.
+// It is only required for r.js (RequireJs optimiser) to run successfully.
