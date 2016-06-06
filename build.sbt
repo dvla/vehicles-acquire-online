@@ -43,8 +43,9 @@ libraryDependencies ++= Seq(
   "com.google.inject" % "guice" % "4.0" withSources() withJavadoc(),
   "com.google.guava" % "guava" % "19.0" withSources() withJavadoc(), // See: http://stackoverflow.com/questions/16614794/illegalstateexception-impossible-to-get-artifacts-when-data-has-not-been-loaded
   "com.tzavellas" % "sse-guice" % "0.7.1" withSources() withJavadoc(), // Scala DSL for Guice
-  "org.webjars" % "requirejs" % "2.1.14-1",
+  "org.webjars" % "requirejs" % "2.1.22",
   // test
+  // The combination of selenium 2.43.0 and phantomjsdriver 1.2.0 works in the Travis build when open sourcing
   "com.github.detro" % "phantomjsdriver" % "1.2.0" % "test" withSources() withJavadoc(),
   "com.github.tomakehurst" % "wiremock" % "1.58" % "test" withSources() withJavadoc() exclude("log4j", "log4j"),
   "junit" % "junit" % "4.11" % "test",
@@ -61,9 +62,9 @@ libraryDependencies ++= Seq(
 pipelineStages := Seq(rjs, digest, gzip)
 
 val myTestOptions =
-  if (System.getProperty("include") != null ) {
+  if (System.getProperty("include") != null) {
     Seq(testOptions in Test += Tests.Argument("include", System.getProperty("include")))
-  } else if (System.getProperty("exclude") != null ) {
+  } else if (System.getProperty("exclude") != null) {
     Seq(testOptions in Test += Tests.Argument("exclude", System.getProperty("exclude")))
   } else Seq.empty[Def.Setting[_]]
 
@@ -79,9 +80,9 @@ javaOptions in Test += System.getProperty("waitSeconds")
 
 concurrentRestrictions in Global := Seq(Tags.limit(Tags.CPU, 4), Tags.limit(Tags.Network, 1000), Tags.limit(Tags.Test, 4))
 
-sbt.Keys.fork in Test := false
+//parallelExecution in Test in acceptanceTestsProject := true
 
-parallelExecution in Test in acceptanceTestsProject := true
+sbt.Keys.fork in Test := false
 
 // Using node to do the javascript optimisation cuts the time down dramatically
 JsEngineKeys.engineType := JsEngineKeys.EngineType.Node
