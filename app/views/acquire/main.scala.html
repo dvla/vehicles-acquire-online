@@ -52,7 +52,7 @@
     <li>@{Messages("footer.builtbyintro")}&nbsp;<a href="https://www.gov.uk/government/organisations/driver-and-vehicle-licensing-agency" target="_blank">@{Messages("footer.builtby")}</a></li>
 }
 
-@defining(routes.Assets.versioned("").url) { assetsPrefix =>
+@defining(controllers.StaticAssets.versioned(config.assetsUrl)("")) { assetsPrefix =>
 
 @govTemplate(
     head = head(title, assetsPrefix, config.googleAnalyticsTrackingId),
