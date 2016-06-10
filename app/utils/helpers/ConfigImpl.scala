@@ -15,8 +15,6 @@ import common.webserviceclients.emailservice.From
 
 class ConfigImpl extends Config {
 
-  private val notFound = "NOT FOUND"
-
   // Prototype message in html
   override val isPrototypeBannerVisible: Boolean = getProperty[Boolean]("prototype.disclaimer")
 
@@ -32,7 +30,7 @@ class ConfigImpl extends Config {
   // Opening and closing times
   override val openingTimeMinOfDay: Int = getProperty[Int]("openingTimeMinOfDay")
   override val closingTimeMinOfDay: Int = getProperty[Int]("closingTimeMinOfDay")
-  override val closingWarnPeriodMins: Int = getOptionalProperty[Int]("closingWarnPeriodMins").getOrElse(15)
+  override val closingWarnPeriodMins: Int = getOptionalProperty[Int]("closingWarnPeriodMins").getOrElse(ConfigImpl.DEFAULT_CLOSING_WARN_PERIOD)
 
   // Web headers
   override val applicationCode: String = getProperty[String]("webHeader.applicationCode")
@@ -43,9 +41,9 @@ class ConfigImpl extends Config {
   override val contactId: Long = getProperty[Long]("webHeader.contactId")
 
   override val emailServiceMicroServiceUrlBase: String =
-    getOptionalProperty[String]("emailServiceMicroServiceUrlBase").getOrElse(notFound)
+    getOptionalProperty[String]("emailServiceMicroServiceUrlBase").getOrElse(ConfigImpl.DEFAULT_BASE_URL)
   override val emailServiceMsRequestTimeout: Int =
-    getOptionalProperty[Int]("emailService.ms.requesttimeout").getOrElse(10000)
+    getOptionalProperty[Int]("emailService.ms.requesttimeout").getOrElse(ConfigImpl.DEFAULT_MS_REQ_TIMEOUT)
 
   override val emailConfiguration: EmailConfiguration = EmailConfiguration(
     From(getProperty[String]("email.senderAddress"), "DO-NOT-REPLY"),
@@ -59,4 +57,10 @@ class ConfigImpl extends Config {
 
   override val surveyUrl: Option[String] = getOptionalProperty[String]("survey.url")
   override val surveyInterval: Long = getDurationProperty("survey.interval")
+}
+
+object ConfigImpl {
+  final val DEFAULT_BASE_URL = "NOT FOUND"
+  final val DEFAULT_MS_REQ_TIMEOUT = 10000 // in millis
+  final val DEFAULT_CLOSING_WARN_PERIOD = 15 // in minutes
 }
