@@ -20,8 +20,7 @@ import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress
 import pages.common.ErrorPanel
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.fakes.FakeAddressLookupService
-import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import SetupTradeDetailsPage.PostcodeValid
 
 class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "business choose your address page" should {
@@ -52,7 +51,7 @@ class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
 
     "display the postcode entered in the previous page" taggedAs UiTag in new WebBrowserForSelenium {
       SetupTradeDetailsPage.happyPath()
-      pageSource.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
+      pageSource.contains(PostcodeValid.toUpperCase) should equal(true)
     }
 
     "display expected addresses in dropdown when address service returns addresses" taggedAs UiTag in new WebBrowserForSelenium {

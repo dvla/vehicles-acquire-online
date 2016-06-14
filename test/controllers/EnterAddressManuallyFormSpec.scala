@@ -10,12 +10,12 @@ import common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId
 import common.views.models.AddressLinesViewModel.Form.Line2Id
 import common.views.models.AddressLinesViewModel.Form.Line3Id
 import common.views.models.AddressLinesViewModel.Form.LineMaxLength
+import pages.acquire.SetupTradeDetailsPage
 import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.PostTownId
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
-import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
 
 class EnterAddressManuallyFormSpec extends UnitSpec {
 
@@ -154,7 +154,7 @@ class EnterAddressManuallyFormSpec extends UnitSpec {
                                     line2: String = Line2Valid,
                                     line3: String = Line3Valid,
                                     postTown: String = PostTownValid,
-                                    postCode: String = PostcodeValid) = {
+                                    postCode: String = SetupTradeDetailsPage.PostcodeValid) = {
     injector.getInstance(classOf[EnterAddressManually]).form.bind(
       Map(
         s"$AddressAndPostcodeId.$AddressLinesId.$BuildingNameOrNumberId" -> buildingNameOrNumber,

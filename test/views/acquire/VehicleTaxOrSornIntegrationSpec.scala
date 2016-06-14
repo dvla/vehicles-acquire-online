@@ -15,7 +15,7 @@ import pages.acquire.AcquireSuccessPage
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import webserviceclients.fakes.FakeAddressLookupService.{addressWithUprn, addressWithoutUprn}
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import org.scalatest.selenium.WebBrowser.{click, currentUrl, go, pageTitle, pageSource}
 
 class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
@@ -78,12 +78,12 @@ class VehicleTaxOrSornIntegrationSpec extends UiSpec with TestHarness{
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
-        dealerDetails(addressWithUprn).
+        dealerDetails(addressWithoutUprn).
         vehicleAndKeeperDetails().
         privateKeeperDetails().
         newKeeperDetails(
           title = Some(TitleType(1,"")),
-          address = addressWithUprn
+          address = addressWithoutUprn
         ).vehicleTaxOrSornFormModel()
 
       go to VehicleTaxOrSornPage

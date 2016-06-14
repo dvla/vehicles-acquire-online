@@ -31,8 +31,6 @@ import utils.helpers.Config
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddressNotFound
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.responseValidForUprnToAddressNotFound
 import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.selectedAddress
 
 class BusinessChooseYourAddressUnitSpec extends UnitSpec {
@@ -47,7 +45,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
     "display selected field when cookie exists" in new TestWithApplication {
       val request = FakeRequest()
         .withCookies(CookieFactoryForUnitSpecs.setupTradeDetails())
-        .withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddressUseUprn())
+        .withCookies(CookieFactoryForUnitSpecs.businessChooseYourAddressUseAddress())
       val result = businessChooseYourAddressController(uprnFound = true).present(request)
       val content = contentAsString(result)
       content should include(TraderBusinessNameValid)
@@ -190,8 +188,7 @@ class BusinessChooseYourAddressUnitSpec extends UnitSpec {
   private def businessChooseYourAddressController(uprnFound: Boolean = true,
                                         isPrototypeBannerVisible: Boolean = true) = {
     val responsePostcode = if (uprnFound) responseValidForPostcodeToAddress else responseValidForPostcodeToAddressNotFound
-    val responseUprn = if (uprnFound) responseValidForUprnToAddress else responseValidForUprnToAddressNotFound
-    val fakeWebService = new FakeAddressLookupWebServiceImpl(responsePostcode, responseUprn)
+    val fakeWebService = new FakeAddressLookupWebServiceImpl(responsePostcode)
     val healthStatsMock = mock[HealthStats]
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
       override def answer(invocation: InvocationOnMock): Future[_] = invocation.getArguments()(1).asInstanceOf[Future[_]]

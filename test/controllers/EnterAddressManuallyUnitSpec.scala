@@ -29,7 +29,7 @@ import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberVali
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
-import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import SetupTradeDetailsPage.PostcodeValid
 
 class EnterAddressManuallyUnitSpec extends UnitSpec {
 

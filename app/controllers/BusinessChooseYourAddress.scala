@@ -80,17 +80,11 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     )
   }
 
-  private def index(addresses: Seq[(String, String)]) = {
-    addresses.map { case (uprn, address) => address}. // Extract the address.
-      zipWithIndex. // Add an index for each address
-      map { case (address, index) => (index.toString, address)} // Flip them around so index comes first.
-  }
-
   private def lookupAddressByPostcodeThenIndex(model: BusinessChooseYourAddressFormModel,
                                                setupBusinessDetailsForm: SetupTradeDetailsFormModel)
                                               (implicit request: Request[_], session: ClientSideSession): Future[Result] = {
     fetchAddresses(setupBusinessDetailsForm)(session, request2lang).map { addresses =>
-        val lookedUpAddress = model.uprnSelected
+        val lookedUpAddress = model.addressSelected
         val addressModel = VmAddressModel.from(lookedUpAddress)
         nextPage(model, setupBusinessDetailsForm.traderBusinessName, addressModel, setupBusinessDetailsForm.traderEmail)
     }

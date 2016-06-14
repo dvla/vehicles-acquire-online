@@ -20,7 +20,7 @@ import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.NewKeeperChooseYourAddressPage.{back, manualAddress, sadPath, happyPath}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import webserviceclients.fakes.FakeAddressLookupService
-import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import pages.acquire.SetupTradeDetailsPage.PostcodeValid
 import pages.common.Feedback.AcquireEmailFeedbackLink
 
 final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
@@ -104,14 +104,14 @@ final class NewKeeperChooseYourAddressIntegrationSpec extends UiSpec with TestHa
       go to BeforeYouStartPage
       cacheSetupPrivateKeeper
       go to NewKeeperChooseYourAddressPage
-      pageSource.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
+      pageSource.contains(PostcodeValid.toUpperCase) should equal(true)
     }
 
     "display the postcode entered in the previous page for a new business keeper" taggedAs UiTag in new WebBrowserForSelenium {
       go to BeforeYouStartPage
       cacheSetupBusinessKeeper
       go to NewKeeperChooseYourAddressPage
-      pageSource.contains(FakeAddressLookupService.PostcodeValid.toUpperCase) should equal(true)
+      pageSource.contains(PostcodeValid.toUpperCase) should equal(true)
     }
 
     "display expected addresses in dropdown when address service returns addresses for a new private keeper" taggedAs UiTag in new WebBrowserForSelenium {

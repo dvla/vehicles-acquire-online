@@ -60,8 +60,7 @@ private class TestModule() extends ScalaModule with MockitoSugar {
     bind[AddressLookupService].to[uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.AddressLookupServiceImpl]
 
     val fakeWebServiceImpl = new FakeAddressLookupWebServiceImpl(
-      responseOfPostcodeWebService = FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress,
-      responseOfUprnWebService = FakeAddressLookupWebServiceImpl.responseValidForUprnToAddress
+      responseOfPostcodeWebService = FakeAddressLookupWebServiceImpl.responseValidForPostcodeToAddress
     )
     bind[AddressLookupWebService].toInstance(fakeWebServiceImpl)
     bind[DateTimeZoneService].toInstance(new DateTimeZoneServiceImpl)

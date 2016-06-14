@@ -24,8 +24,8 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.healthstats.He
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.{VehicleAndKeeperLookupFailureResponse, VehicleAndKeeperLookupRequest, VehicleAndKeeperLookupServiceImpl, VehicleAndKeeperLookupSuccessResponse, VehicleAndKeeperLookupWebService}
 import utils.helpers.Config
 import views.acquire.VehicleLookup.{ResetTraderDetailsId, VehicleSoldTo_Business, VehicleSoldTo_Private}
-import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, TraderBusinessNameValid}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
+import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.selectedAddress
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, vehicleDetailsResponseSuccess, vehicleDetailsResponseUnhandledException}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.{VrmThrows, responseFirstAttempt, responseSecondAttempt}
@@ -70,12 +70,12 @@ class VehicleLookupUnitSpec extends UnitSpec {
       val result = vehicleLookupResponseGenerator().present(request)
       val content = contentAsString(result)
 
-      content should include(TraderBusinessNameValid)
+      content should include(SetupTradeDetailsPage.TraderBusinessNameValid)
       content should include(BuildingNameOrNumberValid)
       content should include(Line2Valid)
       content should include(Line3Valid)
       content should include(PostTownValid)
-      content should include(webserviceclients.fakes.FakeAddressLookupService.PostcodeValid)
+      content should include(SetupTradeDetailsPage.PostcodeValid)
     }
 
     "display trader email captured in previous pages" in new TestWithApplication {
@@ -165,7 +165,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
 
     "redirect to PrivateKeeperDetails when submit button clicked and Private Individual is selected" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Private)
-        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(PrivateKeeperDetailsPage.address))
@@ -173,7 +173,7 @@ class VehicleLookupUnitSpec extends UnitSpec {
 
     "redirect to BusinessKeeperDetails when submit button clicked and Business is selected" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest(ReferenceNumberValid, RegistrationNumberValid, VehicleSoldTo_Business)
-        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
       val result = vehicleLookupResponseGenerator().submit(request)
 
       result.futureValue.header.headers.get(LOCATION) should equal(Some(BusinessKeeperDetailsPage.address))
@@ -197,9 +197,9 @@ class VehicleLookupUnitSpec extends UnitSpec {
 
     "remove all business keeper cookies when private keeper is selected" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest()
-        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.businessKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress(selectedAddress.toString))
 
       val result = vehicleLookupResponseGenerator().submit(request)
       whenReady(result) { r =>
@@ -210,9 +210,9 @@ class VehicleLookupUnitSpec extends UnitSpec {
 
     "remove all private keeper cookies when business keeper is selected" in new TestWithApplication {
       val request = buildCorrectlyPopulatedRequest(soldTo = VehicleSoldTo_Business)
-        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(uprn = Some(UprnValid)))
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
         .withCookies(CookieFactoryForUnitSpecs.privateKeeperDetailsModel())
-        .withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperChooseYourAddress(selectedAddress.toString))
 
       val result = vehicleLookupResponseGenerator().submit(request)
       whenReady(result) { r =>

@@ -26,7 +26,7 @@ import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormM
 import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
 import uk.gov.dvla.vehicles.presentation.common.views.widgetdriver.Wait
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 
 class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
 
@@ -201,7 +201,7 @@ class VehicleLookupIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
-        dealerDetails(addressWithUprn)
+        dealerDetails(addressWithoutUprn)
 
       go to VehicleLookupPage
       click on back

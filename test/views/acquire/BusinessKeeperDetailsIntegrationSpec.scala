@@ -14,7 +14,7 @@ import pages.acquire.{BeforeYouStartPage, BusinessKeeperDetailsPage, NewKeeperCh
 import pages.acquire.BusinessKeeperDetailsPage.{navigate, back}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 
 class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
 
@@ -78,7 +78,7 @@ class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
-        dealerDetails(addressWithUprn).
+        dealerDetails(addressWithoutUprn).
         vehicleAndKeeperDetails()
 
       go to BusinessKeeperDetailsPage

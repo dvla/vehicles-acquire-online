@@ -22,8 +22,6 @@ object NewKeeperChooseYourAddressPage extends Page {
   final override val title = "Select new keeper address"
   val selectedAddressLine = "presentationProperty stub, 123, property stub, street stub, town stub, area stub, QQ99QQ"
 
-  //final val titleCy = "Dewiswch eich cyfeiriad masnach"
-
   def chooseAddress(implicit driver: WebDriver): SingleSel = singleSel(id(AddressSelectId))
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get

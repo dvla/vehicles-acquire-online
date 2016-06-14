@@ -3,14 +3,15 @@ package controllers
 import Common.PrototypeHtml
 import helpers.JsonUtils.deserializeJsonToModel
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.{UnitSpec, TestWithApplication}
+import helpers.{TestWithApplication, UnitSpec}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.EnterAddressManuallyFormModel.Form.AddressAndPostcodeId
 import org.mockito.Mockito.when
-import pages.acquire.{VehicleLookupPage, VehicleTaxOrSornPage}
+import pages.acquire.{SetupTradeDetailsPage, VehicleLookupPage, VehicleTaxOrSornPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
+
 import scala.concurrent.Future
 import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
 import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
@@ -28,7 +29,7 @@ import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberVali
 import webserviceclients.fakes.FakeAddressLookupService.Line2Valid
 import webserviceclients.fakes.FakeAddressLookupService.Line3Valid
 import webserviceclients.fakes.FakeAddressLookupService.PostTownValid
-import webserviceclients.fakes.FakeAddressLookupService.PostcodeValid
+import SetupTradeDetailsPage.PostcodeValid
 
 class NewKeeperEnterAddressManuallyUnitSpec extends UnitSpec {
   "present" should {

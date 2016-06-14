@@ -17,7 +17,7 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
 import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, LastNameInvalid, TitleInvalid}
 import pages.acquire.PrivateKeeperDetailsPage.{DriverNumberInvalid, PostcodeInvalid}
@@ -129,7 +129,7 @@ final class PrivateKeeperDetailsIntegrationSpec extends UiSpec with TestHarness 
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
-        dealerDetails(addressWithUprn).
+        dealerDetails(addressWithoutUprn).
         vehicleAndKeeperDetails()
 
       go to PrivateKeeperDetailsPage

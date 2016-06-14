@@ -53,7 +53,7 @@ import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.webserviceclients.common.MicroserviceResponse
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.{selectedAddress, UprnValid}
+import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.selectedAddress
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.ReferenceNumberValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.RegistrationNumberValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.TransactionIdValid
@@ -101,15 +101,15 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def businessChooseYourAddressUseUprn(uprnSelected: String = selectedAddress): Cookie = {
+  def businessChooseYourAddressUseAddress(addressSelected: String = selectedAddress): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressFormModel(uprnSelected = uprnSelected)
+    val value = BusinessChooseYourAddressFormModel(addressSelected = addressSelected)
     createCookie(key, value)
   }
 
-  def businessChooseYourAddress(uprnSelected: String = BusinessChooseYourAddressPage.selectedAddress): Cookie = {
+  def businessChooseYourAddress(addressSelected: String = BusinessChooseYourAddressPage.selectedAddress): Cookie = {
     val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressFormModel(uprnSelected = uprnSelected)
+    val value = BusinessChooseYourAddressFormModel(addressSelected = addressSelected)
     createCookie(key, value)
   }
 
@@ -149,8 +149,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def traderDetailsModel(uprn: Option[Long] = None,
-                         buildingNameOrNumber: String = BuildingNameOrNumberValid,
+  def traderDetailsModel(buildingNameOrNumber: String = BuildingNameOrNumberValid,
                          line2: String = Line2Valid,
                          line3: String = Line3Valid,
                          postTown: String = PostTownValid,
@@ -160,7 +159,6 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     val value = TraderDetailsModel(
       traderName = TraderBusinessNameValid,
       traderAddress = AddressModel(
-        uprn = uprn,
         address = Seq(buildingNameOrNumber, line2, line3, postTown, traderPostcode)
       ),
       traderEmail = traderEmail
@@ -286,17 +284,12 @@ object CookieFactoryForUnitSpecs extends TestComposition {
     createCookie(key, value)
   }
 
-  def newKeeperChooseYourAddressUseUprn(uprnSelected: String = UprnValid.toString): Cookie = {
+  def newKeeperChooseYourAddress(addressSelected: String): Cookie = {
     val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
-    val value = NewKeeperChooseYourAddressFormModel(uprnSelected = uprnSelected)
+    val value = NewKeeperChooseYourAddressFormModel(addressSelected)
     createCookie(key, value)
   }
 
-  def newKeeperChooseYourAddress(uprnSelected: String = BusinessChooseYourAddressPage.selectedAddress): Cookie = {
-    val key = NewKeeperChooseYourAddressFormModel.newKeeperChooseYourAddressCacheKey
-    val value = NewKeeperChooseYourAddressFormModel(uprnSelected = uprnSelected)
-    createCookie(key, value)
-  }
   def newKeeperDetailsModel(title: Option[TitleType] = None,
                             firstName: Option[String] = None,
                             lastName: Option[String] = None,
@@ -306,7 +299,6 @@ object CookieFactoryForUnitSpecs extends TestComposition {
                             fleetNumber: Option[String] = None,
                             email: Option[String] = None,
                             isBusinessKeeper: Boolean = false,
-                            uprn: Option[Long] = None,
                             buildingNameOrNumber: String = BuildingNameOrNumberValid,
                             line2: String = Line2Valid,
                             line3: String = Line3Valid,
@@ -321,7 +313,7 @@ object CookieFactoryForUnitSpecs extends TestComposition {
       driverNumber = driverNumber,
       businessName = businessName,
       fleetNumber = fleetNumber,
-      address = AddressModel(uprn = uprn, address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
+      address = AddressModel(address = Seq(buildingNameOrNumber, line2, line3, postTown, postcode)),
       email = email,
       isBusinessKeeper = isBusinessKeeper,
       displayName = if (businessName.isEmpty) firstName + " " + lastName

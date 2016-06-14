@@ -20,7 +20,6 @@ import play.api.Play
 import play.api.Play.current
 import play.api.libs.json.{Json, Writes}
 import uk.gov.dvla.vehicles.presentation.common
-import common.clientsidesession.ClientSideSessionFactory
 import common.controllers.AlternateLanguages.{CyId, EnId}
 import common.mappings.TitleType
 import common.model.BruteForcePreventionModel.bruteForcePreventionViewModelCacheKey
@@ -40,7 +39,6 @@ import common.views.models.{AddressAndPostcodeViewModel, AddressLinesViewModel}
 import common.webserviceclients.common.MicroserviceResponse
 import views.acquire.VehicleLookup.VehicleSoldTo_Private
 import webserviceclients.fakes.FakeAddressLookupService.{BuildingNameOrNumberValid, Line2Valid, Line3Valid, PostTownValid, addressWithoutUprn}
-import webserviceclients.fakes.FakeAddressLookupWebServiceImpl.UprnValid
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{ReferenceNumberValid, RegistrationNumberValid, TransactionIdValid}
 import webserviceclients.fakes.FakeVehicleAndKeeperLookupWebService.{TransactionTimestampValid, VehicleMakeValid, VehicleModelValid}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
@@ -82,13 +80,6 @@ object CookieFactoryForUISpecs {
       traderPostcode = traderPostcode,
       traderEmail = traderEmail
     )
-    addCookie(key, value)
-    this
-  }
-
-  def businessChooseYourAddress(uprn: Long = UprnValid)(implicit webDriver: WebDriver) = {
-    val key = BusinessChooseYourAddressCacheKey
-    val value = BusinessChooseYourAddressFormModel(uprnSelected = uprn.toString)
     addCookie(key, value)
     this
   }

@@ -47,7 +47,7 @@ import common.webserviceclients.fakes.FakeAcquireWebServiceImpl.SimulateForbidde
 import common.webserviceclients.fakes.FakeAcquireWebServiceImpl.SimulateMicroServiceUnavailable
 import common.webserviceclients.fakes.FakeAcquireWebServiceImpl.SimulateSoapEndpointFailure
 import common.webserviceclients.acquire.{AcquireRequestDto, AcquireWebService}
-import webserviceclients.fakes.FakeAddressLookupService.addressWithUprn
+import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import webserviceclients.fakes.FakeDateServiceImpl.TodayDay
 import webserviceclients.fakes.FakeDateServiceImpl.TodayMonth
 import webserviceclients.fakes.FakeDateServiceImpl.TodayYear
@@ -329,12 +329,12 @@ class CompleteAndConfirmIntegrationSpec extends UiSpec with TestHarness with Eve
       go to BeforeYouStartPage
       CookieFactoryForUISpecs.
         setupTradeDetails().
-        dealerDetails(addressWithUprn).
+        dealerDetails(addressWithoutUprn).
         vehicleAndKeeperDetails().
         privateKeeperDetails().
         newKeeperDetails(
           title = Some(TitleType(1,"")),
-          address = addressWithUprn
+          address = addressWithoutUprn
         ).vehicleTaxOrSornFormModel()
         .preventGoingToCompleteAndConfirmPageCookie()
 

@@ -197,14 +197,8 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
   def back = Action { implicit request =>
     request.cookies.getModel[NewKeeperDetailsViewModel] match {
       case Some(keeperDetails) =>
-        if (keeperDetails.address.uprn.isDefined) {
-          logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.NewKeeperChooseYourAddress.present()}")
-          Redirect(routes.NewKeeperChooseYourAddress.present())
-        }
-        else {
           logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.NewKeeperEnterAddressManually.present()}")
           Redirect(routes.NewKeeperEnterAddressManually.present())
-        }
       case None =>
         logMessage(request.cookies.trackingId(), Debug, s"Redirecting to ${routes.VehicleLookup.present()}")
         Redirect(routes.VehicleLookup.present())
