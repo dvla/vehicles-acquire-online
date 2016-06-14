@@ -35,9 +35,8 @@ class BusinessChooseYourAddressFormSpec extends UnitSpec {
     }
   }
 
-  private def businessChooseYourAddressWithFakeWebService(uprnFound: Boolean = true) = {
-    val responsePostcode = if (uprnFound) responseValidForPostcodeToAddress
-    else responseValidForPostcodeToAddressNotFound
+  private def businessChooseYourAddressWithFakeWebService() = {
+    val responsePostcode = responseValidForPostcodeToAddress
     val fakeWebService = new FakeAddressLookupWebServiceImpl(responsePostcode)
     val healthStatsMock = mock[HealthStats]
     when(healthStatsMock.report(anyString)(any[Future[_]])).thenAnswer(new Answer[Future[_]] {
