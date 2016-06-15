@@ -76,24 +76,21 @@
                         case None => Messages("acquire_success.vehicle_details.mileage_not_entered")
                     })
                 )
+                additionalPlaybackItems += (
+                    Messages("acquire_success.vehicle_details.taxOrSorn") -> {
+                    if(viewModel.vehicleSorn.select != "S") {
+                        <p class="tax-or-sorn">{Messages("acquire_success.vehicle_details.sornNotEntered")}</p>
+                    } else {
+                        <p class="tax-or-sorn">{Messages(
+                            "acquire_success.vehicle_details.sornEntered",
+                            viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy"))}</p>
+                        <p class="tax-or-sorn">{Messages("acquire_success.vehicle_details.sornEntered.p1")}</p>
+                    }
+                    }.mkString("")
+                )
             },
             List("related")
-        ){
-            <dt>@Messages("acquire_success.vehicle_details.taxOrSorn")</dt>
-            @if(viewModel.vehicleSorn.select != "S") {
-                <dt class="tax-or-sorn"><strong>@Messages("acquire_success.vehicle_details.sornNotEntered")</strong></dt>
-            } else {
-                <dt class="tax-or-sorn"><strong>
-
-                @Messages(
-                    "acquire_success.vehicle_details.sornEntered",
-                    viewModel.completeAndConfirmResponseModel.transactionTimestamp.toString("dd/MM/yyyy")
-                )
-
-                </strong></dt>
-                <dt class="word-wrap-only tax-or-sorn"><strong>@Messages("acquire_success.vehicle_details.sornEntered.p1")</strong></dt>
-            }
-        }
+        )()
 
         <div class="acquire-success-summary-playback">
             <div class="vehicle-sold-by">

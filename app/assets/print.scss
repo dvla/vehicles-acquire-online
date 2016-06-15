@@ -2,35 +2,8 @@
 
 @import "../../target/web/web-modules/main/webjars/lib/vehicles-presentation-common/scss/_print.scss";
 
-.vehicles-acquire-online {
-    padding: 20px;
-    margin-bottom: 0;
-}
-
-.vehicle-details-header {
-    padding-top: 20px;
-}
-
-.playback {
-    dd {
-        text-transform: uppercase;
-    }
-}
-
-.alert-warning,
-.transaction-details.desktop-only {
+.alert-warning {
     display: none;
 }
+
 .alert-complete .alert-warning { display: block; }
-
-.mobile-only {
-    &.vehicle-sold-by {
-        display: none;
-    }
-}
-
-.please-wait-overlay,
-.please-wait-overlay h2,
-.serviceClosingWarning{
-    display: none !important;
-}
