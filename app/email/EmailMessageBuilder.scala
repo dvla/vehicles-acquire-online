@@ -2,6 +2,7 @@ package email
 
 import java.text.SimpleDateFormat
 import org.joda.time.DateTime
+import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 
 /**
@@ -16,8 +17,9 @@ object EmailMessageBuilder {
                                      transactionId: String, imagesPath: String,
                                      transactionTimestamp: DateTime): Contents = {
     Contents(
-      buildHtml(vehicleDetails, imagesPath, buildNewKeeperHtml(vehicleDetails, transactionId, imagesPath)),
-      buildText(buildNewKeeperText(vehicleDetails, transactionId))
+      buildHtml(vehicleDetails.registrationNumber, imagesPath,
+        buildNewKeeperHtml(vehicleDetails.registrationNumber, transactionId)),
+      buildText(buildNewKeeperText(vehicleDetails.registrationNumber, transactionId))
     )
   }
 
@@ -27,12 +29,13 @@ object EmailMessageBuilder {
     val transactionTimestampStr = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(transactionTimestamp.toDate)
 
     Contents(
-      buildHtml(vehicleDetails, imagesPath, buildTraderHtml(vehicleDetails, transactionId, transactionTimestampStr)),
-      buildText(buildTraderText(vehicleDetails, transactionId, transactionTimestampStr))
+      buildHtml(vehicleDetails.registrationNumber, imagesPath,
+        buildTraderHtml(vehicleDetails.registrationNumber, transactionId, transactionTimestampStr)),
+      buildText(buildTraderText(vehicleDetails.registrationNumber, transactionId, transactionTimestampStr))
     )
   }
 
-  private def buildHtml(vehicleDetails: VehicleAndKeeperDetailsModel,
+  private def buildHtml(regNumber: String,
                         imagesPath: String,
                         htmlContent: String): String =
 
@@ -43,7 +46,7 @@ object EmailMessageBuilder {
        |<head>
        |    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
        |    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-       |    <title>${vehicleDetails.registrationNumber} Confirmation of new vehicle keeper</title>
+       |    <title>${regNumber} ${Messages("email.title.keeper")}</title>
        |</head>
        |
        |<body style="width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0;">
@@ -87,16 +90,16 @@ object EmailMessageBuilder {
        |                    <tr>
        |                        <td style="border-collapse: collapse;">
        |
-       |                            <p><strong style="text-decoration: underline">This is an automated email - Please do not reply as emails received at this address cannot be responded to.</strong></p>
+       |                            <p><strong style="text-decoration: underline">${Messages("email.template.line1")}</strong></p>
        |$htmlContent
        |
-       |                            <p>For more information on driving and transport go to <a href="http://www.gov.uk/browse/driving" target="_blank">www.gov.uk/browse/driving</a>.</p>
+       |                            <p>${Messages("email.template.line2Html")}</p>
        |
-       |                            <p>You may wish to save or print this email confirmation for your records.</p>
+       |                            <p>${Messages("email.template.line3")}</p>
        |
-       |                            <p>Yours sincerely <br />
-       |                            Rohan Gye<br />
-       |                            Vehicles Service Manager
+       |                            <p>${Messages("email.signature.p1")}<br>
+       |                            ${Messages("email.signature.p2")}<br>
+       |                            ${Messages("email.signature.p3")}
        |                            </p>
        |
        |                </table>
@@ -109,87 +112,84 @@ object EmailMessageBuilder {
        |</html>
     """.stripMargin
 
-  private def buildNewKeeperHtml(vehicleDetails: VehicleAndKeeperDetailsModel,
-                                 transactionId: String, imagesPath: String): String =
+  private def buildNewKeeperHtml(regNumber: String,
+                                 transactionId: String): String =
     s"""
-       |                            <p>DVLA have been notified electronically that you are now the new keeper of Vehicle Registration Number: <strong>${vehicleDetails.registrationNumber}</strong></p>
+       |                            <p>${Messages("email.newKeeper.p1")} <strong>${regNumber}</strong></p>
        |
-       |                            <p>The online Transaction ID is <strong>$transactionId</strong></p>
+       |                            <p>${Messages("email.newKeeper.p2")} <strong>${transactionId}</strong></p>
        |
-       |                            <p>You should receive your new V5C registration certificate (logbook) within 2 weeks.</p>
+       |                            <p>${Messages("email.newKeeper.p3")}</p>
        |
-       |                            <p>Since 1st October 2014, vehicle tax can no longer be transferred as part of the sale. This is because the seller will automatically receive a refund of any remaining tax.</p>
+       |                            <p>${Messages("email.newKeeper.p4")}</p>
        |
-       |                            <p>You must tax this vehicle before it is driven on the road, tax now at <a href="http://www.gov.uk/vehicletax" target="_blank">www.gov.uk/vehicletax</a>.</p>
+       |                            <p>${Messages("email.newKeeper.p5Html")}</p>
        |
-       |                            <p>If you do not want to tax you can make a SORN declaration now at <a href="http://www.gov.uk/sorn" target="_blank">www.gov.uk/sorn</a>.</p>
+       |                            <p>${Messages("email.newKeeper.p6Html")}</p>
        |
     """.stripMargin
 
-  private def buildTraderHtml(vehicleDetails: VehicleAndKeeperDetailsModel,
+  private def buildTraderHtml(regNumber: String,
                               transactionId: String,
                               transactionTimestamp: String): String =
-
     s"""
-       |                            <p>Thank you for using DVLA’s online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C registration certificate (logbook) as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.</p>
+       |                            <p>${Messages("email.trader.p1")}</p>
        |
-       |                            <p>The application details are:</p>
+       |                            <p>${Messages("email.txndetails.p1")}</p>
        |
-       |                            <p>
-       |                            Vehicle registration number: <strong>${vehicleDetails.registrationNumber}</strong><br>
-       |                            Transaction ID: <strong>$transactionId</strong><br>
-       |                            Application made on: <strong>$transactionTimestamp</strong>
-       |                            </p>
+       |                            <p>${Messages("email.txndetails.p2")} <strong>${regNumber}</strong>
+       |                            <br>${Messages("email.txndetails.p3")} <strong>${transactionId}</strong>
+       |                            <br>${Messages("email.txndetails.p4")} <strong>${transactionTimestamp}</strong></p>
        |
-       |                            <p>The new keeper should receive their new V5C registration certificate (logbook) within 2 weeks.</p>
+       |                            <p>${Messages("email.trader.p2")}</p>
        |
-       |                            <p>As vehicle tax or SORN can no longer be transferred as part of the sale, the new keeper must tax this vehicle before it is driven on the road at <a href="http://www.gov.uk/vehicletax" target="_blank">www.gov.uk/vehicletax</a>. They can make a SORN at <a href="http://www.gov.uk/sorn" target="_blank">www.gov.uk/sorn</a>.</p>
+       |                            <p>${Messages("email.trader.p3")}</p>
        |
     """.stripMargin
 
   private def buildText(content: String): String =
     s"""
-       |THIS IS AN AUTOMATED EMAIL - Please do not reply as emails received at this address cannot be responded to.
+       |${Messages("email.template.line1")}
        |$content
-       |For more information on driving and transport go to http://www.gov.uk/browse/driving
+       |${Messages("email.template.line2")}
        |
-       |You may wish to save or print this email confirmation for your records.
+       |${Messages("email.template.line3")}
        |
-       | Yours sincerely
-       | Rohan Gye
-       | Vehicles Service Manager
+       |${Messages("email.signature.p1")}
+       |${Messages("email.signature.p2")}
+       |${Messages("email.signature.p3")}
     """.stripMargin
 
-    private def buildNewKeeperText(vehicleDetails: VehicleAndKeeperDetailsModel,
+    private def buildNewKeeperText(regNumber: String,
                                    transactionId: String): String =
       s"""
-         |DVLA have been notified electronically that you are now the new keeper of Vehicle Registration Number: ${vehicleDetails.registrationNumber}
+         |${Messages("email.newKeeper.p1")} ${regNumber}
          |
-         |The online Transaction ID is $transactionId
+         |${Messages("email.newKeeper.p2")} ${transactionId}
          |
-         |You should receive your new V5C registration certificate (logbook) within 2 weeks.
+         |${Messages("email.newKeeper.p3")}
          |
-         |Since 1st October 2014, vehicle tax can no longer be transferred as part of the sale. This is because the seller will automatically receive a refund of any remaining tax.
+         |${Messages("email.newKeeper.p4")}
          |
-         |You must tax this vehicle before it is driven on the road, tax now at http://www.gov.uk/vehicletax
+         |${Messages("email.newKeeper.p5")}
          |
-         |If you do not want to tax you can make a SORN declaration now at http://www.gov.uk/sorn
+         |${Messages("email.newKeeper.p6")}
       """.stripMargin
 
-   private def buildTraderText(vehicleDetails: VehicleAndKeeperDetailsModel,
+   private def buildTraderText(regNumber: String,
                                transactionId: String,
                                transactionTimestamp: String): String =
       s"""
-         |Thank you for using DVLA's online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C registration certificate (logbook) as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.
+         |${Messages("email.trader.p1")}
          |
-         |The application details are:
+         |${Messages("email.txndetails.p1")}
          |
-         |Vehicle Registration Number: ${vehicleDetails.registrationNumber}
-         |Transaction ID is $transactionId
-         |Application made on: $transactionTimestamp
+         |${Messages("email.txndetails.p2")} ${regNumber}
+         |${Messages("email.txndetails.p3")} ${transactionId}
+         |${Messages("email.txndetails.p4")} ${transactionTimestamp}
          |
-         |The new keeper should receive their new V5C registration certificate (logbook) within 2 weeks.
+         |${Messages("email.trader.p2")}
          |
-         |As vehicle tax or SORN can no longer be transferred as part of the sale, the new keeper must tax this vehicle before it is driven on the road at http://www.gov.uk/vehicletax. They can make a SORN at http://www.gov.uk/sorn.
+         |${Messages("email.trader.p3")}
       """.stripMargin
 }

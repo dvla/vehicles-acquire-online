@@ -38,6 +38,7 @@ import common.webserviceclients.acquire.TraderDetailsDto
 import common.webserviceclients.common.{VssWebEndUserDto, VssWebHeaderDto}
 import common.webserviceclients.emailservice.EmailService
 import common.webserviceclients.healthstats.HealthStats
+import play.api.i18n.Messages
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
@@ -580,7 +581,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
     sendEmail(
       keeperDetails.email,
-      "Confirmation of new vehicle keeper",
+      Messages("email.title.keeper"),
       EmailMessageBuilder.buildNewKeeperConfirmationWith,
       vehicleDetails,
       transactionId,
@@ -590,7 +591,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
     sendEmail(
       traderDetails.traderEmail,
-      "Confirmation of sale",
+      Messages("email.title.trader"),
       EmailMessageBuilder.buildTraderConfirmationWith,
       vehicleDetails,
       transactionId,

@@ -425,7 +425,7 @@ acquire_failure.buyAnother = Notify another sale
 acquire_failure.finish = Finish
 
 #vrm locked
-vrm_locked.title =Registration number is locked
+vrm_locked.title = Registration number is locked
 vrm_locked.text1 = There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Notify another sale" below.
 vrm_locked.text2 = Locked at
 vrm_locked.text3.1 = If you are sure that the details entered are correct then please send your completed V5C registration certificate (logbook) to
@@ -466,3 +466,34 @@ closed.exit_button = Exit
 # feedback
 common_feedback.subject = Buy from the trade - feedback
 
+# email
+email.template.line1 = THIS IS AN AUTOMATED EMAIL - Please do not reply as emails received at this address cannot be responded to.
+email.template.line2 = For more information on driving and transport go to www.gov.uk/browse/driving
+email.template.line2Html = For more information on driving and transport go to <a href="http://www.gov.uk/browse/driving" target="_blank">www.gov.uk/browse/driving</a>.
+email.template.line3 = You may wish to save or print this email confirmation for your records.
+
+email.newKeeper.p1 = DVLA have been notified electronically that you are now the new keeper of Vehicle Registration Number:
+email.newKeeper.p2 = The online Transaction ID is
+email.newKeeper.p3 = You should receive your new V5C registration certificate (logbook) within 2 weeks.
+email.newKeeper.p4 = Since 1st October 2014, vehicle tax can no longer be transferred as part of the sale. This is because the seller will automatically receive a refund of any remaining tax.
+email.newKeeper.p5 = You must tax this vehicle before it is driven on the road, tax now at http://www.gov.uk/vehicletax
+email.newKeeper.p6 = If you do not want to tax you can make a SORN declaration now at http://www.gov.uk/sorn
+email.newKeeper.p5Html = You must tax this vehicle before it is driven on the road, tax now at <a href="http://www.gov.uk/vehicletax" target="_blank">www.gov.uk/vehicletax</a>.
+email.newKeeper.p6Html = If you do not want to tax you can make a SORN declaration now at <a href="http://www.gov.uk/sorn" target="_blank">www.gov.uk/sorn</a>.
+
+email.trader.p1 = Thank you for using DVLA's online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C registration certificate (logbook) as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.
+
+email.txndetails.p1 = The application details are:
+email.txndetails.p2 = Vehicle Registration Number:
+email.txndetails.p3 = Transaction ID is
+email.txndetails.p4 = Application made on:
+
+email.trader.p2 = The new keeper should receive their new V5C registration certificate (logbook) within 2 weeks.
+email.trader.p3 = As vehicle tax or SORN can no longer be transferred as part of the sale, the new keeper must tax this vehicle before it is driven on the road at http://www.gov.uk/vehicletax. They can make a SORN at http://www.gov.uk/sorn.
+
+email.signature.p1 = Yours sincerely
+email.signature.p2 = Rohan Gye
+email.signature.p3 = Vehicles Service Manager
+
+email.title.keeper = Confirmation of new vehicle keeper
+email.title.trader = Confirmation of sale
