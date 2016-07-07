@@ -1,5 +1,6 @@
 package composition
 
+import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getIntListProperty
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.getOptionalProperty
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.booleanProp
 import uk.gov.dvla.vehicles.presentation.common.ConfigProperties.intProp
@@ -30,6 +31,7 @@ class TestConfig extends Config {
   override val openingTimeMinOfDay: Int = getOptionalProperty[Int]("openingTimeMinOfDay").getOrElse(TestConfig.DEFAULT_OPENING_TIME)
   override val closingTimeMinOfDay: Int = getOptionalProperty[Int]("closingTimeMinOfDay").getOrElse(TestConfig.DEFAULT_OPENING_TIME)
   override val closingWarnPeriodMins: Int = getOptionalProperty[Int]("closingWarnPeriodMins").getOrElse(TestConfig.DEFAULT_CLOSING_WARN_PERIOD)
+  override val closedDays: List[Int] = getIntListProperty("closedDays").getOrElse(List())
 
   // Web headers
   override val applicationCode = TestConfig.WEB_APPLICATION_CODE

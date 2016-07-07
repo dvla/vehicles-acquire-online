@@ -1,17 +1,11 @@
 package utils.helpers
 
-import uk.gov.dvla.vehicles.presentation.common
-import common.ConfigProperties.booleanProp
-import common.ConfigProperties.getDurationProperty
-import common.ConfigProperties.getOptionalProperty
-import common.ConfigProperties.getProperty
-import common.ConfigProperties.getStringListProperty
-import common.ConfigProperties.intProp
-import common.ConfigProperties.longProp
-import common.ConfigProperties.stringProp
-import common.services.SEND.EmailConfiguration
-import common.webserviceclients.acquire.AcquireConfig
-import common.webserviceclients.emailservice.From
+import uk.gov.dvla.vehicles.presentation.common.{ConfigProperties => VPCConfig}
+import VPCConfig.{booleanProp, intProp, longProp, stringProp}
+import VPCConfig.{getDurationProperty, getIntListProperty, getOptionalProperty, getProperty, getStringListProperty}
+import uk.gov.dvla.vehicles.presentation.common.services.SEND.EmailConfiguration
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.acquire.AcquireConfig
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.From
 
 class ConfigImpl extends Config {
 
@@ -57,6 +51,7 @@ class ConfigImpl extends Config {
 
   override val surveyUrl: Option[String] = getOptionalProperty[String]("survey.url")
   override val surveyInterval: Long = getDurationProperty("survey.interval")
+  override val closedDays: List[Int] = getIntListProperty("closedDays").getOrElse(List())
 }
 
 object ConfigImpl {

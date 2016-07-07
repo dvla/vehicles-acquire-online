@@ -33,4 +33,6 @@ trait Config extends VehicleLookupConfig with CommonConfig {
   // Survey URL
   def surveyUrl: Option[String]
   def surveyInterval: Long
+
+  val closedDays: List[Int]
 }
