@@ -1,6 +1,6 @@
 package models
 
-import mappings.Consent.consent
+import uk.gov.dvla.vehicles.presentation.common.mappings.Consent.consent
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import org.joda.time.LocalDate
 import play.api.data.Forms.mapping
