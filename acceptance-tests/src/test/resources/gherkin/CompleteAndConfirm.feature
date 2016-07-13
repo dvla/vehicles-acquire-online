@@ -3,6 +3,7 @@ Feature:
   Background:
     Given the user is on the Complete and confirm page
 
+# TODO uncomment these
 #  Scenario: Complete and confirm - Confirm new keeper
 #    When the user clicks the primary control labelled Confirm New Keeper
 #    Then the user will be taken to the "Summary" page

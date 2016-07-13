@@ -1,69 +1,18 @@
-#global
-global.cookiemessage = GOV.UK uses cookies to make the site simpler.
-global.cookiefindoutmore = Find out more about cookies
-
-global.browserprompt = For a safer, faster, better experience online you should upgrade your browser.
-global.browserfindoutmore = Find out more about browsers
-global.browserclosetitle = Dismiss this message
-global.browserclosemessage = Close
-
-global.buttonnavback = Back
-global.buttonnavcancel = Cancel
-global.buttonnavupdate = Update
-global.buttonnavprint = Print
-
-global.serviceCloseWarning = This service is available from {0} to {1}, you have
-global.serviceCloseWarning.p2 = to complete this service.
-global.serviceClosed = Service now closed. Service is available {0} to {1}
-
-global-please-wait-header = Please wait
-global-please-wait-p1 = We are currently receiving a large volume of applications which has led to our service performance being slower than usual.
-global-please-wait-p2 = This page will update automatically, please do not close your browser.
-global-please-wait-close = Close this message
-
-#widget messages
-errorsummary.title = Please correct the details below
-errorsummary.p1 = Please fix the following:
-widget.optional = (optional)
-
-#customer validation messages
-error.restricted.validNumberOnly = This field only accepts numbers
-error.restricted.validVrnOnly = Must be as shown on the latest V5C registration certificate (logbook)
-error.restricted.validPostcode = Must be between five and eight characters and in a valid format, e.g. AB1 2BA or AB12BA
+# VehicleLookup form error
 error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
-error.validTitle = Must be a valid title
+error.validDocumentReferenceNumber = Document reference number must be an 11-digit number
+
 error.title = An unrecoverable error has occurred
 error.button = Start again
-error.validBusinessName = Must be between 2 and 58 characters and only contain valid characters (a-z, A-Z, 0-9, &, -,(), /, ‘ and , or .). The following characters cannot be used at the start of trader name  (&,-,(), /, ‘ and , or .)
-error.validBusinessKeeperName = Must be between 2 and 30 characters, contain at least one alpha character and only contain valid characters (a-z, A-Z, 0-9, &, -,(), /, ‘ and , or .). The following characters cannot be used at the start of business name (&,-,(), /, ‘ and , or .)
-error.invalidBracesOrQuotes = Brackets and quotes must be used as a pair e.g. (...) or "..."
-error.email = Must be a valid email address
-error.dropDownInvalid = Please select a value from the drop down list.
-error.titleInvalid = Please select a title from the drop down list.
-error.validFirstName = Must contain between 1 and 25 characters from the following A-Z, hyphen, apostrophe, full stop and space.
-error.validLastName = Must contain between 1 and 25 characters from the following A-Z, hyphen, apostrophe, full stop and space.
-error.date.notBefore = We cannot accept a date of sale more than 5 years in the past. Please check and enter the correct date. If the date is correct then please submit the transaction via post.
-error.date.inTheFuture = Must be a valid date DD MM YYYY and not be in the future.
-error.date.invalid = Must be a valid date DD MM YYYY and not be in the future.
-error.dateOfBirth.inTheFuture = Must be a valid date DD MM YYYY and not be in the future.
-error.dateOfBirth.invalid = Must be a valid date DD MM YYYY and not be in the future.
-error.dateOfBirth.110yearsInThePast = Date of birth cannot be more than 110 years in the past
-error.fleetNumber = The fleet number can only be a 6 digit number, please try again.
 
+# VPC - PrivateKeeperDetailsBase
 error.validDriverNumber = The driver number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
 error.titlePlusFirstName.tooLong = The combined length of your title e.g. Mr/Mrs/Miss/Other and first name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
-error.threeAlphas = Must have at least 3 alpha characters
 select = Tax/SORN
 VehicleTaxOrSornFormModel = SORN now
 error.sornformerror = You must accept the SORN option.
 error.nosornformerror = you must select the SORN now option.
 error.sornselectid = One of the options must be selected.
-error.email.confirm.required = Please confirm the email address
-error.email.not.match = The email addresses did not match
-email.verify.label = Confirm email address
-
-select_default = Please select
-error.invalid = Invalid value
 
 ##
 # ACQUIRE VEHICLE
@@ -78,9 +27,6 @@ onHandlerNotFound.header = This page cannot be found
 onHandlerNotFound.body = We are unable to find the page you have requested, this event has been logged for investigation.
 onHandlerNotFound.noJavascript = If you wish to try again select the back button on your browser, if not select "Exit" to leave the service.
 onHandlerNotFound.start.button = Start
-
-language.cy.button = Cymraeg
-language.en.button = YAGNI
 
 mandatory = Fields not labelled (optional) are mandatory
 
@@ -111,8 +57,6 @@ acquire_beforeyoustart.button = Start now
 
 #page 2 - Setup trade details
 acquire_setuptradedetails.title = Provide trader details
-acquire_setuptradedetails.name = Sell a vehicle into the motor trade
-acquire_setuptradedetails.p1 = Set-up trade details
 acquire_setuptradedetails.tradernamelabel = Trader name
 acquire_setuptradedetails.tradername.hint = Name of the company that the vehicle is being sold from
 acquire_setuptradedetails.traderpostcodelabel = Postcode
@@ -122,53 +66,37 @@ acquire_setuptradedetails.button = Find address
 acquire_setuptradedetails.traderemailoption = Do you want an email confirmation of the sale?
 acquire_setuptradedetails.traderemailoption.yes = Yes
 acquire_setuptradedetails.traderemailoption.no = No
+
+# gatling
 traderName = Trader name
 traderPostcode = Postcode
-traderEmail = Trader email address
-traderEmailOption = Email confirmation
 
 #page 3 - Business Choose Your Address
 disposal_businessChooseYourAddress_addressSelect = Select trader address
 disposal_businessChooseYourAddress.address.required = Please select a valid address
+
 acquire_businessChooseYourAddress_title = Select trader address
-acquire_businessChooseYourAddress_legend = Set up trade details
 acquire_businessChooseYourAddress_businessName_label = Trader name
 acquire_businessChooseYourAddress_businessName = {0}
 acquire_businessChooseYourAddress_businessEmail_label = Email
-acquire_businessChooseYourAddress_businessEmail = {0}
 acquire_businessChooseYourAddress.emailNotEntered = Not entered
 acquire_businessChooseYourAddress_postcode_label = Postcode
-acquire_businessChooseYourAddress_businessAddress_label = Trader address
-acquire_businessChooseYourAddress_addressSelect = Choose your address
 acquire_businessChooseYourAddress_addressSelect_label = Choose your address
-acquire_businessChooseYourAddress.backbutton = Back
 acquire_businessChooseYourAddress.submitbutton = Next
 acquire_businessChooseYourAddress.manualAddressEntry = Address is not in the list
 acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_businessChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_businessChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
-businesskeeper_option_email = Email confirmation
 
 #page 4 - vehicle Lookup
 acquire_vehiclelookup.title = Enter vehicle details
-acquire_vehiclelookup.name = Sell a vehicle into the motor trade
-acquire_vehiclelookup.p1 = Vehicle being sold
 acquire_vehiclelookup.p2 = Trader details
-acquire_vehiclelookup.warning.p1 = Do not dispose of a vehicle with a personal registration unless the current keeper understands that the registration will be disposed of along with the vehicle.
-acquire_vehiclelookup.warning.p2 = Retain or transfer personal registrations before disposing to the trade.
-acquire_vehiclelookup.img.hint = Where to find this
-acquire_vehiclelookup.img.h2 = Help finding your V5C registration certificate (logbook) document reference number?
-acquire_vehiclelookup.img.alt = V5C registration certificate (logbook) document reference number
 acquire_vehiclelookup.v5c = V5C registration certificate (logbook)
 acquire_vehiclelookup.refnumlabel = Latest V5C registration certificate (logbook) document reference number
 acquire_vehiclelookup.vrninputlabel = Vehicle registration number
-acquire_vehiclelookup.backbutton = Back
 acquire_vehiclelookup.button = Next
-acquire_vehiclelookup.button2 = Edit
-acquire_vehiclelookup.exitbutton = Finish
 acquire_vehiclelookup.tradernamelabel = Trader name
 acquire_vehiclelookup.traderaddresslabel = Address
-acquire_vehiclelookup.traderpostcodelabel = Postcode
 acquire_vehiclelookup.traderemaillabel = Email
 acquire_vehiclelookup.traderresetdetails = Change these trader details?
 
@@ -179,13 +107,12 @@ acquire_vehiclelookup.vehiclesoldto.business = Business
 
 vehicleRegistrationNumber = Vehicle registration number
 documentReferenceNumber = Document reference number
-error.validDocumentReferenceNumber = Document reference number must be an 11-digit number
 
 #vehicle lookup failure
 acquire_vehiclelookupfailure.title = Unable to find a vehicle record
-acquire_vehiclelookupfailure.p1 = Please select the ‘Try again’ button below and check that the V5C registration certificate (logbook) document reference number and vehicle registration number that you entered are correct.
 acquire_vehiclelookupfailure.button = Try again
 acquire_vehiclelookupfailure.button2 = Exit
+
 vehicle_and_keeper_lookup_failure.p0 = The vehicle registration number and/or the V5C registration certificate (logbook) document reference number entered is either incorrect or does not come from the latest V5C issued for this vehicle.
 vehicle_and_keeper_lookup_failure.p1 = Please check that the vehicle registration number and V5C registration certificate (logbook) document reference number are correct and select the ‘Try again’ button below.
 vehicle_and_keeper_lookup_failure.p2 = If you are sure that the details have been entered correctly then you may be using an old V5C registration certificate (logbook) and it’s likely that we have issued you with a new one since.
@@ -195,34 +122,12 @@ vehicle_and_keeper_lookup_failure.p4 = You will only have a limited number of at
 #page 3 [optional] - manual address entry
 acquire_enteraddressmanually.title = Enter address
 acquire_enteraddressmanually.submitbutton = Next
-acquire_enteraddressmanually.backbutton = Back
 acquire_enteraddressmanually.addresswarning = If your address is missing from this postcode package or is showing incorrect details then please select this link to
 acquire_enteraddressmanually.addresswarninglinktext = inform the Royal Mail.
 
-addressAndPostcode_addressLines = Address
-address.lines.label = Building/number and street
-address.buildingNameOrNumber.hint = e.g. 1 HIGH STREET
-address.postTown.label = Town or city
-address.postcode.label = Postcode
-address.postcode.label.prompt = e.g. SA99 1BD
-address.postcode.validation = Enter a valid postcode
-addressAndPostcode.addressLines.line2 = Street name
-addressAndPostcode.addressLines.line3 = Area
-addressAndPostcode.addressLines.postTown = Town or city
-addressAndPostcode.addressLines.postTown.hint = e.g. SWANSEA
-
-addressAndPostcode = Building name or number
-addressAndPostcode.addressLines = Address
-addressAndPostcode.postcode = Postcode
+# EnterAddressManually form errors
 addressAndPostcode.addressLines.buildingNameOrNumber = Building name or number
-
-# common to both addressPicker widget and addressAndPostcode widget
-error.address.buildingNameOrNumber.invalid = Building/number and street must contain between 4 and 30 characters
-error.address.characterInvalid = The first character of the address must be alphanumeric. Other characters must be valid (a-z, A-Z, 0-9, &, -,(), /, ‘ and , or .)
-#error.address.maxLengthOfLinesConcatenated = Address can have no more than 120 characters
-error.address.postTown = Town or city must contain between 3 and 20 characters
-error.address.postTown.characterInvalid = Town or city contains invalid characters
-error.address.threeAlphas = Must have at least 3 alpha characters
+addressAndPostcode.addressLines = Address
 
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = A keeper is on the record
@@ -256,17 +161,7 @@ acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 acquire_privatekeeperdetails.postcodelabel = Postcode
 acquire_privatekeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 acquire_privatekeeperdetails.dateofbirth.hint = For example, 01 03 1976
-privatekeeper_title = Title
-privatekeeper_email = Email
-privatekeeper_firstname = First name
-privatekeeper_lastname = Last name
-privatekeeper_postcode = Postcode
-dateOfBirthInput.label = Date of Birth
-dateOfBirthInput.hint = For example, 01 03 1976
-privatekeeper_drivernumber = Driver number
 privatekeeper_dateofbirth = Date of Birth
-privatekeeper_option_email = Email confirmation
-mandatory-alternative.not-selected = This field is mandatory. Please select one of the options.
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter new keeper details
@@ -295,19 +190,14 @@ acquire_newKeeperChooseYourAddress_title = Select new keeper address
 acquire_newKeeperChooseYourAddress_newKeeperName_label = Name
 acquire_newKeeperChooseYourAddress_newKeeperName = {0}
 acquire_newKeeperChooseYourAddress_newKeeperEmail_label = Email
-acquire_newKeeperChooseYourAddress_newKeeperEmail = {0}
 acquire_newKeeperChooseYourAddress.emailNotEntered = Not entered
 acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Postcode
-acquire_newKeeperChooseYourAddress_newKeeperAddress_label = New keeper address
-acquire_newKeeperChooseYourAddress_addressSelect = Choose the new keeper's address
 acquire_newKeeperChooseYourAddress_addressSelect_label = Choose the new keeper's address
 acquire_newKeeperChooseYourAddress.submitbutton = Next
 acquire_newKeeperChooseYourAddress.manualAddressEntry = Address is not in the list
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
-newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
-change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
 
 #[optional] - new keeper manual address entry
 acquire_newKeeperEnterAddressManually.title = Enter keeper address
@@ -327,35 +217,21 @@ acquire_vehicleTaxOrSorn.sornNow = SORN now
 acquire_vehicleTaxOrSorn.neither = Neither
 acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a statutory off road notification (SORN) made when it is purchased.
 acquire_vehicleTaxOrSorn.link = Tax the vehicle now
-acquire_vehicleTaxOrSorn.p2 = Or
 acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from the V5C/2 (green slip) section of the registration certificate as a new keeper.
 acquire_vehicleTaxOrSorn.taxText-2 = Once taxing is completed please return to this page and select 'Next' to continue.
-acquire_vehicleTaxOrSorn.sornText = Make a statutory sff road notification (SORN) as part of this service.
-acquire_vehicleTaxOrSorn.sornText-p1 =  Please select 'Next' to continue
-
 acquire_vehicleTaxOrSorn.neitherText.p1 = If you have not already taxed or declared SORN for this vehicle, you must remind the new keeper that it's their responsibility to ensure the vehicle is taxed if it is driven on the road.
 acquire_vehicleTaxOrSorn.neitherText.p2 = If the vehicle is being kept off road, the new keeper must make a SORN.
-acquire_vehicleTaxOrSorn.neitherText.p3 = Please select next to continue.
-
-acquire_vehicleTaxOrSorn.sornVehicleText = Do you want to make a statutory off road notification (SORN) now as part of this service?
-acquire_vehicleTaxOrSorn.sornVehicle = Yes, SORN vehicle now
 acquire_vehicleTaxOrSorn.submitbutton = Next
-acquire_vehicleTaxOrSorn.backbutton = Back
 acquire_vehicleTaxOrSorn.label = Do you want to:
 
 #complete and confirm
 acquire_completeAndConfirm.title = Complete and confirm
-acquire_completeandconfirm.taxOrSorn = Tax or SORN
-acquire_completeandconfirm.sornEntered = SORN from today
-acquire_completeandconfirm.sornNotEntered = It is the responsibility of the new keeper to ensure the vehicle is taxed
 acquire_completeandconfirm.newkeeperDetails = New keeper details
 acquire_completeandconfirm.displayName = Name
 acquire_completeandconfirm.address = Address
 acquire_completeandconfirm.email = Email
-acquire_completeandconfirm.emailNotEntered = Not entered
 acquire_completeandconfirm.fleetNumber = Fleet number
 acquire_completeandconfirm.fleetNumberNotEntered = Not entered
-acquire_completeAndConfirm.p1 = Please provide the following optional details and confirm that the named individual has consented to become the new keeper of this vehicle
 acquire_completeAndConfirm.mileage.label = Vehicle mileage
 acquire_completeAndConfirm.submitbutton = Confirm new keeper
 acquire_completeAndConfirm.backbutton = Back
@@ -363,9 +239,8 @@ acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid
 acquire_completeAndConfirm.dateofsale.label = Date of sale
 acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
 acquire_completeandconfirm.dateofsale.warning = You’ve entered a date of sale that is before the previous keeper’s disposal date which is {0}. Please enter the correct date and press ‘Confirm new keeper’ to continue.
+
 dateofsale = Date of sale
-privatekeeper_mileage = Mileage
-use_todays_date.label = Use today''s date
 
 acquire_keeperdetailscomplete.consent = I have the consent of the party named to notify DVLA.
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
@@ -380,13 +255,8 @@ acquire_success.transaction_details.transaction_date = Transaction date
 acquire_success.trader_details.header = Trader details
 acquire_success.trader_details.trader_name = Trader name
 acquire_success.trader_details.trader_address = Trader address
-acquire_success.trader_details.trader_postcode = Postcode
 acquire_success.trader_details.trader_email = Email
 acquire_success.date_of_sale.label = Date of sale
-acquire_success.vehicle_details.header = Vehicle sale details
-acquire_success.vehicle_details.registration_number = Registration number
-acquire_success.vehicle_details.make = Make
-acquire_success.vehicle_details.model = Model
 acquire_success.vehicle_details.taxOrSorn = Tax or SORN
 acquire_success.vehicle_details.sornEntered = Yes, SORN from today ({0}).
 acquire_success.vehicle_details.sornEntered.p1 = DVLA will not send you a SORN acknowledgement letter. The SORN will be valid until the vehicle is taxed, sold, permanently exported or scrapped. Please ensure that the vehicle is taxed before it is driven on public roads.
@@ -395,34 +265,12 @@ acquire_success.vehicle_details.mileage = Vehicle mileage
 acquire_success.vehicle_details.mileage_not_entered = Not entered
 acquire_success.vehicle_details.name = Name
 acquire_success.vehicle_details.address = Address
-acquire_success.vehicle_details.postcode = Postcode
 acquire_success.vehicle_details.email = Contact email address
-
-acquire_success.vehicle_details.p1 = Vehicle details
 acquire_success.new_keeper_details.p1 = New keeper details
 acquire_success.further_information.header = What happens next?
 acquire_success.further_information.p1 = within 5 working days we will send a new V5C registration certificate (logbook) to the new keeper.
 acquire_success.further_information.p2 = if they do not receive a new V5C registration certificate (logbook) in 2 weeks they must contact DVLA customer enquiries.
 acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the V5C registration certificate (logbook)
-acquire_success.buttonnavprint = Print
-acquire_success.buyAnother = Notify another sale
-acquire_success.finish = Finish
-
-#page 7 - acquire failure
-acquire_acquirefailure.title = Selling a vehicle out of trade: failure
-acquire_acquirefailure.name = Failure
-acquire_acquirefailure.p1 = It has not been possible to complete your transaction. Please call 0300 790 6802
-acquire_acquirefailure.button = Notify another sale
-acquire_acquirefailure.button2 = Finish
-acquire_acquirefailure.button3 = Print
-acquire_acquirefailure.transactiontext = Your transaction ID is:
-acquire_acquirefailure.transactionid = {0}
-acquire_failure.transaction_details.header = Transaction details
-acquire_failure.transaction_details.transaction_id = Transaction ID
-acquire_failure.transaction_details.transaction_date = Transaction date
-acquire_failure.buttonnavprint = Print
-acquire_failure.buyAnother = Notify another sale
-acquire_failure.finish = Finish
 
 #vrm locked
 vrm_locked.title = Registration number is locked
@@ -433,20 +281,6 @@ vrm_locked.text3.2 = DVLA, Swansea SA99 1BA
 vrm_locked.buyanother.button = Notify another sale
 vrm_locked.exit.button = Exit
 
-# Date labels
-dateOfBirth.day = Day
-dateOfBirth.month = Month
-dateOfBirth.year = Year
-
-#titlePicker widget
-titlePicker.label = Title
-titlePicker.mr = Mr
-titlePicker.miss = Miss
-titlePicker.mrs = Mrs
-titlePicker.other = Other
-titlePicker.or = Or
-titlePicker.textLabel = 'Other' title
-titlePicker.textHint = (10 characters maximum)
 error.title.unknownOption = Please enter the title of the new keeper
 error.title.missing = Please enter the title of the new keeper
 error.title.tooLong = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
