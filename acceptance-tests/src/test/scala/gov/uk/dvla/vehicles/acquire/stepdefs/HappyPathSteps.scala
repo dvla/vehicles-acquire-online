@@ -87,14 +87,16 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
   }
 
-  def fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage() = {
+  def fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage(
+    vrn: String = RandomVrmGenerator.uniqueVrm,
+    v5c: String = ValidDocRefNum) = {
     goToVehicleLookupPageAfterManuallyEnteringAddress()
-    VehicleLookupPage.vehicleRegistrationNumber.value = RandomVrmGenerator.uniqueVrm
-    VehicleLookupPage.documentReferenceNumber.value = ValidDocRefNum
+    VehicleLookupPage.vehicleRegistrationNumber.value = vrn
+    VehicleLookupPage.documentReferenceNumber.value = v5c
   }
 
-  def goToPrivateKeeperDetailsPage() = {
-    fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
+  def goToPrivateKeeperDetailsPage(callNavigationSteps: Boolean = true) = {
+    if (callNavigationSteps) fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage()
     click on VehicleLookupPage.vehicleSoldToPrivateIndividual
     click on VehicleLookupPage.next
     pageTitle shouldEqual PrivateKeeperDetailsPage.title withClue trackingId
@@ -107,8 +109,8 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     pageTitle shouldEqual BusinessKeeperDetailsPage.title withClue trackingId
   }
 
-  def goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper() = {
-    goToPrivateKeeperDetailsPage()
+  def goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper(callNavigationSteps: Boolean = true) = {
+    if (callNavigationSteps) goToPrivateKeeperDetailsPage()
     click on PrivateKeeperDetailsPage.mr
     PrivateKeeperDetailsPage.firstNameTextBox.value = FirstName
     PrivateKeeperDetailsPage.lastNameTextBox.value = LastName
@@ -137,8 +139,8 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     pageTitle shouldEqual NewKeeperEnterAddressManuallyPage.title withClue trackingId
   }
 
-  def goToVehicleTaxOrSornPage() = {
-    goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
+  def goToVehicleTaxOrSornPage(callNavigationSteps: Boolean = true) = {
+    if (callNavigationSteps) goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper()
     click on NewKeeperChooseYourAddressPage.manualAddress
     pageTitle shouldEqual NewKeeperEnterAddressManuallyPage.title withClue trackingId
     EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 highrate"
@@ -156,6 +158,18 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
 
   def goToCompleteAndConfirmPage(callNavigationSteps: Boolean = true) = {
     if (callNavigationSteps) goToVehicleTaxOrSornPage()
+    click on VehicleTaxOrSornPage.sornSelect
+    click on VehicleTaxOrSornPage.next
+    pageTitle shouldEqual CompleteAndConfirmPage.title withClue trackingId
+  }
+
+  def goToCompleteAndConfirmPage(vrn: String, v5c: String) = {
+    fillInVehicleDetailsButNotTheKeeperOnVehicleLookupPage(vrn, v5c)
+    goToPrivateKeeperDetailsPage(callNavigationSteps = false)
+
+    goToSelectNewKeeperAddressPageAfterFillingInNewPrivateKeeper(callNavigationSteps = false)
+
+    goToVehicleTaxOrSornPage(callNavigationSteps = false)
     click on VehicleTaxOrSornPage.sornSelect
     click on VehicleTaxOrSornPage.next
     pageTitle shouldEqual CompleteAndConfirmPage.title withClue trackingId

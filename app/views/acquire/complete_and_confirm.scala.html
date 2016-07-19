@@ -22,17 +22,15 @@
     currentForm = Some(data.form),
     backButton = Some(controllers.routes.VehicleTaxOrSorn.present())
 ) {
-   
     <h1>@Messages("acquire_completeAndConfirm.title")</h1>
 
-    @if(data.isSaleDateBeforeDisposalDate) {
+    @if(data.showDateOfSaleWarning) {
         <div class="site-overlay"></div>
     }
 
     @form(action = data.submitAction) {
 
     <div class="two-col clearfix acquire-complete-confirm">
-    
         <div class="first-col">
             @playbackList(
                 Messages("acquire_completeandconfirm.newkeeperDetails"),
@@ -62,12 +60,17 @@
                         '_showConstraints -> false,
                         '_label -> Messages("acquire_keeperdetailscomplete.consent"),
                         'autoFocus -> true
-                    ), data.isSaleDateBeforeDisposalDate)
+                    ), data.showDateOfSaleWarning)
                 )
 
-                @if(data.isSaleDateBeforeDisposalDate) {
+                @if(data.showDateOfSaleWarning) {
                     <div class="popup-modal">
-                        <p>@Messages("acquire_completeandconfirm.dateofsale.warning", data.dateOfDisposal.getOrElse("NOT FOUND"))</p>
+                      @if(data.disposalDate.isDefined) {
+                        <p>@Messages("acquire_completeandconfirm.dateofsale.warning", data.disposalDate.get)</p>
+                      } else {
+                        <p>@Messages("acquire_completeandconfirm.dateofsale.warning.over12Months")</p>
+                      }
+
                         <div id=@DateOfSaleId>
                             @valtechDate(
                                 field = data.form(DateOfSaleId),
@@ -95,26 +98,14 @@
                 }
 
                 <div id=@DateOfSaleId class="form-steps">
-                    @if(data.isSaleDateBeforeDisposalDate) {
-                        @valtechDate(
-                            field = data.form(DateOfSaleId),
-                            labelText = Messages("acquire_completeAndConfirm.dateofsale.label"),
-                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint")),
-                            showTodaysDateButton = true,
-                            showTodaysDateButtonId = Some(TodaysDateId),
-                            args = Map(
-                                'tabindex -> -1
-                            )
-                        )
-                    } else {
-                        @valtechDate(
-                            field = data.form(DateOfSaleId),
-                            labelText = Messages("acquire_completeAndConfirm.dateofsale.label"),
-                            hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint")),
-                            showTodaysDateButton = true,
-                            showTodaysDateButtonId = Some(TodaysDateId)
-                        )
-                    }
+                    @valtechDate(
+                        field = data.form(DateOfSaleId),
+                        labelText = Messages("acquire_completeAndConfirm.dateofsale.label"),
+                        hintText = Some(Messages("acquire_completeandconfirm.dateofsale.hint")),
+                        showTodaysDateButton = true,
+                        showTodaysDateButtonId = Some(TodaysDateId),
+                        args = modify(Map.empty, data.showDateOfSaleWarning)
+                    )
                 </div>
 
                 @valtechInputText(
@@ -128,14 +119,14 @@
                         'class -> "ga-track-optional-text",
                         Symbol("data-ga-action") -> "mileage"
                     ) ++
-                    (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil), data.isSaleDateBeforeDisposalDate)
+                    (if(config.isHtml5ValidationEnabled) Map('pattern -> Mileage.Pattern) else Nil), data.showDateOfSaleWarning)
                 )
 
                 <div class="form-steps">
                     <button id="@SubmitId"
                         type="submit"
                         name="action"
-                        @if(data.isSaleDateBeforeDisposalDate) {tabindex="-1"}
+                        @if(data.showDateOfSaleWarning) {tabindex="-1"}
                         class="button">
                         @Messages("acquire_completeAndConfirm.submitbutton")
                     </button>

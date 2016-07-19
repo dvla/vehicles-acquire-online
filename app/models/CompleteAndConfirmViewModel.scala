@@ -10,6 +10,6 @@ case class CompleteAndConfirmViewModel(form: Form[CompleteAndConfirmFormModel],
                                        vehicleAndKeeperDetails: VehicleAndKeeperDetailsModel,
                                        keeperDetails: NewKeeperDetailsViewModel,
                                        vehicleSorn: VehicleTaxOrSornFormModel,
-                                       isSaleDateBeforeDisposalDate: Boolean,
+                                       showDateOfSaleWarning: Boolean = false,
                                        submitAction: Call = CompleteAndConfirm.submitWithDateCheck(),
-                                       dateOfDisposal: Option[String] = None)
+                                       disposalDate: Option[String] = None)

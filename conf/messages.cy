@@ -246,6 +246,7 @@ acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid
 acquire_completeAndConfirm.dateofsale.label = Date of sale
 acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
 acquire_completeandconfirm.dateofsale.warning = You’ve entered a date of sale that is before the previous keeper’s disposal date which is {0}. Please enter the correct date and press ‘Confirm new keeper’ to continue.
+acquire_completeandconfirm.dateofsale.warning.over12Months = Mae’r dyddiad yr ydych wedi’i rhoi dros 12 mis yn ôl, a wnewch chi wirio’r dyddiad a sicrhau ei fod yn gywir os gwelwch yn dda.
 
 dateofsale = Date of sale
 

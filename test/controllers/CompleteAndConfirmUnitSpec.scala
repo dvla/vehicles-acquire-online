@@ -14,10 +14,7 @@ import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import pages.acquire.BusinessKeeperDetailsPage.{BusinessNameValid, EmailValid, FleetNumberValid}
 import pages.acquire.CompleteAndConfirmPage.ConsentTrue
-import pages.acquire.CompleteAndConfirmPage.DayDateOfSaleValid
 import pages.acquire.CompleteAndConfirmPage.MileageValid
-import pages.acquire.CompleteAndConfirmPage.MonthDateOfSaleValid
-import pages.acquire.CompleteAndConfirmPage.YearDateOfSaleValid
 import pages.acquire.PrivateKeeperDetailsPage.{FirstNameValid, LastNameValid}
 import pages.acquire.{AcquireSuccessPage, SetupTradeDetailsPage, VehicleLookupPage}
 import play.api.libs.json.Json
@@ -51,7 +48,10 @@ import utils.helpers.Config
 
 class CompleteAndConfirmUnitSpec extends UnitSpec {
 
-  private val saleYear = org.joda.time.LocalDate.now.minusYears(2).getYear.toString
+  // Only used for tests that stub date service
+  private val stubbedDate = org.joda.time.DateTime.now
+  // There is a confirmation dialog for dates over 12 months
+  private val ValidDateOfSale = stubbedDate.minusMonths(9)
 
   "present" should {
     "display the page with new keeper cached" in new TestWithApplication {
@@ -87,7 +87,7 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       val content = contentAsString(completeAndConfirm.present(request))
       content should include( s"""value="$MileageValid"""")
       content should include( """value="true"""") // Checkbox value
-      content should include( s"""value="$YearDateOfSaleValid"""")
+      content should include( s"""value="${ValidDateOfSale.getYear}"""")
     }
 
     "display empty fields when new keeper complete cookie does not exist" in new TestWithApplication {
@@ -224,9 +224,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       replacementMileageErrorMessage.r.findAllIn(contentAsString(result)).length should equal(2)
     }
 
-    "not call the micro service when the date of acquisition is before the date of disposal and return a bad request" in new TestWithApplication {
-      // The date of acquisition is 19-10-${saleYear}
-      val disposalDate = DateTime.parse(s"20-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
+    "not call the micro service when the date of sale is before the date of disposal and return a bad request" in new TestWithApplication {
+      val disposalDate = ValidDateOfSale.plusMonths(1)
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -246,9 +245,33 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "call the micro service when the date of acquisition is after the date of disposal and redirect to the next page" in new TestWithApplication {
-      // The date of acquisition is 19-10-${saleYear}
-      val disposalDate = DateTime.parse(s"18-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
+    "not call the micro service when date of sale is over 12 months" in new TestWithApplication {
+      val invalidDateOfSale = ValidDateOfSale.minusYears(1)
+
+      val request = buildCorrectlyPopulatedRequest(
+        dayDateOfSale = invalidDateOfSale.toString("dd"),
+        monthDateOfSale = invalidDateOfSale.toString("MM"),
+        yearDateOfSale = invalidDateOfSale.getYear.toString
+      )
+        .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+        .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+        .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+        .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+      val acquireServiceMock = mock[AcquireService]
+      val completeAndConfirm = acquireController(acquireServiceMock)
+
+      val result = completeAndConfirm.submitWithDateCheck(request)
+      whenReady(result) { r =>
+        r.header.status should equal(BAD_REQUEST)
+        verify(acquireServiceMock, never()).invoke(any[AcquireRequestDto], any[TrackingId])
+      }
+    }
+
+    "call the micro service when the date of sale is after the date of disposal and redirect to the next page" in new TestWithApplication {
+      val disposalDate = ValidDateOfSale.minusDays(1)
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -273,9 +296,8 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "call the micro service when the date of acquisition is the same as the date of disposal and redirect to the next page" in new TestWithApplication {
-      // The date of acquisition is 19-10-${saleYear}
-      val disposalDate = DateTime.parse(s"19-10-$saleYear", DateTimeFormat.forPattern("dd-MM-yyyy"))
+    "call the micro service when the date of sale is the same as the date of disposal and redirect to the next page" in new TestWithApplication {
+      val disposalDate = ValidDateOfSale
 
       val request = buildCorrectlyPopulatedRequest()
         .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
@@ -368,20 +390,28 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
 
     "Render dates in the correct timezone" in new TestWithApplication {
       timeZoneFixture {
-        val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
+        val disposalDate = ValidDateOfSale.plusDays(1)
+        val day = disposalDate.toString("dd")
+        val month = disposalDate.toString("MM")
+        val year = disposalDate.getYear.toString
 
-        val disposalDate = DateTime.parse(s"$year-04-02T00:00.000+01:00")
+        val parsedDisposalDate = DateTime.parse(s"$year-$month-${day}T00:00.000+01:00")
 
-        val request = buildCorrectlyPopulatedRequest()
+        val request = buildCorrectlyPopulatedRequest(
+          dayDateOfSale = ValidDateOfSale.toString("dd"),
+          monthDateOfSale = ValidDateOfSale.toString("MM"),
+          yearDateOfSale = ValidDateOfSale.getYear.toString
+        )
           .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
           .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-          .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
+          .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(parsedDisposalDate)))
           .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-          .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel())
+          .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(traderEmail = None))
           .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
 
         val result = completeAndConfirm.submitWithDateCheck(request)
-        contentAsString(result) should include(s"02/04/$year")
+        // Date confirmation dialog
+        contentAsString(result) should include(s"$day/$month/$year")
       }
     }
 
@@ -485,9 +515,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     acquireWebService
   }
 
-  private def dateServiceStubbed(day: Int = 1,
-                                 month: Int = 1,
-                                 year: Int = org.joda.time.LocalDate.now.minusYears(1).getYear) = {
+  private def dateServiceStubbed(day: Int = stubbedDate.getDayOfMonth,
+                               month: Int = stubbedDate.getMonthOfYear,
+                               year: Int = stubbedDate.getYear) = {
     val dateService = mock[DateService]
     when(dateService.today).thenReturn(new DayMonthYear(day = day,
       month = month,
@@ -544,9 +574,9 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
   }
 
   private def buildCorrectlyPopulatedRequest(mileage: String = MileageValid,
-                                             dayDateOfSale: String = DayDateOfSaleValid,
-                                             monthDateOfSale: String = MonthDateOfSaleValid,
-                                             yearDateOfSale: String = YearDateOfSaleValid,
+                                             dayDateOfSale: String = ValidDateOfSale.toString("dd"),
+                                             monthDateOfSale: String = ValidDateOfSale.toString("MM"),
+                                             yearDateOfSale: String = ValidDateOfSale.getYear.toString,
                                              consent: String = ConsentTrue) = {
     FakeRequest().withFormUrlEncodedBody(
       MileageId -> mileage,

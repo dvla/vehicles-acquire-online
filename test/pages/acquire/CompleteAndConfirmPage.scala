@@ -21,9 +21,12 @@ object CompleteAndConfirmPage extends Page {
   final override val title: String = "Complete and confirm"
 
   final val MileageValid = "1000"
-  final val DayDateOfSaleValid = "19"
-  final val MonthDateOfSaleValid = "10"
-  final val YearDateOfSaleValid = org.joda.time.LocalDate.now.minusYears(2).getYear.toString
+
+  final val ValidDateOfSale = org.joda.time.DateTime.now.minusMonths(9)
+  final val DayDateOfSaleValid = ValidDateOfSale.toString("dd")
+  final val MonthDateOfSaleValid =  ValidDateOfSale.toString("MM")
+  final val YearDateOfSaleValid = ValidDateOfSale.getYear.toString
+
   final val ConsentTrue = "Consent"
 
   def back(implicit driver: WebDriver): Element = find(id(BackId)).get

@@ -22,6 +22,11 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk
     happyPath.goToCompleteAndConfirmPage()
   }
 
+  @Given("^the user is on the Complete and confirm page with VRN \"(.*?)\" and V5C \"(.*?)\"$")
+  def the_user_is_on_the_complete_and_confirm_page(vrn: String, v5c: String) {
+    happyPath.goToCompleteAndConfirmPage(vrn, v5c)
+  }
+
   @Given("^the user is on the Complete and confirm page having entered transaction failure data$")
   def the_user_is_on_the_complete_and_confirm_page_having_entered_transaction_failure_data() {
     happyPath.goToCompleteAndConfirmPageWithTransactionFailureData()
@@ -48,8 +53,8 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk
     the_user_confirms_the_transaction()
   }
 
-  @When("^the user enters a date of sale in the past and submits the form$")
-  def the_user_enters_a_date_of_sale_in_the_past_and_submits_the_form() = {
+  @When("^the user enters a date of sale over 5 years in the past and submits the form$")
+  def the_user_enters_a_date_of_sale_over_5_years_in_the_past_and_submits_the_form() = {
     val oldDate = today.minusYears(5).minusDays(1)
     happyPath.fillInCompleteAndConfirm(
       day = oldDate.toString("dd"),
@@ -69,6 +74,17 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk
   @When("^the user enters a date of sale before the date of disposal and submits the form$")
   def the_user_enters_a_date_of_sale_before_the_date_of_disposal_and_submits_the_form() = {
     happyPath.fillInCompleteAndConfirm(year = (today.getYear()-2).toString)
+    the_user_confirms_the_transaction()
+  }
+
+  @When("^the user enters a date of sale over 12 months in the past and submits the form$")
+  def the_user_enters_a_date_of_sale_over_twelve_months_in_the_past_and_submits_the_form() = {
+    val over12Months = today.minusMonths(13)
+    happyPath.fillInCompleteAndConfirm(
+      day = over12Months.toString("dd"),
+      month = over12Months.toString("MM"),
+      year = over12Months.getYear.toString
+    )
     the_user_confirms_the_transaction()
   }
 

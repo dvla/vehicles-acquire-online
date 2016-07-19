@@ -42,12 +42,17 @@ import play.api.i18n.Messages
 import utils.helpers.Config
 import views.html.acquire.complete_and_confirm
 
+object DateOfSaleCheck extends Enumeration {
+  val DateOfDisposalAfterDateOfSale, DateOfSaleOver12Months, Ok = Value
+}
+
 class CompleteAndConfirm @Inject()(webService: AcquireService,
                                    emailService: EmailService,
                                    healthStats: HealthStats)
                                   (implicit clientSideSessionFactory: ClientSideSessionFactory,
                                    dateService: DateService,
                                    config: Config) extends Controller with DVLALogger {
+
   private val cookiesToBeDiscardedOnRedirectAway =
     VehicleNewKeeperCompletionCacheKeys ++ Set(AllowGoingToCompleteAndConfirmPageCacheKey)
 
@@ -70,7 +75,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
             vehicleAndKeeperDetails,
             newKeeperDetails,
             vehicleSorn,
-            isSaleDateBeforeDisposalDate = false),
+            showDateOfSaleWarning = false),
             dateService)
           )
         case _ =>
@@ -79,98 +84,96 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     }
   }
 
-  // The dates are valid if they are the same or if the disposal date is before the acquisition date
-  def submitWithDateCheck = submitBase(
-    (keeperEndDate, dateOfSale) =>
-      keeperEndDate.toLocalDate.isEqual(dateOfSale) || keeperEndDate.toLocalDate.isBefore(dateOfSale)
-  )
+  // The dates are valid if they are the same or if the disposal date is before the date of sale
+  def submitWithDateCheck = submitBase({
+    case (Some(keeperEndDate), dateOfSale) if (keeperEndDate.toLocalDate.isAfter(dateOfSale)) =>
+      DateOfSaleCheck.DateOfDisposalAfterDateOfSale
+    case (_, dateOfSale) if (dateOfSale.isBefore(dateService.now.toDateTime.toLocalDate.minusMonths(12))) =>
+      DateOfSaleCheck.DateOfSaleOver12Months
+    case _ => DateOfSaleCheck.Ok
+  })
 
-  def submitNoDateCheck = submitBase((keeperEndDate, dateOfSale) => true)
+  def submitNoDateCheck = submitBase((_, _) => DateOfSaleCheck.Ok)
 
-  private def submitBase(validDates: (DateTime, LocalDate) => Boolean) = Action.async { implicit request =>
+  private def processInvalidForm(invalidForm: Form[CompleteAndConfirmFormModel])(implicit request: Request[_]) = Future.successful {
+    val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
+    val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
+    val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
+    (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
+      case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
+        BadRequest(complete_and_confirm(
+          CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
+            vehicleDetails,
+            newKeeperDetails,
+            vehicleSorn,
+            showDateOfSaleWarning = false),
+          dateService)
+        )
+      case _ =>
+        logMessage(request.cookies.trackingId(), Warn,
+          "Could not find expected data in cache on dispose submit - now redirecting...")
+        Redirect(routes.VehicleLookup.present()).discardingCookies()
+    }
+  }
+
+  private def processValidForm(validForm: CompleteAndConfirmFormModel,
+                               validDates: (Option[DateTime], LocalDate) => DateOfSaleCheck.Value,
+                               traderDetails: TraderDetailsModel)(implicit request: Request[AnyContent]) = for {
+    newKeeperDetails <- request.cookies.getModel[NewKeeperDetailsViewModel]
+    vehicleLookup <- request.cookies.getModel[VehicleLookupFormModel]
+    vehicleAndKeeperDetails <- request.cookies.getModel[VehicleAndKeeperDetailsModel]
+    taxOrSorn <- request.cookies.getModel[VehicleTaxOrSornFormModel]
+  } yield {
+    def dateInvalidCall(disposalDate: Option[String]) = Future.successful {
+      BadRequest(complete_and_confirm(
+        CompleteAndConfirmViewModel(form.fill(validForm),
+          vehicleAndKeeperDetails,
+          newKeeperDetails,
+          taxOrSorn,
+          showDateOfSaleWarning = true,
+          submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(), // Next time the submit will not perform any date check
+          disposalDate = disposalDate),
+          dateService
+      ))
+    }
+
+    validDates(vehicleAndKeeperDetails.keeperEndDate, validForm.dateOfSale) match {
+      case DateOfSaleCheck.Ok =>
+        dateValidCall(validForm, newKeeperDetails, vehicleLookup, vehicleAndKeeperDetails, traderDetails, taxOrSorn)
+      case DateOfSaleCheck.DateOfDisposalAfterDateOfSale =>
+        val disposalDateDisplay = vehicleAndKeeperDetails.keeperEndDate.map(_.toString("dd/MM/yyyy"))
+        logMessage(request.cookies.trackingId(), Debug, "Complete-and-confirm date validation failed: disposalDate " +
+          s"(${vehicleAndKeeperDetails.keeperEndDate}) after dateOfSale (${validForm.dateOfSale})")
+        dateInvalidCall(disposalDateDisplay)
+      case DateOfSaleCheck.DateOfSaleOver12Months =>
+        logMessage(request.cookies.trackingId(), Debug, "Complete-and-confirm date validation failed: dateOfSale " +
+          s"(${validForm.dateOfSale}) over 12 months")
+        dateInvalidCall(None)
+    }
+  }
+
+  private def submitBase(validDates: (Option[DateTime], LocalDate) => DateOfSaleCheck.Value) = Action.async { implicit request =>
     canPerformSubmit {
       form.bindFromRequest.fold(
-        invalidForm => Future.successful {
-          val newKeeperDetailsOpt = request.cookies.getModel[NewKeeperDetailsViewModel]
-          val vehicleAndKeeperDetailsOpt = request.cookies.getModel[VehicleAndKeeperDetailsModel]
-          val vehicleSornOpt = request.cookies.getModel[VehicleTaxOrSornFormModel]
-          (newKeeperDetailsOpt, vehicleAndKeeperDetailsOpt, vehicleSornOpt) match {
-            case (Some(newKeeperDetails), Some(vehicleDetails), Some(vehicleSorn)) =>
-              BadRequest(complete_and_confirm(
-                CompleteAndConfirmViewModel(formWithReplacedErrors(invalidForm),
-                  vehicleDetails,
-                  newKeeperDetails,
-                  vehicleSorn,
-                  isSaleDateBeforeDisposalDate = false),
-                dateService)
-              )
-            case _ =>
-              logMessage(request.cookies.trackingId(), Warn,
-                "Could not find expected data in cache on dispose submit - now redirecting...")
-              Redirect(routes.VehicleLookup.present()).discardingCookies()
-          }
-        },
+        invalidForm => processInvalidForm(invalidForm),
         validForm => {
           // Check to see if the TraderDetailsModel cookie is present
           request.cookies.getModel[TraderDetailsModel].fold {
             logMessage(request.cookies.trackingId(), Warn,
               "Could not find trader details in cache on Acquire submit - now redirecting to SetUpTradeDetails...")
-            Future.successful {
-              Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
-            }
-          } { traderDetails => // The TraderDetailsModel cookie is present
-            val result = for {
-              newKeeperDetails <- request.cookies.getModel[NewKeeperDetailsViewModel]
-              vehicleLookup <- request.cookies.getModel[VehicleLookupFormModel]
-              vehicleAndKeeperDetails <- request.cookies.getModel[VehicleAndKeeperDetailsModel]
-              taxOrSorn <- request.cookies.getModel[VehicleTaxOrSornFormModel]
-            } yield {
-              // Check to see if the keeperEndDate option is present. This is the date of disposal
-              vehicleAndKeeperDetails.keeperEndDate.fold(dateValidCall(validForm, // Here the date is missing so we call the acquire service and move to the next page
-                newKeeperDetails,
-                vehicleLookup,
-                vehicleAndKeeperDetails,
-                traderDetails,
-                taxOrSorn
-              ))(keeperEndDate => { // keeperEndDate is present so we use it to see if the dateOfSale is valid
-                if (!validDates(keeperEndDate, validForm.dateOfSale)) {
-                  // Date of sale is invalid so send a bad request back to the submitting page
-                  logMessage(request.cookies.trackingId(), Debug,
-                    "Complete-and-confirm date validation failed: keeperEndDate " +
-                    s"(${keeperEndDate.toLocalDate}) is after dateOfSale (${validForm.dateOfSale})")
-
-                  val dateInvalidCall = Future.successful {
-                    BadRequest(complete_and_confirm(
-                      CompleteAndConfirmViewModel(form.fill(validForm),
-                        vehicleAndKeeperDetails,
-                        newKeeperDetails,
-                        taxOrSorn,
-                        isSaleDateBeforeDisposalDate = true, // This will tell the page to display the date warning
-                        submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(), // Next time the submit will not perform any date check
-                        dateOfDisposal = Some(keeperEndDate.toString("dd/MM/yyyy"))), // Pass the dateOfDisposal so we can tell the user in the warning
-                      dateService)
-                    )
-                  }
-                  dateInvalidCall // Return the bad request
-                }
-                else dateValidCall(validForm, // Date of sale is valid so call the acquire service and move to the next page
-                  newKeeperDetails,
-                  vehicleLookup,
-                  vehicleAndKeeperDetails,
-                  traderDetails,
-                  taxOrSorn
-                )
-              })
-            }
-            // For comprehension drops out to here if any of the cookies are missing
-            result.getOrElse(Future.successful {
-              logMessage(request.cookies.trackingId(), Warn,
-                "Could not find expected data in cache on acquire submit - now redirecting to VehicleLookup")
-              Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
-            })
+          Future.successful {
+            Redirect(routes.SetUpTradeDetails.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
           }
+        } { traderDetails =>
+          val result = processValidForm(validForm, validDates, traderDetails)
+          // For comprehension drops out to here if any of the cookies are missing
+          result.getOrElse(Future.successful {
+            logMessage(request.cookies.trackingId(), Warn,
+              "Could not find expected data in cache on acquire submit - now redirecting to VehicleLookup")
+            Redirect(routes.VehicleLookup.present()).discardingCookie(AllowGoingToCompleteAndConfirmPageCacheKey)
+          })
         }
-      )
+      })
     }
   }
 
@@ -388,7 +391,7 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   private def buildWebHeader(trackingId: TrackingId, identifier: Option[String]): VssWebHeaderDto =
     VssWebHeaderDto(transactionId = trackingId.value,
-      originDateTime = new DateTime,
+      originDateTime = dateService.now.toDateTime,
       applicationCode = config.applicationCode,
       serviceTypeCode = config.vssServiceTypeCode,
       buildEndUser(identifier))
