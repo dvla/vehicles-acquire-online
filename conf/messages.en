@@ -70,6 +70,8 @@ acquire_setuptradedetails.traderemailoption.no = No
 # gatling
 traderName = Trader name
 traderPostcode = Postcode
+traderEmail = Trader email address
+traderEmailOption = Email confirmation
 
 #page 3 - Business Choose Your Address
 disposal_businessChooseYourAddress_addressSelect = Select trader address
@@ -162,6 +164,7 @@ acquire_privatekeeperdetails.postcodelabel = Postcode
 acquire_privatekeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 acquire_privatekeeperdetails.dateofbirth.hint = For example, 01 03 1976
 privatekeeper_dateofbirth = Date of Birth
+mandatory-alternative.not-selected = This field is mandatory. Please select one of the options.
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter new keeper details
@@ -184,6 +187,7 @@ businesskeeper_email = Business email
 businessName = Business name
 acquire_email_not_entered = Not entered
 fleetNumberOption = Fleet number
+fleetNumber = Fleet number
 
 #new keeper choose your address
 acquire_newKeeperChooseYourAddress_title = Select new keeper address
@@ -198,6 +202,9 @@ acquire_newKeeperChooseYourAddress.manualAddressEntry = Address is not in the li
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
+change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
+businesskeeper_option_email = Email confirmation
 
 #[optional] - new keeper manual address entry
 acquire_newKeeperEnterAddressManually.title = Enter keeper address
