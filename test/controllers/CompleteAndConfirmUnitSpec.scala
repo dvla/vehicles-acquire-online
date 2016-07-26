@@ -388,31 +388,14 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       }
     }
 
-    "Render dates in the correct timezone" in new TestWithApplication {
-      timeZoneFixture {
-        val disposalDate = ValidDateOfSale.plusDays(1)
-        val day = disposalDate.toString("dd")
-        val month = disposalDate.toString("MM")
-        val year = disposalDate.getYear.toString
+    "render disposal date warning in correct time period (BST)" in new TestWithApplication {
+      val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
+      dateOfSaleAfterDateOfDisposalWarning(DateTime.parse(s"$year-04-02T00:00.000+01:00"))
+    }
 
-        val parsedDisposalDate = DateTime.parse(s"$year-$month-${day}T00:00.000+01:00")
-
-        val request = buildCorrectlyPopulatedRequest(
-          dayDateOfSale = ValidDateOfSale.toString("dd"),
-          monthDateOfSale = ValidDateOfSale.toString("MM"),
-          yearDateOfSale = ValidDateOfSale.getYear.toString
-        )
-          .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
-          .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
-          .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(parsedDisposalDate)))
-          .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
-          .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(traderEmail = None))
-          .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
-
-        val result = completeAndConfirm.submitWithDateCheck(request)
-        // Date confirmation dialog
-        contentAsString(result) should include(s"$day/$month/$year")
-      }
+    "render disposal date warning in correct time period (GMT)" in new TestWithApplication {
+      val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
+      dateOfSaleAfterDateOfDisposalWarning(DateTime.parse(s"$year-11-02T00:00.000+00:00"))
     }
 
     "send two internal emails when further action required" in new TestWithApplication {
@@ -490,17 +473,28 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
     }
   }
 
-  private def timeZoneFixture(test: => Unit): Unit = {
-    val defaultJodaTimeZone = DateTimeZone.getDefault
-    val defaultTimeZone = TimeZone.getDefault
-    try {
-      DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"))
-      TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"))
-      test
-    } finally {
-      DateTimeZone.setDefault(defaultJodaTimeZone)
-      TimeZone.setDefault(defaultTimeZone)
-    }
+  private def dateOfSaleAfterDateOfDisposalWarning(disposalDate: DateTime): Unit = {
+    val day = disposalDate.toString("dd")
+    val month = disposalDate.toString("MM")
+    val year = disposalDate.getYear.toString
+
+    val dateOfSaleBeforeDisposalDate = disposalDate.minusDays(1)
+
+    val request = buildCorrectlyPopulatedRequest(
+      dayDateOfSale = dateOfSaleBeforeDisposalDate.toString("dd"),
+      monthDateOfSale = dateOfSaleBeforeDisposalDate.toString("MM"),
+      yearDateOfSale = dateOfSaleBeforeDisposalDate.getYear.toString
+    )
+      .withCookies(CookieFactoryForUnitSpecs.allowGoingToCompleteAndConfirm())
+      .withCookies(CookieFactoryForUnitSpecs.newKeeperDetailsModel())
+      .withCookies(CookieFactoryForUnitSpecs.vehicleAndKeeperDetailsModel(keeperEndDate = Some(disposalDate)))
+      .withCookies(CookieFactoryForUnitSpecs.vehicleLookupFormModel())
+      .withCookies(CookieFactoryForUnitSpecs.traderDetailsModel(traderEmail = None))
+      .withCookies(CookieFactoryForUnitSpecs.vehicleTaxOrSornFormModel())
+
+    val result = completeAndConfirm.submitWithDateCheck(request)
+    // Date confirmation dialog
+    contentAsString(result) should include(s"$day/$month/$year")
   }
 
   private def acquireWebService(acquireServiceStatus: Int = OK,
