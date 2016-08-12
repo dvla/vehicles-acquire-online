@@ -300,12 +300,6 @@ ms.vehiclesService.response.unableToProcessApplication-title = Transaction unsuc
 ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C registration certificate (logbook) to
 ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
-# closed
-closed.title = Service unavailable
-closed.p1 = This service is only available Monday to {2} {0} to {1}.
-closed.exit_button = Exit
-closed.lastDayOpen = Saturday
-
 # feedback
 common_feedback.subject = Buy from the trade - feedback
 
