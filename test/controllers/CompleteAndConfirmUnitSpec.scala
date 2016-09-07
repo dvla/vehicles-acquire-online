@@ -4,10 +4,9 @@ import helpers.TestWithApplication
 import Common.PrototypeHtml
 import helpers.UnitSpec
 import helpers.acquire.CookieFactoryForUnitSpecs
-import java.util.TimeZone
 import models.CompleteAndConfirmFormModel.Form.{ConsentId, DateOfSaleId, MileageId}
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{DateTimeZone, DateTime, Instant}
+import org.joda.time.{DateTime, Instant}
 import org.mockito.Matchers.{any, anyString}
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.invocation.InvocationOnMock
@@ -386,16 +385,6 @@ class CompleteAndConfirmUnitSpec extends UnitSpec {
       whenReady(result) { r =>
         r.header.status should equal(BAD_REQUEST)
       }
-    }
-
-    "render disposal date warning in correct time period (BST)" in new TestWithApplication {
-      val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
-      dateOfSaleAfterDateOfDisposalWarning(DateTime.parse(s"$year-04-02T00:00.000+01:00"))
-    }
-
-    "render disposal date warning in correct time period (GMT)" in new TestWithApplication {
-      val year = org.joda.time.LocalDate.now.minusYears(1).getYear.toString
-      dateOfSaleAfterDateOfDisposalWarning(DateTime.parse(s"$year-11-02T00:00.000+00:00"))
     }
 
     "send two internal emails when further action required" in new TestWithApplication {

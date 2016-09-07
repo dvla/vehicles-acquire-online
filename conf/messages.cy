@@ -245,8 +245,8 @@ acquire_completeAndConfirm.backbutton = Back
 acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 acquire_completeAndConfirm.dateofsale.label = Date of sale
 acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
-acquire_completeandconfirm.dateofsale.warning = You’ve entered a date of sale that is before the previous keeper’s disposal date which is {0}. Please enter the correct date and press ‘Confirm new keeper’ to continue.
-acquire_completeandconfirm.dateofsale.warning.over12Months = Mae’r dyddiad yr ydych wedi’i rhoi dros 12 mis yn ôl, a wnewch chi wirio’r dyddiad a sicrhau ei fod yn gywir os gwelwch yn dda.
+acquire_completeandconfirm.dateofsale.warning = The date you’ve entered is before the current keeper acquired the vehicle, which is shown on the V5C registration certificate (logbook). Please enter a correct date that’s later than the one shown on the logbook and select ‘Next’.
+acquire_completeandconfirm.dateofsale.warning.over12Months = The date you have entered is over 12 months ago, please check the date to make sure it is correct.
 
 dateofsale = Date of sale
 

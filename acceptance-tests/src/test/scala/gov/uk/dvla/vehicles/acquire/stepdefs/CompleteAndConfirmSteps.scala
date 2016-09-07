@@ -42,6 +42,14 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk
     happyPath.goToCompleteAndConfirmPageAndNavigateBackwards()
   }
 
+  @When("^the user enters a valid date and confirms the transaction$")
+  def the_user_enters_a_valid_date_and_confirms_the_transaction() = {
+    CompleteAndConfirmPage.dayDateOfSaleTextBox.value = "01"
+    CompleteAndConfirmPage.monthDateOfSaleTextBox.value = "01"
+    CompleteAndConfirmPage.yearDateOfSaleTextBox.value = (today.getYear()-2).toString
+    the_user_confirms_the_transaction()
+  }
+
   @When("^the user confirms the transaction$")
   def the_user_confirms_the_transaction() = {
     click on CompleteAndConfirmPage.next
@@ -89,8 +97,8 @@ class CompleteAndConfirmSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk
   }
 
   @Then("^the user will be taken to the \"(.*?)\" page$")
-  def the_user_will_be_taken_to_the_page(pageTitle: String) = {
-    pageTitle should include(pageTitle)
+  def the_user_will_be_taken_to_the_page(title: String) = {
+    pageTitle should equal(title)
   }
 
   @Then("^the user will remain on the complete and confirm page and a warning will be displayed$")

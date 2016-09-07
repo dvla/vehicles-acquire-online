@@ -178,6 +178,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
   def goToCompleteAndConfirmPageAndNavigateBackwards() = {
     goToCompleteAndConfirmPage()
     click on CompleteAndConfirmPage.back
+    pageTitle shouldEqual VehicleTaxOrSornPage.title withClue trackingId
   }
 
   def fillInCompleteAndConfirm(day: String = "01", month: String = "01", year: String = previousYear.toString) = {
@@ -189,7 +190,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
 
   def goToAcquireSuccessPage() = {
     goToCompleteAndConfirmPage()
-    fillInCompleteAndConfirm()
+    fillInCompleteAndConfirm(
+      day = today.toString("dd"),
+      month = today.toString("MM"),
+      year = today.getYear.toString
+    )
     click on CompleteAndConfirmPage.next
     pageTitle shouldEqual AcquireSuccessPage.title withClue trackingId
   }
@@ -206,10 +211,11 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
 
     goToVehicleTaxOrSornPageWithKeeperAddressFromLookup(callNavigationSteps = false)
     goToCompleteAndConfirmPage(callNavigationSteps = false)
-    CompleteAndConfirmPage.dayDateOfSaleTextBox.value = "01"
-    CompleteAndConfirmPage.monthDateOfSaleTextBox.value = "01"
-    CompleteAndConfirmPage.yearDateOfSaleTextBox.value = previousYear.toString
-    click on CompleteAndConfirmPage.consent
+    fillInCompleteAndConfirm(
+      day = today.toString("dd"),
+      month = today.toString("MM"),
+      year = today.getYear.toString
+    )
   }
 
   private def fillInPrivateKeeperDetails(day: String = "01", month: String = "01", year: String = previousYear.toString) = {

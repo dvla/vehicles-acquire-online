@@ -86,9 +86,9 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
 
   // The dates are valid if they are the same or if the disposal date is before the date of sale
   def submitWithDateCheck = submitBase({
-    case (Some(keeperEndDate), dateOfSale) if (keeperEndDate.toLocalDate.isAfter(dateOfSale)) =>
+    case (Some(keeperEndDate), dateOfSale) if keeperEndDate.toLocalDate.isAfter(dateOfSale) =>
       DateOfSaleCheck.DateOfDisposalAfterDateOfSale
-    case (_, dateOfSale) if (dateOfSale.isBefore(dateService.now.toDateTime.toLocalDate.minusMonths(12))) =>
+    case (_, dateOfSale) if dateOfSale.isBefore(dateService.now.toDateTime.toLocalDate.minusMonths(12)) =>
       DateOfSaleCheck.DateOfSaleOver12Months
     case _ => DateOfSaleCheck.Ok
   })
@@ -124,14 +124,16 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
     vehicleAndKeeperDetails <- request.cookies.getModel[VehicleAndKeeperDetailsModel]
     taxOrSorn <- request.cookies.getModel[VehicleTaxOrSornFormModel]
   } yield {
-    def dateInvalidCall(disposalDate: Option[String]) = Future.successful {
+    def dateInvalidCall(warningModel: Form[CompleteAndConfirmFormModel], disposalDate: Option[String]) = Future.successful {
       BadRequest(complete_and_confirm(
-        CompleteAndConfirmViewModel(form.fill(validForm),
+        CompleteAndConfirmViewModel(
+          warningModel,
           vehicleAndKeeperDetails,
           newKeeperDetails,
           taxOrSorn,
           showDateOfSaleWarning = true,
-          submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(), // Next time the submit will not perform any date check
+           // Next time the submit will not perform any date check
+          submitAction = controllers.routes.CompleteAndConfirm.submitNoDateCheck(),
           disposalDate = disposalDate),
           dateService
       ))
@@ -144,11 +146,18 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
         val disposalDateDisplay = vehicleAndKeeperDetails.keeperEndDate.map(_.toString("dd/MM/yyyy"))
         logMessage(request.cookies.trackingId(), Debug, "Complete-and-confirm date validation failed: disposalDate " +
           s"(${vehicleAndKeeperDetails.keeperEndDate}) after dateOfSale (${validForm.dateOfSale})")
-        dateInvalidCall(disposalDateDisplay)
+
+        // VMPRCI-4450: Don't pass through the entered date of sale and ignore the resulting error
+        val model = form.bind(Map(
+          models.CompleteAndConfirmFormModel.Form.MileageId -> validForm.mileage.fold("")(_.toString),
+          models.CompleteAndConfirmFormModel.Form.ConsentId -> validForm.consent
+        )).discardingErrors
+
+        dateInvalidCall(model, disposalDateDisplay)
       case DateOfSaleCheck.DateOfSaleOver12Months =>
         logMessage(request.cookies.trackingId(), Debug, "Complete-and-confirm date validation failed: dateOfSale " +
           s"(${validForm.dateOfSale}) over 12 months")
-        dateInvalidCall(None)
+        dateInvalidCall(form.fill(validForm), None)
     }
   }
 
