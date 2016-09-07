@@ -24,7 +24,9 @@ class ConfigImpl extends Config {
   // Opening and closing times
   override val openingTimeMinOfDay: Int = getProperty[Int]("openingTimeMinOfDay")
   override val closingTimeMinOfDay: Int = getProperty[Int]("closingTimeMinOfDay")
-  override val closingWarnPeriodMins: Int = getOptionalProperty[Int]("closingWarnPeriodMins").getOrElse(ConfigImpl.DEFAULT_CLOSING_WARN_PERIOD)
+  override val closingWarnPeriodMins: Int = getOptionalProperty[Int]("closingWarnPeriodMins")
+    .getOrElse(ConfigImpl.DefaultClosingWarnPeriodMins)
+  override val closedDays: List[Int] = getIntListProperty("closedDays").getOrElse(List())
 
   // Web headers
   override val applicationCode: String = getProperty[String]("webHeader.applicationCode")
@@ -34,10 +36,9 @@ class ConfigImpl extends Config {
   override val channelCode: String = getProperty[String]("webHeader.channelCode")
   override val contactId: Long = getProperty[Long]("webHeader.contactId")
 
-  override val emailServiceMicroServiceUrlBase: String =
-    getOptionalProperty[String]("emailServiceMicroServiceUrlBase").getOrElse(ConfigImpl.DEFAULT_BASE_URL)
+  override val emailServiceMicroServiceUrlBase: String = getProperty[String]("emailServiceMicroServiceUrlBase")
   override val emailServiceMsRequestTimeout: Int =
-    getOptionalProperty[Int]("emailService.ms.requesttimeout").getOrElse(ConfigImpl.DEFAULT_MS_REQ_TIMEOUT)
+    getOptionalProperty[Int]("emailService.ms.requesttimeout").getOrElse(ConfigImpl.DefaultMsTimeoutMillis)
 
   override val emailConfiguration: EmailConfiguration = EmailConfiguration(
     From(getProperty[String]("email.senderAddress"), "DO-NOT-REPLY"),
@@ -51,11 +52,9 @@ class ConfigImpl extends Config {
 
   override val surveyUrl: Option[String] = getOptionalProperty[String]("survey.url")
   override val surveyInterval: Long = getDurationProperty("survey.interval")
-  override val closedDays: List[Int] = getIntListProperty("closedDays").getOrElse(List())
 }
 
 object ConfigImpl {
-  final val DEFAULT_BASE_URL = "NOT FOUND"
-  final val DEFAULT_MS_REQ_TIMEOUT = 10000 // in millis
-  final val DEFAULT_CLOSING_WARN_PERIOD = 15 // in minutes
+  final val DefaultMsTimeoutMillis = 10000
+  final val DefaultClosingWarnPeriodMins = 15
 }
