@@ -1,13 +1,12 @@
+# error view
+error.title = An unrecoverable error has occurred
+error.button = Start again
+
 # VehicleLookup form error
 error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
 error.validDocumentReferenceNumber = Document reference number must be an 11-digit number
 
-error.title = An unrecoverable error has occurred
-error.button = Start again
-
-# VPC - PrivateKeeperDetailsBase
-error.validDriverNumber = The driver number that you have entered does not appear to be in an acceptable format. Please amend your entry or delete and re-submit.
-error.titlePlusFirstName.tooLong = The combined length of your title e.g. Mr/Mrs/Miss/Other and first name(s) cannot exceed 26 characters. Please amend your entry and re-submit.
+# VehicleTaxOrSorn view related
 select = Tax/SORN
 VehicleTaxOrSornFormModel = SORN now
 error.sornformerror = You must accept the SORN option.
@@ -164,7 +163,6 @@ acquire_privatekeeperdetails.postcodelabel = Postcode
 acquire_privatekeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
 acquire_privatekeeperdetails.dateofbirth.hint = For example, 01 03 1976
 privatekeeper_dateofbirth = Date of Birth
-mandatory-alternative.not-selected = This field is mandatory. Please select one of the options.
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter new keeper details
@@ -289,10 +287,6 @@ vrm_locked.text3.2 = DVLA, Swansea SA99 1BA
 vrm_locked.buyanother.button = Notify another sale
 vrm_locked.exit.button = Exit
 
-error.title.unknownOption = Please enter the title of the new keeper
-error.title.missing = Please enter the title of the new keeper
-error.title.tooLong = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
-error.title.illegalCharacters = Other title field can only contain characters from the following A-Z, hyphen, apostrophe, full stop and space.
 error.date.notOne = Year cannot be 0000
 
 # micro-service response codes
