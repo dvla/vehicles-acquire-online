@@ -156,7 +156,7 @@ acquire_privatekeeperdetails.submitbutton = Next
 acquire_privatekeeperdetails.firstnamelabel = First name(s)
 acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address of new keeper
-acquire_privatekeeperdetails.p1 = We will use these details to create the new V5C registration certificate (logbook).
+acquire_privatekeeperdetails.p1 = Dylai rhain fod yn manylion y person yr ydych wedi gwerthu’r cerbyd iddynt. Byddwn yn defnyddio’r manylion hyn i ddiweddaru ein cofnodion a chyhoeddi tystysgrif cofrestru V5CW newydd (llyfr log).
 acquire_privatekeeperdetails.drivernumberlabel = Driving licence number of new keeper
 acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 acquire_privatekeeperdetails.postcodelabel = Postcode
@@ -166,7 +166,7 @@ privatekeeper_dateofbirth = Date of Birth
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter new keeper details
-acquire_businesskeeperdetails.p1 = We will use these details to create the new V5C registration certificate (logbook).
+acquire_businesskeeperdetails.p1 = Dylai rhain fod yn manylion y busnes yr ydych wedi gwerthu’r cerbyd iddynt. Byddwn yn defnyddio’r manylion hyn i ddiweddaru ein cofnodion a chyhoeddi tystysgrif cofrestru V5CW newydd (llyfr log).
 acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
 acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it
