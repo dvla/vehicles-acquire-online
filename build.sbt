@@ -118,7 +118,7 @@ SandboxSettings.portOffset := 19000
 
 SandboxSettings.applicationContext := ""
 
-SandboxSettings.webAppSecrets := "ui/dev/vehicles-acquire-online.conf.enc"
+SandboxSettings.webAppSecrets := "vehicles-acquire-online/conf/vehicles-acquire-online.conf"
 
 SandboxSettings.osAddressLookupProject := osAddressLookupProject
 
