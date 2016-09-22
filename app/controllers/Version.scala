@@ -8,13 +8,14 @@ import uk.gov.dvla.vehicles.presentation.common.webserviceclients.emailservice.E
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.OrdnanceSurveyConfig
 import uk.gov.dvla.vehicles.presentation.common.webserviceclients.vehicleandkeeperlookup.VehicleAndKeeperLookupConfig
 
-class Version @Inject()(vehicleAndKeeperLookupConfig: VehicleAndKeeperLookupConfig,
-                        osAddressLookupConfig: OrdnanceSurveyConfig,
-                        vehiclesAcquireConfig: AcquireConfig,
-                        emailConfig: EmailServiceConfig)
+class Version @Inject()(//vehicleAndKeeperLookupConfig: VehicleAndKeeperLookupConfig,
+//                        osAddressLookupConfig: OrdnanceSurveyConfig,
+//                        vehiclesAcquireConfig: AcquireConfig,
+//                        emailConfig: EmailServiceConfig
+                       )
   extends controllers.Version(
-    emailConfig.emailServiceMicroServiceBaseUrl + Suffix,
-    osAddressLookupConfig.baseUrl + Suffix,
-    vehicleAndKeeperLookupConfig.vehicleAndKeeperLookupMicroServiceBaseUrl + Suffix,
-    vehiclesAcquireConfig.baseUrl + Suffix
+//    emailConfig.emailServiceMicroServiceBaseUrl + Suffix,
+//    osAddressLookupConfig.baseUrl + Suffix,
+//    vehicleAndKeeperLookupConfig.vehicleAndKeeperLookupMicroServiceBaseUrl + Suffix,
+//    vehiclesAcquireConfig.baseUrl + Suffix
 )
