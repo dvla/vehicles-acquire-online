@@ -69,7 +69,7 @@ class EnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness {
       go to BeforeYouStartPage
       cacheSetup()
       sadPath
-      ErrorPanel.numberOfErrors should equal(2)
+      ErrorPanel.numberOfErrors should equal(3)
     }
   }
 

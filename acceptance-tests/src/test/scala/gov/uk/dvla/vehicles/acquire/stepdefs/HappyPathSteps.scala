@@ -83,6 +83,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     goToEnterAddressManuallyPage()
     EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
     EnterAddressManuallyPage.addressPostTown.value = "Swansea"
+    EnterAddressManuallyPage.addressPostcode.value = "SA1 1AA"
     click on EnterAddressManuallyPage.next
     pageTitle shouldEqual VehicleLookupPage.title withClue trackingId
   }
@@ -145,6 +146,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     pageTitle shouldEqual NewKeeperEnterAddressManuallyPage.title withClue trackingId
     EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 highrate"
     EnterAddressManuallyPage.addressPostTown.value = "swansea"
+    EnterAddressManuallyPage.addressPostcode.value = "sa11aa"
     click on EnterAddressManuallyPage.next
     pageTitle shouldEqual VehicleTaxOrSornPage.title withClue trackingId
   }
@@ -218,11 +220,16 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     )
   }
 
-  private def fillInPrivateKeeperDetails(day: String = "01", month: String = "01", year: String = previousYear.toString) = {
+  private def fillInPrivateKeeperDetails(firstName: String = FirstName,
+                                         lastName: String = LastName,
+                                         postcode: String = Postcode,
+                                         day: String = "01",
+                                         month: String = "01",
+                                         year: String = previousYear.toString) = {
     click on PrivateKeeperDetailsPage.mr
-    PrivateKeeperDetailsPage.firstNameTextBox.value = FirstName
-    PrivateKeeperDetailsPage.lastNameTextBox.value = LastName
-    PrivateKeeperDetailsPage.postcodeTextBox.value = Postcode
+    PrivateKeeperDetailsPage.firstNameTextBox.value = firstName
+    PrivateKeeperDetailsPage.lastNameTextBox.value = lastName
+    PrivateKeeperDetailsPage.postcodeTextBox.value = postcode
     PrivateKeeperDetailsPage.dayDateOfBirthTextBox.value = day
     PrivateKeeperDetailsPage.monthDateOfBirthTextBox.value = month
     PrivateKeeperDetailsPage.yearDateOfBirthTextBox.value = year
@@ -279,14 +286,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
   def the_user_navigates_forwards_from_enter_address_manually_and_there_are_no_validation_errors() = {
     EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
     EnterAddressManuallyPage.addressPostTown.value = "Swansea"
-    click on EnterAddressManuallyPage.next
-  }
-
-  @When("^the user changes the postcode to \"(.+?)\" and navigates forwards from enter address manually and there are no validation errors$")
-  def the_user_changes_the_postcode_and_navigates_forwards_from_enter_address_manually_and_there_are_no_validation_errors(postCode: String) = {
-    EnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
-    EnterAddressManuallyPage.addressPostTown.value = "Swansea"
-    EnterAddressManuallyPage.addressPostCode.value = postCode
+    EnterAddressManuallyPage.addressPostcode.value = "SA1 1AA"
     click on EnterAddressManuallyPage.next
   }
 
@@ -332,14 +332,7 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
   def the_user_navigates_forwards_from_new_keeper_enter_address_manually_and_there_are_no_validation_errors() = {
     NewKeeperEnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
     NewKeeperEnterAddressManuallyPage.addressPostTown.value = "Swansea"
-    click on NewKeeperEnterAddressManuallyPage.next
-  }
-
-  @When("^the user changes the postcode to \"(.+?)\" and navigates forwards from new keeper enter address manually and there are no validation errors$")
-  def the_user_changes_the_postcode_and_navigates_forwards_from_new_keeper_enter_address_manually_and_there_are_no_validation_errors(postCode: String) = {
-    NewKeeperEnterAddressManuallyPage.addressBuildingNameOrNumber.value = "1 Long Road"
-    NewKeeperEnterAddressManuallyPage.addressPostTown.value = "Swansea"
-    NewKeeperEnterAddressManuallyPage.addressPostCode.value = postCode
+    NewKeeperEnterAddressManuallyPage.addressPostcode.value = "SA1 1AA"
     click on NewKeeperEnterAddressManuallyPage.next
   }
 
@@ -376,6 +369,16 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
   @When("^the user enters an invalid date of birth and submits the form$")
   def the_user_enters_an_invalid_date_of_birth_and_submits_the_form() = {
     fillInPrivateKeeperDetails(year = "201")
+  }
+
+  @When("^the user enters an invalid first name and submits the form$")
+  def the_user_enters_an_invalid_first_name_and_submits_the_form() = {
+    fillInPrivateKeeperDetails(firstName = "-first")
+  }
+
+  @When("^the user enters an invalid last name and submits the form$")
+  def the_user_enters_a_last_name_and_submits_the_form() = {
+    fillInPrivateKeeperDetails(lastName = "+last")
   }
 
   @When("^the user enters a date of birth more than 110 years in the past and submits the form$")
