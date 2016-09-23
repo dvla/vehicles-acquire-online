@@ -24,10 +24,7 @@ acquire_vehicledetails.warning = If the vehicle details shown are incorrect plea
 onHandlerNotFound.title = This page cannot be found
 onHandlerNotFound.header = This page cannot be found
 onHandlerNotFound.body = We are unable to find the page you have requested, this event has been logged for investigation.
-onHandlerNotFound.noJavascript = If you wish to try again select the back button on your browser, if not select "Exit" to leave the service.
 onHandlerNotFound.start.button = Start
-
-mandatory = Fields not labelled (optional) are mandatory
 
 #page 1 - Before You Start
 acquire_beforeyoustart.title = Selling a vehicle out of trade
@@ -65,12 +62,6 @@ acquire_setuptradedetails.button = Find address
 acquire_setuptradedetails.traderemailoption = Do you want an email confirmation of the sale?
 acquire_setuptradedetails.traderemailoption.yes = Yes
 acquire_setuptradedetails.traderemailoption.no = No
-
-# gatling
-traderName = Trader name
-traderPostcode = Postcode
-traderEmail = Trader email address
-traderEmailOption = Email confirmation
 
 #page 3 - Business Choose Your Address
 disposal_businessChooseYourAddress_addressSelect = Select trader address
@@ -156,7 +147,7 @@ acquire_privatekeeperdetails.submitbutton = Next
 acquire_privatekeeperdetails.firstnamelabel = First name(s)
 acquire_privatekeeperdetails.lastnamelabel =Last name
 acquire_privatekeeperdetails.emaillabel = Email address of new keeper
-acquire_privatekeeperdetails.p1 = Dylai rhain fod yn manylion y person yr ydych wedi gwerthu’r cerbyd iddynt. Byddwn yn defnyddio’r manylion hyn i ddiweddaru ein cofnodion a chyhoeddi tystysgrif cofrestru V5CW newydd (llyfr log).
+acquire_privatekeeperdetails.p1 = These should be the details of the person you sold the vehicle to. We will use these details to update our records and issue a new V5C registration certificate (logbook).
 acquire_privatekeeperdetails.drivernumberlabel = Driving licence number of new keeper
 acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
 acquire_privatekeeperdetails.postcodelabel = Postcode
@@ -166,7 +157,7 @@ privatekeeper_dateofbirth = Date of Birth
 
 #business keeper details
 acquire_businesskeeperdetails.title = Enter new keeper details
-acquire_businesskeeperdetails.p1 = Dylai rhain fod yn manylion y busnes yr ydych wedi gwerthu’r cerbyd iddynt. Byddwn yn defnyddio’r manylion hyn i ddiweddaru ein cofnodion a chyhoeddi tystysgrif cofrestru V5CW newydd (llyfr log).
+acquire_businesskeeperdetails.p1 = These should be the details of the business you sold the vehicle to. We will use these details to update our records and issue a new V5C registration certificate (logbook).
 acquire_businesskeeperdetails.fleetnumber = Fleet number
 acquire_businesskeeperdetails.businessname = Business name
 acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it
@@ -180,29 +171,25 @@ acquire_businesskeeperdetails.traderemailoption.no = No
 acquire_businesskeeperdetails.fleetnumberoption = Does the new keeper have a DVLA fleet number?
 acquire_businesskeeperdetails.fleetnumberoption.yes = Yes
 acquire_businesskeeperdetails.fleetnumberoption.no = No
-businesskeeper_postcode = Business postcode
-businesskeeper_email = Business email
-businessName = Business name
+
+# acquire_success, vehicle_lookup
 acquire_email_not_entered = Not entered
-fleetNumberOption = Fleet number
-fleetNumber = Fleet number
 
 #new keeper choose your address
 acquire_newKeeperChooseYourAddress_title = Select new keeper address
 acquire_newKeeperChooseYourAddress_newKeeperName_label = Name
 acquire_newKeeperChooseYourAddress_newKeeperName = {0}
 acquire_newKeeperChooseYourAddress_newKeeperEmail_label = Email
-acquire_newKeeperChooseYourAddress.emailNotEntered = Not entered
 acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Postcode
 acquire_newKeeperChooseYourAddress_addressSelect_label = Choose the new keeper's address
+acquire_newKeeperChooseYourAddress.emailNotEntered = Not entered
 acquire_newKeeperChooseYourAddress.submitbutton = Next
 acquire_newKeeperChooseYourAddress.manualAddressEntry = Address is not in the list
 acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
 acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+# gatling
 newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
-change_keeper_newKeeperChooseYourAddress.address.required = Please select a valid address
-businesskeeper_option_email = Email confirmation
 
 #[optional] - new keeper manual address entry
 acquire_newKeeperEnterAddressManually.title = Enter keeper address
@@ -240,16 +227,17 @@ acquire_completeandconfirm.fleetNumberNotEntered = Not entered
 acquire_completeAndConfirm.mileage.label = Vehicle mileage
 acquire_completeAndConfirm.submitbutton = Confirm new keeper
 acquire_completeAndConfirm.backbutton = Back
-acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
 acquire_completeAndConfirm.dateofsale.label = Date of sale
 acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
 acquire_completeandconfirm.dateofsale.warning = The date you’ve entered is before the current keeper acquired the vehicle, which is shown on the V5C registration certificate (logbook). Please enter a correct date that’s later than the one shown on the logbook and select ‘Next’.
 acquire_completeandconfirm.dateofsale.warning.over12Months = The date you have entered is over 12 months ago, please check the date to make sure it is correct.
-
-dateofsale = Date of sale
-
 acquire_keeperdetailscomplete.consent = I have the consent of the party named to notify DVLA.
 acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
+acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
+
+# complete and confirm form model
+dateofsale = Date of sale
+error.date.notOne = Year cannot be 0000
 
 #acquire success
 acquire_success.complete.header = Thank you
@@ -286,13 +274,6 @@ vrm_locked.text3.1 = If you are sure that the details entered are correct then p
 vrm_locked.text3.2 = DVLA, Swansea SA99 1BA
 vrm_locked.buyanother.button = Notify another sale
 vrm_locked.exit.button = Exit
-
-error.date.notOne = Year cannot be 0000
-
-# micro-service response codes
-ms.vehiclesService.response.unableToProcessApplication-title = Transaction unsuccessful
-ms.vehiclesService.response.unableToProcessApplication = We are unable to process the transaction at this time. Please send the completed V5C registration certificate (logbook) to
-ms.vehiclesService.response.unableToProcessApplication-address = DVLA, Swansea, SA99 1BA
 
 # feedback
 common_feedback.subject = Buy from the trade - feedback
