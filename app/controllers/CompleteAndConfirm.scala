@@ -569,13 +569,13 @@ class CompleteAndConfirm @Inject()(webService: AcquireService,
       .email(Contents(message1Html, message1))
       .withSubject(message1Title)
       .to(email)
-      .send(request.cookies.trackingId)
+      .send(request.cookies.trackingId())
 
     SEND
       .email(Contents(message2Html, message2))
       .withSubject(message2Title)
       .to(email)
-      .send(request.cookies.trackingId)
+      .send(request.cookies.trackingId())
   }
 
   /**
