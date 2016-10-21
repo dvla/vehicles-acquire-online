@@ -35,7 +35,8 @@
 ) {
    <h1>@Messages("acquire_privatekeeperdetails.title")</h1>
 
-    @form(action = PrivateKeeperDetails.submit) {
+    @form(action = PrivateKeeperDetails.submit,
+          (if(!config.isHtml5ValidationEnabled) Seq('novalidate -> "novalidate") else Nil): _*) {
         @csrfTokenHiddenField()
 
         <div class="two-col clearfix">
@@ -103,7 +104,10 @@
                         privateKeeperDetailsForm(EmailId),
                         labelText = Messages("acquire_privatekeeperdetails.emaillabel"),
                         hintText = None,
-                        args = Map('maxLength -> EmailMaxLength)
+                        args = Map('maxLength -> EmailMaxLength) ++
+                               (if(config.isHtml5ValidationEnabled)
+                                   Map('validityMessage -> Messages("error.email"))
+                                else Nil)
                     ),
                     gaTrackValue = true
                 )

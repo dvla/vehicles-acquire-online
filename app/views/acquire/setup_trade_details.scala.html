@@ -25,7 +25,8 @@ config: utils.helpers.Config)
 
     <h1>@Messages("acquire_setuptradedetails.title")</h1>
 
-    @form(action = SetUpTradeDetails.submit) {
+    @form(action = SetUpTradeDetails.submit,
+          (if(!config.isHtml5ValidationEnabled) Seq('novalidate -> "novalidate") else Nil): _*) {
         @csrfTokenHiddenField()
 
         <div class="uppercase-input">
@@ -46,7 +47,10 @@ config: utils.helpers.Config)
                 email(traderLookupForm(TraderEmailId),
                     labelText = Messages("acquire_setuptradedetails.traderemaillabel"),
                     hintText = None,
-                    args = Map('maxLength -> EmailMaxLength)
+                    args = Map('maxLength -> EmailMaxLength) ++
+                           (if(config.isHtml5ValidationEnabled)
+                               Map('validityMessage -> Messages("error.email"))
+                            else Nil)
                 ),
                 gaTrackValue = true
             )
