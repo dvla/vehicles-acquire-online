@@ -28,7 +28,8 @@
         <div class="site-overlay"></div>
     }
 
-    @form(action = data.submitAction) {
+    @form(action = data.submitAction,
+          (if(!config.isHtml5ValidationEnabled) Seq('novalidate -> "novalidate") else Nil): _*) {
 
     <div class="two-col clearfix acquire-complete-confirm">
         <div class="first-col">

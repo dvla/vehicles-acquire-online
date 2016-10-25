@@ -49,7 +49,8 @@
         <div class="second-col uppercase-input">
             <div class="form-steps">
                 <div class="step uppercase-input">
-                    @form(action = controllers.routes.VehicleLookup.submit()) {
+                    @form(action = controllers.routes.VehicleLookup.submit(),
+                          (if(!config.isHtml5ValidationEnabled) Seq('novalidate -> "novalidate") else Nil): _*) {
                         @csrfTokenHiddenField()
 
                         @valtechInputText(viewModel.form(VehicleRegistrationNumberId), args =
