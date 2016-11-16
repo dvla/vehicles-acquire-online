@@ -1,17 +1,13 @@
 package controllers
 
 import com.google.inject.Inject
-import play.api.data.{FormError, Form}
 import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent, Call, Controller}
 import uk.gov.dvla.vehicles.presentation.common
 import common.clientsidesession.ClientSideSessionFactory
 import common.clientsidesession.CookieImplicits.RichCookies
 import common.controllers.FeedbackBase
-import common.model.FeedbackForm
-import common.model.FeedbackForm.Form.{emailMapping, nameMapping, feedback}
 import common.services.DateService
-import common.views.helpers.FormExtensions.formBinding
 import common.webserviceclients.emailservice.EmailService
 import common.webserviceclients.healthstats.HealthStats
 import utils.helpers.Config
@@ -34,10 +30,13 @@ class FeedbackController @Inject()(val emailService: EmailService,
 
   def submit: Action[AnyContent] = Action { implicit request =>
     form.bindFromRequest.fold (
-      invalidForm => BadRequest(views.html.acquire.feedback(formWithReplacedErrors(invalidForm))),
+      invalidForm => BadRequest(views.html.acquire.feedback(invalidForm)),
         validForm => {
-          val trackingId = request.cookies.trackingId
-          sendFeedback(validForm, Messages("common_feedback.subject"), trackingId)
+          sendFeedback(
+            validForm,
+            s"${validForm.rating} - ${Messages("common_feedback.subject")}",
+            request.cookies.trackingId()
+          )
           Ok(views.html.acquire.feedbackSuccess())
         }
     )
