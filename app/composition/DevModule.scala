@@ -21,7 +21,7 @@ import common.services.DateService
 import common.services.DateServiceImpl
 import common.webserviceclients.acquire.{AcquireWebService, AcquireService, AcquireServiceImpl, AcquireWebServiceImpl}
 import common.webserviceclients.addresslookup.{AddressLookupService, AddressLookupWebService}
-import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.{AddressLookupWithOrgnameServiceImpl, AddressLookupServiceImpl, WebServiceImpl}
+import uk.gov.dvla.vehicles.presentation.common.webserviceclients.addresslookup.ordnanceservey.{AddressLookupServiceImpl, WebServiceImpl}
 import common.webserviceclients.bruteforceprevention.{WebServiceImpl => BruteForcePreventionWebServiceImpl}
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionService
 import common.webserviceclients.bruteforceprevention.BruteForcePreventionServiceImpl
@@ -52,7 +52,7 @@ class DevModule extends ScalaModule {
 
     bind[utils.helpers.Config].to[ConfigImpl]
 
-    bind[AddressLookupService].to[AddressLookupWithOrgnameServiceImpl].asEagerSingleton()
+    bind[AddressLookupService].to[AddressLookupServiceImpl].asEagerSingleton()
     bind[AddressLookupWebService].to[WebServiceImpl].asEagerSingleton()
 
     bind[DateService].to[DateServiceImpl].asEagerSingleton()
