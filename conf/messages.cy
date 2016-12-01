@@ -1,311 +1,310 @@
 # error view
 error.title = An unrecoverable error has occurred
-error.button = Start again
+error.button = Dechrau eto
 
 # VehicleLookup form error
-error.restricted.validKeeperOption = Please select whether the vehicle is being sold to a private individual or a business
-error.validDocumentReferenceNumber = Document reference number must be an 11-digit number
+error.restricted.validKeeperOption = Dewiswch p’un ai bod y cerbyd yn cael ei werthu i unigolyn preifat neu fusnes.
+error.validDocumentReferenceNumber = Rhaid i rif cyfeirnod y ddogfen fod yn rif 11 digid.
 
 # VehicleTaxOrSorn view related
-select = Tax/SORN
-VehicleTaxOrSornFormModel = SORN now
-error.sornformerror = You must accept the SORN option.
-error.nosornformerror = you must select the SORN now option.
-error.sornselectid = One of the options must be selected.
+select = Treth/HOS
+VehicleTaxOrSornFormModel = Gwneud HOS nawr
+error.sornformerror = Mae’n rhaid i chi dderbyn yr opsiwn HOS.
+error.nosornformerror = mae’n rhaid i chi ddewis yr opsiwn HOS nawr.
+error.sornselectid = Mae’n rhaid i un o’r opsiynau gael ei ddewis.
 
 ##
 # ACQUIRE VEHICLE
 ##
+acquire.backbutton = Nôl
+acquire_vehicledetails.warning = Os yw’r manylion cerbyd a ddangosir yn anghywir, a wnewch chi adael y trafodyn hwn ac anfon y dystysgrif gofrestru V5CW (llyfr log) gyda llythyr eglurhaol at y DVLA, Abertawe, SA99 1BA.
 
-acquire.backbutton = Back
-acquire_vehicledetails.warning = If the vehicle details shown are incorrect please abandon this transaction and send the V5C registration certificate (logbook) with a covering letter to DVLA, Swansea, SA99 1BA.
 
 # 404 onHandlerNotFound
-onHandlerNotFound.title = This page cannot be found
-onHandlerNotFound.header = This page cannot be found
-onHandlerNotFound.body = We are unable to find the page you have requested, this event has been logged for investigation.
-onHandlerNotFound.start.button = Start
+onHandlerNotFound.title = Ni lwyddwyd i dod o hyd i’r dudalen hon
+onHandlerNotFound.header = Ni lwyddwyd i ddod o hyd i’r dudalen hon
+onHandlerNotFound.body = Ni lwyddwyd i ddod o hyd i’r dudalen rydych wedi gwneud cais amdani, mae’r digwydddiad hwn wedi cael ei gofnodi i’w gael ei ymchwilio.
+onHandlerNotFound.start.button = Dechrau
 
-#page 1 - Before You Start
-acquire_beforeyoustart.title = Selling a vehicle out of trade
-acquire_beforeyoustart.p0 = If a vehicle has been sold from the motor trader, the motor trader selling the vehicle can now tell DVLA online.
-acquire_beforeyoustart.p1 = This service must only be used by a member of the motor trade acting on behalf of a buyer.
-acquire_beforeyoustart.p2 = Before you start:
-acquire_beforeyoustart.p3 = To use this service you will need:
-acquire_beforeyoustart.p4 = Please note: this service updates our records immediately.
-acquire_beforeyoustart.p5 = Once you’ve finished:
-acquire_beforeyoustart.p6 = Other ways to apply:
-acquire_beforeyoustart.p7 = If you do not use the online service, you must complete the V5C registration certificate (logbook) and post it to DVLA, Swansea, SA99 1BA
-acquire_beforeyoustart.listitem1 = no vehicle or tax class changes can be made online
-acquire_beforeyoustart.listitem2.1 = you will not be able to use this online service to assign or transfer a vehicle registration number.
-acquire_beforeyoustart.listitem2.link = Apply to retain a vehicle registration number (V317)
-acquire_beforeyoustart.listitem2.2 =, you will need to send the completed application to the DVLA, Swansea, SA99 1DS.
-acquire_beforeyoustart.listitem3 = this vehicle must be taxed before it can be driven on the road. You can tax or SORN your vehicle on behalf of the buyer as part of this service.
-acquire_beforeyoustart.listitem4 = DVLA cannot record joint keepers
-acquire_beforeyoustart.listitem5 = this service is currently available Mon-Sat, 8am – 6pm
-acquire_beforeyoustart.listitem6 = the 11 digit document reference number from the latest V5C registration certificate (logbook).
-acquire_beforeyoustart.listitem7 =the consent of the buyer of the vehicle to act on their behalf
-acquire_beforeyoustart.listitem8 = the new keeper (buyer) should receive a new V5C registration certificate (logbook) within 5 working days.
-acquire_beforeyoustart.listitem9 = the original V5C registration certificate (logbook) used to transact online must be destroyed and must not be sent to DVLA
-acquire_beforeyoustart.link1 = Motor traders: tell DVLA about the sale of a vehicle
-acquire_beforeyoustart.link2 = Vehicle tax changes
-acquire_beforeyoustart.button = Start now
+#page 1 - Cyn i Chi Ddechrau
+acquire_beforeyoustart.title = Gwerthu cerbyd y tu allan i fasnach
+acquire_beforeyoustart.p0 = Os yw cerbyd wedi cael ei werthu o’r fasnach modur, gall y masnachwr modur sy’n gwerthu’r cerbyd nawr rhoi gwybod i’r DVLA ar-lein.
+acquire_beforeyoustart.p1 =  Mae’n rhaid i’r gwasanaeth hwn gael ei ddefnyddio gan aelod o’r fasnach modur sy’n gweithredu ar ran y prynwr yn unig
+acquire_beforeyoustart.p2 = Cyn i chi ddechrau:
+acquire_beforeyoustart.p3 = I ddefnyddio’r gwasanaeth hwn bydd arnoch angen:
+acquire_beforeyoustart.p4 = mae’r gwasanaeth hwn yn diweddaru ein cofnodion ar unwaith.
+acquire_beforeyoustart.p5 = Unwaith eich bod wedi gorffen:
+acquire_beforeyoustart.p6 = Ffyrdd eraill i wneud cais:
+acquire_beforeyoustart.p7 = Os nad ydych yn defnyddio’r gwasanaeth arlein, mae’n rhaid i chi lenwi’r dystysgrif gofrestru cerbyd V5CW (llyfr log) a’i hanfon i DVLA, Abertawe, SA99 1BA.
+acquire_beforeyoustart.listitem1 = ni ellir gwneud unrhyw newidiadau cerbyd neu ddosbarth treth arlein
+acquire_beforeyoustart.listitem2.1 = ni fyddwch yn gallu defnyddio’r gwasanaeth arlein hwn i aseinio neu drosglwyddo rhif cofrestru cerbyd
+acquire_beforeyoustart.listitem2.link = Gwneud cais i gadw rhif cofrestru cerbyd (V317W)
+acquire_beforeyoustart.listitem2.2 = bydd angen i chi anfon y cais wedi’i gwblhau i’r DVLA, Abertawe, SA99 1DS.
+acquire_beforeyoustart.listitem3 = mae’n rhaid i’r cerbyd cael ei drethu cyn iddo gael ei yrru ar y ffordd. Gallwch drethu neu wneud HOS ar eich cerbyd ar ran y prynwr fel rhan o’r gwasanaeth hwn.
+acquire_beforeyoustart.listitem4 = Ni all y DVLA gofnodi cyd-geidwaid
+acquire_beforeyoustart.listitem5 = mae’r gwasanaeth hwn ar gael Ddydd Llun-Ddydd Sadwrn, rhwng 8am - 6pm ar hyn o bryd
+acquire_beforeyoustart.listitem6 = y rhif cyfeirnod dogfen 11 digid o’r dystysgrif gofrestru V5CW (llyfr log) ddiweddaraf.
+acquire_beforeyoustart.listitem7 = caniatâd prynwr y cerbyd i weithredu ar ei ran
+acquire_beforeyoustart.listitem8 = dylai’r ceidwad newydd (y prynwr) dderbyn tystysgrif gofrestru V5CW (llyfr log) newydd o fewn 5 niwrnod gwaith.
+acquire_beforeyoustart.listitem9 = mae’n rhaid i’r dystysgrif gofrestru (V5CW) (llyfr log) wreiddiol a ddefnyddir i wneud y cais arlein gael ei dinistrio ac nid ei hanfon i’r DVLA
+acquire_beforeyoustart.link1 = Masnachwyr modur: rhoi gwybod i’r DVLA ynghylch gwerthiant y cerbyd
+acquire_beforeyoustart.link2 = Newidiadau treth cerbyd
+acquire_beforeyoustart.button = Dechrau nawr
 
 #page 2 - Setup trade details
-acquire_setuptradedetails.title = Provide trader details
-acquire_setuptradedetails.tradernamelabel = Trader name
-acquire_setuptradedetails.tradername.hint = Name of the company that the vehicle is being sold from
-acquire_setuptradedetails.traderpostcodelabel = Postcode
-acquire_setuptradedetails.traderpostcode.hint = e.g. AB1 2BA or AB12BA
-acquire_setuptradedetails.traderemaillabel = Trader email address
-acquire_setuptradedetails.button = Find address
-acquire_setuptradedetails.traderemailoption = Do you want an email confirmation of the sale?
-acquire_setuptradedetails.traderemailoption.yes = Yes
+acquire_setuptradedetails.title = Darparu manylion masnachwr
+acquire_setuptradedetails.tradernamelabel = Enw’r masnachwr
+acquire_setuptradedetails.tradername.hint = Enw’r cwmni y mae’r cerbyd yn cael ei werthu ohono
+acquire_setuptradedetails.traderpostcodelabel = Cod post
+acquire_setuptradedetails.traderpostcode.hint = e.e. AB1 2BA neu AB12BA
+acquire_setuptradedetails.traderemaillabel = Cyfeiriad ebost y masnachwr
+acquire_setuptradedetails.button = Dod o hyd i gyfeiriad
+acquire_setuptradedetails.traderemailoption = A ydych am gael cadarnhad ebost o’r gwerthiant?
+acquire_setuptradedetails.traderemailoption.yes = Ydw
 acquire_setuptradedetails.traderemailoption.no = No
 
 #page 3 - Business Choose Your Address
-disposal_businessChooseYourAddress_addressSelect = Select trader address
-disposal_businessChooseYourAddress.address.required = Please select a valid address
-
-acquire_businessChooseYourAddress_title = Select trader address
-acquire_businessChooseYourAddress_businessName_label = Trader name
+disposal_businessChooseYourAddress_addressSelect = Dewiswch gyfeiriad y masnachwr
+disposal_businessChooseYourAddress.address.required = Dewiswch gyfeiriad dilys os gwelwch yn dda
+acquire_businessChooseYourAddress_title = Dewiswch gyfeiriad y masnachwr
+acquire_businessChooseYourAddress_businessName_label = Enw’r masnachwr
 acquire_businessChooseYourAddress_businessName = {0}
-acquire_businessChooseYourAddress_businessEmail_label = Email
-acquire_businessChooseYourAddress.emailNotEntered = Not entered
-acquire_businessChooseYourAddress_postcode_label = Postcode
-acquire_businessChooseYourAddress_addressSelect_label = Choose your address
-acquire_businessChooseYourAddress.submitbutton = Next
-acquire_businessChooseYourAddress.manualAddressEntry = Address is not in the list
-acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
-acquire_businessChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
-acquire_businessChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+acquire_businessChooseYourAddress_businessEmail_label = Ebost
+acquire_businessChooseYourAddress.emailNotEntered = Heb ei roi i mewn
+acquire_businessChooseYourAddress_postcode_label = Cod post
+acquire_businessChooseYourAddress_addressSelect_label = Dewiswch eich cyfeiriad
+acquire_businessChooseYourAddress.submitbutton = Nesaf
+acquire_businessChooseYourAddress.manualAddressEntry = Nid yw’r cyfeiriad yn y rhestr
+acquire_businessChooseYourAddress.manualAddressEntry.enterManuallyButton = Rhowch gyfeiriad
+acquire_businessChooseYourAddress_noaddressesfound.h2.1 = Nid ddaethpwyd o hyd i gyfeiriad am y cod post hwnna.
+acquire_businessChooseYourAddress_noaddressesfound.h2.2 = A wnewch chi naill ai ‘Roi cyfeiriad’ neu glicio ‘Nôl’ i geisio eto.
 
 #page 4 - vehicle Lookup
-acquire_vehiclelookup.title = Enter vehicle details
-acquire_vehiclelookup.p2 = Trader details
-acquire_vehiclelookup.v5c = V5C registration certificate (logbook)
-acquire_vehiclelookup.refnumlabel = Latest V5C registration certificate (logbook) document reference number
-acquire_vehiclelookup.vrninputlabel = Vehicle registration number
-acquire_vehiclelookup.button = Next
-acquire_vehiclelookup.tradernamelabel = Trader name
-acquire_vehiclelookup.traderaddresslabel = Address
-acquire_vehiclelookup.traderemaillabel = Email
-acquire_vehiclelookup.traderresetdetails = Change these trader details?
+acquire_vehiclelookup.title = Rhowch fanylion y cerbyd
+acquire_vehiclelookup.p2 = Manylion y masnachwr
+acquire_vehiclelookup.v5c = Tystysgrif gofrestru V5CW (llyfr log)
+acquire_vehiclelookup.refnumlabel = Rhif cyfeirnod y dystysgrif gofrestru V5CW (llyfr log) diweddaraf
+acquire_vehiclelookup.vrninputlabel = Rhif cofrestru cerbyd
+acquire_vehiclelookup.button = Nesaf
+acquire_vehiclelookup.tradernamelabel = Enw’r masnachwr
+acquire_vehiclelookup.traderaddresslabel = Cyfeiriad
+acquire_vehiclelookup.traderemaillabel = Ebost
+acquire_vehiclelookup.traderresetdetails = Newid manylion y masnachwr hwn?
 
-vehicleSoldTo = Vehicle sold to
-acquire_vehiclelookup.vehiclesoldto.label = Is the vehicle being sold to a private individual or a business?
-acquire_vehiclelookup.vehiclesoldto.private = Private individual
-acquire_vehiclelookup.vehiclesoldto.business = Business
+vehicleSoldTo =  Y cerbyd wedi ei werthu
+acquire_vehiclelookup.vehiclesoldto.label = A yw’r cerbyd yn cael ei werthu i unigolyn preifat neu fusnes?
+acquire_vehiclelookup.vehiclesoldto.private = Unigolyn preifat
+acquire_vehiclelookup.vehiclesoldto.business = Busnes
 
-vehicleRegistrationNumber = Vehicle registration number
-documentReferenceNumber = Document reference number
+vehicleRegistrationNumber = Rhif cofrestru cerbyd
+documentReferenceNumber = Rhif cyfeirnod y ddogfen
 
 #vehicle lookup failure
-acquire_vehiclelookupfailure.title = Unable to find a vehicle record
-acquire_vehiclelookupfailure.button = Try again
-acquire_vehiclelookupfailure.button2 = Exit
+acquire_vehiclelookupfailure.title = Ni ellir dod o hyd i gofnod cerbyd
+acquire_vehiclelookupfailure.button = Ceisiwch eto
+acquire_vehiclelookupfailure.button2 = Nesaf
 
-vehicle_and_keeper_lookup_failure.p0 = The vehicle registration number and/or the V5C registration certificate (logbook) document reference number entered is either incorrect or does not come from the latest V5C issued for this vehicle.
-vehicle_and_keeper_lookup_failure.p1 = Please check that the vehicle registration number and V5C registration certificate (logbook) document reference number are correct and select the ‘Try again’ button below.
-vehicle_and_keeper_lookup_failure.p2 = If you are sure that the details have been entered correctly then you may be using an old V5C registration certificate (logbook) and it’s likely that we have issued you with a new one since.
-vehicle_and_keeper_lookup_failure.p3 = If you do not have the latest issued V5C registration certificate (logbook), you will need to send your completed V5C registration certificate (logbook) to DVLA, Swansea, SA99 1BD.
-vehicle_and_keeper_lookup_failure.p4 = You will only have a limited number of attempts to enter the vehicle details for this vehicle.
+vehicle_and_keeper_lookup_failure.p0 = Mae’r rhif cofrestru cerbyd a/neu rif cyfeirnod y dystysgrif gofrestru V5CW (llyfr log) sydd wedi’u rhoi naill ai’n anghywir neu nid yw oddi ar y V5CW ddiweddarach a gyhoeddwyd am y cerbyd hwn.
+vehicle_and_keeper_lookup_failure.p1 = Gwiriwch os gwelwch yn dda bod y rhif cofrestru cerbyd a’r rhif cyfeirnod y dystysgrif gofrestru V5CW (llyfr log) yn gywir a dewisiwch y botwm ‘Ceisiwch eto’ isod.
+vehicle_and_keeper_lookup_failure.p2 = Os ydych yn sicr bod y manylion sydd wedi’u rhoi yn gywir, mae’n bosib eich bod yn defnyddio tystysgrif gofrestru V5CW (llyfr log) hen ac mae’n debygol ein bod ni wedi cyhoeddi un newydd i chi ers hynny.
+vehicle_and_keeper_lookup_failure.p3 = Os nad yw’r dystysgrif gofrestru V5CW (llyfr log) a gyhoeddwyd fwyaf diweddar gennych, bydd angen i chi anfon eich tystysgrif gofrestru V5CW (llyfr log) wedi’i chwblhau i DVLA, Abertawe, SA99 1BD.
+vehicle_and_keeper_lookup_failure.p4 = Bydd gennych nifer gyfyngiedig o geisiadau yn unig er mwyn i chi roi eich manylion cerbyd ar gyfer y cerbyd hwn.
 
 #page 3 [optional] - manual address entry
-acquire_enteraddressmanually.title = Enter address
-acquire_enteraddressmanually.submitbutton = Next
-acquire_enteraddressmanually.addresswarning = If your address is missing from this postcode package or is showing incorrect details then please select this link to
-acquire_enteraddressmanually.addresswarninglinktext = inform the Royal Mail.
+acquire_enteraddressmanually.title = Rhowch gyfeiriad
+acquire_enteraddressmanually.submitbutton = Nesaf
+acquire_enteraddressmanually.addresswarning = Os nad yw eich cyfeiriad yn y pecyn cod post hwn neu’n dangos manylion anghywir, dewiswch y ddolen hon i
+acquire_enteraddressmanually.addresswarninglinktext = roi gwybod i’r Bost Brenhinol
 
 # EnterAddressManually form errors
-addressAndPostcode.addressLines.buildingNameOrNumber = Building name or number
-addressAndPostcode.addressLines = Address
-
+addressAndPostcode.addressLines.buildingNameOrNumber = Enw neu rif yr adeilad
+addressAndPostcode.addressLines = Cyfeiriad
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
-acquire_keeperstillonrecord.title = A keeper is on the record
-acquire_keeperstillonrecord.text1 = This vehicle still has a keeper on record and does not appear to have been sold to the motor trade.
-acquire_keeperstillonrecord.text2 = If you think this is an error, please contact DVLA customer services on 0300 790 6802 (please enter code 756 when prompted). This telephone number is open Monday to Friday: 08:00 - 18:00 and Saturday: 08:00 - 14:00.
-acquire_keeperstillonrecord.text3 = You can notify us of the vehicle''s sale to the motor trade using our online service -
-acquire_keeperstillonrecord.text4 = Bought a vehicle into the trade.
+acquire_keeperstillonrecord.title = Mae ceidwad ar y cofnodion
+acquire_keeperstillonrecord.text1 = Mae ceidwad yn parhau i fod ar y cofnodion am y cerbyd hwn ac nid yw’n ymddangos ei fod wedi cael ei werthu i’r fasnach moduron.
+acquire_keeperstillonrecord.text2 = Os ydych yn credu bod hwn yn wall, cysylltwch â gwasanaethau cwsmeriaid DVLA ar 0300 790 6802 (rhowch god 756 pan ofynnir). Mae’r rhif ffôn hwn ar agor Ddydd Llun i Ddydd Gwener rhwng 8am i 6pm a Dydd Sadwrn rhwng 8am a 2pm.
+acquire_keeperstillonrecord.text3 = Gallwch roi gwybod i ni am werthiant y cerbyd i’r fasnach moduron drwy ein gwasanaeth arlein.
+acquire_keeperstillonrecord.text4 = Prynu cerbyd i mewn i’r fasnach moduron.
 acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
-acquire_keeperstillonrecord.text5 = Before you do this, ensure you have the consent of the keeper we currently have on record.
-acquire_keeperstillonrecord.button1 = Notify another sale
-acquire_keeperstillonrecord.button2 = Finish
+acquire_keeperstillonrecord.text5 = Cyn i chi wneud hwn, mae angen i chi sicrhau y bod gennych ganiatâd y ceidwad sydd gennym ar hyn o bryd ar y cofnodion.
+acquire_keeperstillonrecord.button1 = Rhoi gwybod am werthiant arall
+acquire_keeperstillonrecord.button2 = Gorffen
 
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
-error_suppressedV5C.title = Vehicle is part of a suppressed fleet
-error_suppressedV5C.text1 = DVLA cannot record the sale of this vehicle as it is part of a suppressed fleet.
-error_suppressedV5C.text2 = Before a sale of this vehicle can be updated, you will need to request a V5C registration certificate (logbook) from the DVLA. This can be done using the
-error_suppressedV5C.text3 = view vehicle record service.
+error_suppressedV5C.title = Mae’r cerbyd yn rhan o fflyd sydd wedi’i hatal.
+error_suppressedV5C.text1 = Ni all y DVLA gofnodi gwerthiant y cerbyd oherwydd ei fod yn rhan o fflyd sydd wedi’i hatal.
+error_suppressedV5C.text2 = Cyn y gall gwerthiant y cerbyd hwn gael ei ddiweddaru, bydd angen i chi wneud cais am dystysgrif gofrestru V5CW (llyfr log) o’r DVLA. Gall hwn gael ei wneud gan ddefnyddio’r
+error_suppressedV5C.text3 = gwasanaeth gweld cofnod y cerbyd
 error_suppressedV5C.link = https://www.gov.uk/dvla-fleet-vehicle-info
-error_suppressedV5C.button1 = Notify another sale
-error_suppressedV5C.button2 = Finish
+error_suppressedV5C.button1 = Rhoi gwybod am werthiant arall
+error_suppressedV5C.button2 = Gorffen
 
 #private keeper details
-acquire_privatekeeperdetails.title = Enter new keeper details
-acquire_privatekeeperdetails.submitbutton = Next
-acquire_privatekeeperdetails.firstnamelabel = First name(s)
-acquire_privatekeeperdetails.lastnamelabel =Last name
-acquire_privatekeeperdetails.emaillabel = Email address of new keeper
-acquire_privatekeeperdetails.p1 = These should be the details of the person you sold the vehicle to. We will use these details to update our records and issue a new V5C registration certificate (logbook).
-acquire_privatekeeperdetails.drivernumberlabel = Driving licence number of new keeper
-acquire_privatekeeperdetails.drivernumber.hint = For example, MORGA657054SM9IJ
-acquire_privatekeeperdetails.postcodelabel = Postcode
-acquire_privatekeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
-acquire_privatekeeperdetails.dateofbirth.hint = For example, 01 03 1976
-privatekeeper_dateofbirth = Date of Birth
+acquire_privatekeeperdetails.title = Rhowch fanylion y ceidwad newydd
+acquire_privatekeeperdetails.submitbutton = Nesaf
+acquire_privatekeeperdetails.firstnamelabel = Enw(au) cyntaf
+acquire_privatekeeperdetails.lastnamelabel = Enw diwethaf
+acquire_privatekeeperdetails.emaillabel = Cyfeiriad ebost y ceidwad newydd
+acquire_privatekeeperdetails.p1 = Dylai’r manylion hyn fod am y person yr ydych wedi gwerthu’r cerbyd iddo. Byddwn yn defnyddio’r manylion hyn i ddiweddaru ein cofnodion a chyhoeddi tystysgrif gofrestru V5CW (llyfr log) newydd.
+acquire_privatekeeperdetails.drivernumberlabel = Rhif trwydded yrru’r ceidwad newydd
+acquire_privatekeeperdetails.drivernumber.hint = Er enghraifft, MORGA657054SM9IJ
+acquire_privatekeeperdetails.postcodelabel = Cod post
+acquire_privatekeeperdetails.postcode.hint = Er enghraifft, AB1 2BA neu AB12BA
+acquire_privatekeeperdetails.dateofbirth.hint = Er enghraifft, 01 03 1976
+privatekeeper_dateofbirth = Dyddiad Geni
 
 #business keeper details
-acquire_businesskeeperdetails.title = Enter new keeper details
-acquire_businesskeeperdetails.p1 = These should be the details of the business you sold the vehicle to. We will use these details to update our records and issue a new V5C registration certificate (logbook).
-acquire_businesskeeperdetails.fleetnumber = Fleet number
-acquire_businesskeeperdetails.businessname = Business name
-acquire_businesskeeperdetails.businessname.hint = If the business buying this vehicle has a DVLA fleet number, please provide it
-acquire_businesskeeperdetails.email = Email address of new keeper
-acquire_businesskeeperdetails.nextbutton = Next
-acquire_businesskeeperdetails.postcodelabel = Postcode
-acquire_businesskeeperdetails.postcode.hint = e.g. AB1 2BA or AB12BA
-acquire_businesskeeperdetails.traderemailoption = Does the new keeper want an email confirmation of the sale?
-acquire_businesskeeperdetails.traderemailoption.yes = Yes
-acquire_businesskeeperdetails.traderemailoption.no = No
-acquire_businesskeeperdetails.fleetnumberoption = Does the new keeper have a DVLA fleet number?
-acquire_businesskeeperdetails.fleetnumberoption.yes = Yes
-acquire_businesskeeperdetails.fleetnumberoption.no = No
+acquire_businesskeeperdetails.title = Manylion y ceidwad newydd
+acquire_businesskeeperdetails.p1 = Dylai’r manylion hyn fod am y busnes yr ydych wedi gwerthu’r cerbyd iddo. Byddwn yn defnyddio’r manylion hyn i ddiweddaru ein cofnodion a chyhoeddi tystysgrif gofrestru V5CW (llyfr log) newydd.
+
+acquire_businesskeeperdetails.fleetnumber = Rhif y fflyd
+acquire_businesskeeperdetails.businessname = Enw’r busnes
+acquire_businesskeeperdetails.businessname.hint = Os oes gan y busnes sy’n prynu’r cerbyd rif fflyd y DVLA, a wnewch chi ei ddarparu.
+acquire_businesskeeperdetails.email = Cyfeiriad ebost y ceidwad newydd
+acquire_businesskeeperdetails.nextbutton = Nesaf
+acquire_businesskeeperdetails.postcodelabel = Cod post
+acquire_businesskeeperdetails.postcode.hint = er enghraifft AB1 2BA neu AB12BA
+acquire_businesskeeperdetails.traderemailoption = Ydy’r ceidwad newydd eisiau cadarnhad ebost am y gwerthiant?
+acquire_businesskeeperdetails.traderemailoption.yes = Ydy
+acquire_businesskeeperdetails.traderemailoption.no = Na
+acquire_businesskeeperdetails.fleetnumberoption = Oes gan y ceidwad  newydd rhif fflyd DVLA?
+acquire_businesskeeperdetails.fleetnumberoption.yes = Oes
+acquire_businesskeeperdetails.fleetnumberoption.no = Na
 
 # acquire_success, vehicle_lookup
-acquire_email_not_entered = Not entered
+acquire_email_not_entered = Heb ei roi
 
 #new keeper choose your address
-acquire_newKeeperChooseYourAddress_title = Select new keeper address
-acquire_newKeeperChooseYourAddress_newKeeperName_label = Name
+acquire_newKeeperChooseYourAddress_title = Dewiswch gyfeiriad y ceidwad newydd
+acquire_newKeeperChooseYourAddress_newKeeperName_label = Enw
 acquire_newKeeperChooseYourAddress_newKeeperName = {0}
-acquire_newKeeperChooseYourAddress_newKeeperEmail_label = Email
-acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Postcode
-acquire_newKeeperChooseYourAddress_addressSelect_label = Choose the new keeper's address
-acquire_newKeeperChooseYourAddress.emailNotEntered = Not entered
-acquire_newKeeperChooseYourAddress.submitbutton = Next
-acquire_newKeeperChooseYourAddress.manualAddressEntry = Address is not in the list
-acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Enter address
-acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = No addresses found for that postcode.
-acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = Please either ''Enter address'' or click ''Back'' to try again.
+acquire_newKeeperChooseYourAddress_newKeeperEmail_label = Ebost
+acquire_newKeeperChooseYourAddress_newKeeperpostcode_label = Cod post
+acquire_newKeeperChooseYourAddress_addressSelect_label = Dewiswch gyfeiriad y ceidwad newydd
+acquire_newKeeperChooseYourAddress.emailNotEntered = Heb ei roi
+acquire_newKeeperChooseYourAddress.submitbutton = Nesaf
+acquire_newKeeperChooseYourAddress.manualAddressEntry = Nid yw’r cyfeiriad yn y rhestr
+acquire_newKeeperChooseYourAddress.manualAddressEntry.enterManuallyButton = Rhowch gyfeiriad
+acquire_newKeeperChooseYourAddress_noaddressesfound.h2.1 = Ni ddaethpwyd o hyd i gyfeiriad am y cod post hwnnw
+acquire_newKeeperChooseYourAddress_noaddressesfound.h2.2 = A wnewch chi naill ai glicio ar ‘Rhowch gyfeiriad’ neu ar ‘Nôl’ i geisio eto
 # gatling
-newKeeperChooseYourAddress_addressSelect = Choose the new keepers address
+newKeeperChooseYourAddress_addressSelect = Dewiswch gyfeiriad y ceidwad newydd
 
 #[optional] - new keeper manual address entry
-acquire_newKeeperEnterAddressManually.title = Enter keeper address
-acquire_newKeeperEnterAddressManually.submitbutton = Next
+acquire_newKeeperEnterAddressManually.title = Rhowch gyfeiriad y ceidwad
+acquire_newKeeperEnterAddressManually.submitbutton = Nesaf
 
 #vehicle tax or sorn
-acquire_vehicleTaxOrSorn_title = Vehicle tax or SORN
-acquire_vehicleTaxOrSorn.newkeeperDetails = New keeper details
-acquire_vehicleTaxOrSorn.displayName = Name
-acquire_vehicleTaxOrSorn.address = Address
-acquire_vehicleTaxOrSorn.email = Email
-acquire_vehicleTaxOrSorn.emailNotEntered = Not entered
-acquire_vehicleTaxOrSorn.fleetNumber = Fleet number
-acquire_vehicleTaxOrSorn.fleetNumberNotEntered = Not entered
-acquire_vehicleTaxOrSorn.taxVehicle = Tax Vehicle
-acquire_vehicleTaxOrSorn.sornNow = SORN now
-acquire_vehicleTaxOrSorn.neither = Neither
-acquire_vehicleTaxOrSorn.p1 = The vehicle needs to be taxed or a statutory off road notification (SORN) made when it is purchased.
-acquire_vehicleTaxOrSorn.link = Tax the vehicle now
-acquire_vehicleTaxOrSorn.taxText = This will open up a new window. To tax, you will need to use the document reference number from the V5C/2 (green slip) section of the registration certificate as a new keeper.
-acquire_vehicleTaxOrSorn.taxText-2 = Once taxing is completed please return to this page and select 'Next' to continue.
-acquire_vehicleTaxOrSorn.neitherText.p1 = If you have not already taxed or declared SORN for this vehicle, you must remind the new keeper that it's their responsibility to ensure the vehicle is taxed if it is driven on the road.
-acquire_vehicleTaxOrSorn.neitherText.p2 = If the vehicle is being kept off road, the new keeper must make a SORN.
-acquire_vehicleTaxOrSorn.submitbutton = Next
-acquire_vehicleTaxOrSorn.label = Do you want to:
+acquire_vehicleTaxOrSorn_title = Treth cerbyd neu HOS
+acquire_vehicleTaxOrSorn.newkeeperDetails = Manylion y ceidwad newydd
+acquire_vehicleTaxOrSorn.displayName = Enw
+acquire_vehicleTaxOrSorn.address = Cyfeiriad
+acquire_vehicleTaxOrSorn.email = Ebost
+acquire_vehicleTaxOrSorn.emailNotEntered = Heb ei roi
+acquire_vehicleTaxOrSorn.fleetNumber = Rhif fflyd
+acquire_vehicleTaxOrSorn.fleetNumberNotEntered = Heb ei roi
+acquire_vehicleTaxOrSorn.taxVehicle = Trethu’r cerbyd
+acquire_vehicleTaxOrSorn.sornNow = Gwnewch HOS nawr
+acquire_vehicleTaxOrSorn.neither = Nid y naill na’r llall
+acquire_vehicleTaxOrSorn.p1 = Mae angen trethu neu wneud hysbysiad oddi ar y ffordd statudol (HOS) pan fydd y cerbyd yn cael ei brynu
+acquire_vehicleTaxOrSorn.link = Trethu’r cerbyd nawr
+acquire_vehicleTaxOrSorn.taxText = Bydd hwn yn agor ffenestr newydd. I drethu, bydd angen i chi ddefnyddio rhif cyfeirnod y ddogfen o’r darn V5C/2 (y darn gwyrdd) o’r dystysgrif gofrestru fel ceidwad newydd.
+acquire_vehicleTaxOrSorn.taxText-2 = Unwaith yr ydych wedi cwblhau’r trethu, dychwelwch i’r dudalen hon a dewiswch ‘Nesaf’ i barhau.
+acquire_vehicleTaxOrSorn.neitherText.p1 = Os nad ydych wedi trethu neu wedi gwneud HOS eto am y cerbyd hwn, mae’n rhaid i chi atgoffa’r ceidwad newydd ei fod yn ddyletswydd arno i sicrhau bod y cerbyd wedi’i drethu os yw’n cael ei yrru ar y ffordd.
+acquire_vehicleTaxOrSorn.neitherText.p2 = Os yw’r cerbyd yn cael ei gadw oddi ar y ffordd, mae’n rhaid i’r ceidwad newydd wneud HOS.
+acquire_vehicleTaxOrSorn.submitbutton = Nesaf
+acquire_vehicleTaxOrSorn.label = Ydych chi am:
 
 #complete and confirm
-acquire_completeAndConfirm.title = Complete and confirm
-acquire_completeandconfirm.newkeeperDetails = New keeper details
-acquire_completeandconfirm.displayName = Name
-acquire_completeandconfirm.address = Address
-acquire_completeandconfirm.email = Email
-acquire_completeandconfirm.fleetNumber = Fleet number
-acquire_completeandconfirm.fleetNumberNotEntered = Not entered
-acquire_completeAndConfirm.mileage.label = Vehicle mileage
-acquire_completeAndConfirm.submitbutton = Confirm new keeper
-acquire_completeAndConfirm.backbutton = Back
-acquire_completeAndConfirm.dateofsale.label = Date of sale
-acquire_completeandconfirm.dateofsale.hint = For example, 02 01 2015
-acquire_completeandconfirm.dateofsale.warning = The date you’ve entered is before the current keeper acquired the vehicle, which is shown on the V5C registration certificate (logbook). Please enter a correct date that’s later than the one shown on the logbook and select ‘Next’.
-acquire_completeandconfirm.dateofsale.warning.over12Months = The date you have entered is over 12 months ago, please check the date to make sure it is correct.
-acquire_keeperdetailscomplete.consent = I have the consent of the party named to notify DVLA.
-acquire_keeperdetailscomplete.consentError = You must have the consent of the new keeper to notify DVLA of the purchase of this vehicle
-acquire_privatekeeperdetailscomplete.mileage.validation = You must enter a valid mileage between 0 and 999999
+acquire_completeAndConfirm.title = Cwblhau a chadarnhau
+acquire_completeandconfirm.newkeeperDetails = Manylion y ceidwad newydd
+acquire_completeandconfirm.displayName = Enw
+acquire_completeandconfirm.address = Cyfeiriad
+acquire_completeandconfirm.email = Ebost
+acquire_completeandconfirm.fleetNumber = Rhif fflyd
+acquire_completeandconfirm.fleetNumberNotEntered = Heb ei roi
+acquire_completeAndConfirm.mileage.label = Milltiredd y cerbyd
+acquire_completeAndConfirm.submitbutton = Cadarnhau’r ceidwad newydd
+acquire_completeAndConfirm.backbutton = Nôl
+acquire_completeAndConfirm.dateofsale.label = Dyddiad y gwerthiant
+acquire_completeandconfirm.dateofsale.hint = Er enghraifft, 02 Ionawr 2015
+acquire_completeandconfirm.dateofsale.warning = Mae’r dyddiad yr ydych wedi ei roi cyn y dyddiad y mae’r ceidwad presennol wedi cael y cerbyd, fel y dangosir ar y dystysgrif gofrestru V5CW (llyfr log). Rhowch ddyddiad cywir sy’n ddiweddarach na’r un a ddangosir ar y llyfr log a dewiswch ‘Nesaf’.
+acquire_completeandconfirm.dateofsale.warning.over12Months = Mae’r dyddiad yr ydych wedi rhoi dros 12 mis yn ôl, gwiriwch y dyddiad i sicrhau ei fod yn gywir.
+acquire_keeperdetailscomplete.consent = Mae gen i ganiatâd y cwmni a enwyd i roi gwybod i’r DVLA.
+acquire_keeperdetailscomplete.consentError = Mae’n rhaid i chi gael caniatad y ceidwad newydd i roi gwybod i’r DVLA ynghylch pryniant y cerbyd hwn.
+acquire_privatekeeperdetailscomplete.mileage.validation = Mae’n rhaid i chi roi milltiredd dilys rhwng 0 a 999999
 
 # complete and confirm form model
-dateofsale = Date of sale
-error.date.notOne = Year cannot be 0000
+dateofsale = Dyddiad y gwerthiant
+error.date.notOne = Ni all y flwyddyn fod yn 0000
 
 #acquire success
-acquire_success.complete.header = Thank you
-acquire_success.complete.p1 = The application is being processed
-acquire_success.complete.p2 = Give the V5C/2 (green slip) to the new keeper and destroy the rest of the V5C registration certificate (logbook).
-acquire_success.transaction_details.header = Transaction details
-acquire_success.transaction_details.transaction_id = Transaction ID
-acquire_success.transaction_details.transaction_date = Transaction date
-acquire_success.trader_details.header = Trader details
-acquire_success.trader_details.trader_name = Trader name
-acquire_success.trader_details.trader_address = Trader address
-acquire_success.trader_details.trader_email = Email
-acquire_success.date_of_sale.label = Date of sale
-acquire_success.vehicle_details.taxOrSorn = Tax or SORN
-acquire_success.vehicle_details.sornEntered = Yes, SORN from today ({0}).
-acquire_success.vehicle_details.sornEntered.p1 = DVLA will not send you a SORN acknowledgement letter. The SORN will be valid until the vehicle is taxed, sold, permanently exported or scrapped. Please ensure that the vehicle is taxed before it is driven on public roads.
-acquire_success.vehicle_details.sornNotEntered = If the vehicle has not been taxed during this service it will need to be before being driven on the road.
-acquire_success.vehicle_details.mileage = Vehicle mileage
-acquire_success.vehicle_details.mileage_not_entered = Not entered
-acquire_success.vehicle_details.name = Name
-acquire_success.vehicle_details.address = Address
-acquire_success.vehicle_details.email = Contact email address
-acquire_success.new_keeper_details.p1 = New keeper details
-acquire_success.further_information.header = What happens next?
-acquire_success.further_information.p1 = within 5 working days we will send a new V5C registration certificate (logbook) to the new keeper.
-acquire_success.further_information.p2 = if they do not receive a new V5C registration certificate (logbook) in 2 weeks they must contact DVLA customer enquiries.
-acquire_success.further_information.alert = Please print this page and pass it to the customer along with the V5C/2 slip from the V5C registration certificate (logbook)
+acquire_success.complete.header = Diolch
+acquire_success.complete.p1 = Mae’r cais yn cael ei brosesu
+acquire_success.complete.p2 = Rhowch y V5C/2W (darn gwyrdd) i’r ceidwad newydd a dinistriwch weddill y dystysgrif gofrestru V5CW (llyfr log).
+acquire_success.transaction_details.header = Manylion y trafodyn
+acquire_success.transaction_details.transaction_id = Dynodiad trafodyn
+acquire_success.transaction_details.transaction_date = Dyddiad y trafodyn
+acquire_success.trader_details.header = Manylion y masnachwr
+acquire_success.trader_details.trader_name = Enw’r masnachwr
+acquire_success.trader_details.trader_address = Cyfeiriad y masnachwr
+acquire_success.trader_details.trader_email = Ebost
+acquire_success.date_of_sale.label = Dyddiad y gwerthiant
+acquire_success.vehicle_details.taxOrSorn = Trethu neu HOS
+acquire_success.vehicle_details.sornEntered = Ie, HOS yn dechrau heddiw ({0}).
+acquire_success.vehicle_details.sornEntered.p1 = Ni fydd y DVLA yn anfon llythyr cydnabyddiaeth HOS. Bydd y HOS yn ddilys hyd nes i’r cerbyd gael ei drethu, ei werthu, ei allforio’n barhaol neu ei sgrapio. Os gwelwch yn dda, sicrhewch fod y cerbyd wedi’i drethu cyn iddo gael ei yrru ar ffyrdd cyhoeddus.
+acquire_success.vehicle_details.sornNotEntered = Os nad yw’r cerbyd wedi cael ei drethu yn ystod y gwasanaeth hwn, bydd rhaid iddo gael ei drethu cyn iddo gael ei yrru ar y ffordd.
+acquire_success.vehicle_details.mileage =  Milltiredd y cerbyd
+acquire_success.vehicle_details.mileage_not_entered = Heb ei roi
+acquire_success.vehicle_details.name = Enw
+acquire_success.vehicle_details.address = Cyfeiriad
+acquire_success.vehicle_details.email = Cyfeiriad ebost cyswllt
+acquire_success.new_keeper_details.p1 = Manylion y ceidwad newydd
+acquire_success.further_information.header = Beth sy’n digwydd nesaf?
+acquire_success.further_information.p1 = o fewn 5 niwrnod gwaith byddwn yn anfon tystysgrif gofrestru cerbyd V5CW (llyfr log) newydd i’r ceidwad newydd.
+acquire_success.further_information.p2 = Os nad ydynt yn derbyn tystysgrif gofrestru V5CW (llyfr log) newydd o fewn 2 wythnos, mae’n rhaid iddynt gysylltu ag ymholiadau cwsmeriaid y DVLA.
+acquire_success.further_information.alert = A wnewch chi argraffu’r dudalen hon a’i rhoi i’r cwsmer ynghyd â’r darn V5C/2W o’r dystysgrif gofrestru V5CW (llyfr log).
 
 #vrm locked
-vrm_locked.title = Registration number is locked
-vrm_locked.text1 = There have been repeated unsuccessful attempts to access the vehicle details. The system has now locked this vehicle registration number for 10 minutes. Other vehicles can be processed during this time by selecting "Notify another sale" below.
-vrm_locked.text2 = Locked at
-vrm_locked.text3.1 = If you are sure that the details entered are correct then please send your completed V5C registration certificate (logbook) to
-vrm_locked.text3.2 = DVLA, Swansea SA99 1BA
-vrm_locked.buyanother.button = Notify another sale
-vrm_locked.exit.button = Exit
+vrm_locked.title = Mae’r rhif cofrestru wedi’i gloi
+vrm_locked.text1 = Mae nifer o geisiadau aflwyddiannus wedi bod i gael mynediad i’r manylion cerbyd. Mae’r system nawr wedi cloi’r rhif cofrestru cerbyd hwn am 10 munud. Gall cerbydau eraill gael eu prosesu yn ystod yr amser hwn drwy ddewis ‘Rhoi gwybod am werthiant arall’ isod.
+vrm_locked.text2 = Wedi’i gloi am
+vrm_locked.text3.1 = Os ydych yn sicr bod y manylion yr ydych wedi’u rhoi yn gywir, anfonwch eich tystysgrif gofrestru V5CW (llyfr log) wedi’i chwblhau i
+vrm_locked.text3.2 = DVLA, Abertawe SA99 1BA
+vrm_locked.buyanother.button = Rhoi gwybod am werthiant arall
+vrm_locked.exit.button = Gadael
 
 # feedback
-common_feedback.subject = Buy from the trade - feedback
+common_feedback.subject = Prynu o’r fasnach - adborth
 
 # email
-email.template.line1 = THIS IS AN AUTOMATED EMAIL - Please do not reply as emails received at this address cannot be responded to.
-email.template.line2 = For more information on driving and transport go to www.gov.uk/browse/driving
-email.template.line2Html = For more information on driving and transport go to <a href="http://www.gov.uk/browse/driving" target="_blank">www.gov.uk/browse/driving</a>.
-email.template.line3 = You may wish to save or print this email confirmation for your records.
+email.template.line1 =  MAE HWN YN EBOST AWTOMATAIDD - Peidiwch ag ymateb oherwydd ni ellir ateb ebyst a dderbynir yn y cyfeiriad hwn.
+email.template.line2 = Am ragor o wybodaeth am yrru a thrafnidiaeth, ewch i www.gov.uk/browse/driving
+email.template.line2Html = Am ragor o wybodaeth am yrru a thrafnidiaeth, ewch i <a href="http://www.gov.uk/browse/driving" target="_blank">www.gov.uk/browse/driving</a>.
+email.template.line3 = Mae’n bosib y byddwch am gadw neu argraffu’r cadarnhad ebost hwn ar gyfer eich cofnodion.
 
-email.newKeeper.p1 = DVLA have been notified electronically that you are now the new keeper of Vehicle Registration Number:
-email.newKeeper.p2 = The online Transaction ID is
-email.newKeeper.p3 = You should receive your new V5C registration certificate (logbook) within 2 weeks.
-email.newKeeper.p4 = Since 1st October 2014, vehicle tax can no longer be transferred as part of the sale. This is because the seller will automatically receive a refund of any remaining tax.
-email.newKeeper.p5 = You must tax this vehicle before it is driven on the road, tax now at http://www.gov.uk/vehicletax
-email.newKeeper.p6 = If you do not want to tax you can make a SORN declaration now at http://www.gov.uk/sorn
-email.newKeeper.p5Html = You must tax this vehicle before it is driven on the road, tax now at <a href="http://www.gov.uk/vehicletax" target="_blank">www.gov.uk/vehicletax</a>.
-email.newKeeper.p6Html = If you do not want to tax you can make a SORN declaration now at <a href="http://www.gov.uk/sorn" target="_blank">www.gov.uk/sorn</a>.
+email.newKeeper.p1 = Mae’r DVLA wedi cael ei hysbysu’n electronig eich bod yn geidwad newydd ar Rif Cofrestru Cerbyd:
+email.newKeeper.p2 = Y Dynodiad Trafodyn arlein yw
+email.newKeeper.p3 = Dylech dderbyn eich tystysgrif cofrestru V5CW (llyfr log) newydd o fewn 2 wythnos
+email.newKeeper.p4 = Ers 1 Hydref 2014, ni all treth cerbyd gael ei drosglwyddo mwyach fel rhan o’r gwerthiant. Mae hwn oherwydd bydd y gwerthwr yn derbyn ad-daliad awtomatig am unrhyw dreth sydd yn weddill.
+email.newKeeper.p5 = Mae’n rhaid i chi drethu’r cerbyd hwn cyn iddo gael ei yrru ar y ffordd, trethwch nawr yn http://www.gov.uk/vehicletax
+email.newKeeper.p6 = Os nad ydych am drethu gallwch wneud datganiad HOS nawr yn http://www.gov.uk/sorn
+email.newKeeper.p5Html = Mae’n rhaid i chi drethu’r cerbyd hwn cyn iddo gael ei yrru ar y ffordd, trethwch nawr yn <a href="http://www.gov.uk/vehicletax" target="_blank">www.gov.uk/vehicletax</a>.
+email.newKeeper.p6Html = Os nad ydych am drethu gallwch wneud datganiad HOS nawr yn <a href="http://www.gov.uk/sorn" target="_blank">www.gov.uk/sorn</a>.
 
-email.trader.p1 = Thank you for using DVLA's online service to confirm you have sold this vehicle out of the motor trade. Please destroy the original V5C registration certificate (logbook) as this must not be sent to DVLA. The V5C/2 (green slip) should have been passed to the new keeper.
+email.trader.p1 = Diolch am ddefnyddio ein gwasanaeth arlein y DVLA i gadarnhau eich bod wedi gwerthu’r cerbyd hwn allan o’r fasnach modur. A wnewch chi ddinistrio’r dystysgrif gofrestru V5CW (llyfr log) wreiddiol oherwydd ni ddylai hon gael ei anfon i’r DVLA. Ddylai’r V5C/2W (darn gwyrdd) fod wedi cael ei roi i’r ceidwad newydd.
 
-email.txndetails.p1 = The application details are:
-email.txndetails.p2 = Vehicle Registration Number:
-email.txndetails.p3 = Transaction ID is
-email.txndetails.p4 = Application made on:
+email.txndetails.p1 =  Manylion y cais yw:
+email.txndetails.p2 = Rhif Cofrestru Cerbyd:
+email.txndetails.p3 = Y Dynodiad Trafodyn yw
+email.txndetails.p4 = Gwnaed y cais ar:
 
-email.trader.p2 = The new keeper should receive their new V5C registration certificate (logbook) within 2 weeks.
-email.trader.p3 = As vehicle tax or SORN can no longer be transferred as part of the sale, the new keeper must tax this vehicle before it is driven on the road at http://www.gov.uk/vehicletax. They can make a SORN at http://www.gov.uk/sorn.
+email.trader.p2 = Dylai’r ceidwad newydd dderbyn ei dystysgrif gofrestru V5CW (llyfr log) newydd o fewn 2 wythnos.
+email.trader.p3 = Gan na all treth cerbyd na HOS gael eu trosglwyddo mwyach fel rhan o’r gwerthiant, mae’n rhaid i’r ceidwad newydd drethu’r cerbyd cyn iddo gael ei ddefnyddio ar y ffordd yn www.gov.uk/treth-car
 
-email.signature.p1 = Yours sincerely
+email.signature.p1 = Yn gywir
 email.signature.p2 = Rohan Gye
-email.signature.p3 = Vehicles Service Manager
+email.signature.p3 = Rheolwr Gwasanaethau Cerbydau
 
-email.title.keeper = Confirmation of new vehicle keeper
-email.title.trader = Confirmation of sale
+email.title.keeper = Cadarnhad am geidwad newydd y cerbyd
+email.title.trader = Cadarnhad am werthiant

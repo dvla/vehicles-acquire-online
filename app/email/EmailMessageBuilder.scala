@@ -2,7 +2,7 @@ package email
 
 import java.text.SimpleDateFormat
 import org.joda.time.DateTime
-import play.api.i18n.Messages
+import play.api.i18n.{Lang, Messages}
 import uk.gov.dvla.vehicles.presentation.common.model.VehicleAndKeeperDetailsModel
 
 /**
@@ -15,7 +15,7 @@ object EmailMessageBuilder {
 
   def buildNewKeeperConfirmationWith(vehicleDetails: VehicleAndKeeperDetailsModel,
                                      transactionId: String, imagesPath: String,
-                                     transactionTimestamp: DateTime): Contents = {
+                                     transactionTimestamp: DateTime)(implicit lang: Lang): Contents = {
     Contents(
       buildHtml(vehicleDetails.registrationNumber, imagesPath,
         buildNewKeeperHtml(vehicleDetails.registrationNumber, transactionId)),
@@ -25,7 +25,7 @@ object EmailMessageBuilder {
 
   def buildTraderConfirmationWith(vehicleDetails: VehicleAndKeeperDetailsModel,
                                   transactionId: String, imagesPath: String,
-                                  transactionTimestamp: DateTime): Contents = {
+                                  transactionTimestamp: DateTime)(implicit lang: Lang): Contents = {
     val transactionTimestampStr = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(transactionTimestamp.toDate)
 
     Contents(
@@ -37,7 +37,7 @@ object EmailMessageBuilder {
 
   private def buildHtml(regNumber: String,
                         imagesPath: String,
-                        htmlContent: String): String =
+                        htmlContent: String)(implicit lang: Lang): String =
 
     s"""
        |
@@ -113,7 +113,7 @@ object EmailMessageBuilder {
     """.stripMargin
 
   private def buildNewKeeperHtml(regNumber: String,
-                                 transactionId: String): String =
+                                 transactionId: String)(implicit lang: Lang): String =
     s"""
        |                            <p>${Messages("email.newKeeper.p1")} <strong>${regNumber}</strong></p>
        |
@@ -131,7 +131,7 @@ object EmailMessageBuilder {
 
   private def buildTraderHtml(regNumber: String,
                               transactionId: String,
-                              transactionTimestamp: String): String =
+                              transactionTimestamp: String)(implicit lang: Lang): String =
     s"""
        |                            <p>${Messages("email.trader.p1")}</p>
        |
@@ -147,7 +147,7 @@ object EmailMessageBuilder {
        |
     """.stripMargin
 
-  private def buildText(content: String): String =
+  private def buildText(content: String)(implicit lang: Lang): String =
     s"""
        |${Messages("email.template.line1")}
        |$content
@@ -161,7 +161,7 @@ object EmailMessageBuilder {
     """.stripMargin
 
     private def buildNewKeeperText(regNumber: String,
-                                   transactionId: String): String =
+                                   transactionId: String)(implicit lang: Lang): String =
       s"""
          |${Messages("email.newKeeper.p1")} ${regNumber}
          |
@@ -178,7 +178,7 @@ object EmailMessageBuilder {
 
    private def buildTraderText(regNumber: String,
                                transactionId: String,
-                               transactionTimestamp: String): String =
+                               transactionTimestamp: String)(implicit lang: Lang): String =
       s"""
          |${Messages("email.trader.p1")}
          |
