@@ -20,27 +20,23 @@ class NewKeeperChooseYourAddress @Inject()(protected override val addressLookupS
                                            name: String,
                                            postcode: String,
                                            email: Option[String],
-                                           addresses: Seq[(String, String)],
+                                           dropDownOptions: Seq[(String, String)],
                                            isBusinessKeeper: Boolean = false,
                                            fleetNumber: Option[String] = None)(implicit request: Request[_]): Result =
     BadRequest(new_keeper_choose_your_address(
-      model,
-      name,
-      postcode,
-      email,
-      addresses
-    ))
+      model, name, postcode, email, dropDownOptions)
+    )
 
   override protected def presentView(model: NewKeeperChooseYourAddressViewModel,
                                      name: String,
                                      postcode: String,
                                      email: Option[String],
-                                     addresses: Seq[(String, String)],
+                                     dropDownOptions: Seq[(String, String)],
                                      isBusinessKeeper: Boolean = false,
                                      fleetNumber: Option[String] = None)(implicit request: Request[_]): Result = {
     logMessage(request.cookies.trackingId(), Info, "Presenting new keeper choose your address view")
     Ok(views.html.acquire.new_keeper_choose_your_address(
-      model, name, postcode, email, addresses)
+      model, name, postcode, email, dropDownOptions)
     )
   }
 

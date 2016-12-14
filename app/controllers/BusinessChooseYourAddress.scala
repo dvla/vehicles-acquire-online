@@ -30,13 +30,13 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
     request.cookies.getModel[SetupTradeDetailsFormModel] match {
       case Some(setupTradeDetailsModel) =>
         val session = clientSideSessionFactory.getSession(request.cookies)
-        fetchAddresses(setupTradeDetailsModel)(session, request2lang).map { addresses =>
+        fetchAddresses(setupTradeDetailsModel)(session, request2lang).map { dropDownOptions =>
           logMessage(request.cookies.trackingId(), Info, "Presenting business choose your address view")
           Ok(views.html.acquire.business_choose_your_address(form.fill(),
             setupTradeDetailsModel.traderBusinessName,
             setupTradeDetailsModel.traderPostcode,
             setupTradeDetailsModel.traderEmail,
-            addresses))
+            dropDownOptions))
         }
       case None => Future {
         logMessage(request.cookies.trackingId(), Warn,
@@ -52,12 +52,12 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
         request.cookies.getModel[SetupTradeDetailsFormModel] match {
           case Some(setupTradeDetails) =>
             implicit val session = clientSideSessionFactory.getSession(request.cookies)
-            fetchAddresses(setupTradeDetails).map { addresses =>
+            fetchAddresses(setupTradeDetails).map { dropDownOptions =>
                 BadRequest(business_choose_your_address(formWithReplacedErrors(invalidForm),
                     setupTradeDetails.traderBusinessName,
                     setupTradeDetails.traderPostcode,
                     setupTradeDetails.traderEmail,
-                    addresses))
+                    dropDownOptions))
             }
           case None => Future {
             logMessage(request.cookies.trackingId(), Warn,
@@ -83,7 +83,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
   private def lookupAddressByPostcodeThenIndex(model: BusinessChooseYourAddressFormModel,
                                                setupBusinessDetailsForm: SetupTradeDetailsFormModel)
                                               (implicit request: Request[_], session: ClientSideSession): Future[Result] = {
-    fetchAddresses(setupBusinessDetailsForm)(session, request2lang).map { addresses =>
+    fetchAddresses(setupBusinessDetailsForm)(session, request2lang).map { dropDownOptions =>
         val lookedUpAddress = model.addressSelected
         val addressModel = VmAddressModel.from(lookedUpAddress)
         nextPage(model, setupBusinessDetailsForm.traderBusinessName, addressModel, setupBusinessDetailsForm.traderEmail)
@@ -92,7 +92,7 @@ class BusinessChooseYourAddress @Inject()(addressLookupService: AddressLookupSer
 
   private def fetchAddresses(model: SetupTradeDetailsFormModel)
                             (implicit session: ClientSideSession, lang: Lang): Future[Seq[(String, String)]] =
-    addressLookupService.fetchAddressesForPostcode(
+    addressLookupService.addressesToDropDown(
       model.traderPostcode,
       session.trackingId)
 
