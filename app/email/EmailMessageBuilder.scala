@@ -190,6 +190,5 @@ object EmailMessageBuilder {
          |
          |${Messages("email.trader.p2")}
          |
-         |${Messages("email.trader.p3")}
-      """.stripMargin
+         |${Messages("email.trader.p3")}""".stripMargin
 }
