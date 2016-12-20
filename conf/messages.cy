@@ -122,7 +122,7 @@ addressAndPostcode.addressLines = Cyfeiriad
 #keeper still on record (no previous disposal has been done to the vehicle so the keeper is still on record)
 acquire_keeperstillonrecord.title = Mae ceidwad ar y cofnodion
 acquire_keeperstillonrecord.text1 = Mae ceidwad yn parhau i fod ar y cofnodion am y cerbyd hwn ac nid yw’n ymddangos ei fod wedi cael ei werthu i’r fasnach moduron.
-acquire_keeperstillonrecord.text2 = Os ydych yn credu bod hwn yn wall, cysylltwch â gwasanaethau cwsmeriaid DVLA ar 0300 790 6802 (rhowch god 756 pan ofynnir). Mae’r rhif ffôn hwn ar agor Ddydd Llun i Ddydd Gwener rhwng 8am i 6pm a Dydd Sadwrn rhwng 8am a 2pm.
+acquire_keeperstillonrecord.text2 = Os ydych yn credu bod hwn yn wall, cysylltwch â gwasanaethau cwsmeriaid DVLA ar 0300 790 6802 (rhowch god 756 pan ofynnir). Mae’r rhif ffôn hwn ar agor Ddydd Llun i Ddydd Gwener rhwng 8am - 6pm a Dydd Sadwrn rhwng 8am - 2pm.
 acquire_keeperstillonrecord.text3 = Gallwch roi gwybod i ni am werthiant y cerbyd i’r fasnach moduron drwy ein gwasanaeth arlein.
 acquire_keeperstillonrecord.text4 = Prynu cerbyd i mewn i’r fasnach moduron.
 acquire_keeperstillonrecord.link = https://www.gov.uk/sold-bought-vehicle/y/motor-trader/bought-a-vehicle
