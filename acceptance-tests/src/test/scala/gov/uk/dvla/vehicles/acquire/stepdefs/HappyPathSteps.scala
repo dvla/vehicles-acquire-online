@@ -67,8 +67,8 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     SetupTradeDetailsPage.traderName.value = "VA12SU"
     SetupTradeDetailsPage.traderPostcode.value = Postcode
     click on SetupTradeDetailsPage.emailVisible
-    SetupTradeDetailsPage.traderEmail.value = "C@GMAIL.COM"
-    SetupTradeDetailsPage.traderConfirmEmail.value = "C@GMAIL.COM"
+    SetupTradeDetailsPage.traderEmail.value = "C@EMAIL.COM"
+    SetupTradeDetailsPage.traderConfirmEmail.value = "C@EMAIL.COM"
     click on SetupTradeDetailsPage.lookup
     pageTitle shouldEqual BusinessChooseYourAddressPage.title withClue trackingId
   }
@@ -127,8 +127,8 @@ class HappyPathSteps(webBrowserDriver: WebBrowserDriver) extends gov.uk.dvla.veh
     BusinessKeeperDetailsPage.fleetNumberField.value = "112233"
     BusinessKeeperDetailsPage.businessNameField.value = "test business"
     click on BusinessKeeperDetailsPage.emailVisible
-    BusinessKeeperDetailsPage.emailField.value = "a@gmail.com"
-    BusinessKeeperDetailsPage.emailConfirmField.value = "a@gmail.com"
+    BusinessKeeperDetailsPage.emailField.value = "a@email.com"
+    BusinessKeeperDetailsPage.emailConfirmField.value = "a@email.com"
     BusinessKeeperDetailsPage.postcodeField.value = Postcode
     click on BusinessKeeperDetailsPage.next
     pageTitle shouldEqual NewKeeperChooseYourAddressPage.title withClue trackingId
