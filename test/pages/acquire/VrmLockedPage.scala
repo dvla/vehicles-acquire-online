@@ -9,7 +9,7 @@ import views.acquire.VrmLocked
 import VrmLocked.{ExitId, BuyAnotherVehicleId}
 
 object VrmLockedPage extends Page {
-  final val address = s"$applicationContext/vrm-locked"
+  final val address = buildAppUrl("vrm-locked")
 
   override lazy val url: String = WebDriverFactory.testUrl + address.substring(1)
 
