@@ -66,6 +66,7 @@ acquire_setuptradedetails.traderemailoption.no = No
 #page 3 - Business Choose Your Address
 disposal_businessChooseYourAddress_addressSelect = Dewiswch gyfeiriad y masnachwr
 disposal_businessChooseYourAddress.address.required = Dewiswch gyfeiriad dilys os gwelwch yn dda
+
 acquire_businessChooseYourAddress_title = Dewiswch gyfeiriad y masnachwr
 acquire_businessChooseYourAddress_businessName_label = Enw’r masnachwr
 acquire_businessChooseYourAddress_businessName = {0}
