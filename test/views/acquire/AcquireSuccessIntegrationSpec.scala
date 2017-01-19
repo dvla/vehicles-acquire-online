@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.selenium.WebBrowser.click
@@ -12,6 +11,7 @@ import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.{AcquireSuccessPage, BeforeYouStartPage, VehicleLookupPage}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
 
 class AcquireSuccessIntegrationSpec extends UiSpec with TestHarness {
 

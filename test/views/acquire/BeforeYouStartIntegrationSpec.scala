@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.tags.UiTag
 import helpers.UiSpec
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
@@ -12,7 +11,7 @@ import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage}
 import pages.acquire.BeforeYouStartPage.startNow
 import pages.common.AlternateLanguages._
 import pages.common.Feedback.AcquireEmailFeedbackLink
-
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
 
 class BeforeYouStartIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

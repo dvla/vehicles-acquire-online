@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebDriver, WebElement}
 import org.scalatest.selenium.WebBrowser.go
@@ -13,6 +12,7 @@ import pages.acquire.{BeforeYouStartPage, NewKeeperEnterAddressManuallyPage, Veh
 import pages.common.ErrorPanel
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
 
 class NewKeeperEnterAddressManuallyIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

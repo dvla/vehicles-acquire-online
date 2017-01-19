@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.tags.UiTag
 import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.selenium.WebBrowser.click
@@ -14,6 +13,7 @@ import pages.acquire.{BeforeYouStartPage, BusinessKeeperDetailsPage, NewKeeperCh
 import pages.acquire.BusinessKeeperDetailsPage.{navigate, back}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 
 class BusinessKeeperDetailsIntegrationSpec extends UiSpec with TestHarness {

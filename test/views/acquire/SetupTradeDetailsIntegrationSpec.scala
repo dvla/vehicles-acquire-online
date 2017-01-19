@@ -1,7 +1,6 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.tags.UiTag
 import helpers.UiSpec
 import org.scalatest.selenium.WebBrowser.go
 import org.scalatest.selenium.WebBrowser.pageSource
@@ -11,6 +10,7 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.common.{Accessibility, ErrorPanel}
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.model.SetupTradeDetailsFormModel
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
 
 class SetupTradeDetailsIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

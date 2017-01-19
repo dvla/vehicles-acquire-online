@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.tags.UiTag
 import helpers.UiSpec
 import models.EnterAddressManuallyFormModel.EnterAddressManuallyCacheKey
 import org.openqa.selenium.{By, WebElement, WebDriver}
@@ -19,8 +18,9 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.BusinessChooseYourAddressPage.{back, sadPath, manualAddress, happyPath}
 import pages.common.ErrorPanel
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import SetupTradeDetailsPage.PostcodeValid
+import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
 
 class BusinessChooseYourAddressIntegrationSpec extends UiSpec with TestHarness {
   "business choose your address page" should {
