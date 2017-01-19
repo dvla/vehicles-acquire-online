@@ -1,7 +1,6 @@
 package controllers
 
 import Common.PrototypeHtml
-import helpers.JsonUtils.deserializeJsonToModel
 import helpers.acquire.CookieFactoryForUnitSpecs
 import helpers.{TestWithApplication, UnitSpec}
 import models.AcquireCacheKeyPrefix.CookiePrefix
@@ -13,16 +12,18 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{BAD_REQUEST, LOCATION, OK, contentAsString, defaultAwaitTimeout}
 
 import scala.concurrent.Future
-import uk.gov.dvla.vehicles.presentation.common.clientsidesession.ClientSideSessionFactory
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel
-import uk.gov.dvla.vehicles.presentation.common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.CookieHelper.fetchCookiesFromHeaders
-import uk.gov.dvla.vehicles.presentation.common.views.helpers.FormExtensions
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.AddressLinesId
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.Line2Id
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.Line3Id
-import uk.gov.dvla.vehicles.presentation.common.views.models.AddressLinesViewModel.Form.PostTownId
+import uk.gov.dvla.vehicles.presentation.common
+import common.clientsidesession.ClientSideSessionFactory
+import common.model.NewKeeperDetailsViewModel
+import common.model.NewKeeperDetailsViewModel.newKeeperDetailsCacheKey
+import common.testhelpers.CookieHelper.fetchCookiesFromHeaders
+import common.testhelpers.JsonUtils.deserializeJsonToModel
+import common.views.helpers.FormExtensions
+import common.views.models.AddressLinesViewModel.Form.AddressLinesId
+import common.views.models.AddressLinesViewModel.Form.BuildingNameOrNumberId
+import common.views.models.AddressLinesViewModel.Form.Line2Id
+import common.views.models.AddressLinesViewModel.Form.Line3Id
+import common.views.models.AddressLinesViewModel.Form.PostTownId
 import utils.helpers.Config
 import views.acquire.EnterAddressManually.PostcodeId
 import webserviceclients.fakes.FakeAddressLookupService.BuildingNameOrNumberValid

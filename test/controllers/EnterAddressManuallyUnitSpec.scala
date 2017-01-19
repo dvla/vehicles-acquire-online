@@ -2,7 +2,6 @@ package controllers
 
 import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.JsonUtils.deserializeJsonToModel
 import helpers.{UnitSpec, TestWithApplication}
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.BusinessChooseYourAddressFormModel.BusinessChooseYourAddressCacheKey
@@ -21,6 +20,7 @@ import common.model.TraderDetailsModel.traderDetailsCacheKey
 import common.testhelpers.CookieHelper.fetchCookiesFromHeaders
 import common.testhelpers.CookieHelper.verifyCookieHasBeenDiscarded
 import common.testhelpers.CookieHelper.verifyCookieHasNotBeenDiscarded
+import common.testhelpers.JsonUtils.deserializeJsonToModel
 import common.views.helpers.FormExtensions
 import common.views.models.AddressLinesViewModel.Form.{AddressLinesId, BuildingNameOrNumberId, Line2Id, Line3Id, PostTownId}
 import utils.helpers.Config

@@ -3,7 +3,6 @@ package controllers
 import helpers.TestWithApplication
 import Common.PrototypeHtml
 import helpers.acquire.CookieFactoryForUnitSpecs
-import helpers.JsonUtils.deserializeJsonToModel
 import helpers.UnitSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import models.IdentifierCacheKey
@@ -20,6 +19,7 @@ import common.mappings.Email.{EmailId, EmailVerifyId}
 import common.model.SetupTradeDetailsFormModel.setupTradeDetailsCacheKey
 import common.model.SetupTradeDetailsFormModel.Form.{TraderNameId, TraderEmailId, TraderEmailOptionId, TraderPostcodeId}
 import common.testhelpers.CookieHelper.fetchCookiesFromHeaders
+import common.testhelpers.JsonUtils.deserializeJsonToModel
 import utils.helpers.Config
 
 class SetupTradeDetailsUnitSpec extends UnitSpec {
