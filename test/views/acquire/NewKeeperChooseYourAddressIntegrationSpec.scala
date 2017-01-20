@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
@@ -18,7 +17,7 @@ import pages.acquire.VehicleLookupPage
 import pages.acquire.VehicleTaxOrSornPage
 import pages.acquire.NewKeeperChooseYourAddressPage.{back, manualAddress, sadPath, happyPath}
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 import webserviceclients.fakes.FakeAddressLookupService
 import pages.acquire.SetupTradeDetailsPage.PostcodeValid
 import pages.common.Feedback.AcquireEmailFeedbackLink

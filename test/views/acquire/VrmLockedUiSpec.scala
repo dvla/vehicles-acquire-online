@@ -1,14 +1,13 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.UiSpec
 import helpers.acquire.CookieFactoryForUISpecs
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.selenium.WebBrowser.{click, currentUrl, go}
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.VrmLockedPage
 import pages.acquire.VrmLockedPage.exit
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 
 class VrmLockedUiSpec extends UiSpec with TestHarness{
 

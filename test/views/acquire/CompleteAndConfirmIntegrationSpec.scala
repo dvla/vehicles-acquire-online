@@ -4,7 +4,6 @@ import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import composition.{GlobalWithFilters, TestComposition, TestGlobalWithFilters, TestHarness}
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.UiSpec
 import models.CompleteAndConfirmFormModel.AllowGoingToCompleteAndConfirmPageCacheKey
 import models.VehicleNewKeeperCompletionCacheKeys
 import org.openqa.selenium.{By, JavascriptExecutor, WebElement, WebDriver}
@@ -41,7 +40,7 @@ import common.filters.CsrfPreventionAction
 import common.helpers.webbrowser.WebDriverFactory
 import common.mappings.TitleType
 import common.testhelpers.LightFakeApplication
-import common.testhelpers.UiTag
+import common.testhelpers.{UiSpec, UiTag}
 import common.webserviceclients.fakes.FakeAcquireWebServiceImpl
 import common.webserviceclients.fakes.FakeAcquireWebServiceImpl.SimulateForbidden
 import common.webserviceclients.fakes.FakeAcquireWebServiceImpl.SimulateMicroServiceUnavailable

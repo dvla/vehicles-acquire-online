@@ -1,7 +1,6 @@
 package views.acquire
 
 import composition.TestHarness
-import helpers.UiSpec
 import helpers.acquire.CookieFactoryForUISpecs
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.WebBrowser.click
@@ -12,7 +11,7 @@ import pages.acquire.MicroServiceErrorPage.{exit, tryAgain}
 import pages.acquire.{BeforeYouStartPage, MicroServiceErrorPage, SetupTradeDetailsPage, VehicleLookupPage}
 import pages.common.AlternateLanguages.{cymraeg, english}
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 
 class MicroServiceErrorIntegrationSpec extends UiSpec with TestHarness {
   "go to page" should {

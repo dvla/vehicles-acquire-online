@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
@@ -16,7 +15,7 @@ import pages.acquire.SetupTradeDetailsPage
 import pages.acquire.VehicleLookupPage
 import play.api.i18n.Messages
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import pages.acquire.PrivateKeeperDetailsPage.{navigate, back}
 import pages.acquire.PrivateKeeperDetailsPage.{EmailInvalid, FirstNameInvalid, LastNameInvalid, TitleInvalid}

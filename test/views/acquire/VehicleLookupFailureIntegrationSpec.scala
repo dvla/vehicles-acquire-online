@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.UiSpec
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.WebBrowser.click
 import org.scalatest.selenium.WebBrowser.go
@@ -11,7 +10,7 @@ import org.scalatest.selenium.WebBrowser.pageTitle
 import pages.acquire.VehicleLookupFailurePage.{beforeYouStart, vehicleLookup}
 import pages.acquire.{BeforeYouStartPage, SetupTradeDetailsPage, VehicleLookupPage, VehicleLookupFailurePage}
 import pages.common.Feedback.AcquireEmailFeedbackLink
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 import webserviceclients.fakes.brute_force_protection.FakeBruteForcePreventionWebServiceImpl.MaxAttempts
 
 class VehicleLookupFailureIntegrationSpec extends UiSpec with TestHarness {

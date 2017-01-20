@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.UiSpec
 import models.AcquireCacheKeyPrefix.CookiePrefix
 import org.openqa.selenium.{JavascriptExecutor, By, WebElement, WebDriver}
 import org.openqa.selenium.support.ui.{ExpectedCondition, ExpectedConditions}
@@ -24,7 +23,7 @@ import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.model.BusinessKeeperDetailsFormModel.businessKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.model.PrivateKeeperDetailsFormModel.privateKeeperDetailsCacheKey
 import uk.gov.dvla.vehicles.presentation.common.testhelpers.LightFakeApplication
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 import uk.gov.dvla.vehicles.presentation.common.views.widgetdriver.Wait
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 

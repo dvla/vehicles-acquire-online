@@ -2,7 +2,6 @@ package views.acquire
 
 import composition.TestHarness
 import helpers.acquire.CookieFactoryForUISpecs
-import helpers.UiSpec
 import org.openqa.selenium.{By, WebElement, WebDriver}
 import pages.acquire.BeforeYouStartPage
 import pages.acquire.NewKeeperChooseYourAddressPage
@@ -14,7 +13,8 @@ import pages.acquire.AcquireSuccessPage
 import pages.common.Feedback.AcquireEmailFeedbackLink
 import uk.gov.dvla.vehicles.presentation.common.filters.CsrfPreventionAction
 import uk.gov.dvla.vehicles.presentation.common.mappings.TitleType
-import uk.gov.dvla.vehicles.presentation.common.testhelpers.UiTag
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
+import uk.gov.dvla.vehicles.presentation.common.testhelpers.{UiSpec, UiTag}
 import webserviceclients.fakes.FakeAddressLookupService.addressWithoutUprn
 import org.scalatest.selenium.WebBrowser.{click, currentUrl, go, pageTitle, pageSource}
 
